@@ -52,8 +52,6 @@ var bootstrapServer = function(app, db) {
     store: new MongoStore({
       mongoose_connection: db.connections[0],
       auto_reconnect: true
-    }, function() {
-      console.log('Sessions index created!');
     })
   }));
 

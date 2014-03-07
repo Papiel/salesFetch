@@ -1,5 +1,5 @@
 {
-  "path" : "/documents",
+  "path" : "/documents?search=Albert%20Einstein",
   "verb" : "GET",
   "code": 200,
   "reply": {

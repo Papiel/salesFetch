@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var _ = require('lodash');
 
-var defaultCP = require('../../config/default-context-profilers');
+var defaultProfilers = require('../../config/default-context-profilers.json');
 
 /**
  * Organization Schema
@@ -20,7 +20,7 @@ var OrgModel = new Schema ({
   },
   name: String,
   currency: String,
-  context_profilers: [{
+  contextProfilers: [{
     record_type: String,
     query_template: String,
     display_template: String
@@ -30,7 +30,7 @@ var OrgModel = new Schema ({
 /**
  * Validations
  */
-OrgModel.path('context_profilers').validate(function(contextProfilers) {
+OrgModel.path('contextProfilers').validate(function(contextProfilers) {
   // Check if there is duplication in record profilers
   var recordTypes = _.pluck(contextProfilers, 'record_type');
   recordTypes = _.uniq(recordTypes);
@@ -46,7 +46,7 @@ OrgModel.pre('save', function(next) {
     return next();
   }
 
-  this.context_profilers = defaultCP;
+  this.contextProfilers = defaultProfilers;
   next();
 });
 

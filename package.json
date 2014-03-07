@@ -24,7 +24,6 @@
     "swig": "1.3.x",
     "less-middleware": "0.1.x",
     "async": "0.2.x",
-    "request": "2.x.x",
     "bower": "1.x.x",
     "grunt": "~0.4.2",
     "grunt-concurrent": "~0.4.2",
@@ -34,11 +33,12 @@
     "grunt-env": "~0.4.1",
     "mustache": "0.8.x",
     "jsforce": "1.x.x",
-    "lodash": "2.4.1"
+    "lodash": "2.4.1",
+    "superagent": "~0.16.0"
   },
   "devDependencies": {
     "mocha": "1.15.x",
-    "should": "2.1.x",
+    "should": "3.1.x",
     "supertest": "0.9.x",
     "jshint": "2.3.x",
     "mocha-mongoose": "1.0.x",

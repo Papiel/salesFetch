@@ -6,6 +6,7 @@ var crypto = require('crypto');
 
 var app = require('../../app.js');
 var cleaner = require('../hooks/cleaner');
+var checkUnauthenticated = require('../helpers/access').checkUnauthenticated;
 var consumerSecret = require('../../config/index').consumer_secret;
 
 var createAuthHash = function(obj) {
@@ -27,7 +28,7 @@ var obj = {
     },
     environment: {
       parameters: {
-        mode: 'context',
+        url: '/app/context',
         record: {
           record_type: 'Contact',
           record_id: '003b000000LHOj3'
@@ -47,12 +48,7 @@ describe('<user controller>', function() {
   });
 
   describe('/authenticate endpoint', function() {
-
-    it('should reject unauthenticated user', function(done) {
-      request(app)
-        .post('/authenticate')
-        .expect(401, done);
-    });
+    checkUnauthenticated(app, 'post', '/authenticate');
 
     it('should authenticate user with valid credentials', function(done) {
       var postBody = createAuthHash(obj) + '.' + new Buffer(JSON.stringify(obj)).toString("base64");
@@ -78,7 +74,7 @@ describe('<user controller>', function() {
         .send({signed_request: postBody})
         .expect(302)
         .expect(function(res) {
-          res.headers.location.should.include('/app/context');
+          res.headers.location.should.equal('/app/context');
         })
         .end(done);
     });

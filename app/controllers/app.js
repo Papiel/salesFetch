@@ -4,128 +4,58 @@
 'use strict';
 
 var async = require('async');
-var request = require('request');
 var Mustache = require('mustache');
-var jsforce = require('jsforce');
 var _ = require('lodash');
-
 var mongoose = require('mongoose');
+
+var anyfetchHelpers = require('../helpers/anyfetch.js');
+var salesforceHelpers = require('../helpers/salesforce.js');
 var Organization = mongoose.model('Organization');
 
-var anyFetchRequest = function(url, builtQuery) {
-  var translatedParameters = {
-    search : builtQuery
-  };
-
-  return {
-    url: url,
-    qs: translatedParameters,
-    headers: {
-      'Authorization': 'Basic ' + process.env.FETCHAPI_CREDS
-    }
-  };
-};
-
-var retrieveDocuments = function(builtQuery, cb) {
-  async.parallel([
-    function(cb) {
-      request(anyFetchRequest('http://api.anyfetch.com'), cb);
-    },
-    function(cb){
-      request(anyFetchRequest('http://api.anyfetch.com/documents', builtQuery), cb);
-    }
-  ], function(err, data){
-    if (err) {
-      return cb(err);
-    }
-    var docReturn = JSON.parse(data[1][0].body);
-    var rootReturn = JSON.parse(data[0][0].body);
-
-    docReturn.datas.forEach(function(doc) {
-      var relatedTemplate = rootReturn.document_types[doc.document_type].template_snippet;
-      doc.snippet_rendered = Mustache.render(relatedTemplate, doc.datas);
-
-      doc.provider = rootReturn.provider_status[doc.token].name;
-      doc.document_type = rootReturn.document_types[doc.document_type].name;
-    });
-
-    cb(null, docReturn);
-  });
-};
-
-var retrieveDocument = function(id, cb) {
-  async.parallel([
-    function(cb) {
-      request(anyFetchRequest('http://api.anyfetch.com'), cb);
-    },
-    function(cb){
-      request(anyFetchRequest('http://api.anyfetch.com/documents/' + id), cb);
-    }
-  ], function(err, data){
-    if (err) {
-      return cb(err);
-    }
-
-    var docReturn = JSON.parse(data[1][0].body);
-    var rootReturn = JSON.parse(data[0][0].body);
-
-    var relatedTemplate = rootReturn.document_types[docReturn.document_type].template_full;
-    docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.datas);
-
-    docReturn.provider = rootReturn.provider_status[docReturn.token].name;
-    docReturn.document_type = rootReturn.document_types[docReturn.document_type].name;
-
-    cb(null, docReturn);
-  });
-};
 
 /**
  * Display Context page
  */
-module.exports.context = function(req, res) {
-  var passedContext = req.session.context;
+module.exports.contextSearch = function(req, res) {
+  var context = req.session.context;
+  console.log(context);
+  var record;
 
   async.waterfall([
-    function(cb) {
-      // Retrive the context object
-      var conn = new jsforce.Connection({
-        instanceUrl : passedContext.instance_url,
-        accessToken : passedContext.oauth_token
-      });
-      conn
-        .sobject(passedContext.params.record.object_type)
-        .retrieve(passedContext.params.record.record_id, cb);
-    }, function(record, cb) {
-      // Retrieve the context profilers
+    function retrieveContext(cb) {
+      salesforceHelpers.loadObject(context.instance_url, context.oauth_token, context.params.record_type, context.params.record_id, cb);
+    },
+    function retrieveProfiler(_record, cb) {
+      record = _record;
+      Organization.findOne({_id: req.session.user.organization}, cb);
+    },
+    function retrieveContextProfiler(org, cb) {
+      if (!org) {
+        return cb(new Error("No matching organization"));
+      }
 
-      Organization.findOne({_id: req.session.user.organization}, function(err, org) {
-
-        if (err || !org) {
-          return cb(err);
-        }
-
-        cb(null, record, org.context_profilers);
-      });
-    }, function(record, orgProfilers, cb) {
-      var profiler = _.find(orgProfilers, {object_type: passedContext.params.record.record_type});
+      cb(null, org.contextProfilers);
+    },
+    function buildQuery(contextProfilers, cb) {
+      var profiler = _.find(contextProfilers, {record_type: context.params.record_type});
 
       if (!profiler) {
-        return cb('no_context_sepcifier');
+        return cb(new Error('No contextProfilers for this object'));
       }
-      var builtQuery = Mustache.render(profiler.query_template, record);
-      passedContext.context_display = Mustache.render(profiler.display_template, record);
+
+      var search = Mustache.render(profiler.query_template, record);
+      context.context_display = Mustache.render(profiler.display_template, record);
 
       // Retrieve documents matching the query
-      retrieveDocuments(builtQuery, cb);
+      anyfetchHelpers.findDocuments({search: search}, cb);
     }
   ], function(err, datas) {
-    if (err || err === 'no_context_sepcifier') {
-      console.log(err);
+    if (err) {
       return res.send(500);
     }
 
     res.render('app/context.html', {
-      context: passedContext,
+      context: context,
       documents: datas
     });
   });
@@ -134,13 +64,13 @@ module.exports.context = function(req, res) {
 /**
  * Show full document
  */
-module.exports.show = function(req, res) {
-  //TODO: handle err
-  retrieveDocument(req.params.documentId, function(err, datas) {
-
-    res.render('canvas/show.html', {
-      document: datas
+module.exports.documentDisplay = function(req, res) {
+  anyfetchHelpers.findDocument(req.params.id, function(err, document) {
+    if(err) {
+      return res.send(500);
+    }
+    res.render('app/show.html', {
+      document: document
     });
-
   });
 };

@@ -30,7 +30,7 @@ var authenticateUser = function(context, done) {
         return cb(null, org);
       }
 
-      // Create a comapny if no one matching
+      // Create a company if no one matching
       var  newOrg = new Organization({
         name: orgContext.name,
         organizationId: orgContext.organizationId,
@@ -50,21 +50,6 @@ var authenticateUser = function(context, done) {
   ], done);
 };
 
-/**
- * Choose the right redirection url based on the authentication
- * context.
- */
-var redirectionOnContext = function(context) {
-  var mode = context.environment.parameters.mode;
-
-  if (mode === 'admin') {
-    return '/admin';
-  } else if(mode === 'search') {
-    return '/app/search';
-  } else {
-    return '/app/context';
-  }
-};
 
 /**
  * Called by Salesforce with SF user credentials and current context.
@@ -73,7 +58,7 @@ var redirectionOnContext = function(context) {
 module.exports.authenticate = function(req, res) {
   var envelope;
   async.waterfall([
-    function(cb){
+    function checkRequestValidity(cb){
       if (!req.body.signed_request) {
         return cb(new Error('bad request'));
       }
@@ -86,31 +71,30 @@ module.exports.authenticate = function(req, res) {
       // Check the request validity
       var check = crypto.createHmac("sha256", config.consumer_secret).update(encodedEnvelope).digest("base64");
       if (check !== consumerSecret) {
-        return cb('bad request');
+        return cb(new Error("bad request"));
       }
 
       envelope = JSON.parse(new Buffer(encodedEnvelope, "base64"));
       cb(null, envelope);
     },
-    function(envelope, cb){
+    function loadUser(envelope, cb){
       // Get the user
       authenticateUser(envelope.context, cb);
     }
   ], function (err, user) {
-
     if (err) {
       return res.send(401);
     }
 
+    var redirectUrl = envelope.context.environment.parameters.url;
+
     req.session.user = user;
     req.session.context = {
-      params: envelope.context.environment.parameters,
+      params: envelope.context.environment.parameters.parameters,
       dimensions: envelope.context.environment.dimensions,
       instance_url: envelope.client.instanceUrl,
       oauth_token: envelope.client.oauthToken
     };
-
-    var redirectUrl = redirectionOnContext(envelope.context);
 
     return res.redirect(302, redirectUrl);
   });

@@ -2,33 +2,36 @@
   <div class="container-fluid">
     <div class="btn-group navbar-btn" id="context-switch">
       <a class="btn btn-primary">
-        Context  <span class="badge">{{context.count}}</span>
+        Context  <span class="badge">150</span>
       </a>
       <a class="btn btn-default">
         Pinned  <span class="badge">5</span>
       </a>
     </div>
 
-    <a class="btn btn-default navbar-btn pull-right" id="filter" data-toggle="popover" title="">Filters</a>
+    <a class="btn btn-default navbar-btn pull-right" id="filter">Filters</a>
   </div>
 </nav>
 
-<div class="hidden">
-  <div id="filter-popover">
-    <label for="provider">Provider</label>
-    <select class="form-control" id="provider">
-      <option>All</option>
-      <option>Gmail</option>
-      <option>Dropbox</option>
-    </select>
+<div id="filter-template" class="hidden">
+  <label for="provider">Provider</label>
+  <select class="form-control" id="provider">
+    <option>All</option>
+    <option>Gmail</option>
+    <option>Dropbox</option>
+  </select>
 
-    <label for="type">Type</label>
-    <select class="form-control" id="type">
-      <option>All</option>
-      <option>Pdf</option>
-      <option>Image</option>
-    </select>
-  </div>
+  <label for="type">Type</label>
+  <select class="form-control" id="type">
+    <option>All</option>
+    <option>Pdf</option>
+    <option>Image</option>
+  </select>
+
+  <hr/>
+
+  <button type="button" class="btn btn-primary btn-lg btn-block execute">Execute</button>
+  <button type="button" class="btn btn-default btn-lg btn-block dismiss">Cancel</button>
 </div>
 
 <style type="text/css">

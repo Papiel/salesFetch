@@ -1,0 +1,43 @@
+<nav class="navbar navbar-default navbar-result" role="navigation">
+  <div class="container-fluid">
+    <div class="btn-group navbar-btn" id="context-switch">
+      <a class="btn btn-primary">
+        Context  <span class="badge">{{context.count}}</span>
+      </a>
+      <a class="btn btn-default">
+        Pinned  <span class="badge">5</span>
+      </a>
+    </div>
+
+    <a class="btn btn-default navbar-btn pull-right" id="filter" data-toggle="popover" title="">Filters</a>
+  </div>
+</nav>
+
+<div class="hidden">
+  <div id="filter-popover">
+    <label for="provider">Provider</label>
+    <select class="form-control" id="provider">
+      <option>All</option>
+      <option>Gmail</option>
+      <option>Dropbox</option>
+    </select>
+
+    <label for="type">Type</label>
+    <select class="form-control" id="type">
+      <option>All</option>
+      <option>Pdf</option>
+      <option>Image</option>
+    </select>
+  </div>
+</div>
+
+<style type="text/css">
+  .navbar {
+    border-radius: 0;
+    border-right: 0;
+    border-left: 0;
+    margin-bottom: -50px;
+    -webkit-transition: top .5s ease-in-out;
+    transition: top .5s ease-in-out;
+  }
+</style>

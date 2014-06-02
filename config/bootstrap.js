@@ -48,6 +48,7 @@ var expressConfig = function(app) {
   app.set('views', config.root + '/app/views');
 
   // Static files
+  app.use('/img', express.static(config.root + '/public/lib/bootstrap/img'));
   app.use(express.static(config.root + '/public'));
 };
 

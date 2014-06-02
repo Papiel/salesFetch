@@ -6,7 +6,7 @@ var UAParser = require('ua-parser-js');
 module.exports.contextSearch = function (req, res) {
   var deviceType;
 
-  if (req.params.env && req.params.env.type === 'desktop') {
+  if (req.query.env === 'desktop') {
     deviceType = 'desktop';
   } else {
     var parser = new UAParser();

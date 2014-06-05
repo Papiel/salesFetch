@@ -52,7 +52,7 @@ describe('<Authentication middleware>', function() {
   });
 
 
-  it('should reject call if the hash dont match', function(done) {
+  it('should reject call if the hash doesn\'t match', function(done) {
 
     async.waterfall([
       function createCompany(cb) {

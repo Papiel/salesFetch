@@ -11,6 +11,9 @@ var requestBuilder = require('../helpers/login').requestBuilder;
 var APIs = require('../helpers/APIs');
 var checkUnauthenticated = require('../helpers/access').checkUnauthenticated;
 
+var mongoose =require('mongoose');
+var UserModel = mongoose.model('User');
+
 describe('<Application controller>', function() {
   beforeEach(cleaner);
   beforeEach(function(done) {
@@ -70,6 +73,41 @@ describe('<Application controller>', function() {
             .expect(function(res) {
               res.text.should.containDeep("National Security");
               res.text.should.not.containDeep("<body>");
+            })
+            .end(cb);
+        }
+      ], done);
+    });
+
+    it("should display error when using invalid credentials", function(done) {
+
+      var context = {
+        recordType: 'Contact',
+        recordId: '003b000000LHOj3',
+        templatedQuery: 'Walter White',
+        templatedDisplay: 'Walter White'
+      };
+
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder(endpoint, context, null, cb);
+        },
+        // Modify the user in DB to assign him an invalid token
+        function tamperUserToken(url, cb) {
+          UserModel.findOne({SFDCId: 'SFDCId'}, function(err, user){
+            user.anyFetchToken = 'some_invalid_token';
+            user.save(function(err, user) {
+             cb(err, url)
+            });
+          });
+        },
+        // Check that this invalid token is rejected
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(401)
+            .expect(function(res) {
+              res.text.should.containDeep("Invalid credentials");
             })
             .end(cb);
         }

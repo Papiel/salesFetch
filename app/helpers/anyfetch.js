@@ -10,9 +10,9 @@ var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var config = require('../../config/configuration.js');
+var fetchApiUrl = config.fetchApiUrl;
 
-
-module.exports.findDocuments = function(url, params, user, cb) {
+module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
 
   async.waterfall([
@@ -31,7 +31,7 @@ module.exports.findDocuments = function(url, params, user, cb) {
       var batchParams = pages.map(encodeURIComponent).join('&pages=');
       var batchUrl = '/batch?pages=' + batchParams;
 
-      request(url).get(batchUrl)
+      request(fetchApiUrl).get(batchUrl)
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
         .end(cb);
     },
@@ -46,15 +46,15 @@ module.exports.findDocuments = function(url, params, user, cb) {
       var providers = body[pages[1]];
       var docReturn = body[pages[2]];
 
-      if (!docReturn.datas) {
+      if (!docReturn.data) {
         return cb(null, docReturn);
       }
 
-      // Render the templated datas
-      docReturn.datas.forEach(function(doc) {
+      // Render the templated data
+      docReturn.data.forEach(function(doc) {
 
         var relatedTemplate = documentTypes[doc.document_type].templates.snippet;
-        doc.snippet_rendered = Mustache.render(relatedTemplate, doc.datas);
+        doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
         doc.provider = providers[doc.token].name;
         doc.document_type = documentTypes[doc.document_type].name;
@@ -95,7 +95,7 @@ module.exports.findDocuments = function(url, params, user, cb) {
 /**
  * Find and return a single templated document
  */
-module.exports.findDocument = function(url, id, user, cb) {
+module.exports.findDocument = function(id, user, cb) {
   var pages = [
     '/document_types',
     '/providers',
@@ -103,7 +103,7 @@ module.exports.findDocument = function(url, id, user, cb) {
   ];
 
   var batchParams = pages.map(encodeURIComponent).join('&pages=');
-  request(url).get('/batch?pages=' + batchParams)
+  request(fetchApiUrl).get('/batch?pages=' + batchParams)
     .set('Authorization', 'Bearer ' + user.anyFetchToken)
     .end( function(err, res) {
       if (err) {
@@ -123,8 +123,8 @@ module.exports.findDocument = function(url, id, user, cb) {
       var relatedTemplate = documentTypes[docReturn.document_type].templates.full;
       var titleTemplate = documentTypes[docReturn.document_type].templates.title;
 
-      docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.datas);
-      docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.datas);
+      docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
+      docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
 
       docReturn.provider = providers[docReturn.token].name;
       docReturn.document_type = documentTypes[docReturn.document_type].name;
@@ -139,8 +139,6 @@ module.exports.findDocument = function(url, id, user, cb) {
  * Store the linking informations btw Salesforce and FetchAPI
  */
 module.exports.initAccount = function(data, done) {
-  var url = config.fetchApiUrl;
-
   var user = data.user;
   var org = data.organization;
 
@@ -173,7 +171,7 @@ module.exports.initAccount = function(data, done) {
         user.name = 'dev-' + user.name;
       }
 
-      request(url).post('/users')
+      request(fetchApiUrl).post('/users')
         .set('Authorization', 'Basic ' + config.fetchApiCreds)
         .send({
           email: user.name,
@@ -191,7 +189,7 @@ module.exports.initAccount = function(data, done) {
       user.anyFetchId = res.body.id;
       user.basicAuth = new Buffer(user.name + ':' + user.password).toString('base64');
 
-      request(url).get('/token')
+      request(fetchApiUrl).get('/token')
         .set('Authorization', 'Basic ' + user.basicAuth)
         .end(cb);
     },
@@ -202,7 +200,7 @@ module.exports.initAccount = function(data, done) {
 
       user.token = res.body.token;
 
-      request(url).post('/subcompanies')
+      request(fetchApiUrl).post('/subcompanies')
         .set('Authorization', 'Bearer ' + user.token)
         .send({
           name: org.name
@@ -243,7 +241,6 @@ module.exports.initAccount = function(data, done) {
  * and store it on the local DB
  */
 module.exports.addNewUser = function(user, organization, cb) {
-  var url = config.fetchApiUrl;
 
   async.waterfall([
     function createRandomPassword(cb) {
@@ -262,7 +259,7 @@ module.exports.addNewUser = function(user, organization, cb) {
       }
 
       var adminToken = adminUser.anyFetchToken;
-      request(url).post('/users')
+      request(fetchApiUrl).post('/users')
         .set('Authorization', 'Bearer ' + adminToken)
         .send({
           email: user.name,
@@ -279,19 +276,22 @@ module.exports.addNewUser = function(user, organization, cb) {
       user.anyFetchId = res.body.id;
       user.basicAuth = new Buffer(user.name + ':' + user.password).toString('base64');
 
-      request(url).get('/token')
+      request(fetchApiUrl).get('/token')
         .set('Authorization', 'Basic ' + user.basicAuth)
         .end(cb);
     },
     function saveLocalUser(res, cb) {
-      var userToken = res.token;
+      if(res.status !== 200){
+        return cb(new Error(res.body));
+      }
+      var userToken = res.body.token;
 
       var localUser = new User({
         name: user.name,
         email: user.email,
         SFDCId: user.id,
         anyFetchId: user.anyFetchId,
-        token: userToken,
+        anyFetchToken: userToken,
         organization: organization
       });
 
@@ -326,8 +326,8 @@ module.exports.getProviders = function(cb) {
 /**
  * Retrieve all connect provider for an account
  */
-module.exports.getConnectedProviders = function(url, user, cb) {
-  request(url).get('/providers')
+module.exports.getConnectedProviders = function(user, cb) {
+  request(fetchApiUrl).get('/providers')
     .set('Authorization', 'Bearer ' + user.anyFetchToken)
     .end(cb);
 };
@@ -335,8 +335,8 @@ module.exports.getConnectedProviders = function(url, user, cb) {
 /**
  * Update the company documents
  */
-module.exports.updateAccount = function(url, user, cb) {
-  request(url).post('/company/update')
+module.exports.updateAccount = function(user, cb) {
+  request(fetchApiUrl).post('/company/update')
     .set('Authorization', 'Bearer ' + user.anyFetchToken)
     .end(cb);
 };

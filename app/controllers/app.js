@@ -35,23 +35,17 @@ module.exports.contextSearch = function(req, res, next) {
 
   async.waterfall([
     function updateDocuments(cb) {
-      anyfetchHelpers.updateAccount(reqParams.anyFetchURL, req.user, cb);
+      anyfetchHelpers.updateAccount(req.user, cb);
     },
     function retrieveDocument(res, cb) {
-      anyfetchHelpers.findDocuments(reqParams.anyFetchURL, params, req.user, cb);
+      anyfetchHelpers.findDocuments(params, req.user, cb);
     }
   ], function(err, documents) {
     if(err) {
       return next(err);
     }
 
-    if(req.query.start) {
-      return res.render('app/_snippet-list.html', {
-        documents: documents
-      });
-    }
-
-    res.render('app/context.html', {
+    res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
       documents: documents,
       filters: filters

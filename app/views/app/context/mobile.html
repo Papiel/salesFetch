@@ -1,0 +1,13 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+  <link rel="stylesheet" type="text/css" href="/mobile.css">
+{% endblock %}
+
+{% block content %}
+  {% include '../../components/_switch-navbar.html' %}
+  {% include '../../components/_snippets-list.html' %}
+
+  <div id="shadow-background" class="hidden"></div>
+  <div id="right-panel"></div>
+{% endblock %}

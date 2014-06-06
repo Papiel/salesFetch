@@ -1,0 +1,64 @@
+.snippet {
+  position: relative;
+  margin-top: 1px;
+  border-bottom: 1px solid #ddd;
+  color: #646464;
+  padding-left: 45px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .title {
+    color: #333;
+    padding-right: 5px;
+    max-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  p {
+    max-height: 36px;
+    padding-right: 35px;
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  span.pinned {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: #F0A663 transparent transparent transparent;
+  }
+
+  span.info {
+    width: 23px;
+    height: 23px;
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    right: 12px;
+    background-image: url('/img/info.svg');
+  }
+
+  .icon{
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    padding: 3px;
+    width: 40px;
+    background-color: #ddd;
+    text-align: center;
+  }
+
+  .icon img{
+    margin: 5px 5px;
+  }
+}

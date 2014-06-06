@@ -1,0 +1,10 @@
+<div class="media snippet" data-document-url="/app/documents/{{doc.id}}">
+  <div class="icon">
+      <span class="pinned"></span>
+    <img class="media-object" src="/img/type-icons/{{doc.document_type}}">
+  </div>
+  <div class="media-body">
+    <span class="info"></span>
+    {% autoescape false %}{{doc.snippet_rendered}}{% endautoescape %}
+  </div>
+</div>

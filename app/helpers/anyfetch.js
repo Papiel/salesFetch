@@ -4,6 +4,8 @@ var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
 var crypto = require('crypto');
+var _ = require("lodash");
+var fs = require('fs');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
@@ -11,6 +13,23 @@ var User = mongoose.model('User');
 
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
+
+var cachedTemplates = {};
+var getOverridedTemplates = function() {
+  if (config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
+    return cachedTemplates;
+  }
+
+  var templatePath = __dirname + '/../views/templates';
+  fs.readdirSync(templatePath).forEach(function(file) {
+    var newPath = templatePath + '/' + file;
+    var templateConfig = require(newPath);
+
+    cachedTemplates[templateConfig.id] = templateConfig;
+  });
+
+  return cachedTemplates;
+};
 
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
@@ -52,8 +71,14 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Render the templated data
       docReturn.data.forEach(function(doc) {
+        var relatedTemplate;
 
-        var relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        var overidedTemplate = getOverridedTemplates();
+        if (overidedTemplate[doc.document_type]) {
+          relatedTemplate = overidedTemplate[doc.document_type].templates.snippet;
+        } else {
+          relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        }
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
         doc.provider = providers[doc.token].name;

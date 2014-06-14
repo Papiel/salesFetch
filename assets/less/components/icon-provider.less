@@ -1,0 +1,23 @@
+// Array of ducment types
+@record-types: document, file, email, image;
+
+// Document types colors
+@document-color: #717ecd;
+@file-color: #8b7fd5;
+@email-color: #f3ae4e;
+@image-color: #f3ae4e;
+
+// Looper
+.loop(@n) when (@n > 0) {
+  .loop((@n - 1));
+
+  @type: extract(@record-types, @n);
+  @color-variable: "@{type}-color";
+
+  .icon.icon-@{type} {
+    background-color: @@color-variable;
+    background-image: url('/img/document_types-icons/@{type}.png');
+  }
+}
+
+.loop(4);

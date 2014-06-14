@@ -1,0 +1,80 @@
+#left-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 320px;
+  z-index: 10;
+  border-right: 1px solid #ddd;
+}
+
+
+#left-panel .navbar {
+  background-color: white;
+}
+
+#left-toogle {
+  width: 30px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 320px;
+  z-index: 1;
+  background-color: white;
+  border-radius: 0 5px 5px 0;
+  border-right: 1px solid #ddd;
+  cursor: pointer;
+}
+
+#right-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: hidden;
+  background-color: #f8f8f8;
+}
+
+@media (orientation: landscape) {
+  #left-panel {
+    left: 0;
+  }
+
+  #left-toogle {
+    visibility: hidden;
+  }
+
+  #right-panel {
+    left: 320px;
+  }
+}
+
+
+@media (orientation: portrait) {
+  #left-panel {
+    left: -320px;
+    -webkit-transition:left .5s ease-in-out;
+    transition: left .5s ease-in-out;
+  }
+
+  #left-panel.active {
+    left: 0;
+  }
+
+  #right-panel {
+    left: 0px;
+  }
+}
+
+#left-panel #snippet-list {
+  position: absolute;
+  top: 53px;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  overflow-y: scroll;
+}
+
+.well.full {
+  border: none;
+  background-color: white;
+}

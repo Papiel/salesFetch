@@ -1,0 +1,32 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+<link rel="stylesheet" type="text/css" href="/tablet.css">
+{% endblock %}
+
+{% block bare-js %}
+  <script type="text/javascript" src="/js/tablet.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="left-panel" class="active">
+  {% include '../../components/_switch-navbar.html' %}
+  {% include '../../components/_snippets-list.html' %}
+  <div id="left-toogle"></div>
+</div>
+
+
+<div id="right-panel">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <a href="#" class="btn btn-default navbar-btn pull-right">Pin</a>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="well full">
+
+    </div>
+  </div>
+</div>
+{% endblock %}

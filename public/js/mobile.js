@@ -4,8 +4,9 @@
  *  Left panel management
  */
 var hideLeftPanel = function () {
-  $("#shadow-background").addClass('hidden');
-  $("#shadow-background").unbind("click");
+  $("#shadow-background").fadeOut(500, function() {
+    $("#shadow-background").unbind("click");
+  });
 
   $("#right-panel").removeClass('open');
   $("html").removeClass('stop-scroll');
@@ -14,8 +15,9 @@ var hideLeftPanel = function () {
 var showLeftPanel = function (content) {
   $("#right-panel").html(content);
 
-  $("#shadow-background").removeClass('hidden');
-  $("#shadow-background").bind("click", hideLeftPanel);
+  $("#shadow-background").fadeIn(500, function() {
+    $("#shadow-background").bind("click", hideLeftPanel);
+  });
 
   $("#right-panel").addClass('open');
   $('.navbar').addClass('navbar-hidden');

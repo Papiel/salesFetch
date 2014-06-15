@@ -48,23 +48,23 @@ module.exports.contextSearch = function(req, res, next) {
 
     var timeSlices = [{
       label: 'Today',
-      maxDate: moment().add('days', 1),
+      maxDate: moment().startOf('day'),
       data: []
     }, {
       label: 'Earlier this Week',
-      maxDate: moment().add('weeks', 1),
+      maxDate: moment().startOf('week'),
       data: []
     }, {
       label: 'Earlier this Month',
-      maxDate: moment().add('months', 1),
+      maxDate: moment().startOf('month'),
       data: []
     }, {
       label: 'Earlier this Years',
-      maxDate: moment().add('year', 1),
+      maxDate: moment().startOf('year'),
       data: []
     }, {
       label: 'Last Year',
-      maxDate: moment().add('year', 2),
+      maxDate: moment().startOf('year').subtract('year', 1),
       data: []
     }, {
       label: 'Older',
@@ -72,14 +72,22 @@ module.exports.contextSearch = function(req, res, next) {
     }];
 
     documents.data.forEach(function(doc) {
+      var creationDate = moment(doc.creation_date);
+      console.log();
+
       var found = false;
       for (var i = 0; i < timeSlices.length && !found; i+=1) {
-        var creationDate = moment(doc.creation_date);
-        if(!timeSlices[i].maxDate || creationDate.isBefore(timeSlices[i].maxDate)) {
+        if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+          found = true;
+          timeSlices[i].data.push(doc);
+        }
+
+        if(!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate)) {
           found = true;
           timeSlices[i].data.push(doc);
         }
       }
+      console.log();
     });
     documents.faceted = timeSlices;
 

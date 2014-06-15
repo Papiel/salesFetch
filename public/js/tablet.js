@@ -31,7 +31,22 @@ $("#left-panel").on('click', '.dismiss', function(e) {
 
 $("#left-panel").on('click', '.execute', function(e) {
   e.preventDefault();
-  location.reload();
+  var filters = {};
+
+  var token = $('#provider').val();
+  if (token.length > 0) {
+    filters.token = token;
+  }
+
+  var dT = $('#type').val();
+  if (dT.length > 0) {
+    filters.document_type = dT;
+  }
+
+  var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithDatas;
 });
 
 /**
@@ -53,6 +68,6 @@ $('.snippet').click(function(e) {
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   $.get(urlWithDatas, function(res) {
-    $('#full-container').append('<div class="well full">' + res + '</div>');
+    $('#full-container').html('<div class="well full">' + res + '</div>');
   });
 });

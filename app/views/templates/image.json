@@ -2,7 +2,7 @@
     "id": "5252ce4ce4cfcd16f55cfa3d",
     "name": "image",
     "templates": {
-        "snippet": "<h4>{{{ title }}}</h4>\n  <img src=\"{{ thumb }}\" />",
+        "snippet": "<h4 class='title title-single'>{{{ title }}}</h4>",
         "full": "<article>\n  <h1>{{{ title }}}</h1>\n\n  <img src=\"{{ display }}\" />\n</article>\n",
         "title": "{{ title }}"
     }

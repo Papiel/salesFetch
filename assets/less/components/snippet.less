@@ -1,5 +1,6 @@
 .snippet {
   position: relative;
+  min-height: 63px;
   margin-top: 1px;
   border-bottom: 1px solid #ddd;
   color: #646464;
@@ -17,6 +18,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 5px 0;
+
+    &.title-single {
+      line-height: 63px;
+    }
   }
 
   p {
@@ -43,13 +48,18 @@
   }
 
   span.info {
-    width: 23px;
-    height: 23px;
+    width: 20px;
+    height: 20px;
     display: block;
     position: absolute;
     bottom: 5px;
     right: 12px;
     background-image: url('/img/info.svg');
+  }
+
+  .title-single + span.info {
+    bottom: 50%;
+    margin-bottom: -10px;
   }
 
   .icon{

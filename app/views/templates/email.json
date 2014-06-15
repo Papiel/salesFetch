@@ -2,7 +2,7 @@
     "id": "5252ce4ce4cfcd16f55cfa3f",
     "name": "email",
     "templates": {
-        "snippet": "<h4>{{{subject}}}</h4>\n  <div class=\"two-columns\">\n    <span>{{ date }}</span>\n    <span><small>{{from}} &rarr; {{to}}</small></span>\n  </div>\n  <p>{{{snippet}}}</blockquote>\n</p>\n",
+        "snippet": "<h4 class='title'>{{{subject}}}</h4>\n  <div class=\"two-columns\">\n    <span>{{ date }}</span>\n    <span><small>{{from}} &rarr; {{to}}</small></span>\n  </div>\n  <p>{{{snippet}}}</blockquote>\n</p>\n",
         "full": "<article class=\"email-projection\">\n <header>\n     <h1>{{{subject}}}</h1>\n     <small>{{ date }}</small>\n     <small>From: <strong><a href=\"anyfetch://search/{{from}}\">{{from}}</a></strong></small>\n     <small>To: <strong><a href=\"anyfetch://search/{{to}}\">{{to}}</a></strong></small>\n </header>\n\n <main>\n       {{{html}}}\n </main>\n</article>\n",
         "title": "{{ subject }}"
     }

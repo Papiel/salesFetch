@@ -3,7 +3,7 @@
     "name": "file",
     "templates": {
         "snippet": "<h4>{{{ title }}}</h4>\n  <pre>{{{ path }}}</pre>",
-        "full": "<article>\n  <h1>{{{ title }}}</h1>\n  <code>{{{ path }}}</code>\n</article>\n",
+        "full": "<article>\n  <h1>{{{ title }}}</h1>\n  </article>\n",
         "title": "{{ title }}"
     }
 }

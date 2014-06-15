@@ -19,8 +19,12 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   <body class="{% block environment %}{% endblock %}">
+
     {% block content %}{% endblock %}
 
+    <script type="text/javascript">
+      window.data = {{JSON.stringify(data)|safe}};
+    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     {% block bare-js %}{% endblock %}

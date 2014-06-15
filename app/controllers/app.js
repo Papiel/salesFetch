@@ -6,6 +6,7 @@
 var anyfetchHelpers = require('../helpers/anyfetch.js');
 var async = require("async");
 var _ = require("lodash");
+var moment = require("moment");
 
 /**
  * Display Context page
@@ -45,6 +46,43 @@ module.exports.contextSearch = function(req, res, next) {
       return next(err);
     }
 
+    var timeSlices = [{
+      label: 'Today',
+      maxDate: moment().add('days', 1),
+      data: []
+    }, {
+      label: 'Earlier this Week',
+      maxDate: moment().add('weeks', 1),
+      data: []
+    }, {
+      label: 'Earlier this Month',
+      maxDate: moment().add('months', 1),
+      data: []
+    }, {
+      label: 'Earlier this Years',
+      maxDate: moment().add('year', 1),
+      data: []
+    }, {
+      label: 'Last Year',
+      maxDate: moment().add('year', 2),
+      data: []
+    }, {
+      label: 'Older',
+      data: []
+    }];
+
+    documents.data.forEach(function(doc) {
+      var found = false;
+      for (var i = 0; i < timeSlices.length && !found; i+=1) {
+        var creationDate = moment(doc.creation_date);
+        if(!timeSlices[i].maxDate || creationDate.isBefore(timeSlices[i].maxDate)) {
+          found = true;
+          timeSlices[i].data.push(doc);
+        }
+      }
+    });
+    documents.faceted = timeSlices;
+
     res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
       documents: documents,
@@ -59,12 +97,11 @@ module.exports.contextSearch = function(req, res, next) {
 module.exports.documentDisplay = function(req, res, next) {
   var reqParams = req.reqParams;
 
-  anyfetchHelpers.findDocument(reqParams.anyFetchURL, req.params.id, req.user, function(err, document) {
+  anyfetchHelpers.findDocument(req.params.id, req.user, function(err, document) {
     if(err) {
       return next(err);
     }
-
-    res.render('app/show.html', {
+    res.render('app/full/' + req.deviceType + '.html', {
       data: reqParams,
       document: document
     });

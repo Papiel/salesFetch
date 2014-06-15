@@ -145,8 +145,17 @@ module.exports.findDocument = function(id, user, cb) {
       var providers = body[pages[1]];
       var docReturn = body[pages[2]];
 
-      var relatedTemplate = documentTypes[docReturn.document_type].templates.full;
-      var titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      var relatedTemplate;
+      var titleTemplate;
+
+      var overidedTemplate = getOverridedTemplates();
+      if (overidedTemplate[docReturn.document_type]) {
+        relatedTemplate = overidedTemplate[docReturn.document_type].templates.full;
+        titleTemplate = overidedTemplate[docReturn.document_type].templates.title;
+      } else {
+        relatedTemplate = documentTypes[docReturn.document_type].templates.full;
+        titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      }
 
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);

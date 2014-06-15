@@ -1,6 +1,12 @@
 <div id="snippet-list">
-  {% for doc in documents.data %}
-    {% include '_snippet.html' %}
+  {% for timeSlice in documents.faceted %}
+    {% if timeSlice.data.length !== 0 %}
+      <p class="bg-primary timestamp">{{timeSlice.label}}</p>
+    {% endif %}
+
+    {% for doc in timeSlice.data %}
+      {% include '_snippet.html' %}
+    {% endfor %}
   {% endfor %}
 
   {% if documents.counts === 0 %}

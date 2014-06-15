@@ -1,5 +1,7 @@
 'use strict';
 
+var data = window.data;
+
 /**
  *  Left panel management
  */
@@ -71,9 +73,19 @@ $("#right-panel").on('click', '.execute', function(e) {
   location.reload();
 });
 
-
-
+/**
+ * Navigation
+ */
 $("span.info").click(function(e) {
   e.preventDefault();
   showLeftPanel("<h1>Fake meta datas</h1>");
+});
+
+$("[data-url]").click(function(e) {
+  e.preventDefault();
+
+  var url = $(this).data("url");
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithDatas;
 });

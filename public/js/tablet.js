@@ -1,5 +1,7 @@
 'use strict';
 
+var data = window.data;
+
 /**
  * Filtering
  */
@@ -45,4 +47,12 @@ $('#left-toogle').click(function() {
 $('.snippet').click(function(e) {
   e.preventDefault();
   $("#left-panel").removeClass('active');
+  $('#full-container .full').remove();
+
+  var url = $(this).data("url");
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  $.get(urlWithDatas, function(res) {
+    $('#full-container').append('<div class="well full">' + res + '</div>');
+  });
 });

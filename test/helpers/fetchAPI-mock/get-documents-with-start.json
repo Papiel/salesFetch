@@ -90,7 +90,7 @@
             "document_types": {
                 "5252ce4ce4cfcd16f55cfa3c": 1
             },
-            "tokens": {
+            "providers": {
                 "5320a682c8318cba94000040": 1
             },
             "creation_dates": {
@@ -102,7 +102,7 @@
                 "_type": "Document",
                 "id": "5320a773bc2e51d7135f0c8f",
                 "creation_date": "2014-03-12T18:29:07.150Z",
-                "token": "5320a682c8318cba94000040",
+                "provider": "5320a682c8318cba94000040",
                 "company": "52fb7b90c8318c4dc800006b",
                 "document_type": "5252ce4ce4cfcd16f55cfa3c",
                 "actions": {

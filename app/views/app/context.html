@@ -14,8 +14,8 @@
 
     <strong>{{data.context.templatedDisplay}}</strong>
 
-    {% if filters.token %}
-    in {{documents.providers[filters.token].name}}
+    {% if filters.provider %}
+    in {{documents.providers[filters.provider].name}}
     {% endif %}
 
     <div class="btn-group pull-right">
@@ -41,7 +41,7 @@
 
       about <strong>{{data.context.templatedDisplay}}</strong> in
 
-      <select class="form-control" id="token" name="token">
+      <select class="form-control" id="provider" name="provider">
         <option value="">everywere</option>
         {% for provider in documents.providers %}
         <option value="{{provider.id}}">{{provider.name|lower}}</option>

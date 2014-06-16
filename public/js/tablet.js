@@ -65,6 +65,8 @@ $('#left-toogle').click(function() {
  * Hide left bar on click snippet
  */
 $('.snippet').click(function(e) {
+
+  $('#empty-message').addClass('hidden');
   $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
 
   e.preventDefault();

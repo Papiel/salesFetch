@@ -1,14 +1,19 @@
 <div id="snippet-list">
   {% for timeSlice in documents.faceted %}
+  <div class="snippet-section">
     {% if timeSlice.data.length !== 0 %}
+    <div class="section-header">
       <fieldset class="timestamp">
         <legend>{{timeSlice.label}}</legend>
       </fieldset>
+    </div>
     {% endif %}
-
+    <div class="section-content">
     {% for doc in timeSlice.data %}
       {% include '_snippet.html' %}
     {% endfor %}
+    </div>
+  </div>
   {% endfor %}
 
   {% if documents.counts === 0 %}

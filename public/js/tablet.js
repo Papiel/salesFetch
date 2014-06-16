@@ -70,4 +70,7 @@ $('.snippet').click(function(e) {
   $.get(urlWithDatas, function(res) {
     $('#full-container').html('<div class="well full">' + res + '</div>');
   });
+
+  $('.snippet.active').removeClass('active');
+  $(this).addClass('active');
 });

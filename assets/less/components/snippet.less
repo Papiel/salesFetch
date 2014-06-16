@@ -1,10 +1,11 @@
 .snippet {
   position: relative;
   min-height: 63px;
-  margin-top: 1px;
-  border-bottom: 1px solid #ddd;
+  margin-top: -1px;
+  border: 1px solid #ddd;
   color: #646464;
   padding-left: 32px;
+  background-color: #fff;
 
   a {
     color: inherit;
@@ -17,7 +18,7 @@
     white-space:nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 5px 0;
+    margin: 10px 0px 10px 0px;
 
     &.title-single {
       line-height: 63px;
@@ -30,6 +31,7 @@
     margin-bottom: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 10px;
   }
 
   .hlt {
@@ -64,7 +66,7 @@
 
   .icon{
     position: absolute;
-    top: 2px;
+    top: 1px;
     left: 2px;
     bottom: 2px;
     padding: 3px;
@@ -74,4 +76,11 @@
     background-position: center;
     background-size: contain;
   }
+}
+
+.snippet.active {
+  box-shadow: 0px 0px 5px #aaa;
+  z-index: 100;
+  margin-left: -5px;
+  margin-right: -5px;
 }

@@ -5,30 +5,50 @@
   margin-bottom: -50px;
   -webkit-transition: top .5s ease-in-out;
   transition: top .5s ease-in-out;
+  background-color: #fff;
 
   .pull-right {
   	display: inline-block;
+  }
+
+  .navbar-btn {
+  	margin-top: 8.5px;
+  	margin-bottom: 8.5px;
   }
 
   .nav-tabs {
   	display: inline-block;
   	margin-bottom: -6px;
   	margin-left: -15px;
-  }
 
-  .nav-tabs li a {
-  	height: 47px;
-  	border: 0;
-  }
+  	li {
+  		border-bottom: 0;
+  	}
 
-  .nav-tabs li.active,
-  .nav-tabs li:hover,
-  .nav-tabs li:focus {
-  	border-bottom: 4px blue solid;
+	li a {
+		height: 46px;
+		border: 0;
+		color: #989898;
 
-  	a {
+		.badge {
+			background-color: #989898;
+		}
+	}
+
+	li.active,
+	li:hover,
+	li:focus {
+		border-bottom: 4px #00A7E4 solid;
+
+		a {
 	  	border: 0;
 	  	background-color: inherit;
+			color: #00A7E4;
+		}
+  	}
+
+  	.badge {
+  		background-color: #00A7E4;
   	}
   }
 }

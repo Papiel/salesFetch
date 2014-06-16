@@ -281,14 +281,17 @@ module.exports.addNewUser = function(user, organization, cb) {
         .end(cb);
     },
     function saveLocalUser(res, cb) {
-      var userToken = res.token;
+      if(res.status !== 200){
+        return cb(new Error(res.body));
+      }
+      var userToken = res.body.token;
 
       var localUser = new User({
         name: user.name,
         email: user.email,
         SFDCId: user.id,
         anyFetchId: user.anyFetchId,
-        token: userToken,
+        anyFetchToken: userToken,
         organization: organization
       });
 

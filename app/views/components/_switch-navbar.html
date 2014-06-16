@@ -1,13 +1,9 @@
 <nav class="navbar navbar-default navbar-result" role="navigation">
   <div class="container-fluid">
-    <div class="btn-group navbar-btn" id="context-switch">
-      <a class="btn btn-primary">
-        Context  <span class="badge">{{documents.count|default('0')}}</span>
-      </a>
-      <a class="btn btn-default disabled">
-        Pinned  <span class="badge">{{pinned.count|default('0')}}</span>
-      </a>
-    </div>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#profile" data-toggle="tab"><span>Timeline</span></a></li>
+      <li><a href="#home" data-toggle="tab"><span>Pinned  <span class="badge">8</span></span></a></li>
+    </ul>
 
     <a class="btn btn-default navbar-btn pull-right" id="filter">Filters</a>
   </div>

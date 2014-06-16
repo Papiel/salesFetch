@@ -59,7 +59,7 @@ module.exports.contextSearch = function(req, res, next) {
       maxDate: moment().startOf('month'),
       data: []
     }, {
-      label: 'Earlier this Years',
+      label: 'Earlier this Year',
       maxDate: moment().startOf('year'),
       data: []
     }, {

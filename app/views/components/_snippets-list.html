@@ -1,7 +1,9 @@
 <div id="snippet-list">
   {% for timeSlice in documents.faceted %}
     {% if timeSlice.data.length !== 0 %}
-      <p class="bg-primary timestamp">{{timeSlice.label}}</p>
+      <fieldset class="timestamp">
+        <legend>{{timeSlice.label}}</legend>
+      </fieldset>
     {% endif %}
 
     {% for doc in timeSlice.data %}

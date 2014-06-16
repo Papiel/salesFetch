@@ -308,7 +308,7 @@ module.exports.getProviders = function(cb) {
 
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/marketplace.json')
+      request(apiUrl).get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {

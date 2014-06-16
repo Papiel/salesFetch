@@ -60,6 +60,8 @@ $('#left-toogle').click(function() {
  * Hide left bar on click snippet
  */
 $('.snippet').click(function(e) {
+  $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
+
   e.preventDefault();
   $("#left-panel").removeClass('active');
   $('#full-container .full').remove();
@@ -73,4 +75,6 @@ $('.snippet').click(function(e) {
 
   $('.snippet.active').removeClass('active');
   $(this).addClass('active');
+  var title = $(this).find('.title').text();
+  $('#doc-title').html(title);
 });

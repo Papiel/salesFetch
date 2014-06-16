@@ -128,7 +128,7 @@ describe('<Application controller>', function() {
   describe('/providers page', function() {
     var endpoint = '/app/providers';
     beforeEach(function(done) {
-      APIs.mount('settings', 'http://settings.anyfetch.com', done);
+      APIs.mount('manager', 'https://manager.anyfetch.com', done);
     });
 
     checkUnauthenticated(app, 'get', endpoint);
@@ -186,8 +186,8 @@ describe('<Application controller>', function() {
             .get(url)
             .expect(302)
             .expect(function(res) {
-              res.text.should.containDeep("token=anyFetchToken");
-              res.text.should.containDeep("app_id=52bff114c8318c29e9000005");
+              res.text.should.containDeep("bearer=anyFetchToken");
+              res.text.should.containDeep("52bff114c8318c29e9000005");
             })
             .end(cb);
         }

@@ -304,19 +304,15 @@ module.exports.addNewUser = function(user, organization, cb) {
  * Retrieve all providers
  */
 module.exports.getProviders = function(cb) {
-  var apiUrl = 'http://settings.anyfetch.com';
+  var apiUrl = 'https://manager.anyfetch.com';
 
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/provider')
+      request(apiUrl).get('/marketplace.json')
         .end(cb);
     },
     function setId(res, cb) {
       var providers = res.body;
-
-      providers.forEach(function(provider) {
-        provider.id = provider._id.$oid;
-      });
 
       cb(null, providers);
     }

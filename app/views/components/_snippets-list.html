@@ -1,4 +1,7 @@
 <div id="snippet-list">
+  <div class="snippet-list-top">
+    <a class="btn btn-default btn-filters" id="filter">Filters  <span class="fa fa-sliders"></span></a>
+  </div>
   {% for timeSlice in documents.faceted %}
   <div class="snippet-section">
     {% if timeSlice.data.length !== 0 %}

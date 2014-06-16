@@ -54,6 +54,13 @@ $(window).scroll(function() {
 });
 
 /**
+ * Hide filters
+ */
+$('body').scrollTop(50);
+$('.navbar').removeClass('navbar-hidden');
+$('.navbar').addClass('navbar-fixed');
+
+/**
  * Filtering
  */
 $("#filter").click(function(e) {

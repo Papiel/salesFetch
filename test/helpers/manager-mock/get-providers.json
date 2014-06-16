@@ -1,5 +1,5 @@
 {
-  "path" : "/marketplace.json",
+  "path" : "/marketplace.json?trusted=true",
   "verb" : "GET",
   "code": 200,
   "reply": [

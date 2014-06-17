@@ -8,6 +8,7 @@ var _ = require("lodash");
 var fs = require('fs');
 
 var mongoose =require('mongoose');
+var Pin = mongoose.model('Pin');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
@@ -31,9 +32,25 @@ var getOverridedTemplates = function() {
   return cachedTemplates;
 };
 
-module.exports.findPins = function(user, cb) {
-  // TODO
-  cb(null, {lorem: 'ipsum'});
+module.exports.findPins = function(SFDCId, user, next) {
+  // Retrieve documents pinned to that context
+  async.waterfall([
+    function(cb) {
+      Pin.find({ SFDCId: SFDCId }, cb);
+    },
+    function(pins, cb) {
+      // TODO: fetch *all* pins
+      var pin = pins[0];
+
+      request(fetchApiUrl).get('/documents/' + pin.anyFetchId)
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .end(cb);
+    }
+  ],
+  function(err, res) {
+    console.log(err, res.body);
+    next(err, res.body);
+  });
 };
 
 module.exports.findDocuments = function(params, user, cb) {

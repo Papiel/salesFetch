@@ -103,9 +103,12 @@ module.exports.contextSearch = function(req, res, next) {
  * Show pinned documents
  */
 module.exports.pinned = function(req, res, next) {
-  console.log(req.user);
+  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
+    return next(409, new Error('Missing context argument in querystring'));
+  }
 
-  anyfetchHelpers.findPins(req.user, function(err, pins) {
+  var sfdcId = req.reqParams.context.recordId;
+  anyfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
     if(err) {
       return next(err);
     }

@@ -58,7 +58,6 @@ describe('<Admin controller>', function() {
               o.should.have.property('name', 'Breaking Bad');
               o.should.have.property('SFDCId', '1234');
               o.should.have.property('anyFetchId', '533d9161162215a5375d34d2');
-              o.should.have.property('deleted', false);
               generatedMasterKey = o.masterKey;
 
               cb(null, o);
@@ -110,32 +109,6 @@ describe('<Admin controller>', function() {
               res.text.should.eql(org.masterKey);
             })
             .end(cb);
-        }
-      ], done);
-    });
-
-    it('should reset deleted if the original company was deleted', function(done) {
-      async.waterfall([
-        function initCompany(cb) {
-          var org = new Organization({
-            name: SFDCinfos.organization.name,
-            SFDCId: SFDCinfos.organization.id,
-            deleted: true
-          });
-
-          org.save(cb);
-        },
-        function sendInformations(org, count, cb) {
-          request(app)
-            .post(endpoint)
-            .send(SFDCinfos)
-            .end(cb);
-        },
-        function checkOrgStatus(res, cb) {
-          Organization.findOne({SFDCId: SFDCinfos.organization.id}, function(err, org) {
-            org.should.have.property('deleted', false);
-            cb();
-          });
         }
       ], done);
     });

@@ -113,44 +113,4 @@ describe('<Admin controller>', function() {
       ], done);
     });
   });
-
-  describe('POST /admin/delete', function() {
-    var endpoint = '/admin/delete';
-
-    beforeEach(cleaner);
-
-    it('should set the org to deleted', function(done) {
-      var SFDCinfos = {
-        organization: {
-          name: 'Breaking Bad',
-          id: '1234'
-        }
-      };
-
-      async.waterfall([
-        function createOrg(cb) {
-          var org = new Organization({
-            name: SFDCinfos.organization.name,
-            SFDCId: SFDCinfos.organization.id
-          });
-
-          org.save(cb);
-        },
-        function deleteAccount(res, count, cb) {
-          request(app)
-            .post(endpoint)
-            .send(SFDCinfos)
-            .expect(204)
-            .end(cb);
-        },
-        function retrieveOrg(res, cb){
-          Organization.findOne({SFDCId: SFDCinfos.organization.id}, cb);
-        },
-        function checkIfDeleted(org, cb){
-          org.should.have.property('deleted', true);
-          cb();
-        }
-      ], done);
-    });
-  });
 });

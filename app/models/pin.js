@@ -17,12 +17,13 @@ var PinModel = new Schema ({
   },
   SFDCId: {
     type: String,
-    unique: true
   },
   anyFetchId: {
     type: String,
-    unique: true
   }
 });
+
+// The pair `(SFDCId, anyFetchId)` must be unique
+PinModel.index({SFDCId: 1, anyFetchId: 1}, {unique: true});
 
 mongoose.model('Pin', PinModel);

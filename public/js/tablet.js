@@ -76,12 +76,19 @@ $('.snippet').click(function(e) {
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  $.get(urlWithDatas, function(res) {
-    $('#full-container').html('<div class="well full">' + res + '</div>');
-  });
 
+  /* Select snippet */
   $('.snippet.active').removeClass('active');
   $(this).addClass('active');
+
+  var selectedSnippet = this;
+
+  $.get(urlWithDatas, function(res) {
+    if ($(selectedSnippet).hasClass('active')) {
+      $('#full-container').html('<div class="well full">' + res + '</div>');
+    };
+  });
+
   var title = $(this).find('.title').text();
   $('#doc-title').html(title);
 });

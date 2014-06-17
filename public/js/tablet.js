@@ -59,7 +59,7 @@ $('#left-toogle').click(function() {
 /**
  * Hide filters
  */
- $('#snippet-list').scrollTop(50);
+ $('.snippet-list').scrollTop(50);
 
 /**
  * Hide left bar on click snippet

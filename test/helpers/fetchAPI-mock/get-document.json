@@ -89,7 +89,7 @@
       "_type": "Document",
       "id": "5309c57d9ba7daaa265ffdc9",
       "creation_date": "2014-03-10T19:36:50.000Z",
-      "token": "5320a6abc8318cc5d1000049",
+      "provider": "5320a6abc8318cc5d1000049",
       "company": "52fb7b90c8318c4dc800006b",
       "document_type": "5252ce4ce4cfcd16f55cfa3f",
       "actions": {

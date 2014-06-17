@@ -100,6 +100,21 @@ module.exports.contextSearch = function(req, res, next) {
 };
 
 /**
+ * Show pinned documents
+ */
+module.exports.pinned = function(req, res, next) {
+  console.log(req.user);
+
+  anyfetchHelpers.findPins(req.user, function(err, pins) {
+    if(err) {
+      return next(err);
+    }
+    // TODO: render a proper template
+    res.send(200, pins);
+  });
+};
+
+/**
  * Show full document
  */
 module.exports.documentDisplay = function(req, res, next) {

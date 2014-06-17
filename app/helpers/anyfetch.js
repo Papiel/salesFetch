@@ -31,6 +31,11 @@ var getOverridedTemplates = function() {
   return cachedTemplates;
 };
 
+module.exports.findPins = function(user, cb) {
+  // TODO
+  cb(null, {lorem: 'ipsum'});
+};
+
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
 

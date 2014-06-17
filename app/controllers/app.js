@@ -113,6 +113,10 @@ module.exports.pinned = function(req, res, next) {
       return next(err);
     }
     // TODO: render a proper template
+    // res.render('app/context/' + req.deviceType + '.html', {
+    //   data: req.reqParams,
+    //   documents: pins
+    // });
     res.send(200, pins);
   });
 };

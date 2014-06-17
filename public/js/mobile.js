@@ -78,7 +78,7 @@ $("#right-panel").on('click', '.execute', function(e) {
  */
 $("span.info").click(function(e) {
   e.preventDefault();
-  showLeftPanel("<h1>Fake meta datas</h1>");
+  showLeftPanel("<h1>Fake meta data</h1>");
 });
 
 $("[data-url]").click(function(e) {
@@ -86,6 +86,6 @@ $("[data-url]").click(function(e) {
 
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithDatas;
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithData;
 });

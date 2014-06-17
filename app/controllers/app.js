@@ -100,6 +100,28 @@ module.exports.contextSearch = function(req, res, next) {
 };
 
 /**
+ * Show pinned documents
+ */
+module.exports.pinned = function(req, res, next) {
+  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
+    return next(409, new Error('Missing context argument in querystring'));
+  }
+
+  var sfdcId = req.reqParams.context.recordId;
+  anyfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+    if(err) {
+      return next(err);
+    }
+    // TODO: render a proper template
+    // res.render('app/context/' + req.deviceType + '.html', {
+    //   data: req.reqParams,
+    //   documents: pins
+    // });
+    res.send(200, pins);
+  });
+};
+
+/**
  * Show full document
  */
 module.exports.documentDisplay = function(req, res, next) {
@@ -121,23 +143,22 @@ module.exports.documentDisplay = function(req, res, next) {
  */
 module.exports.listProviders = function(req, res, next) {
   var reqParams = req.reqParams;
-
-  async.parallel([
-    function(cb) {
+  async.parallel({
+    providersInformation: function(cb) {
       anyfetchHelpers.getProviders(cb);
     },
-    function(cb) {
-      anyfetchHelpers.getConnectedProviders(reqParams.anyFetchURL, req.user, cb);
+    connectedProviders: function(cb) {
+      anyfetchHelpers.getConnectedProviders(req.user, cb);
     }
-  ], function(err, data) {
+  }, function(err, data) {
     if (err) {
       return next(err);
     }
 
     res.render('app/providers.html', {
       data: reqParams,
-      providers: data[0],
-      connectProviders: data[1].body
+      providers: data.providersInformation,
+      connectProviders: data.connectedProviders.body
     });
   });
 };

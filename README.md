@@ -22,7 +22,7 @@ Check out the [wiki](https://github.com/Papiel/salesFetch/wiki/Installation-guid
 
 ```
 $ npm install -g bower
-$ npm install -g grunt
+$ npm install -g grunt-cli
 ```
 
 ## Quick Install

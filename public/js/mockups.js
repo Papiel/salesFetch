@@ -143,6 +143,6 @@ if ($('body.mobile').length) {
 
   $("span.info").click(function(e) {
     e.preventDefault();
-    showLeftPanel("<h1>Fake meta datas</h1>");
+    showLeftPanel("<h1>Fake meta data</h1>");
   });
 }

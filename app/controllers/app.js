@@ -126,23 +126,22 @@ module.exports.documentDisplay = function(req, res, next) {
  */
 module.exports.listProviders = function(req, res, next) {
   var reqParams = req.reqParams;
-
-  async.parallel([
-    function(cb) {
+  async.parallel({
+    providersInformation: function(cb) {
       anyfetchHelpers.getProviders(cb);
     },
-    function(cb) {
-      anyfetchHelpers.getConnectedProviders(reqParams.anyFetchURL, req.user, cb);
+    connectedProviders: function(cb) {
+      anyfetchHelpers.getConnectedProviders(req.user, cb);
     }
-  ], function(err, data) {
+  }, function(err, data) {
     if (err) {
       return next(err);
     }
 
     res.render('app/providers.html', {
       data: reqParams,
-      providers: data[0],
-      connectProviders: data[1].body
+      providers: data.providersInformation,
+      connectProviders: data.connectedProviders.body
     });
   });
 };

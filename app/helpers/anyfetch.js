@@ -40,7 +40,10 @@ module.exports.findPins = function(SFDCId, user, next) {
     },
     // Fetch all snippets in one call
     function(pins, cb) {
-      var ids = pins.map(function(pin) { return pin.anyFetchId; });
+      // Fetch all snippets in one call
+      var ids = pins.map(function(pin) {
+        return pin.anyFetchId;
+      });
 
       request(fetchApiUrl).get('/documents')
         .query({ id: ids })

@@ -22,7 +22,7 @@ describe('<Application controller>', function() {
 
     checkUnauthenticated(app, 'get', endpoint);
 
-    it("should return contextual datas", function(done) {
+    it("should return contextual data", function(done) {
 
       var context = {
         recordType: 'Contact',
@@ -115,9 +115,9 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(function(res) {
-              res.text.should.containDeep("Email");
-              res.text.should.containDeep("Gmail");
-              res.text.should.containDeep("Albert Einstein");
+              res.text.toLowerCase().should.containDeep("email");
+              res.text.toLowerCase().should.containDeep("gmail");
+              res.text.toLowerCase().should.containDeep("albert einstein");
             })
             .end(cb);
         }
@@ -143,8 +143,8 @@ describe('<Application controller>', function() {
             .get(url)
             .expect(200)
             .expect(function(res) {
-              res.text.should.containDeep("Dropbox");
-              res.text.should.containDeep("/providers/connect?app_id=52bff114c8318c29e9000005");
+              res.text.toLowerCase().should.containDeep("dropbox");
+              res.text.toLowerCase().should.containDeep("/providers/connect?app_id=52bff114c8318c29e9000005");
             })
             .end(cb);
         }

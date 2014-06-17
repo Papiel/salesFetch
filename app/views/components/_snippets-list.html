@@ -1,5 +1,6 @@
-<div id="snippet-list">
+<div class="tab-container" id="snippet-list">
   <div id="snippet-list-top">
+  <!-- Begin filters -->
     <!-- Collapse button -->
     <a class="btn btn-default btn-filters" data-toggle="collapse" data-parent="#snippet-list-top" href="#filters">
       Filters  <span class="fa fa-sliders"></span>
@@ -33,6 +34,9 @@
       </div>
     </div>
   </div>
+  <!-- End of filters -->
+
+
   {% for timeSlice in documents.faceted %}
   <div class="snippet-section">
     {% if timeSlice.data.length !== 0 %}

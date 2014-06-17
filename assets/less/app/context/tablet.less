@@ -71,17 +71,22 @@ body {
 
     .navbar {
       background-color: #F8F8F8;
+      border-bottom: #ddd 1px solid;
 
       #doc-title {
+        color: #444444;
+      }
+
+      #doc-pin {
         color: #444444;
       }
     }
   }
 }
 
-#left-panel #snippet-list {
+#left-panel .tab-container {
   position: absolute;
-  top: 60px;
+  top: 50px;
   bottom: 0;
   width: 100%;
   overflow-y: scroll;
@@ -100,8 +105,15 @@ body {
   color: #fff;
   font-size: 16px;
   margin: auto;
-  padding: 13px;
+  padding-top: 13px;
   text-align: right;
+  float: right;
+}
+
+#doc-pin {
+  color: #fff;
+  font-size: 24px;
+  margin: 0px;
 }
 
 #doc-loading-indicator {
@@ -118,6 +130,10 @@ body {
   font-size: 32px;
   color: #B8B8B8;
   text-shadow: #FFFFFF 1px 1px 0px;
+}
+
+.tab-container {
+  border-right: 1px #ddd solid;
 }
 
 .well.full {

@@ -22,13 +22,12 @@ body {
   top: 0;
   left: 320px;
   z-index: 1;
-  background-color: white;
+  background-color: #444444;
   border-radius: 0 5px 5px 0;
-  border-right: 1px solid #ddd;
   cursor: pointer;
   font-size: 32px;
   padding-left: 6px;
-  color: @gray;
+  color: white;
 }
 
 #right-panel {
@@ -60,6 +59,7 @@ body {
     left: -320px;
     -webkit-transition:left .5s ease-in-out;
     transition: left .5s ease-in-out;
+    border-right: 1px solid #ddd;
   }
 
   #left-panel.active {
@@ -68,6 +68,14 @@ body {
 
   #right-panel {
     left: 0px;
+
+    .navbar {
+      background-color: #F8F8F8;
+
+      #doc-title {
+        color: #444444;
+      }
+    }
   }
 }
 

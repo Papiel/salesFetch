@@ -115,8 +115,8 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(function(res) {
-              res.text.should.containDeep("Email");
-              res.text.should.containDeep("Gmail");
+              res.text.should.containDeep("email");
+              res.text.should.containDeep("gmail");
               res.text.should.containDeep("Albert Einstein");
             })
             .end(cb);

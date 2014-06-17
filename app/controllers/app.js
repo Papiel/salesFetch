@@ -91,6 +91,8 @@ module.exports.contextSearch = function(req, res, next) {
     });
     documents.faceted = timeSlices;
 
+    console.log(reqParams);
+
     res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
       documents: documents,
@@ -109,6 +111,9 @@ module.exports.documentDisplay = function(req, res, next) {
     if(err) {
       return next(err);
     }
+
+    console.log(document);
+
     res.render('app/full/' + req.deviceType + '.html', {
       data: reqParams,
       document: document

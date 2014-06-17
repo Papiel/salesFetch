@@ -54,13 +54,6 @@ $(window).scroll(function() {
 });
 
 /**
- * Hide filters
- */
-$('body').scrollTop(50);
-$('.navbar').removeClass('navbar-hidden');
-$('.navbar').addClass('navbar-fixed');
-
-/**
  * Filtering
  */
 $("#filter").click(function(e) {
@@ -96,3 +89,10 @@ $("[data-url]").click(function(e) {
   var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   window.location = urlWithDatas;
 });
+
+/**
+ * Hide filters
+ */
+$('body').scrollTop(50);
+$('.navbar').removeClass('navbar-hidden');
+$('.navbar').addClass('navbar-fixed');

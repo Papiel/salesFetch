@@ -22,7 +22,7 @@ describe('<Application controller>', function() {
 
     checkUnauthenticated(app, 'get', endpoint);
 
-    it("should return contextual datas", function(done) {
+    it("should return contextual data", function(done) {
 
       var context = {
         recordType: 'Contact',

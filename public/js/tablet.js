@@ -45,8 +45,8 @@ $("#left-panel").on('click', '.execute', function(e) {
 
   var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithDatas;
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithData;
 });
 
 /**
@@ -66,8 +66,8 @@ $('.snippet').click(function(e) {
 
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithDatas = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  $.get(urlWithDatas, function(res) {
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  $.get(urlWithData, function(res) {
     $('#full-container').html('<div class="well full">' + res + '</div>');
   });
 });

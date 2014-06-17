@@ -97,7 +97,7 @@
                 "1393632000000": 1
             }
         },
-        "datas": [
+        "data": [
             {
                 "_type": "Document",
                 "id": "5320a773bc2e51d7135f0c8f",
@@ -109,7 +109,7 @@
                     "show": "https://www.dropbox.com/home%2Fall%2FSecuringtheRetailStore-SecuringtheData.docx.docx"
                 },
                 "document_url": "/documents/5320a773bc2e51d7135f0c8f",
-                "datas": {
+                "data": {
                     "title": "SecuringtheRetailStore SecuringtheData.docx",
                     "path": "/all/SecuringtheRetailStore-SecuringtheData.docx.docx",
                     "snippet": "Microsoft®U.S. National Security Team <span class=\"hlt\">White</span> Paper\nMicrosoft U.K-PL. National Security Team Marin Pawlowski HQmicoTecNet\nSecuring the Retail Store:\nSecuring the Data\nProduced by John Smith, CTO"

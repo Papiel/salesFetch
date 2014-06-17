@@ -39,16 +39,19 @@ module.exports.findPins = function(SFDCId, user, next) {
       Pin.find({ SFDCId: SFDCId }, cb);
     },
     function(pins, cb) {
-      // TODO: fetch *all* pins
-      var pin = pins[0];
+      // Fetch all snippets in one call
+      var ids = [];
+      pins.map(function(pin) {
+        ids.push(pin.anyFetchId);
+      });
 
-      request(fetchApiUrl).get('/documents/' + pin.anyFetchId)
+      request(fetchApiUrl).get('/documents')
+        .query({ id: ids })
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
         .end(cb);
     }
   ],
   function(err, res) {
-    console.log(err, res.body);
     next(err, res.body);
   });
 };

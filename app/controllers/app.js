@@ -97,7 +97,7 @@ module.exports.contextSearch = function(req, res, next) {
 };
 
 /**
- * Show pinned documents
+ * Show pinned documents (only the pins, not the surrounding interface)
  */
 module.exports.pinned = function(req, res, next) {
   // TODO: refactor as a middleware?
@@ -111,10 +111,7 @@ module.exports.pinned = function(req, res, next) {
       return next(err);
     }
 
-    res.render('app/pinned/' + req.deviceType + '.html', {
-      data: req.reqParams,
-      pins: pins
-    });
+    res.render('components/_pinned-list.html', { pins: pins });
   });
 };
 

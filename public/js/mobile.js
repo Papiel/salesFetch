@@ -89,3 +89,10 @@ $("[data-url]").click(function(e) {
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   window.location = urlWithData;
 });
+
+/**
+ * Hide filters
+ */
+$('body').scrollTop(50);
+$('.navbar').removeClass('navbar-hidden');
+$('.navbar').addClass('navbar-fixed');

@@ -57,17 +57,37 @@ $('#left-toogle').click(function() {
 });
 
 /**
+* Hide filters
+*/
+$('.snippet-list').scrollTop(50);
+
+/**
  * Hide left bar on click snippet
  */
 $('.snippet').click(function(e) {
   e.preventDefault();
+
+  $('#empty-message').addClass('hidden');
+  $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
+
   $("#left-panel").removeClass('active');
   $('#full-container .full').remove();
+
+  /* Select snippet */
+  $('.snippet.active').removeClass('active');
+  $(this).addClass('active');
+  var selectedSnippet = this;
+
+  /* Change title */
+  var title = $(this).find('.title').text();
+  $('#doc-title').html(title);
 
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   $.get(urlWithData, function(res) {
-    $('#full-container').html('<div class="well full">' + res + '</div>');
+    if ($(selectedSnippet).hasClass('active')) {
+      $('#full-container').html('<div class="well full">' + res + '</div>');
+    }
   });
 });

@@ -73,8 +73,6 @@ module.exports.contextSearch = function(req, res, next) {
 
     documents.data.forEach(function(doc) {
       var creationDate = moment(doc.creation_date);
-      console.log();
-
       var found = false;
       for (var i = 0; i < timeSlices.length && !found; i+=1) {
         if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
@@ -87,11 +85,8 @@ module.exports.contextSearch = function(req, res, next) {
           timeSlices[i].data.push(doc);
         }
       }
-      console.log();
     });
     documents.faceted = timeSlices;
-
-    console.log(reqParams);
 
     res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
@@ -132,8 +127,6 @@ module.exports.documentDisplay = function(req, res, next) {
     if(err) {
       return next(err);
     }
-
-    console.log(document);
 
     res.render('app/full/' + req.deviceType + '.html', {
       data: reqParams,

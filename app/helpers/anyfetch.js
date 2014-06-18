@@ -84,6 +84,18 @@ module.exports.findPins = function(SFDCId, user, next) {
 };
 
 /**
+ * @param {Object} sfdcId The context's ID
+ * @param {Object} anyFetchId The document's ID
+ * @param cb(err, pin) The callback will be called with the pin associated to this object in this context, or null if none exists
+ */
+module.exports.getPin = function(sfdcId, anyFetchId, cb) {
+  Pin.findOne({
+    SFDCId: sfdcId,
+    anyFetchId: anyFetchId
+  }, cb);
+};
+
+/**
  * Add a new pin
  */
 module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
@@ -100,7 +112,7 @@ module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
  * Remove an existing pin
  */
 module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
-  // TODO: check that the pin belongs to this user
+  // TODO: check that the pin's creator org is the same as the user's org
   var hash = {
     SFDCId: sfdcId,
     anyFetchId: anyFetchId

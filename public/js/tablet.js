@@ -135,10 +135,10 @@ $('.pin-btn').click(function(e) {
   if (isPinned) {
     $.get(ulr, function(res) {
       setPinned(this, false);
-    }
+    });
   } else {
     $.get(url, function(res) {
       setPinned(this, true);
-    }
+    });
   };
-};
+});

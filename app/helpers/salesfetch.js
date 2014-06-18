@@ -11,7 +11,7 @@ var anyfetchHelpers = require('../helpers/anyfetch.js');
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
-module.exports.findPins = function(SFDCId, user, next) {
+module.exports.findPins = function(SFDCId, user, finalCb) {
   // Retrieve documents pinned to that context
   async.waterfall([
     function(cb) {
@@ -56,7 +56,7 @@ module.exports.findPins = function(SFDCId, user, next) {
       });
       cb(null, docs);
     }
-  ], next);
+  ], finalCb);
 };
 
 /**
@@ -87,14 +87,13 @@ module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
 /**
  * Remove an existing pin
  */
-module.exports.removePin = function(sfdcId, anyFetchId, user, next) {
+module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
   var hash = {
     SFDCId: sfdcId,
     anyFetchId: anyFetchId
   };
 
   async.waterfall([
-
     function findPin(cb) {
       Pin.findOne(hash)
          .populate('createdBy')
@@ -117,7 +116,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, next) {
       cb(null, pin);
     },
     function removePin(pin, cb) {
-      Pin.findOne(hash).remove(cb);
+      pin.remove(cb);
     }
-  ], next);
+  ], finalCb);
 };

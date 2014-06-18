@@ -74,9 +74,9 @@ module.exports.findDocuments = function(params, user, cb) {
       docReturn.data.forEach(function(doc) {
         var relatedTemplate;
 
-        var overidedTemplate = getOverridedTemplates();
-        if (overidedTemplate[doc.document_type]) {
-          relatedTemplate = overidedTemplate[doc.document_type].templates.snippet;
+        var overridedTemplate = getOverridedTemplates();
+        if (overridedTemplate[doc.document_type]) {
+          relatedTemplate = overridedTemplate[doc.document_type].templates.snippet;
         } else {
           relatedTemplate = documentTypes[doc.document_type].templates.snippet;
         }
@@ -149,10 +149,10 @@ module.exports.findDocument = function(id, user, cb) {
       var relatedTemplate;
       var titleTemplate;
 
-      var overidedTemplate = getOverridedTemplates();
-      if (overidedTemplate[docReturn.document_type]) {
-        relatedTemplate = overidedTemplate[docReturn.document_type].templates.full;
-        titleTemplate = overidedTemplate[docReturn.document_type].templates.title;
+      var overridedTemplate = getOverridedTemplates();
+      if (overridedTemplate[docReturn.document_type]) {
+        relatedTemplate = overridedTemplate[docReturn.document_type].templates.full;
+        titleTemplate = overridedTemplate[docReturn.document_type].templates.title;
       } else {
         relatedTemplate = documentTypes[docReturn.document_type].templates.full;
         titleTemplate = documentTypes[docReturn.document_type].templates.title;

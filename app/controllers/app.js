@@ -170,6 +170,6 @@ module.exports.connectProvider = function(req, res, next) {
     return next(new Error('Missing app_id query string.'));
   }
 
-  var connectUrl = 'http://settings.anyfetch.com/provider/connect?app_id=' + req.query.app_id + '&token=' + req.user.anyFetchToken;
+  var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
   res.redirect(connectUrl);
 };

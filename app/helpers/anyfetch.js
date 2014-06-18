@@ -131,9 +131,10 @@ module.exports.findDocuments = function(params, user, cb) {
         } else {
           relatedTemplate = documentTypes[doc.document_type].templates.snippet;
         }
+
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
-        doc.provider = providers[doc.token].name;
+        doc.provider = providers[doc.provider].name;
         doc.document_type = documentTypes[doc.document_type].name;
       });
 
@@ -152,10 +153,10 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Return all the providers
       var tempProviders = {};
-      for (var provider in docReturn.facets.tokens) {
+      for (var provider in docReturn.facets.providers) {
         var p = {
           id: provider,
-          count: docReturn.facets.tokens[provider],
+          count: docReturn.facets.providers[provider],
           name: providers[provider].name
         };
 
@@ -212,7 +213,7 @@ module.exports.findDocument = function(id, user, cb) {
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
 
-      docReturn.provider = providers[docReturn.token].name;
+      docReturn.provider = providers[docReturn.provider].name;
       docReturn.document_type = documentTypes[docReturn.document_type].name;
 
       cb(null, docReturn);
@@ -390,19 +391,15 @@ module.exports.addNewUser = function(user, organization, cb) {
  * Retrieve all providers
  */
 module.exports.getProviders = function(cb) {
-  var apiUrl = 'http://settings.anyfetch.com';
+  var apiUrl = 'https://manager.anyfetch.com';
 
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/provider')
+      request(apiUrl).get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {
       var providers = res.body;
-
-      providers.forEach(function(provider) {
-        provider.id = provider._id.$oid;
-      });
 
       cb(null, providers);
     }

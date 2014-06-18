@@ -56,10 +56,7 @@ module.exports.findPins = function(SFDCId, user, next) {
       });
       cb(null, docs);
     }
-  ],
-  function(err, docs) {
-    next(err, docs);
-  });
+  ], next);
 };
 
 /**
@@ -90,33 +87,37 @@ module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
 /**
  * Remove an existing pin
  */
-module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
+module.exports.removePin = function(sfdcId, anyFetchId, user, next) {
   var hash = {
     SFDCId: sfdcId,
     anyFetchId: anyFetchId
   };
-  Pin.findOne(hash)
-     .populate('createdBy')
-     .exec(function(err, pin) {
-        if(err) {
-          return cb(err);
-        }
-        if(!pin) {
-          err = {
-            message: 'The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
-            status: 404
-          };
-          return cb(err);      
-        }
 
-        if(!pin.createdBy.organization.equals(user.organization)) {
-          err = {
-            message: 'You cannot delete a pin from another organization',
-            status: 403
-          };
-          return cb(err);
-        }
+  async.waterfall([
 
-        Pin.findOne(hash).remove(cb);
-      });
+    function findPin(cb) {
+      Pin.findOne(hash)
+         .populate('createdBy')
+         .exec(cb);
+    },
+    function checkPin(pin, cb) {
+      if(!pin) {
+        return cb({
+          message: 'The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
+          status: 404
+        });
+      }
+      if(!pin.createdBy.organization.equals(user.organization)) {
+        return cb({
+          message: 'You cannot delete a pin from another organization',
+          status: 403
+        });
+      }
+
+      cb(null, pin);
+    },
+    function removePin(pin, cb) {
+      Pin.findOne(hash).remove(cb);
+    }
+  ], next);
 };

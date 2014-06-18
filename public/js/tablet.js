@@ -20,13 +20,26 @@ var data = window.data;
 /**
  * Switch class to pin documents
  */
-var setPinned = function(elem, pinned) {
+var setPinnedStyle = function(elem, pinned) {
   if (pinned) {
-    elem.removeClass('fa-star-o');
-    elem.addClass('fa-star');
+    $(elem).removeClass('fa-star-o');
+    $(elem).addClass('fa-star');
   } else {
-    elem.removeClass('fa-star');
-    elem.addClass('fa-star-o');
+    $(elem).removeClass('fa-star');
+    $(elem).addClass('fa-star-o');
+  };
+};
+
+var setPinned = function(elem, pinned) {
+  var isTitlePinButton = ($(elem).attr('id') == "doc-pin");
+  var activePinButton = $('.snippet.active .pin-btn')[0];
+  var isActivePinButton = (activePinButton == elem);
+
+  if (isTitlePinButton || isActivePinButton) {
+    setPinnedStyle($('#doc-pin'), pinned);
+    setPinnedStyle(activePinButton, pinned);
+  } else {
+    setPinnedStyle(elem, pinned);
   };
 };
 
@@ -134,11 +147,11 @@ $('.pin-btn').click(function(e) {
 
   if (isPinned) {
     $.get(ulr, function(res) {
-      setPinned(this, false);
+      setPinnedStyle(this, false);
     });
   } else {
     $.get(url, function(res) {
-      setPinned(this, true);
+      setPinnedStyle(this, true);
     });
   };
 });

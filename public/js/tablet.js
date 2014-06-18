@@ -16,6 +16,21 @@ var data = window.data;
  };
 
 
+
+/**
+ * Switch class to pin documents
+ */
+var setPinned = function(elem, pinned) {
+  if (pinned) {
+    elem.removeClass('fa-star-o');
+    elem.addClass('fa-star');
+  } else {
+    elem.removeClass('fa-star');
+    elem.addClass('fa-star-o');
+  };
+};
+
+
 /**
  * Filtering
  */
@@ -107,3 +122,23 @@ $('.snippet').click(function(e) {
     }
   });
 });
+
+
+/**
+ * Pin & un-Pin docs
+ */
+$('.pin-btn').click(function(e) {
+  e.preventDefault();
+
+  var isPinned = $(this).hasClass('fa-star');
+
+  if (isPinned) {
+    $.get(ulr, function(res) {
+      setPinned(this, false);
+    }
+  } else {
+    $.get(url, function(res) {
+      setPinned(this, true);
+    }
+  };
+};

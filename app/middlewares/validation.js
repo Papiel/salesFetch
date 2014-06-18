@@ -5,17 +5,16 @@
  */
 module.exports.idIsObjectId = function(req, res, next) {
   var id = req.params.id;
+  var e;
   if (!id) {
-    return next({
-      status: 409,
-      message: 'Missing `id` parameter in URL'
-    });
+    e = new Error('Missing `id` parameter in URL');
+    e.status = 409;
+    return next(e);
   }
   if(!id.toString().match(/^[0-9a-f]{24}$/i)) {
-    return next({
-      status: 409,
-      message: id + ' is not a valid MongoDB ObjectId'
-    });
+    e = new Error(id + ' is not a valid MongoDB ObjectId');
+    e.status = 409;
+    return next(e);
   }
 
   next();
@@ -23,10 +22,9 @@ module.exports.idIsObjectId = function(req, res, next) {
 
 module.exports.requiresContext = function(req, res, next) {
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return next({
-      status: 409,
-      message: 'Missing or incomplete `context` argument in querystring'
-    });
+    var e = new Error('Missing or incomplete `context` argument in querystring');
+    e.status = 409;
+    return next(e);
   }
 
   next();

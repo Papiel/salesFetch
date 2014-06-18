@@ -127,7 +127,9 @@ module.exports.addPin = function(req, res, next) {
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
-        return res.send(409, 'InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+        var e = new Error('InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+        e.status = 409;
+        return next(e);
       }
       else {
         return next(err);
@@ -201,7 +203,9 @@ module.exports.listProviders = function(req, res, next) {
  */
 module.exports.connectProvider = function(req, res, next) {
   if (!req.query.app_id) {
-    return next(new Error('Missing app_id query string.'));
+    var e = new Error('Missing app_id query string.');
+    e.status = 409;
+    return next(e);
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

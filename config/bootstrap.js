@@ -75,7 +75,8 @@ var errorsHandlers = function(app) {
     }
 
     // Error page
-    return res.status(500).render('500', {
+    var code = err.code || 500;
+    return res.status(code).render(code, {
         error: err.stack,
         message: err.message
     });

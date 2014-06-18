@@ -126,6 +126,11 @@ $('.snippet').click(function(e) {
   var title = $(this).find('.title').text();
   $('#doc-title').html(title);
 
+  /* Update pin style */
+  var pinButton = $(this).find('.pin-btn')[0];
+  var isPinned = $(pinButton).hasClass('fa-star');
+  setPinned(pinButton, isPinned);
+
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
@@ -144,14 +149,17 @@ $('.pin-btn').click(function(e) {
   e.preventDefault();
 
   var isPinned = $(this).hasClass('fa-star');
+  console.log(isPinned);
+
+  var url = '#';
 
   if (isPinned) {
-    $.get(ulr, function(res) {
-      setPinnedStyle(this, false);
+    setPinned(this, false);
+    $.get(url, function(res) {
     });
   } else {
+    setPinned(this, true);
     $.get(url, function(res) {
-      setPinnedStyle(this, true);
     });
   };
 });

@@ -93,6 +93,8 @@ $("[data-url]").click(function(e) {
 /**
  * Hide filters
  */
-$('body').scrollTop(60);
-$('.navbar').removeClass('navbar-hidden');
-$('.navbar').addClass('navbar-fixed');
+if (!$('#timeline').find('.section-top.hidden').length) {
+  $('body').scrollTop(60);
+  $('.navbar').removeClass('navbar-hidden');
+  $('.navbar').addClass('navbar-fixed');
+}

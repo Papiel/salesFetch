@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var express = require('express');
 var bodyParser = require('body-parser');
 var swig = require('swig');
@@ -75,10 +76,17 @@ var errorsHandlers = function(app) {
     }
 
     // Error page
-    var code = err.code || 500;
-    return res.status(code).render(code, {
-        error: err.stack,
-        message: err.message
+    var code = err.code || err.status || 500;
+    // Use specific error page template (if available)
+    var page = code + '.html';
+    fs.exists(page, function(exists) {
+      if(!exists) {
+        page = 'error.html';
+      }
+      return res.status(code).render(page, {
+          error: err.stack,
+          message: err.message
+      });
     });
   });
 

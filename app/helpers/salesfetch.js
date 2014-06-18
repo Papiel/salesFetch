@@ -104,7 +104,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
         if(!pin) {
           err = {
             message: 'The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
-            code: 404
+            status: 404
           };
           return cb(err);      
         }
@@ -112,7 +112,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
         if(!pin.createdBy.organization.equals(user.organization)) {
           err = {
             message: 'You cannot delete a pin from another organization',
-            code: 403
+            status: 403
           };
           return cb(err);
         }

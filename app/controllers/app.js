@@ -4,6 +4,7 @@
 'use strict';
 
 var anyfetchHelpers = require('../helpers/anyfetch.js');
+var salesfetchHelpers = require('../helpers/salesfetch.js');
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment");
@@ -100,13 +101,13 @@ module.exports.contextSearch = function(req, res, next) {
  * Show pinned documents (only the pins, not the surrounding interface)
  */
 module.exports.pinned = function(req, res, next) {
-  // TODO: refactor as a middleware?
+  // TODO: use express-validator?
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
     return res.send(409, 'Missing context argument in querystring');
   }
 
   var sfdcId = req.reqParams.context.recordId;
-  anyfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+  salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
     if(err) {
       return next(err);
     }
@@ -119,14 +120,14 @@ module.exports.pinned = function(req, res, next) {
  * Pin a document
  */
 module.exports.addPin = function(req, res, next) {
-  // TODO: refactor as a middleware?
+  // TODO: use express-validator?
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
     return res.send(409, 'Missing context argument in querystring');
   }
 
   var sfdcId = req.reqParams.context.recordId;
   var anyFetchId = req.params.anyFetchId;
-  anyfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
+  salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
         return res.send(409, 'InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
@@ -144,14 +145,14 @@ module.exports.addPin = function(req, res, next) {
  * Unpin a document
  */
 module.exports.removePin = function(req, res, next) {
-  // TODO: refactor as a middleware?
+  // TODO: use express-validator?
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
     return res.send(409, 'Missing context argument in querystring');
   }
 
   var sfdcId = req.reqParams.context.recordId;
   var anyFetchId = req.params.anyFetchId;
-  anyfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
+  salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       return next(err);
     }

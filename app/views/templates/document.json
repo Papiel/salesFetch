@@ -3,7 +3,7 @@
     "name": "document",
     "templates": {
         "snippet": "<h4 class='title'>{{{ title }}}</h4>\n  <p>\n  \t{{{ snippet }}}\n  </p>",
-        "full": "<article>\n  <h2>{{{ title }}}</h2>\n   <section>\n    {{{ content }}}\n  </section>\n</article>\n",
+        "full": "<article>\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
         "title": "{{ title }}"
     }
 }

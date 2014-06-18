@@ -17,20 +17,23 @@ module.exports = function(app) {
           uaParser,
           validation.requiresContext,
           appControllers.pinned);
-  app.get('/app/add-pin/:anyFetchId',
+  app.get('/app/add-pin/:id',
           authorization.requiresLogin,
           uaParser,
+          validation.idIsObjectId,
           validation.requiresContext,
           appControllers.addPin);
-  app.get('/app/remove-pin/:anyFetchId',
+  app.get('/app/remove-pin/:id',
           authorization.requiresLogin,
           uaParser,
+          validation.idIsObjectId,
           validation.requiresContext,
           appControllers.removePin);
 
   app.get('/app/documents/:id',
           authorization.requiresLogin,
           uaParser,
+          validation.idIsObjectId,
           appControllers.documentDisplay);
   app.get('/app/providers',
           authorization.requiresLogin,

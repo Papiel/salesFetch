@@ -114,7 +114,6 @@ module.exports.findDocuments = function(params, user, cb) {
       docReturn.providers = tempProviders;
 
       cb(null, docReturn);
-
     }
   ], cb);
 };

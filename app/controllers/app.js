@@ -123,7 +123,7 @@ module.exports.pinned = function(req, res, next) {
  */
 module.exports.addPin = function(req, res, next) {
   var sfdcId = req.reqParams.context.recordId;
-  var anyFetchId = req.params.anyFetchId;
+  var anyFetchId = req.params.id;
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
@@ -143,7 +143,7 @@ module.exports.addPin = function(req, res, next) {
  */
 module.exports.removePin = function(req, res, next) {
   var sfdcId = req.reqParams.context.recordId;
-  var anyFetchId = req.params.anyFetchId;
+  var anyFetchId = req.params.id;
   salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       return next(err);

@@ -130,7 +130,7 @@ module.exports.listProviders = function(req, res, next) {
     providersInformation: function(cb) {
       anyfetchHelpers.getProviders(cb);
     },
-    function(cb) {
+    connectedProviders: function(cb) {
       anyfetchHelpers.getConnectedProviders(req.user, cb);
     }
   }, function(err, data) {

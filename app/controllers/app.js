@@ -101,11 +101,6 @@ module.exports.contextSearch = function(req, res, next) {
  * Show pinned documents (only the pins, not the surrounding interface)
  */
 module.exports.pinned = function(req, res, next) {
-  // TODO: use express-validator?
-  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return res.send(409, 'Missing context argument in querystring');
-  }
-
   var sfdcId = req.reqParams.context.recordId;
   salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
     if(err) {
@@ -120,11 +115,6 @@ module.exports.pinned = function(req, res, next) {
  * Pin a document
  */
 module.exports.addPin = function(req, res, next) {
-  // TODO: use express-validator?
-  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return res.send(409, 'Missing context argument in querystring');
-  }
-
   var sfdcId = req.reqParams.context.recordId;
   var anyFetchId = req.params.anyFetchId;
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
@@ -145,11 +135,6 @@ module.exports.addPin = function(req, res, next) {
  * Unpin a document
  */
 module.exports.removePin = function(req, res, next) {
-  // TODO: use express-validator?
-  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return res.send(409, 'Missing context argument in querystring');
-  }
-
   var sfdcId = req.reqParams.context.recordId;
   var anyFetchId = req.params.anyFetchId;
   salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {

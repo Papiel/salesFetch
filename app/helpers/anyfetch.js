@@ -8,6 +8,7 @@ var _ = require("lodash");
 var fs = require('fs');
 
 var mongoose =require('mongoose');
+var Pin = mongoose.model('Pin');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
@@ -29,6 +30,57 @@ var getOverridedTemplates = function() {
   });
 
   return cachedTemplates;
+};
+
+module.exports.findPins = function(SFDCId, user, next) {
+  // Retrieve documents pinned to that context
+  async.waterfall([
+    function(cb) {
+      Pin.find({ SFDCId: SFDCId }, cb);
+    },
+    // Fetch all snippets in one call
+    function(pins, cb) {
+      // Fetch all snippets in one call
+      var ids = pins.map(function(pin) {
+        return pin.anyFetchId;
+      });
+
+      request(fetchApiUrl).get('/documents')
+        .query({ id: ids })
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
+        .end(cb);
+    },
+    // Fetch document types in order to get the templates
+    // TODO: use batch call and / or `anyfetch.js`
+    function(documentsRes, cb) {
+      request(fetchApiUrl).get('/document_types')
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
+        .end(function(err, res) {
+          cb(err, documentsRes.body.data, res.body);
+        });
+    },
+    function(docs, documentTypes, cb) {
+      docs = docs.map(function(doc) {
+        var template;
+        // TODO: refactor (also used in `findDocuments`)
+        var overidedTemplates = getOverridedTemplates();
+        if (overidedTemplates[doc.document_type]) {
+          template = overidedTemplates[doc.document_type].templates.full;
+        } else {
+          template = documentTypes[doc.document_type].templates.full;
+        }
+
+        doc.snippet_rendered = Mustache.render(template, doc.data);
+        return doc;
+      });
+      cb(null, docs);
+    }
+  ],
+  function(err, docs) {
+    next(err, docs);
+  });
 };
 
 module.exports.findDocuments = function(params, user, cb) {
@@ -79,6 +131,7 @@ module.exports.findDocuments = function(params, user, cb) {
         } else {
           relatedTemplate = documentTypes[doc.document_type].templates.snippet;
         }
+
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
         doc.provider = providers[doc.provider].name;

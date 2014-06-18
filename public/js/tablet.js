@@ -3,6 +3,20 @@
 var data = window.data;
 
 /**
+ * fetchPinnedDocuments
+ */
+ var fetchPinnedDocuments = function() {
+
+  var urlWithData = '/app/context-search?data=%7B%22user%22%3A%7B%22name%22%3A%22tanguy%40demo.salesfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%2C%22id%22%3A%2200520000003AYhuAAG%22%7D%2C%22sessionId%22%3A%2200D20000000lnBG!ARcAQA0XClY31lUo.fsEzhIpJUspi9qRrbYWoIkMkmJ2E_ybKMbk.8fdhivRL2jz..5CbTSHOBtYvUiB83NpQvZ3LzlVE5Gl%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Flocalhost%3A3000%22%2C%22organization%22%3A%7B%22name%22%3A%22AnyFetch%22%2C%22id%22%3A%2200D20000000lnBGEAY%22%7D%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22hash%22%3A%22tUjogcXtZJAjcELBWL0zHyDzKvk%3D%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Mehdi%20Bouheddi%22%2C%22templatedQuery%22%3A%22Mehdi%20Bouheddi%22%2C%22recordId%22%3A%220032000001ElnVEAAZ%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22env%22%3A%7B%22width%22%3A1407%2C%22height%22%3A400%2C%22env%22%3A%22mobile%22%7D%7D#pf15';
+
+  $.get(urlWithData, function(res) {
+    $('#pinned-list').html(res);
+  });
+
+ };
+
+
+/**
  * Filtering
  */
 $("#filter").popover({
@@ -60,7 +74,6 @@ $('#left-toogle').click(function() {
 * Hide filters
 */
 if (!$('#timeline').find('.section-top.hidden').length) {
-  console.log('ok');
   $('.snippet-list').scrollTop(60);
 }
 

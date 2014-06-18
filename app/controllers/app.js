@@ -77,16 +77,13 @@ module.exports.contextSearch = function(req, res, next) {
 
       var found = false;
       for (var i = 0; i < timeSlices.length && !found; i+=1) {
-        console.log(i+'\n');
         if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
           found = true;
-          console.log('push doc 1\n');
           timeSlices[i].data.push(doc);
         }
 
         if(!found && (!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate))) {
           found = true;
-          console.log('push doc 2\n');
           timeSlices[i].data.push(doc);
         }
       }

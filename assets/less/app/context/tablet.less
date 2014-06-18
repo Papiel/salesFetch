@@ -109,6 +109,10 @@ body {
   padding-top: 13px;
   text-align: right;
   float: right;
+  max-width: 625px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #doc-pin {
@@ -131,6 +135,15 @@ body {
   font-size: 32px;
   color: #B8B8B8;
   text-shadow: #FFFFFF 1px 1px 0px;
+}
+
+.full-header {
+  text-transform: capitalize;
+  font-size: 14px;
+
+  span {
+    font-weight: bold;
+  }
 }
 
 .tab-container {

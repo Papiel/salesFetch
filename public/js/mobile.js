@@ -93,6 +93,6 @@ $("[data-url]").click(function(e) {
 /**
  * Hide filters
  */
-$('body').scrollTop(50);
+$('body').scrollTop(60);
 $('.navbar').removeClass('navbar-hidden');
 $('.navbar').addClass('navbar-fixed');

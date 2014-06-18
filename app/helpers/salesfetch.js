@@ -91,19 +91,32 @@ module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
  * Remove an existing pin
  */
 module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
-  // TODO: check that the pin's creator org is the same as the user's org
   var hash = {
     SFDCId: sfdcId,
     anyFetchId: anyFetchId
   };
-  Pin.findOne(hash).remove(function(err, n) {
-    if(!err && n === 0) {
-      err = {
-        message: 'Not found: the object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
-        code: 404
-      };
-      return cb(err);
-    }
-    cb(err);
-  });
+  Pin.findOne(hash)
+     .populate('createdBy')
+     .exec(function(err, pin) {
+        if(err) {
+          return cb(err);
+        }
+        if(!pin) {
+          err = {
+            message: 'The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
+            code: 404
+          };
+          return cb(err);      
+        }
+
+        if(!pin.createdBy.organization.equals(user.organization)) {
+          err = {
+            message: 'You cannot delete a pin from another organization',
+            code: 403
+          };
+          return cb(err);
+        }
+
+        Pin.findOne(hash).remove(cb);
+      });
 };

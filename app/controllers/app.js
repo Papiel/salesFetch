@@ -113,8 +113,7 @@ module.exports.pinned = function(req, res, next) {
       return next(err);
     }
 
-    // TODO: create a pin-specific template?
-    res.render('app/context/' + req.deviceType + '.html', {
+    res.render('app/pinned/' + req.deviceType + '.html', {
       data: req.reqParams,
       pins: pins
     });

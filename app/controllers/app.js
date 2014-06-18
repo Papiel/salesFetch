@@ -126,7 +126,7 @@ module.exports.addPin = function(req, res, next) {
 
   var sfdcId = req.reqParams.context.recordId;
   var anyFetchId = req.params.anyFetchId;
-  anyfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err, pin) {
+  anyfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
         return res.send(409, 'InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
@@ -136,7 +136,7 @@ module.exports.addPin = function(req, res, next) {
       }
     }
 
-    res.send(200, pin);
+    res.send(204);
   });
 };
 

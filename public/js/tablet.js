@@ -126,7 +126,7 @@ $('.snippet').click(function(e) {
   var title = $(this).find('.title').text();
   $('#doc-title').html(title);
 
-  /* Update pin style */
+  /* Update #doc-pin style */
   var pinButton = $(this).find('.pin-btn')[0];
   var isPinned = $(pinButton).hasClass('fa-star');
   setPinned(pinButton, isPinned);
@@ -151,14 +151,17 @@ $('.pin-btn').click(function(e) {
   var isPinned = $(this).hasClass('fa-star');
   console.log(isPinned);
 
-  var url = '#';
 
   if (isPinned) {
     setPinned(this, false);
+
+    var url = '#';
     $.get(url, function(res) {
     });
   } else {
     setPinned(this, true);
+
+    var url = '#';
     $.get(url, function(res) {
     });
   };

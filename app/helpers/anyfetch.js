@@ -38,6 +38,7 @@ module.exports.findPins = function(SFDCId, user, next) {
     function(cb) {
       Pin.find({ SFDCId: SFDCId }, cb);
     },
+    // Fetch all snippets in one call
     function(pins, cb) {
       // Fetch all snippets in one call
       var ids = pins.map(function(pin) {
@@ -47,11 +48,38 @@ module.exports.findPins = function(SFDCId, user, next) {
       request(fetchApiUrl).get('/documents')
         .query({ id: ids })
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
         .end(cb);
+    },
+    // Fetch document types in order to get the templates
+    // TODO: use batch call and / or `anyfetch.js`
+    function(documentsRes, cb) {
+      request(fetchApiUrl).get('/document_types')
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
+        .end(function(err, res) {
+          cb(err, documentsRes.body.data, res.body);
+        });
+    },
+    function(docs, documentTypes, cb) {
+      docs = docs.map(function(doc) {
+        var template;
+        // TODO: refactor (also used in `findDocuments`)
+        var overidedTemplates = getOverridedTemplates();
+        if (overidedTemplates[doc.document_type]) {
+          template = overidedTemplates[doc.document_type].templates.full;
+        } else {
+          template = documentTypes[doc.document_type].templates.full;
+        }
+
+        doc.snippet_rendered = Mustache.render(template, doc.data);
+        return doc;
+      });
+      cb(null, docs);
     }
   ],
-  function(err, res) {
-    next(err, res.body);
+  function(err, docs) {
+    next(err, docs);
   });
 };
 
@@ -103,9 +131,10 @@ module.exports.findDocuments = function(params, user, cb) {
         } else {
           relatedTemplate = documentTypes[doc.document_type].templates.snippet;
         }
+
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
-        doc.provider = providers[doc.token].name;
+        doc.provider = providers[doc.provider].name;
         doc.document_type = documentTypes[doc.document_type].name;
       });
 
@@ -124,10 +153,10 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Return all the providers
       var tempProviders = {};
-      for (var provider in docReturn.facets.tokens) {
+      for (var provider in docReturn.facets.providers) {
         var p = {
           id: provider,
-          count: docReturn.facets.tokens[provider],
+          count: docReturn.facets.providers[provider],
           name: providers[provider].name
         };
 
@@ -184,7 +213,7 @@ module.exports.findDocument = function(id, user, cb) {
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
 
-      docReturn.provider = providers[docReturn.token].name;
+      docReturn.provider = providers[docReturn.provider].name;
       docReturn.document_type = documentTypes[docReturn.document_type].name;
 
       cb(null, docReturn);
@@ -362,19 +391,15 @@ module.exports.addNewUser = function(user, organization, cb) {
  * Retrieve all providers
  */
 module.exports.getProviders = function(cb) {
-  var apiUrl = 'http://settings.anyfetch.com';
+  var apiUrl = 'https://manager.anyfetch.com';
 
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/provider')
+      request(apiUrl).get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {
       var providers = res.body;
-
-      providers.forEach(function(provider) {
-        provider.id = provider._id.$oid;
-      });
 
       cb(null, providers);
     }

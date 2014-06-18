@@ -44,7 +44,7 @@ $(function() {
     var isOnMobile = data.env.deviseType === "mobile";
 
     // Handle the full preview loading
-    $("#snippet-list").on('click', '[data-document-url]', function(e) {
+    $(".snippet-list").on('click', '[data-document-url]', function(e) {
       e.preventDefault();
 
       var url = $(this).data("documentUrl");
@@ -79,9 +79,9 @@ $(function() {
 
     var filters = {};
 
-    var token = $('#token').val();
-    if (token.length > 0) {
-      filters.token = token;
+    var provider = $('#provider').val();
+    if (provider.length > 0) {
+      filters.provider = provider;
     }
 
     var dT = $('#document_type').val();

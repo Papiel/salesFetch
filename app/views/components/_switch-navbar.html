@@ -1,15 +1,12 @@
 <nav class="navbar navbar-default navbar-result" role="navigation">
   <div class="container-fluid">
-    <div class="btn-group navbar-btn" id="context-switch">
-      <a class="btn btn-primary">
-        Context  <span class="badge">{{documents.count|default('0')}}</span>
-      </a>
-      <a class="btn btn-default disabled">
-        Pinned  <span class="badge">{{pinned.count|default('0')}}</span>
-      </a>
-    </div>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#timeline" data-toggle="tab"><span class="fa fa-user"></span> {{data.context.templatedDisplay}}</a></li>
+      <li class=""><a href="#pinned" data-toggle="tab"><span>Pinned  <span class="badge">8</span></span></a></li>
+      <li class=""><a href="#search" data-toggle="tab"><span><span class="fa fa-search"></span></span></a></li>
+    </ul>
 
-    <a class="btn btn-default navbar-btn pull-right" id="filter">Filters</a>
+    <!-- <a class="btn btn-default pull-right btn-filters" id="filter">Filters  <span class="fa fa-sliders"></span></a> -->
   </div>
 </nav>
 

@@ -59,7 +59,7 @@ module.exports.contextSearch = function(req, res, next) {
       maxDate: moment().startOf('month'),
       data: []
     }, {
-      label: 'Earlier this Years',
+      label: 'Earlier this Year',
       maxDate: moment().startOf('year'),
       data: []
     }, {
@@ -73,8 +73,6 @@ module.exports.contextSearch = function(req, res, next) {
 
     documents.data.forEach(function(doc) {
       var creationDate = moment(doc.creation_date);
-      console.log();
-
       var found = false;
       for (var i = 0; i < timeSlices.length && !found; i+=1) {
         if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
@@ -87,7 +85,6 @@ module.exports.contextSearch = function(req, res, next) {
           timeSlices[i].data.push(doc);
         }
       }
-      console.log();
     });
     documents.faceted = timeSlices;
 
@@ -112,12 +109,11 @@ module.exports.pinned = function(req, res, next) {
     if(err) {
       return next(err);
     }
-    // TODO: render a proper template
-    // res.render('app/context/' + req.deviceType + '.html', {
-    //   data: req.reqParams,
-    //   documents: pins
-    // });
-    res.send(200, pins);
+
+    res.render('app/pinned/' + req.deviceType + '.html', {
+      data: req.reqParams,
+      pins: pins
+    });
   });
 };
 
@@ -131,6 +127,7 @@ module.exports.documentDisplay = function(req, res, next) {
     if(err) {
       return next(err);
     }
+
     res.render('app/full/' + req.deviceType + '.html', {
       data: reqParams,
       document: document
@@ -171,6 +168,6 @@ module.exports.connectProvider = function(req, res, next) {
     return next(new Error('Missing app_id query string.'));
   }
 
-  var connectUrl = 'http://settings.anyfetch.com/provider/connect?app_id=' + req.query.app_id + '&token=' + req.user.anyFetchToken;
+  var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
   res.redirect(connectUrl);
 };

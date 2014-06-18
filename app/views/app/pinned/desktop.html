@@ -1,0 +1,13 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+  <link rel="stylesheet" type="text/css" href="/desktop.css">
+{% endblock %}
+
+{% block bare-js %}
+  <script type="text/javascript" src="/js/desktop.js"></script>
+{% endblock %}
+
+{% block content %}
+  {% include '../../components/_pinned-list.html' %}
+{% endblock %}

@@ -106,16 +106,14 @@ module.exports.contextSearch = function(req, res, next) {
  */
 module.exports.pinned = function(req, res, next) {
   var sfdcId = req.reqParams.context.recordId;
-  async.waterfall([
-
-    function findPins(cb) {
-      salesfetchHelpers.findPins(sfdcId, req.user, cb);
-    },
-    function render(pins, cb) {
-      res.render('components/_pinned-list.html', { pins: pins });
-      cb(null);
+  
+  salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+    if(err) {
+      next(err);
     }
-  ], next);
+
+    res.render('components/_pinned-list.html', { pins: pins });
+  });
 };
 
 /**
@@ -128,12 +126,11 @@ module.exports.addPin = function(req, res, next) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
         var e = new Error('InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
-        e.status = 409;
+        //e.status = 409;
         return next(e);
       }
-      else {
-        return next(err);
-      }
+
+      return next(err);
     }
 
     res.send(204);
@@ -204,7 +201,7 @@ module.exports.listProviders = function(req, res, next) {
 module.exports.connectProvider = function(req, res, next) {
   if (!req.query.app_id) {
     var e = new Error('Missing app_id query string.');
-    e.status = 409;
+    //e.status = 409;
     return next(e);
   }
 

@@ -147,6 +147,7 @@ $('.snippet').click(function(e) {
  */
 $('.pin-btn').click(function(e) {
   e.preventDefault();
+  e.stopPropagation();
 
   var isPinned = $(this).hasClass('fa-star');
   console.log(isPinned);

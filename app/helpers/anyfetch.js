@@ -83,6 +83,40 @@ module.exports.findPins = function(SFDCId, user, next) {
   });
 };
 
+/**
+ * Add a new pin
+ */
+module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
+  var pin = new Pin({
+    createdBy: user.id,
+    SFDCId: sfdcId,
+    anyFetchId: anyFetchId
+  });
+
+  pin.save(cb);
+};
+
+/**
+ * Remove an existing pin
+ */
+module.exports.removePin = function(sfdcId, anyFetchId, user, cb) {
+  // TODO: check that the pin belongs to this user
+  var hash = {
+    SFDCId: sfdcId,
+    anyFetchId: anyFetchId
+  };
+  Pin.findOne(hash).remove(function(err, n) {
+    if(!err && n === 0) {
+      err = {
+        message: 'Not found: the object ' + anyFetchId + ' was not pinned in the context ' + sfdcId,
+        code: 404
+      };
+      return cb(err);
+    }
+    cb(err);
+  });
+};
+
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
 

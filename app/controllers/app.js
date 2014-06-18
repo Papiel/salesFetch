@@ -100,8 +100,9 @@ module.exports.contextSearch = function(req, res, next) {
  * Show pinned documents
  */
 module.exports.pinned = function(req, res, next) {
+  // TODO: refactor as a middleware?
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return next(409, new Error('Missing context argument in querystring'));
+    return res.send(409, 'Missing context argument in querystring');
   }
 
   var sfdcId = req.reqParams.context.recordId;
@@ -114,6 +115,51 @@ module.exports.pinned = function(req, res, next) {
       data: req.reqParams,
       pins: pins
     });
+  });
+};
+
+/**
+ * Pin a document
+ */
+module.exports.addPin = function(req, res, next) {
+  // TODO: refactor as a middleware?
+  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
+    return res.send(409, 'Missing context argument in querystring');
+  }
+
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.anyFetchId;
+  anyfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err, pin) {
+    if(err) {
+      if (err.name && err.name === 'MongoError' && err.code === 11000) {
+        return res.send(409, 'InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+      }
+      else {
+        return next(err);
+      }
+    }
+
+    res.send(200, pin);
+  });
+};
+
+/**
+ * Unpin a document
+ */
+module.exports.removePin = function(req, res, next) {
+  // TODO: refactor as a middleware?
+  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
+    return res.send(409, 'Missing context argument in querystring');
+  }
+
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.anyFetchId;
+  anyfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
+    if(err) {
+      return next(err);
+    }
+
+    res.send(202);
   });
 };
 

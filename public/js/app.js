@@ -79,9 +79,9 @@ $(function() {
 
     var filters = {};
 
-    var token = $('#token').val();
-    if (token.length > 0) {
-      filters.token = token;
+    var provider = $('#provider').val();
+    if (provider.length > 0) {
+      filters.provider = provider;
     }
 
     var dT = $('#document_type').val();

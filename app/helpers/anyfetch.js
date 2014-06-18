@@ -14,23 +14,6 @@ var User = mongoose.model('User');
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
-var cachedTemplates = {};
-var getOverridedTemplates = function() {
-  if (config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
-    return cachedTemplates;
-  }
-
-  var templatePath = __dirname + '/../views/templates';
-  fs.readdirSync(templatePath).forEach(function(file) {
-    var newPath = templatePath + '/' + file;
-    var templateConfig = require(newPath);
-
-    cachedTemplates[templateConfig.id] = templateConfig;
-  });
-
-  return cachedTemplates;
-};
-
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
 
@@ -81,7 +64,7 @@ module.exports.findDocuments = function(params, user, cb) {
         }
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
-        doc.provider = providers[doc.token].name;
+        doc.provider = providers[doc.provider].name;
         doc.document_type = documentTypes[doc.document_type].name;
       });
 
@@ -100,10 +83,10 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Return all the providers
       var tempProviders = {};
-      for (var provider in docReturn.facets.tokens) {
+      for (var provider in docReturn.facets.providers) {
         var p = {
           id: provider,
-          count: docReturn.facets.tokens[provider],
+          count: docReturn.facets.providers[provider],
           name: providers[provider].name
         };
 
@@ -148,19 +131,10 @@ module.exports.findDocument = function(id, user, cb) {
       var relatedTemplate;
       var titleTemplate;
 
-      var overidedTemplate = getOverridedTemplates();
-      if (overidedTemplate[docReturn.document_type]) {
-        relatedTemplate = overidedTemplate[docReturn.document_type].templates.full;
-        titleTemplate = overidedTemplate[docReturn.document_type].templates.title;
-      } else {
-        relatedTemplate = documentTypes[docReturn.document_type].templates.full;
-        titleTemplate = documentTypes[docReturn.document_type].templates.title;
-      }
-
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
 
-      docReturn.provider = providers[docReturn.token].name;
+      docReturn.provider = providers[docReturn.provider].name;
       docReturn.document_type = documentTypes[docReturn.document_type].name;
 
       cb(null, docReturn);
@@ -338,19 +312,15 @@ module.exports.addNewUser = function(user, organization, cb) {
  * Retrieve all providers
  */
 module.exports.getProviders = function(cb) {
-  var apiUrl = 'http://settings.anyfetch.com';
+  var apiUrl = 'https://manager.anyfetch.com';
 
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/provider')
+      request(apiUrl).get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {
       var providers = res.body;
-
-      providers.forEach(function(provider) {
-        provider.id = provider._id.$oid;
-      });
 
       cb(null, providers);
     }

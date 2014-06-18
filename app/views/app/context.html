@@ -1,0 +1,86 @@
+{% extends './template.html' %}
+
+{% block content %}
+
+<section class="container">
+  <h2 class= "about about-{{data.context.recordType|lower}}" id="about-string">
+    <div class="icon"></div>
+
+    {% if filters.document_type %}
+    {{documents.document_types[filters.document_type].name|capitalize}} about
+    {% else %}
+    About
+    {% endif %}
+
+    <strong>{{data.context.templatedDisplay}}</strong>
+
+    {% if filters.provider %}
+    in {{documents.providers[filters.provider].name}}
+    {% endif %}
+
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" id="show-filters">Filter result</a></li>
+        <li><a href="/app/providers" class="link">Connect new service</a></li>
+      </ul>
+    </div>
+  </h2>
+
+  <form id="filters-container" action="" method="get" class="hidden">
+    <h2 class= "about about-{{data.context.recordType|lower}}">
+      <div class="icon"></div>
+      <select class="form-control" id="document_type" name="document_type">
+        <option value="">All</option>
+        {% for docType in documents.document_types %}
+        <option value="{{docType.id}}">{{docType.name|title}}</option>
+        {% endfor %}
+      </select>
+
+      about <strong>{{data.context.templatedDisplay}}</strong> in
+
+      <select class="form-control" id="provider" name="provider">
+        <option value="">everywere</option>
+        {% for provider in documents.providers %}
+        <option value="{{provider.id}}">{{provider.name|lower}}</option>
+        {% endfor %}
+      </select>
+    </h2>
+
+    <div class="row">
+      <div class="col-sm-12 text-right">
+        <a class="btn btn-primary" id="send-filters">Submit</a>
+        <a class="btn btn-default" id="hide-filters">Dismiss</a>
+      </div>
+    </div>
+  </form>
+
+  <hr/>
+
+  <div class="row">
+    {% if documents.count %}
+    <p>{{documents.count}} results</p>
+    {% endif %}
+
+    <div id="snippet-list">
+      {% include "./_snippet-list.html" %}
+
+      {% if documents.count %}
+      <div class="center-block hidden" id="loading-documents">
+        Loading more documents
+      </div>
+      {% endif %}
+    </div>
+
+    {% if !documents.count %}
+      <div class="center-block">
+        No document as been found about {{data.context.templatedDisplay}}. <br/>
+        Have you connect all you <a href="/app/providers" class="link">services</a> ?
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

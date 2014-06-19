@@ -40,11 +40,12 @@
     "errorhandler": "~1.0.1",
     "auto-load": "~1.0.0",
     "ua-parser-js": "0.6.2",
-    "moment": "2.7.x"
+    "moment": "2.7.x",
+    "rarity": "^2.1.1"
   },
   "devDependencies": {
     "mocha": "1.18.x",
-    "should": "3.3.x",
+    "should": "4.0.x",
     "jshint": "2.5.x",
     "mocha-mongoose": "1.0.x",
     "nock": "0.31.x"

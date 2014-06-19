@@ -27,7 +27,7 @@ var updateActiveDocument = function(docUrl) {
   }
 
   found = false;
-  for (var i = 0; i < timelineSnippets.length && !found; i += 1) {
+  for (i = 0; i < timelineSnippets.length && !found; i += 1) {
     if ($(timelineSnippets[i]).data('url') === docUrl) {
       $(timelineSnippets[i]).addClass('active');
       found = true;

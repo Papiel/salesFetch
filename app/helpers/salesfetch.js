@@ -3,6 +3,8 @@
 var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
+var querystring = require('querystring');
+var rarity = require('rarity');
 
 var mongoose =require('mongoose');
 var Pin = mongoose.model('Pin');
@@ -11,42 +13,42 @@ var anyfetchHelpers = require('../helpers/anyfetch.js');
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
-module.exports.findPins = function(SFDCId, user, finalCb) {
+module.exports.findPins = function(sfdcId, user, finalCb) {
   // Retrieve documents pinned to that context
   async.waterfall([
-    function(cb) {
-      Pin.find({ SFDCId: SFDCId }, cb);
+    function findPin(cb) {
+      Pin.find({ SFDCId: sfdcId }, cb);
     },
     // Fetch all snippets in one call
-    function(pins, cb) {
+    function fetchDocumentsAndDocumentTypes(pins, cb) {
       // Fetch all snippets in one call
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;
       });
 
-      request(fetchApiUrl).get('/documents')
-        .query({ id: ids })
+      // Batch call: /documents and /document_types
+      var pages = [
+        '/documents?' + querystring.encode({ id: ids}),
+        '/document_types'
+      ];
+      request(fetchApiUrl).get('/batch')
+        .query({ pages: pages })
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
         .expect(200)
-        .end(cb);
+        .end(rarity.carry(pages, cb));
     },
-    // Fetch document types in order to get the templates
-    // TODO: use batch call and / or `anyfetch.js`
-    function(documentsRes, cb) {
-      request(fetchApiUrl).get('/document_types')
-        .set('Authorization', 'Bearer ' + user.anyFetchToken)
-        .expect(200)
-        .end(function(err, res) {
-          cb(err, documentsRes.body.data, res.body);
-        });
+    function extractRes(docUrl, typesUrl, batchRes, cb) {
+      var documents = batchRes.body[docUrl].data;
+      var documentTypes = batchRes.body[typesUrl];
+      cb(null, documents, documentTypes);
     },
     function(docs, documentTypes, cb) {
       docs = docs.map(function(doc) {
         var template;
         // TODO: refactor (also used in `findDocuments`)
-        var overidedTemplates = anyfetchHelpers.getOverridedTemplates();
-        if (overidedTemplates[doc.document_type]) {
-          template = overidedTemplates[doc.document_type].templates.snippet;
+        var overridedTemplates = anyfetchHelpers.getOverridedTemplates();
+        if (overridedTemplates[doc.document_type]) {
+          template = overridedTemplates[doc.document_type].templates.snippet;
         } else {
           template = documentTypes[doc.document_type].templates.snippet;
         }
@@ -107,7 +109,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
         //e.status = 404;
         return cb(e);
       }
-      if(!pin.createdBy.organization.equals(user.organization)) {
+      if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
         e = new Error('You cannot delete a pin from another organization');
         //e.status = 403;
         return cb(e);

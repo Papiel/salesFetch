@@ -42,7 +42,7 @@ module.exports.contextSearch = function(req, res, next) {
     function retrieveDocument(res, cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
     },
-    // TODO
+    // TODO: set the boolean `pinned` property on each document
     //function markPinned(docs, cb) {
     //  cb(null, docs);
     //}

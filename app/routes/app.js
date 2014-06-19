@@ -11,6 +11,7 @@ module.exports = function(app) {
   app.get('/app/context-search',
     authorization.requiresLogin,
     uaParser,
+    requiresContext,
     appControllers.contextSearch);
 
   app.get('/app/pinned',
@@ -35,6 +36,7 @@ module.exports = function(app) {
     authorization.requiresLogin,
     uaParser,
     idIsObjectId,
+    requiresContext,
     appControllers.documentDisplay);
   app.get('/app/providers',
     authorization.requiresLogin,

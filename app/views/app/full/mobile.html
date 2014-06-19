@@ -15,6 +15,10 @@
   </div>
 </nav>
 
+{% if document.pinned %}
+  <span class="pinned"></span>
+{% endif %}
+
 {% autoescape false %}{{document.full_rendered}}{% endautoescape %}
 
 {% endblock %}

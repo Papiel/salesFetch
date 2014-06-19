@@ -10,6 +10,7 @@ var Pin = mongoose.model('Pin');
 var app = require('../../app.js');
 
 var cleaner = require('../hooks/cleaner');
+var salesfetchHelpers = require('../../app/helpers/salesfetch.js');
 var requestBuilder = require('../helpers/login').requestBuilder;
 var getUser = require('../helpers/login').getUser;
 var APIs = require('../helpers/APIs');
@@ -192,7 +193,7 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(204)
-            .end(rarity.carry(url, cb));
+            .end(rarity.carry([url], cb));
         },
         function sendRequestAgain(url, res, cb) {
           request(app)
@@ -235,7 +236,7 @@ describe('<Application controller>', function() {
           requestBuilder(endpoint, sampleContext, null, cb);
         },
         function getUserId(url, cb) {
-          getUser(rarity.carry(url, cb));
+          getUser(rarity.carry([url], cb));
         },
         function addPinByHand(url, user, cb) {
           var hash = {
@@ -252,7 +253,7 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(202)
-            .end(rarity.carryAndSlice(hash, 1, cb));
+            .end(rarity.carryAndSlice([hash], 1, cb));
         },
         function searchMongo(hash, cb) {
           Pin.findOne(hash, cb);
@@ -311,7 +312,7 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/document page', function() {
+  describe('/documents/:id page', function() {
     var endpoint = '/app/documents/' + sampleDocumentId;
 
     checkUnauthenticated(app, 'get', endpoint);
@@ -319,7 +320,7 @@ describe('<Application controller>', function() {
     it("should render the full template", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, null, null, cb);
+          requestBuilder(endpoint, sampleContext, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -333,6 +334,28 @@ describe('<Application controller>', function() {
         }
       ], done);
     });
+
+    it("should mark a pinned document as pinned", function(done) {
+      async.waterfall([
+        function addPin(cb) {
+          var user = { id: sampleUserId };
+          cb = rarity.slice(1, cb);
+          salesfetchHelpers.addPin(sampleContext.recordId, sampleDocumentId, user, cb);
+        },
+        function buildRequest(cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(function(res) {
+              res.text.toLowerCase().should.containDeep("pinned");
+            })
+            .end(cb);
+        }
+      ], done);
+    });
+
   });
 
   describe('/providers page', function() {

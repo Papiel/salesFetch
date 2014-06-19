@@ -42,10 +42,9 @@ module.exports.contextSearch = function(req, res, next) {
     function retrieveDocument(res, cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
     },
-    // TODO: set the boolean `pinned` property on each document
-    //function markPinned(docs, cb) {
-    //  cb(null, docs);
-    //}
+    function markPinned(documents, cb) {
+      salesfetchHelpers.markIfPinned(reqParams.context.recordId, documents, cb);
+    }
   ], function(err, documents) {
     if(err) {
       return next(err);
@@ -158,7 +157,7 @@ module.exports.removePin = function(req, res, next) {
 module.exports.documentDisplay = function(req, res, next) {
   var reqParams = req.reqParams;
 
-  anyfetchHelpers.findDocument(req.params.id, req.user, function(err, document) {
+  anyfetchHelpers.findDocument(req.params.id, req.user, reqParams.context, function(err, document) {
     if(err) {
       return next(err);
     }

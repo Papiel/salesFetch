@@ -1,1 +1,5 @@
+{% if document.pinned %}
+  <span class="pinned"></span>
+{% endif %}
+
 {% autoescape false %}{{document.provider}} <br />{{document.full_rendered}}{% endautoescape %}

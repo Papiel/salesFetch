@@ -90,6 +90,40 @@ module.exports.getPin = function(sfdcId, anyFetchId, cb) {
 };
 
 /**
+ * Set the property `pinned` on each of the passed documents.
+ * @param {String} sfdcId Id of the context in which to look for pins
+ * @param {Array} The array of documents to mark
+ * @param cb(err, documents)
+ */
+module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
+  async.waterfall([
+
+    function getPinsForThisContext(cb) {
+      Pin.find({ SFDCId: sfdcId }, cb);
+    },
+
+    function traversePins(pins, cb) {
+      if(pins) {
+        var hash = {};
+        pins.forEach(function(pin) {
+          hash[pin.anyFetchId] = true;
+        });
+        
+        documents.data.forEach(function(doc) {
+          doc.pinned = false;
+          if(doc.id in hash) {
+            doc.pinned = true;
+          }
+        });
+
+        cb(null, documents);
+      }
+    }
+
+  ], finalCb);
+};
+
+/**
  * Add a new pin
  */
 module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {

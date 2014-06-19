@@ -4,6 +4,7 @@
 'use strict';
 
 var anyfetchHelpers = require('../helpers/anyfetch.js');
+var salesfetchHelpers = require('../helpers/salesfetch.js');
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment");
@@ -40,7 +41,11 @@ module.exports.contextSearch = function(req, res, next) {
     },
     function retrieveDocument(res, cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
-    }
+    },
+    // TODO: set the boolean `pinned` property on each document
+    //function markPinned(docs, cb) {
+    //  cb(null, docs);
+    //}
   ], function(err, documents) {
     if(err) {
       return next(err);
@@ -97,23 +102,53 @@ module.exports.contextSearch = function(req, res, next) {
 };
 
 /**
- * Show pinned documents
+ * Show pinned documents (only the pins, not the surrounding interface)
  */
 module.exports.pinned = function(req, res, next) {
-  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return next(409, new Error('Missing context argument in querystring'));
-  }
-
   var sfdcId = req.reqParams.context.recordId;
-  anyfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+  
+  salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+    if(err) {
+      next(err);
+    }
+
+    res.render('components/_pinned-list.html', { pins: pins });
+  });
+};
+
+/**
+ * Pin a document
+ */
+module.exports.addPin = function(req, res, next) {
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.id;
+  salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
+    if(err) {
+      if (err.name && err.name === 'MongoError' && err.code === 11000) {
+        var e = new Error('InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+        //e.status = 409;
+        return next(e);
+      }
+
+      return next(err);
+    }
+
+    res.send(204);
+  });
+};
+
+/**
+ * Unpin a document
+ */
+module.exports.removePin = function(req, res, next) {
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.id;
+  salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       return next(err);
     }
 
-    res.render('app/pinned/' + req.deviceType + '.html', {
-      data: req.reqParams,
-      pins: pins
-    });
+    res.send(202);
   });
 };
 
@@ -165,7 +200,9 @@ module.exports.listProviders = function(req, res, next) {
  */
 module.exports.connectProvider = function(req, res, next) {
   if (!req.query.app_id) {
-    return next(new Error('Missing app_id query string.'));
+    var e = new Error('Missing app_id query string.');
+    //e.status = 409;
+    return next(e);
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

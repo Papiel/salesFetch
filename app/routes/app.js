@@ -4,7 +4,8 @@
 var appControllers = require('../controllers/app');
 var authorization = require('../middlewares/authorization');
 var uaParser = require('../middlewares/ua-parser');
-var validation = require('../middlewares/validation');
+var idIsObjectId = require('../middlewares/id-is-object-id.js');
+var requiresContext = require('../middlewares/requires-context.js');
 
 module.exports = function(app) {
   app.get('/app/context-search',
@@ -15,25 +16,25 @@ module.exports = function(app) {
   app.get('/app/pinned',
     authorization.requiresLogin,
     uaParser,
-    validation.requiresContext,
+    requiresContext,
     appControllers.pinned);
   app.get('/app/add-pin/:id',
     authorization.requiresLogin,
     uaParser,
-    validation.idIsObjectId,
-    validation.requiresContext,
+    idIsObjectId,
+    requiresContext,
     appControllers.addPin);
   app.get('/app/remove-pin/:id',
     authorization.requiresLogin,
     uaParser,
-    validation.idIsObjectId,
-    validation.requiresContext,
+    idIsObjectId,
+    requiresContext,
     appControllers.removePin);
 
   app.get('/app/documents/:id',
     authorization.requiresLogin,
     uaParser,
-    validation.idIsObjectId,
+    idIsObjectId,
     appControllers.documentDisplay);
   app.get('/app/providers',
     authorization.requiresLogin,

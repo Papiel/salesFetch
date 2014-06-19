@@ -13,8 +13,16 @@ var Organization = mongoose.model('Organization');
 
 var secureKey = require('../../config/configuration.js').secureKey;
 
+var userInfo = {
+  anyFetchId: 'anyFetchId',
+  SFDCId: 'SFDCId',
+  name: 'Walter White',
+  email: 'walter.white@breaking-bad.com',
+  anyFetchToken: 'anyFetchToken',
+  isAdmin: true
+};
 
-module.exports.requestBuilder = function (endpoint, context, env, cb) {
+module.exports.requestBuilder = function(endpoint, context, env, cb) {
   var createdOrg;
 
   async.waterfall([
@@ -28,17 +36,8 @@ module.exports.requestBuilder = function (endpoint, context, env, cb) {
       org.save(cb);
     }, function createUser(org, _, cb) {
       createdOrg = org;
-
-      var user = new User({
-        anyFetchId: 'anyFetchId',
-        SFDCId: 'SFDCId',
-        name: 'Walter White',
-        email: 'walter.white@breaking-bad.com',
-        anyFetchToken: 'anyFetchToken',
-        organization: org._id,
-        isAdmin: true
-      });
-
+      userInfo.organization = org._id;
+      var user = new User(userInfo);
       user.save(cb);
     }
   ], function(err, user) {
@@ -68,6 +67,11 @@ module.exports.requestBuilder = function (endpoint, context, env, cb) {
     var separator = endpoint.indexOf('?') !== -1 ? '&' : '?';
 
     var ret = endpoint + separator + 'data=' + encodeURIComponent(JSON.stringify(authObj));
+
     cb(null, ret);
   });
+};
+
+module.exports.getUser = function(cb) {
+  User.findOne( { email: userInfo.email }, cb);
 };

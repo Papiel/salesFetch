@@ -7,11 +7,11 @@ var activePinButton = function() {
 };
 
 var isTitlePinButton = function(elem) {
-  return ($(elem).attr('id') == "doc-pin");
+  return ($(elem).attr('id') === "doc-pin");
 };
 
 var isActivePinButton = function (elem) {
-  return (activePinButton() == elem);
+  return (activePinButton() === elem);
 };
 
 /**
@@ -41,7 +41,7 @@ var setPinnedStyle = function(elem, pinned) {
   } else {
     $(elem).removeClass('fa-star');
     $(elem).addClass('fa-star-o');
-  };
+  }
 };
 
 var setPinned = function(elem, pinned) {
@@ -50,7 +50,7 @@ var setPinned = function(elem, pinned) {
     setPinnedStyle(activePinButton(), pinned);
   } else {
     setPinnedStyle(elem, pinned);
-  };
+  }
 };
 
 
@@ -162,30 +162,34 @@ $('.pin-btn').click(function(e) {
   var isPinned = $(this).hasClass('fa-star');
   var docId;
 
+  var url;
+  var linker;
+  var urlWithData;
+
   if (isTitlePinButton(this)) {
     docId = $('.snippet.active .pin-btn').data('doc');
   } else {
     docId = $(this).data('doc');
-  };
+  }
   console.log(docId);
 
   if (isPinned) {
     setPinned(this, false);
 
-    var url = '/app/remove-pin/' + docId;
-    var linker = url.indexOf('?') !== -1 ? '&' : '?';
-    var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-    $.get(urlWithData, function(res) {
+    url = '/app/remove-pin/' + docId;
+    linker = url.indexOf('?') !== -1 ? '&' : '?';
+    urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+    $.get(urlWithData, function() {
       fetchPinnedDocuments();
     });
   } else {
     setPinned(this, true);
 
-    var url = '/app/add-pin/' + docId;
-    var linker = url.indexOf('?') !== -1 ? '&' : '?';
-    var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-    $.get(urlWithData, function(res) {
+    url = '/app/add-pin/' + docId;
+    linker = url.indexOf('?') !== -1 ? '&' : '?';
+    urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+    $.get(urlWithData, function() {
       fetchPinnedDocuments();
     });
-  };
+  }
 });

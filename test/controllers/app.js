@@ -1,11 +1,14 @@
 'use strict';
 
-require("should");
-
+var should = require('should');
 var async = require('async');
 var request = require('supertest');
+var rarity = require('rarity');
+var mongoose = require('mongoose');
+var Pin = mongoose.model('Pin');
 
 var app = require('../../app.js');
+
 var cleaner = require('../hooks/cleaner');
 var requestBuilder = require('../helpers/login').requestBuilder;
 var APIs = require('../helpers/APIs');
@@ -16,6 +19,14 @@ describe('<Application controller>', function() {
   beforeEach(function(done) {
     APIs.mount('fetchAPI', 'http://api.anyfetch.com', done);
   });
+
+  var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
+  var sampleContext = {
+    "templatedDisplay": "Chuck Norris",
+    "templatedQuery": "Chuck Norris",
+    "recordId": "0032000001DoV22AAF",
+    "recordType": "Contact"
+  };
 
   describe('/context-search page', function() {
     var endpoint = '/app/context-search';
@@ -101,8 +112,79 @@ describe('<Application controller>', function() {
     });
   });
 
+  describe('/add-pin endpoint', function() {
+    var invalidEndpoint = '/app/add-pin/aze';
+    var endpoint = '/app/add-pin/' + sampleDocumentId;
+
+    checkUnauthenticated(app, 'get', endpoint);
+
+    it("should err on invalid document ID", function(done) {
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder(invalidEndpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(409)
+            .end(cb);
+        }
+      ], done);
+    });
+
+    it("should add a pin", function(done) {
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(204)
+            .end(cb);
+        },
+        function searchMongo(res, cb) {
+          var hash = {
+            SFDCId: sampleContext.recordId,
+            anyFetchId: sampleDocumentId
+          };
+          Pin.findOne(hash, cb);
+        },
+        function pinShouldExist(pin, cb) {
+          should(pin).not.equal(null);
+          cb(null);
+        }
+      ], done);
+    });
+
+    it("should err on duplicate pin", function(done) {
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(204)
+            .end(rarity.carry(url, cb));
+        },
+        function sendRequestAgain(url, res, cb) {
+          request(app)
+            .get(url)
+            // TODO: change to 409 when proper error codes are implemented
+            .expect(500)
+            .end(function(err, res) {
+              should(err).equal(null);
+              res.text.toLowerCase().should.containDeep('already pinned');
+              cb(err);
+            });
+        }
+      ], done);
+    });
+  });
+
   describe('/document page', function() {
-    var endpoint = '/app/documents/5309c57d9ba7daaa265ffdc9';
+    var endpoint = '/app/documents/' + sampleDocumentId;
 
     checkUnauthenticated(app, 'get', endpoint);
 

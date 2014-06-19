@@ -38,7 +38,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
       // Batch call: /documents and /document_types
       var pages = [
-        '/documents?' + querystring.encode({ id: ids}),
+        '/documents?' + querystring.encode({ id: ids, sort: 'creationDate' }),
         '/document_types'
       ];
       request(fetchApiUrl).get('/batch')
@@ -52,7 +52,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       var documentTypes = batchRes.body[typesUrl];
       cb(null, documents, documentTypes);
     },
-    function(docs, documentTypes, cb) {
+    function applyTemplates(docs, documentTypes, cb) {
       docs = docs.map(function(doc) {
         var template;
         // TODO: refactor (also used in `findDocuments`)

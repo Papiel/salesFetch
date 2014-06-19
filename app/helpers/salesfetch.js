@@ -21,6 +21,11 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     },
     // Fetch all snippets in one call
     function fetchDocumentsAndDocumentTypes(pins, cb) {
+      // If no pin was found, abort
+      if(pins.length === 0) {
+        return finalCb(null, pins);
+      }
+
       // Fetch all snippets in one call
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;

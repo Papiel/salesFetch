@@ -14,6 +14,17 @@ var isActivePinButton = function (elem) {
   return (activePinButton() === elem);
 };
 
+var updateActiveDocument = function() {
+  var snippets = $('#pinned-list .snippet');
+  var docUrl = $('.snippet.active').data('url');
+
+  for (var i = 0; i < snippets.length; i += 1) {
+    if ($(snippets[i]).data('url') === docUrl) {
+      $(snippets[i]).addClass('active');
+    }
+  }
+};
+
 /**
  * fetchPinnedDocuments
  */
@@ -25,10 +36,10 @@ var isActivePinButton = function (elem) {
 
   $.get(urlWithData, function(res) {
     $('#pinned-list').html(res);
+    updateActiveDocument();
   });
 
  };
-
 fetchPinnedDocuments();
 
 /**
@@ -141,6 +152,8 @@ $(document).on('click', '.snippet', function(e) {
   var pinButton = $(this).find('.pin-btn')[0];
   var isPinned = $(pinButton).hasClass('fa-star');
   setPinned(pinButton, isPinned);
+
+  updateActiveDocument();
 
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';

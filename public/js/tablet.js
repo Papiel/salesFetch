@@ -2,6 +2,18 @@
 
 var data = window.data;
 
+var activePinButton = function() {
+  return $('.snippet.active .pin-btn')[0];
+};
+
+var isTitlePinButton = function(elem) {
+  return ($(elem).attr('id') == "doc-pin");
+};
+
+var isActivePinButton = function (elem) {
+  return (activePinButton() == elem);
+};
+
 /**
  * fetchPinnedDocuments
  */
@@ -33,13 +45,9 @@ var setPinnedStyle = function(elem, pinned) {
 };
 
 var setPinned = function(elem, pinned) {
-  var isTitlePinButton = ($(elem).attr('id') == "doc-pin");
-  var activePinButton = $('.snippet.active .pin-btn')[0];
-  var isActivePinButton = (activePinButton == elem);
-
-  if (isTitlePinButton || isActivePinButton) {
+  if (isTitlePinButton(elem) || isActivePinButton(elem)) {
     setPinnedStyle($('#doc-pin'), pinned);
-    setPinnedStyle(activePinButton, pinned);
+    setPinnedStyle(activePinButton(), pinned);
   } else {
     setPinnedStyle(elem, pinned);
   };
@@ -152,20 +160,32 @@ $('.pin-btn').click(function(e) {
   e.stopPropagation();
 
   var isPinned = $(this).hasClass('fa-star');
-  console.log(isPinned);
+  var docId;
 
+  if (isTitlePinButton(this)) {
+    docId = $('.snippet.active .pin-btn').data('doc');
+  } else {
+    docId = $(this).data('doc');
+  };
+  console.log(docId);
 
   if (isPinned) {
     setPinned(this, false);
 
-    var url = '#';
-    $.get(url, function(res) {
+    var url = '/app/remove-pin/' + docId;
+    var linker = url.indexOf('?') !== -1 ? '&' : '?';
+    var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+    $.get(urlWithData, function(res) {
+      fetchPinnedDocuments();
     });
   } else {
     setPinned(this, true);
 
-    var url = '#';
-    $.get(url, function(res) {
+    var url = '/app/add-pin/' + docId;
+    var linker = url.indexOf('?') !== -1 ? '&' : '?';
+    var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+    $.get(urlWithData, function(res) {
+      fetchPinnedDocuments();
     });
   };
 });

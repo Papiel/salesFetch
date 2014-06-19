@@ -48,6 +48,7 @@ var expressConfig = function(app) {
   app.set('views', config.root + '/app/views');
 
   // Static files
+  app.use('/img', express.static(config.root + '/public/lib/bootstrap/img'));
   app.use(express.static(config.root + '/public'));
 };
 
@@ -55,10 +56,11 @@ var errorsHandlers = function(app) {
 
   // This middleware is used to provide a next
   app.use(function(err, req, res, next) {
+    err.message = err.message || '';
 
     // Treat as 401
     if (err.message.indexOf('unauthorized') !== -1 || err.status === 401) {
-      return res.status(err.status).render('401', {
+      return res.status(err.status).render('errors/401', {
         error: 'Unauthorized',
         message: err.message
       });
@@ -74,15 +76,22 @@ var errorsHandlers = function(app) {
     }
 
     // Error page
-    return res.status(500).render('500', {
-        error: err.stack,
-        message: err.message
+    var code = err.code || err.status || 500;
+    // Use specific error page template (if available)
+    var page = config.errorsPath + '/error';
+    if (code in config.errorFiles) {
+      page = config.errorsPath + '/' + config.errorFiles[code];
+    }
+
+    return res.status(code).render(page, {
+      error: err.stack,
+      message: err.message
     });
   });
 
   // Assume 404 since no middleware responded
   app.use(function(req, res) {
-    return res.status(404).render('404', {
+    return res.status(404).render('errors/404', {
       url: req.originalUrl,
       error: 'Not found'
     });

@@ -4,8 +4,10 @@
 'use strict';
 
 var anyfetchHelpers = require('../helpers/anyfetch.js');
+var salesfetchHelpers = require('../helpers/salesfetch.js');
 var async = require("async");
 var _ = require("lodash");
+var moment = require("moment");
 
 /**
  * Display Context page
@@ -39,23 +41,114 @@ module.exports.contextSearch = function(req, res, next) {
     },
     function retrieveDocument(res, cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
-    }
+    },
+    // TODO: set the boolean `pinned` property on each document
+    //function markPinned(docs, cb) {
+    //  cb(null, docs);
+    //}
   ], function(err, documents) {
     if(err) {
       return next(err);
     }
 
-    if(req.query.start) {
-      return res.render('app/_snippet-list.html', {
-        documents: documents
-      });
-    }
+    var timeSlices = [{
+      label: 'Today',
+      maxDate: moment().startOf('day'),
+      data: []
+    }, {
+      label: 'Earlier this Week',
+      maxDate: moment().startOf('week'),
+      data: []
+    }, {
+      label: 'Earlier this Month',
+      maxDate: moment().startOf('month'),
+      data: []
+    }, {
+      label: 'Earlier this Year',
+      maxDate: moment().startOf('year'),
+      data: []
+    }, {
+      label: 'Last Year',
+      maxDate: moment().startOf('year').subtract('year', 1),
+      data: []
+    }, {
+      label: 'Older',
+      data: []
+    }];
 
-    res.render('app/context.html', {
+    documents.data.forEach(function(doc) {
+      var creationDate = moment(doc.creation_date);
+      var found = false;
+      for (var i = 0; i < timeSlices.length && !found; i+=1) {
+        if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+          found = true;
+          timeSlices[i].data.push(doc);
+        }
+
+        if(!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate)) {
+          found = true;
+          timeSlices[i].data.push(doc);
+        }
+      }
+    });
+    documents.faceted = timeSlices;
+
+    res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
       documents: documents,
       filters: filters
     });
+  });
+};
+
+/**
+ * Show pinned documents (only the pins, not the surrounding interface)
+ */
+module.exports.pinned = function(req, res, next) {
+  var sfdcId = req.reqParams.context.recordId;
+  
+  salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
+    if(err) {
+      next(err);
+    }
+
+    res.render('components/_pinned-list.html', { pins: pins });
+  });
+};
+
+/**
+ * Pin a document
+ */
+module.exports.addPin = function(req, res, next) {
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.id;
+  salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
+    if(err) {
+      if (err.name && err.name === 'MongoError' && err.code === 11000) {
+        var e = new Error('InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+        //e.status = 409;
+        return next(e);
+      }
+
+      return next(err);
+    }
+
+    res.send(204);
+  });
+};
+
+/**
+ * Unpin a document
+ */
+module.exports.removePin = function(req, res, next) {
+  var sfdcId = req.reqParams.context.recordId;
+  var anyFetchId = req.params.id;
+  salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
+    if(err) {
+      return next(err);
+    }
+
+    res.send(202);
   });
 };
 
@@ -70,7 +163,7 @@ module.exports.documentDisplay = function(req, res, next) {
       return next(err);
     }
 
-    res.render('app/show.html', {
+    res.render('app/full/' + req.deviceType + '.html', {
       data: reqParams,
       document: document
     });
@@ -82,23 +175,22 @@ module.exports.documentDisplay = function(req, res, next) {
  */
 module.exports.listProviders = function(req, res, next) {
   var reqParams = req.reqParams;
-
-  async.parallel([
-    function(cb) {
+  async.parallel({
+    providersInformation: function(cb) {
       anyfetchHelpers.getProviders(cb);
     },
-    function(cb) {
+    connectedProviders: function(cb) {
       anyfetchHelpers.getConnectedProviders(req.user, cb);
     }
-  ], function(err, data) {
+  }, function(err, data) {
     if (err) {
       return next(err);
     }
 
     res.render('app/providers.html', {
       data: reqParams,
-      providers: data[0],
-      connectProviders: data[1].body
+      providers: data.providersInformation,
+      connectProviders: data.connectedProviders.body
     });
   });
 };
@@ -108,7 +200,9 @@ module.exports.listProviders = function(req, res, next) {
  */
 module.exports.connectProvider = function(req, res, next) {
   if (!req.query.app_id) {
-    return next(new Error('Missing app_id query string.'));
+    var e = new Error('Missing app_id query string.');
+    //e.status = 409;
+    return next(e);
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

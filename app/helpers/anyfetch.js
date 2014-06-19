@@ -4,6 +4,8 @@ var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
 var crypto = require('crypto');
+var _ = require("lodash");
+var fs = require('fs');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
@@ -11,6 +13,24 @@ var User = mongoose.model('User');
 
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
+
+var cachedTemplates = {};
+var getOverridedTemplates = function() {
+  if (config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
+    return cachedTemplates;
+  }
+
+  var templatePath = __dirname + '/../views/templates';
+  fs.readdirSync(templatePath).forEach(function(file) {
+    var newPath = templatePath + '/' + file;
+    var templateConfig = require(newPath);
+
+    cachedTemplates[templateConfig.id] = templateConfig;
+  });
+
+  return cachedTemplates;
+};
+module.exports.getOverridedTemplates = getOverridedTemplates;
 
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
@@ -52,8 +72,15 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Render the templated data
       docReturn.data.forEach(function(doc) {
+        var relatedTemplate;
 
-        var relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        var overridedTemplate = getOverridedTemplates();
+        if (overridedTemplate[doc.document_type]) {
+          relatedTemplate = overridedTemplate[doc.document_type].templates.snippet;
+        } else {
+          relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        }
+
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
         doc.provider = providers[doc.provider].name;
@@ -87,7 +114,6 @@ module.exports.findDocuments = function(params, user, cb) {
       docReturn.providers = tempProviders;
 
       cb(null, docReturn);
-
     }
   ], cb);
 };
@@ -120,8 +146,17 @@ module.exports.findDocument = function(id, user, cb) {
       var providers = body[pages[1]];
       var docReturn = body[pages[2]];
 
-      var relatedTemplate = documentTypes[docReturn.document_type].templates.full;
-      var titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      var relatedTemplate;
+      var titleTemplate;
+
+      var overridedTemplate = getOverridedTemplates();
+      if (overridedTemplate[docReturn.document_type]) {
+        relatedTemplate = overridedTemplate[docReturn.document_type].templates.full;
+        titleTemplate = overridedTemplate[docReturn.document_type].templates.title;
+      } else {
+        relatedTemplate = documentTypes[docReturn.document_type].templates.full;
+        titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      }
 
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);

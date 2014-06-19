@@ -1,0 +1,20 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+  <link rel="stylesheet" type="text/css" href="/mobile.css">
+{% endblock %}
+
+{% block bare-js %}
+  <script type="text/javascript" src="/js/mobile.js"></script>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-default navbar-result" role="navigation">
+  <div class="container-fluid">
+    <a class="btn btn-default navbar-btn btn-return" data-url="/app/context-search"><span class="fa fa-angle-left"></span></a>
+  </div>
+</nav>
+
+{% autoescape false %}{{document.full_rendered}}{% endautoescape %}
+
+{% endblock %}

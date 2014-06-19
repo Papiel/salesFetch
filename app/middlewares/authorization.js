@@ -32,7 +32,7 @@ var authenticateUser = function(context, org, done) {
 /**
  * Generic require login routing middleware
  */
-exports.requiresLogin = function(req, res, next) {
+module.exports.requiresLogin = function(req, res, next) {
   var organization;
 
   if (!req.query.data) {

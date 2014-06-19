@@ -56,6 +56,7 @@ var errorsHandlers = function(app) {
 
   // This middleware is used to provide a next
   app.use(function(err, req, res, next) {
+    err.message = err.message || '';
 
     // Treat as 401
     if (err.message.indexOf('unauthorized') !== -1 || err.status === 401) {

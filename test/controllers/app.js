@@ -169,7 +169,7 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(204)
-            .end(rarity.carry(url, cb));
+            .end(rarity.carry([url], cb));
         },
         function sendRequestAgain(url, res, cb) {
           request(app)
@@ -212,7 +212,7 @@ describe('<Application controller>', function() {
           requestBuilder(endpoint, sampleContext, null, cb);
         },
         function getUserId(url, cb) {
-          getUser(rarity.carry(url, cb));
+          getUser(rarity.carry([url], cb));
         },
         function addPinByHand(url, user, cb) {
           var hash = {
@@ -229,7 +229,7 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(202)
-            .end(rarity.carryAndSlice(hash, 1, cb));
+            .end(rarity.carryAndSlice([hash], 1, cb));
         },
         function searchMongo(hash, cb) {
           Pin.findOne(hash, cb);

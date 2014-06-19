@@ -133,21 +133,20 @@ module.exports.findDocument = function(id, user, context, finalCb) {
   var batchParams = pages.map(encodeURIComponent).join('&pages=');
 
   async.waterfall([
-
     function sendBatchRequest(cb) {
       request(fetchApiUrl).get('/batch?pages=' + batchParams)
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
-        .end(cb);
+        .end(rarity.carry(pages, cb));
     },
-    function applyTemplate(res, cb) {
+    function applyTemplate(typesUrl, providersUrl, docsUrl, res, cb) {
       if (res.status === 401) {
         return cb(new Error('Invalid credentials'));
       }
 
       var body = res.body;
-      var documentTypes = body[pages[0]];
-      var providers = body[pages[1]];
-      var docReturn = body[pages[2]];
+      var documentTypes = body[typesUrl];
+      var providers = body[providersUrl];
+      var docReturn = body[docsUrl];
 
       var relatedTemplate;
       var titleTemplate;
@@ -170,16 +169,12 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       cb(null, docReturn);
     },
     function getPin(doc, cb) {
-      salesfetchHelpers.getPin(context.recordId, doc.id, rarity.carry(doc, cb));
+      salesfetchHelpers.getPin(context.recordId, doc.id, rarity.carry([doc], cb));
     },
     function markIdPinned(doc, pin, cb) {
-      doc.pinned = false;
-      if (pin) {
-        doc.pinned = true;
-      }
+      doc.pinned = !!pin;
       cb(null, doc);
     }
-
   ], finalCb);
 };
 

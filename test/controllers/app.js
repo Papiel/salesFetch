@@ -228,16 +228,14 @@ describe('<Application controller>', function() {
           request(app)
             .get(url)
             .expect(202)
-            .end(function(err) {
-              cb(err, hash);
-            });
+            .end(rarity.carryAndSlice(hash, 1, cb));
         },
         function searchMongo(hash, cb) {
           Pin.findOne(hash, cb);
         },
         function checkDeleted(pin, cb) {
           should(pin).equal(null);
-          cb(null);
+          cb();
         }
       ], done);
     });

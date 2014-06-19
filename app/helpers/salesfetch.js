@@ -35,11 +35,11 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         .query({ pages: pages })
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
         .expect(200)
-        .end(rarity.carry([ pages ], cb));
+        .end(rarity.carry(pages, cb));
     },
-    function extractRes(pages, batchRes, cb) {
-      var documents = batchRes.body[pages[0]].data;
-      var documentTypes = batchRes.body[pages[1]];
+    function extractRes(docUrl, typesUrl, batchRes, cb) {
+      var documents = batchRes.body[docUrl].data;
+      var documentTypes = batchRes.body[typesUrl];
       cb(null, documents, documentTypes);
     },
     function(docs, documentTypes, cb) {

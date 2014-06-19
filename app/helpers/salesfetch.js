@@ -13,11 +13,11 @@ var anyfetchHelpers = require('../helpers/anyfetch.js');
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
-module.exports.findPins = function(SFDCId, user, finalCb) {
+module.exports.findPins = function(sfdcId, user, finalCb) {
   // Retrieve documents pinned to that context
   async.waterfall([
     function findPin(cb) {
-      Pin.find({ SFDCId: SFDCId }, cb);
+      Pin.find({ SFDCId: sfdcId }, cb);
     },
     // Fetch all snippets in one call
     function fetchDocumentsAndDocumentTypes(pins, cb) {

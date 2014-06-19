@@ -121,6 +121,7 @@ if (!$('#timeline').find('.section-top.hidden').length) {
 $('.snippet').click(function(e) {
   e.preventDefault();
 
+  $('#doc-pin').removeClass('hidden');
   $('#empty-message').addClass('hidden');
   $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
 

@@ -1,6 +1,37 @@
 'use strict';
 
 var data = window.data;
+var attachedViewer = null;
+
+var goToLocation = function(window, url) {
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithData;
+};
+
+var displayFull = function(url) {
+  if (!attachedViewer) {
+    // Create a new viewer and display the right Url
+    attachedViewer = window.open(null,"_blank","toolbar=yes, scrollbars=yes, resizable=yes, width=800, height=1000");
+    attachedViewer.document.write('loading...');
+    goToLocation(attachedViewer, url);
+
+    var interval = window.setInterval(function() {
+        try {
+          if (attachedViewer === null || attachedViewer.closed) {
+            window.clearInterval(interval);
+            attachedViewer = null;
+          }
+        }
+        catch (e) {
+        }
+      }, 200);
+  } else {
+    attachedViewer.document.write('loading...');
+    goToLocation(attachedViewer, url);
+    attachedViewer.focus();
+  }
+};
 
 /**
  * fetchPinnedDocuments
@@ -45,7 +76,7 @@ var isViewer = window.opener ? true : false;
 $(".snippet-list").on('click', '.snippet', function(e) {
   e.preventDefault();
 
-  var url = $(this).data("documentUrl");
+  var url = $(this).data("url");
   if (!isViewer) {
     displayFull(url);
   }

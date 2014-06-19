@@ -15,7 +15,7 @@ var fetchApiUrl = config.fetchApiUrl;
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
-  var noPinMessage = 'No pin was found for this context';
+  var noPinError = new Error('No pin was found for this context');
 
   // Retrieve documents pinned to that context
   async.waterfall([
@@ -28,7 +28,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       // We use waterfall's err mechanism rather than calling `finalCb` directly
       // in order to avoid a memory leak
       if(pins.length === 0) {
-        return cb(new Error(noPinMessage), pins);
+        return cb(noPinError, pins);
       }
 
       // Fetch all snippets in one call
@@ -70,7 +70,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     }
   ], function(err, docs) {
     // See in `fetchDocumentsAndDocumentTypes` above
-    if (err.message === noPinMessage) {
+    if (err === noPinError) {
       err = null;
     }
     finalCb(err, docs);

@@ -10,7 +10,7 @@ var Pin = mongoose.model('Pin');
 var app = require('../../app.js');
 
 var cleaner = require('../hooks/cleaner');
-var salesfetchHelpers = require('../helpers/salesfetch.js')
+var salesfetchHelpers = require('../../app/helpers/salesfetch.js');
 var requestBuilder = require('../helpers/login').requestBuilder;
 var getUser = require('../helpers/login').getUser;
 var APIs = require('../helpers/APIs');
@@ -312,8 +312,24 @@ describe('<Application controller>', function() {
     });
 
     it("should mark a pinned document as pinned", function(done) {
-      // TODO
-      done();
+      async.waterfall([
+        function addPin(cb) {
+          var user = { id: sampleUserId };
+          cb = rarity.slice(1, cb);
+          salesfetchHelpers.addPin(sampleContext.recordId, sampleDocumentId, user, cb);
+        },
+        function buildRequest(cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(function(res) {
+              res.text.toLowerCase().should.containDeep("pinned");
+            })
+            .end(cb);
+        }
+      ], done);
     });
 
   });

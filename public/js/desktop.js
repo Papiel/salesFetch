@@ -36,6 +36,22 @@ var setPinned = function(elem, pinned) {
 	setPinnedStyle(elem, pinned);
 };
 
+/**
+ * Open documents URL in custom window
+ */
+var isViewer = window.opener ? true : false;
+
+// Handle the full preview loading
+$(".snippet-list").on('click', '.snippet', function(e) {
+  e.preventDefault();
+
+  var url = $(this).data("documentUrl");
+  if (!isViewer) {
+    displayFull(url);
+  }
+
+});
+
 
 /**
  * Pin & un-Pin docs

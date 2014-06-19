@@ -108,7 +108,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
         //e.status = 404;
         return cb(e);
       }
-      if(!pin.createdBy.organization.equals(user.organization)) {
+      if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
         e = new Error('You cannot delete a pin from another organization');
         //e.status = 403;
         return cb(e);

@@ -46,9 +46,9 @@ module.exports.findPins = function(SFDCId, user, finalCb) {
         // TODO: refactor (also used in `findDocuments`)
         var overidedTemplates = anyfetchHelpers.getOverridedTemplates();
         if (overidedTemplates[doc.document_type]) {
-          template = overidedTemplates[doc.document_type].templates.full;
+          template = overidedTemplates[doc.document_type].templates.snippet;
         } else {
-          template = documentTypes[doc.document_type].templates.full;
+          template = documentTypes[doc.document_type].templates.snippet;
         }
 
         doc.snippet_rendered = Mustache.render(template, doc.data);

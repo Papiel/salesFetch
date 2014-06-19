@@ -92,10 +92,10 @@ $("[data-url]").click(function(e) {
 /**
  * Hide filters
  */
-$(document).ready( function() {
-  if (!$('#timeline').find('.section-top.hidden').length) {
-    $('body').scrollTop(60);
-    $('.navbar').removeClass('navbar-hidden');
-    $('.navbar').addClass('navbar-fixed');
-  }
-});
+// $(document).ready( function() {
+//   if (!$('#timeline').find('.section-top.hidden').length) {
+//     $('body').scrollTop(60);
+//     $('.navbar').removeClass('navbar-hidden');
+//     $('.navbar').addClass('navbar-fixed');
+//   }
+// });

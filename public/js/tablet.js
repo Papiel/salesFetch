@@ -132,9 +132,9 @@ $('#left-toogle').click(function() {
 /**
 * Hide filters
 */
-if (!$('#timeline').find('.section-top.hidden').length) {
-  $('.snippet-list').scrollTop(60);
-}
+// if (!$('#timeline').find('.section-top.hidden').length) {
+//   $('.snippet-list').scrollTop(60);
+// }
 
 /**
  * Hide left bar on click snippet

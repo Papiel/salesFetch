@@ -185,7 +185,7 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe.only('/remove-pin endpoint', function() {
+  describe('/remove-pin endpoint', function() {
     var invalidEndpoint = '/app/remove-pin/aze';
     var endpoint = '/app/remove-pin/' + sampleDocumentId;
 

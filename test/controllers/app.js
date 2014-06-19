@@ -10,6 +10,7 @@ var Pin = mongoose.model('Pin');
 var app = require('../../app.js');
 
 var cleaner = require('../hooks/cleaner');
+var salesfetchHelpers = require('../helpers/salesfetch.js')
 var requestBuilder = require('../helpers/login').requestBuilder;
 var getUser = require('../helpers/login').getUser;
 var APIs = require('../helpers/APIs');
@@ -309,6 +310,12 @@ describe('<Application controller>', function() {
         }
       ], done);
     });
+
+    it("should mark a pinned document as pinned", function(done) {
+      // TODO
+      done();
+    });
+
   });
 
   describe('/providers page', function() {

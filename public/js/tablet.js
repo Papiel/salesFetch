@@ -118,7 +118,7 @@ if (!$('#timeline').find('.section-top.hidden').length) {
 /**
  * Hide left bar on click snippet
  */
-$('.snippet').click(function(e) {
+$(document).on('click', '.snippet', function(e) {
   e.preventDefault();
 
   $('#doc-pin').removeClass('hidden');
@@ -156,7 +156,7 @@ $('.snippet').click(function(e) {
 /**
  * Pin & un-Pin docs
  */
-$('.pin-btn').click(function(e) {
+$(document).on( 'click', '.pin-btn', function(e) {
   e.preventDefault();
   e.stopPropagation();
 
@@ -172,7 +172,6 @@ $('.pin-btn').click(function(e) {
   } else {
     docId = $(this).data('doc');
   }
-  console.log(docId);
 
   if (isPinned) {
     setPinned(this, false);

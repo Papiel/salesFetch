@@ -6,10 +6,13 @@ var async = require('async');
 var crypto = require('crypto');
 var _ = require("lodash");
 var fs = require('fs');
+var rarity = require('rarity');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
+
+var salesfetchHelpers = require('./salesfetch.js');
 
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
@@ -121,27 +124,27 @@ module.exports.findDocuments = function(params, user, cb) {
 /**
  * Find and return a single templated document
  */
-module.exports.findDocument = function(id, user, cb) {
+module.exports.findDocument = function(id, user, context, finalCb) {
   var pages = [
     '/document_types',
     '/providers',
     '/documents/' + id
   ];
-
   var batchParams = pages.map(encodeURIComponent).join('&pages=');
-  request(fetchApiUrl).get('/batch?pages=' + batchParams)
-    .set('Authorization', 'Bearer ' + user.anyFetchToken)
-    .end( function(err, res) {
-      if (err) {
-        return cb(err);
-      }
 
+  async.waterfall([
+
+    function sendBatchRequest(cb) {
+      request(fetchApiUrl).get('/batch?pages=' + batchParams)
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .end(cb);
+    },
+    function applyTemplate(res, cb) {
       if (res.status === 401) {
         return cb(new Error('Invalid credentials'));
       }
 
       var body = res.body;
-
       var documentTypes = body[pages[0]];
       var providers = body[pages[1]];
       var docReturn = body[pages[2]];
@@ -165,7 +168,19 @@ module.exports.findDocument = function(id, user, cb) {
       docReturn.document_type = documentTypes[docReturn.document_type].name;
 
       cb(null, docReturn);
-    });
+    },
+    function getPin(doc, cb) {
+      salesfetchHelpers.getPin(context.recordId, doc.id, rarity.carry(doc, cb));
+    },
+    function markIdPinned(doc, pin, cb) {
+      doc.pinned = false;
+      if (pin) {
+        doc.pinned = true;
+      }
+      cb(null, doc);
+    }
+
+  ], finalCb);
 };
 
 

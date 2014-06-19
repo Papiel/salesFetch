@@ -287,7 +287,7 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/document page', function() {
+  describe('/documents/:id page', function() {
     var endpoint = '/app/documents/' + sampleDocumentId;
 
     checkUnauthenticated(app, 'get', endpoint);
@@ -295,7 +295,7 @@ describe('<Application controller>', function() {
     it("should render the full template", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, null, null, cb);
+          requestBuilder(endpoint, sampleContext, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)

@@ -114,6 +114,30 @@ describe('<Application controller>', function() {
     });
   });
 
+  describe('/pinned page', function() {
+    var endpoint = '/app/pinned';
+
+    checkUnauthenticated(app, 'get', endpoint);
+
+    it("should be empty when there's no pin", function(done) {
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(200)
+            .end(cb);
+        },
+        function testNoContent(res, cb) {
+          res.text.trim().should.be.empty;
+          cb();
+        }
+      ], done);
+    });
+  });
+
   describe('/add-pin endpoint', function() {
     var invalidEndpoint = '/app/add-pin/aze';
     var endpoint = '/app/add-pin/' + sampleDocumentId;

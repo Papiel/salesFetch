@@ -45,7 +45,6 @@ module.exports.findPins = function(SFDCId, user, finalCb) {
         var template;
         // TODO: refactor (also used in `findDocuments`)
         var overidedTemplates = anyfetchHelpers.getOverridedTemplates();
-        console.log(doc.document_type);
         if (overidedTemplates[doc.document_type]) {
           template = overidedTemplates[doc.document_type].templates.snippet;
         } else {

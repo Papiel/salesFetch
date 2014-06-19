@@ -14,13 +14,23 @@ var isActivePinButton = function (elem) {
   return (activePinButton() === elem);
 };
 
-var updateActiveDocument = function() {
-  var snippets = $('#pinned-list .snippet');
-  var docUrl = $('.snippet.active').data('url');
+var updateActiveDocument = function(docUrl) {
+  var pinnedSnippets = $('#pinned-list .snippet');
+  var timelineSnippets = $('#timeline .snippet');
 
-  for (var i = 0; i < snippets.length; i += 1) {
-    if ($(snippets[i]).data('url') === docUrl) {
-      $(snippets[i]).addClass('active');
+  var found = false;
+  for (var i = 0; i < pinnedSnippets.length && !found; i += 1) {
+    if ($(pinnedSnippets[i]).data('url') === docUrl) {
+      $(pinnedSnippets[i]).addClass('active');
+      found = true;
+    }
+  }
+
+  found = false;
+  for (var i = 0; i < timelineSnippets.length && !found; i += 1) {
+    if ($(timelineSnippets[i]).data('url') === docUrl) {
+      $(timelineSnippets[i]).addClass('active');
+      found = true;
     }
   }
 };
@@ -153,7 +163,7 @@ $(document).on('click', '.snippet', function(e) {
   var isPinned = $(pinButton).hasClass('fa-star');
   setPinned(pinButton, isPinned);
 
-  updateActiveDocument();
+  updateActiveDocument($(this).data('url'));
 
   var url = $(this).data("url");
   var linker = url.indexOf('?') !== -1 ? '&' : '?';

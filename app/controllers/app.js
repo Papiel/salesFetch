@@ -41,6 +41,9 @@ module.exports.contextSearch = function(req, res, next) {
     },
     function retrieveDocument(res, cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
+    },
+    function markPinned(documents, cb) {
+      salesfetchHelpers.markIfPinned(reqParams.context.recordId, documents, cb);
     }
   ], function(err, documents) {
     if(err) {

@@ -14,6 +14,9 @@ var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
+  // This is not a failure, just a particular case that we take into account
+  var noPinError = new Error('No pin was found for this context');
+
   // Retrieve documents pinned to that context
   async.waterfall([
     function findPin(cb) {
@@ -22,8 +25,10 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     // Fetch all snippets in one call
     function fetchDocumentsAndDocumentTypes(pins, cb) {
       // If no pin was found, abort
+      // We use waterfall's err mechanism rather than calling `finalCb` directly
+      // in order to avoid a memory leak
       if(pins.length === 0) {
-        return finalCb(null, pins);
+        return cb(noPinError, pins);
       }
 
       // Fetch all snippets in one call
@@ -63,7 +68,13 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       });
       cb(null, docs);
     }
-  ], finalCb);
+  ], function(err, docs) {
+    // See in `fetchDocumentsAndDocumentTypes` above
+    if (err === noPinError) {
+      err = null;
+    }
+    finalCb(err, docs);
+  });
 };
 
 /**

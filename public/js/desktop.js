@@ -92,7 +92,7 @@ $(document).on( 'click', '.pin-btn', function(e) {
   e.stopPropagation();
 
   var isPinned = $(this).hasClass('fa-star');
-  var docId = docId = $(this).data('doc');
+  var docId = $(this).data('doc');
 
   var url;
   var linker;
@@ -118,3 +118,7 @@ $(document).on( 'click', '.pin-btn', function(e) {
     });
   }
 });
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  fetchPinnedDocuments();
+})

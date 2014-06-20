@@ -19,7 +19,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
   // Retrieve documents pinned to that context
   async.waterfall([
-    function findPin(cb) {
+    function searchMongo(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
     // Fetch all snippets in one call
@@ -38,7 +38,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
       // Batch call: /documents and /document_types
       var pages = [
-        '/documents?' + querystring.encode({ id: ids}),
+        '/documents?' + querystring.encode({ id: ids, sort: '-creationDate' }),
         '/document_types'
       ];
       request(fetchApiUrl).get('/batch')
@@ -52,7 +52,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       var documentTypes = batchRes.body[typesUrl];
       cb(null, documents, documentTypes);
     },
-    function(docs, documentTypes, cb) {
+    function applyTemplates(docs, documentTypes, cb) {
       docs = docs.map(function(doc) {
         var template;
         // TODO: refactor (also used in `findDocuments`)
@@ -63,6 +63,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
           template = documentTypes[doc.document_type].templates.full;
         }
 
+        doc.pinned = true;
         doc.snippet_rendered = Mustache.render(template, doc.data);
         return doc;
       });

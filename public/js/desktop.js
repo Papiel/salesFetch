@@ -135,6 +135,6 @@ $(document).on( 'click', '.pin-btn', function(e) {
   }
 });
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+$('a[data-toggle="tab"]').on('shown.bs.tab', function () {
   fetchPinnedDocuments();
-})
+});

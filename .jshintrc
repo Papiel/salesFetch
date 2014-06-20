@@ -1,5 +1,3 @@
-
-
 {
   "bitwise"       : true,
   "curly"         : true,
@@ -25,15 +23,15 @@
   "es5"           : false,
   "esnext"        : false,
   "evil"          : false,
-  "expr"          : false,
+  "expr"          : true,
   "forin"         : false,
   "funcscope"     : false,
   "globalstrict"  : false,
-  "quotmark"      : false,
   "iterator"      : false,
   "lastsemic"     : false,
   "laxbreak"      : false,
   "laxcomma"      : false,
+  "quotmark"      : false,
   "multistr"      : false,
   "onecase"       : false,
   "proto"         : false,
@@ -66,7 +64,6 @@
   "predef"        : [
     "describe",
     "it",
-    "should",
     "after",
     "before",
     "beforeEach",
@@ -76,4 +73,3 @@
   "maxstatements" : 40,
   "maxcomplexity" : 15
 }
-

@@ -63,6 +63,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
           template = documentTypes[doc.document_type].templates.full;
         }
 
+        doc.pinned = true;
         doc.snippet_rendered = Mustache.render(template, doc.data);
         return doc;
       });

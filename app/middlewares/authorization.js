@@ -47,7 +47,6 @@ module.exports.requiresLogin = function(req, res, next) {
       }
 
       Organization.findOne({SFDCId: data.organization.id}, cb);
-      console.log(data.organization.id);
     },
     function checkRequestValidity(org, cb){
       organization = org;

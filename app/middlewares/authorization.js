@@ -50,7 +50,6 @@ module.exports.requiresLogin = function(req, res, next) {
       console.log(data.organization.id);
     },
     function checkRequestValidity(org, cb){
-      console.log(org);
       organization = org;
       if (!org) {
         return next({message: "No matching company has been found", status: 401});

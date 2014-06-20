@@ -229,7 +229,7 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        var e = new Error(res.body);
+        var e = new Error(res.text);
         e.statusCode = res.status;
         return cb(e);
       }
@@ -243,7 +243,7 @@ module.exports.initAccount = function(data, done) {
     },
     function createSubCompany(res, cb) {
       if(res.status !== 200){
-        var e = new Error(res.body);
+        var e = new Error(res.text);
         e.statusCode = res.status;
         return cb(e);
       }
@@ -305,7 +305,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new express.errors.NotFound('No admin for the comapny has been found'));
+        return cb(new express.errors.NotFound('No admin for the company has been found'));
       }
 
       var adminToken = adminUser.anyFetchToken;
@@ -320,7 +320,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        var e = new Error(res.body);
+        var e = new Error(res.text);
         e.statusCode = res.status;
         return cb(e);
       }
@@ -334,7 +334,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function saveLocalUser(res, cb) {
       if(res.status !== 200){
-        var e = new Error(res.body);
+        var e = new Error(res.text);
         e.statusCode = res.status;
         return cb(e);
       }

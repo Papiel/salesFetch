@@ -1,5 +1,7 @@
 'use strict';
 
+var express = require('express');
+
 var isMongoId = require('../helpers/is-mongo-id.js');
 
 /**
@@ -7,16 +9,11 @@ var isMongoId = require('../helpers/is-mongo-id.js');
  */
 module.exports = function idIsObjectId(req, res, next) {
   var id = req.params.id;
-  var e;
   if (!id) {
-    e = new Error('Missing `id` parameter in URL');
-    e.status = 409;
-    return next(e);
+    return next(new express.errors.MissingArgument('Missing `id` parameter in URL'));
   }
   if(!isMongoId(id)) {
-    e = new Error(id + ' is not a valid MongoDB ObjectId');
-    e.status = 409;
-    return next(e);
+    return next(new express.errors.InvalidArgument(id + ' is not a valid MongoDB ObjectId'));
   }
 
   next();

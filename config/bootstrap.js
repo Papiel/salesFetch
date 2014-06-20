@@ -53,43 +53,28 @@ var expressConfig = function(app) {
 };
 
 var errorsHandlers = function(app) {
-
   // This middleware is used to provide a next
   app.use(function(err, req, res, next) {
-    err.message = err.message || '';
-
-    // Treat as 401
-    if (err.message.indexOf('unauthorized') !== -1 || err.status === 401) {
-      return res.status(err.status).render('errors/401', {
-        error: 'Unauthorized',
-        message: err.message
-      });
-    }
-
-    // Treat as 404
-    if (err.message.indexOf('not found') !== -1 || err.status === 404) {
-      next();
-    }
 
     if (config.env !== 'test') {
       console.error(err.stack);
     }
 
     // Error page
-    var code = err.code || err.status || 500;
+    var code = err.statusCode || err.status || err.code || 500;
     // Use specific error page template (if available)
     var page = config.errorsPath + '/error';
     if (code in config.errorFiles) {
       page = config.errorsPath + '/' + config.errorFiles[code];
     }
-
     return res.status(code).render(page, {
       error: err.stack,
-      message: err.message
+      message: err.message,
+      url: req.originalUrl // Used in 404 error
     });
   });
 
-  // Assume 404 since no middleware responded
+  // Default error: 404 (no other middleware responded)
   app.use(function(req, res) {
     return res.status(404).render('errors/404', {
       url: req.originalUrl,
@@ -103,7 +88,7 @@ var errorsHandlers = function(app) {
 };
 
 module.exports = function() {
-  // Check if fetchApi token is set before continuing !
+  // Check if fetchApi token is set before continuing!
   if (config.env !== 'test' && !config.fetchApiCreds) {
     console.log('Please provide a FetchApi token before launching the server.');
     process.exit(1);
@@ -123,7 +108,10 @@ module.exports = function() {
     require(routesPath + '/' + route)(app);
   });
 
-  // Apply errors if routing fail or not match
+  // Require errors
+  autoLoad(__dirname + '/../app/errors');
+
+  // Apply errors if routing fails or doesn't match
   errorsHandlers(app);
 
   return app;

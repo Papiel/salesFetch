@@ -1,5 +1,6 @@
 'use strict';
 
+var express = require('express');
 var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
@@ -60,7 +61,7 @@ module.exports.findDocuments = function(params, user, cb) {
     },
     function templateResults(res, cb) {
       if (res.status === 401) {
-        return cb(new Error('Invalid credentials'));
+        return cb(new express.errors.Unauthorized('Invalid credentials'));
       }
 
       var body = res.body;
@@ -140,7 +141,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
     },
     function applyTemplate(typesUrl, providersUrl, docsUrl, res, cb) {
       if (res.status === 401) {
-        return cb(new Error('Invalid credentials'));
+        return cb(new express.errors.Unauthorized('Invalid credentials'));
       }
 
       var body = res.body;
@@ -228,7 +229,9 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.anyFetchId = res.body.id;
@@ -240,7 +243,9 @@ module.exports.initAccount = function(data, done) {
     },
     function createSubCompany(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.token = res.body.token;
@@ -300,7 +305,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new Error('No admin for the comapny has been found'));
+        return cb(new express.errors.NotFound('No admin for the company has been found'));
       }
 
       var adminToken = adminUser.anyFetchToken;
@@ -315,7 +320,9 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.anyFetchId = res.body.id;
@@ -327,7 +334,9 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function saveLocalUser(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
       var userToken = res.body.token;
 

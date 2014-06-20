@@ -1,14 +1,14 @@
 'use strict';
 
+var request = require('supertest');
 var should = require('should');
 var async = require('async');
-var request = require('supertest');
 var rarity = require('rarity');
+
 var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 
 var app = require('../../app.js');
-
 var cleaner = require('../hooks/cleaner');
 var salesfetchHelpers = require('../../app/helpers/salesfetch.js');
 var requestBuilder = require('../helpers/login').requestBuilder;
@@ -105,7 +105,7 @@ describe('<Application controller>', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            .expect(500)
+            .expect(409)
             .expect(function(res) {
               res.text.should.containDeep("a template is missing");
             })
@@ -198,8 +198,7 @@ describe('<Application controller>', function() {
         function sendRequestAgain(url, res, cb) {
           request(app)
             .get(url)
-            // TODO: change to 409 when proper error codes are implemented
-            .expect(500)
+            .expect(409)
             .end(function(err, res) {
               should(err).equal(null);
               res.text.toLowerCase().should.containDeep('already pinned');
@@ -273,8 +272,7 @@ describe('<Application controller>', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            // TODO: change to 409 when proper error codes are implemented
-            .expect(500)
+            .expect(404)
             .end(function(err, res) {
               res.text.toLowerCase().should.containDeep('not pinned');
               cb(err);
@@ -301,8 +299,7 @@ describe('<Application controller>', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            // TODO: change to 403 when proper error codes are implemented
-            .expect(500)
+            .expect(403)
             .end(function(err, res) {
               res.text.toLowerCase().should.containDeep('cannot delete');
               cb(err);
@@ -398,7 +395,7 @@ describe('<Application controller>', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            .expect(500)
+            .expect(409)
             .expect(function(res) {
               res.text.should.containDeep("app_id");
             })

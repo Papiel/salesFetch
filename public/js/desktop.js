@@ -49,6 +49,22 @@ var displayFull = function(url) {
  };
 fetchPinnedDocuments();
 
+/**
+ * fetchPinnedDocuments
+ */
+ var fetchProviders = function() {
+
+  var url = '/app/providers';
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+
+  $.get(urlWithData, function(res) {
+    $('#provider-list').html(res);
+  });
+
+ };
+fetchProviders();
+
 
 /**
  * Switch class to pin documents

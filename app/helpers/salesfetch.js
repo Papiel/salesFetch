@@ -19,7 +19,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
   // Retrieve documents pinned to that context
   async.waterfall([
-    function findPin(cb) {
+    function searchMongo(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
     // Fetch all snippets in one call
@@ -38,7 +38,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
       // Batch call: /documents and /document_types
       var pages = [
-        '/documents?' + querystring.encode({ id: ids, sort: 'creationDate' }),
+        '/documents?' + querystring.encode({ id: ids, sort: '-creationDate' }),
         '/document_types'
       ];
       request(fetchApiUrl).get('/batch')

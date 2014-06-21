@@ -1,10 +1,10 @@
 'use strict';
 
+var express = require('express');
+
 module.exports = function requiresContext(req, res, next) {
   if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    var e = new Error('Missing or incomplete `context` argument in querystring');
-    //e.status = 409;
-    return next(e);
+    return next(new express.errors.MissingArgument('Missing or incomplete `context` argument in querystring'));
   }
 
   next();

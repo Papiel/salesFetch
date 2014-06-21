@@ -3,11 +3,13 @@
  */
 'use strict';
 
-var anyfetchHelpers = require('../helpers/anyfetch.js');
-var salesfetchHelpers = require('../helpers/salesfetch.js');
+var express = require("express");
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment");
+
+var anyfetchHelpers = require('../helpers/anyfetch.js');
+var salesfetchHelpers = require('../helpers/salesfetch.js');
 
 /**
  * Display Context page
@@ -16,7 +18,7 @@ module.exports.contextSearch = function(req, res, next) {
   var reqParams = req.reqParams;
 
   if(!reqParams.context || !reqParams.context.templatedQuery || !reqParams.context.templatedDisplay) {
-    return next(new Error('Check your context profiler configuration, a template is missing.'));
+    return next(new express.errors.MissingArgument('Check your context profiler configuration, a template is missing.'));
   }
 
   var params = {
@@ -124,9 +126,7 @@ module.exports.addPin = function(req, res, next) {
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
-        var e = new Error('InvalidArgument: the AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
-        //e.status = 409;
-        return next(e);
+        return next(new express.errors.InvalidArgument('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId));
       }
 
       return next(err);
@@ -199,9 +199,7 @@ module.exports.listProviders = function(req, res, next) {
  */
 module.exports.connectProvider = function(req, res, next) {
   if (!req.query.app_id) {
-    var e = new Error('Missing app_id query string.');
-    //e.status = 409;
-    return next(e);
+    return next(new express.errors.MissingArgument('Missing app_id query string.'));
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

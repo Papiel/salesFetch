@@ -1,5 +1,6 @@
 'use strict';
 
+var express = require('express');
 var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
@@ -15,7 +16,7 @@ var fetchApiUrl = config.fetchApiUrl;
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
-  var noPinError = new Error('No pin was found for this context');
+  var noPinError = new express.errors.NotFound('No pin was found for this context');
 
   // Retrieve documents pinned to that context
   async.waterfall([
@@ -154,16 +155,11 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
          .exec(cb);
     },
     function checkPin(pin, cb) {
-      var e;
       if(!pin) {
-        e = new Error('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId);
-        //e.status = 404;
-        return cb(e);
+        return cb(new express.errors.NotFound('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
       }
       if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
-        e = new Error('You cannot delete a pin from another organization');
-        //e.status = 403;
-        return cb(e);
+        return cb(new express.errors.Forbidden('You cannot delete a pin from another organization'));
       }
 
       cb(null, pin);

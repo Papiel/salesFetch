@@ -107,7 +107,7 @@ module.exports.contextSearch = function(req, res, next) {
  */
 module.exports.pinned = function(req, res, next) {
   var sfdcId = req.reqParams.context.recordId;
-  
+
   salesfetchHelpers.findPins(sfdcId, req.user, function(err, pins) {
     if(err) {
       next(err);

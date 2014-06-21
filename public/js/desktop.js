@@ -138,3 +138,13 @@ $(document).on( 'click', '.pin-btn', function(e) {
 $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
   fetchPinnedDocuments();
 });
+
+/**
+ * Provider linking
+ */
+$('#provider-list').on( 'click', '.link', function(e) {
+  e.preventDefault();
+  var url = $(this).attr("href");
+  var attachedViewer = window.open(null,"_blank","toolbar=yes, scrollbars=yes, resizable=yes, width=800, height=1000");
+  goToLocation(attachedViewer, url);
+});

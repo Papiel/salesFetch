@@ -33,7 +33,6 @@ var displayFull = function(url) {
   }
 };
 
-
 /**
  * Open documents URL in custom window
  */

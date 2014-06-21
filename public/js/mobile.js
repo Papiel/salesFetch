@@ -49,7 +49,6 @@ $(window).scroll(function() {
   } else if(newPosition === 0) {
     $('.navbar').removeClass('navbar-fixed');
   }
-
   lastPostion = $(window).scrollTop();
 });
 
@@ -89,3 +88,14 @@ $("[data-url]").click(function(e) {
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   window.location = urlWithData;
 });
+
+/**
+ * Hide filters
+ */
+// $(document).ready( function() {
+//   if (!$('#timeline').find('.section-top.hidden').length) {
+//     $('body').scrollTop(60);
+//     $('.navbar').removeClass('navbar-hidden');
+//     $('.navbar').addClass('navbar-fixed');
+//   }
+// });

@@ -1,5 +1,12 @@
-{% if document.pinned %}
-  <span class="pinned"></span>
-{% endif %}
+{% autoescape false %}
 
-{% autoescape false %}{{document.provider}} <br />{{document.full_rendered}}{% endautoescape %}
+<p class="full-header">
+	<span class="doc-type">{{document.document_type}}</span>
+	 from
+	<span class="provider">{{document.provider}}</span>
+</p>
+<hr>
+<div class="doc-content">
+{{document.full_rendered}}
+</div>
+{% endautoescape %}

@@ -59,13 +59,14 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         // TODO: refactor (also used in `findDocuments`)
         var overridedTemplates = anyfetchHelpers.getOverridedTemplates();
         if (overridedTemplates[doc.document_type]) {
-          template = overridedTemplates[doc.document_type].templates.full;
+          template = overridedTemplates[doc.document_type].templates.snippet;
         } else {
-          template = documentTypes[doc.document_type].templates.full;
+          template = documentTypes[doc.document_type].templates.snippet;
         }
 
         doc.pinned = true;
         doc.snippet_rendered = Mustache.render(template, doc.data);
+        doc.document_type = documentTypes[doc.document_type].name;
         return doc;
       });
       cb(null, docs);

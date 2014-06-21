@@ -57,6 +57,7 @@ module.exports.findDocuments = function(params, user, cb) {
 
       request(fetchApiUrl).get(batchUrl)
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
         .end(cb);
     },
     function templateResults(res, cb) {

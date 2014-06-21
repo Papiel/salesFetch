@@ -15,7 +15,7 @@ module.exports.init = function(req, res, next) {
   async.waterfall([
     function checkParams(cb) {
       var data = req.body;
-      if (!data.user || !data.organization) {
+      if (!data.user || !data.organization) {
         return cb(new express.errors.MissingArgument('The init account should provide user and org informations'));
       }
 

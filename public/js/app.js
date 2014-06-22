@@ -119,7 +119,7 @@ window.salesFetchModule = (function() {
    * @params {String} url URL to visit
    */
   ret.goTo = function(url) {
-    window.location(_setDataInUrl(url));
+    window.location = _setDataInUrl(url);
   };
 
   return ret;

@@ -1,6 +1,6 @@
 'use strict';
 
-var data = window.data;
+var salesFetch = window.salesFetchModule.init();
 
 /**
  *  Left panel management
@@ -67,35 +67,52 @@ $("#right-panel").on('click', '.dismiss', function(e) {
 
 $("#right-panel").on('click', '.execute', function(e) {
   e.preventDefault();
-
-  // Reload the page with right parameters
   location.reload();
 });
 
 /**
- * Navigation
+ * Show full
  */
-$("span.info").click(function(e) {
+$("body").on('click', '[data-url]', function(e) {
   e.preventDefault();
-  showLeftPanel("<h1>Fake meta data</h1>");
-});
-
-$("[data-url]").click(function(e) {
-  e.preventDefault();
-
   var url = $(this).data("url");
-  var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithData;
+  salesFetch.goTo(url);
 });
 
-/**
- * Hide filters
- */
-// $(document).ready( function() {
-//   if (!$('#timeline').find('.section-top.hidden').length) {
-//     $('body').scrollTop(60);
-//     $('.navbar').removeClass('navbar-hidden');
-//     $('.navbar').addClass('navbar-fixed');
-//   }
-// });
+var isLoading = false;
+// Can load more if 20 results templated in the rendred HTML
+var canLoadMore = $('#timeline .snippet').length === 20;
+
+var appendSnippets = function(data) {
+  var convertedData = $(data);
+  canLoadMore = $('.snippet', data).length === 20;
+
+  // Check if recieved snippets need to be append in the the last section
+  var firstRetrievedTimeSlice = $('#timeline .section-header legend', convertedData).first().innerHTML;
+  var lastTimeSlice = $('#timeline .section-header legend').last().innerHTML;
+
+  if (firstRetrievedTimeSlice === lastTimeSlice) {
+    var sameTimeSnippets = $('.snippet', convertedData.first());
+    $('#timeline  .section-content').last().append(sameTimeSnippets);
+    convertedData = convertedData.slice(1);
+  }
+
+  // Append the remaining snippets
+  $('#timeline .snippet-list').append(convertedData);
+};
+
+$(window).bind('scroll', function() {
+  if($(window).scrollTop() + $(window).height() > $(document).height() - 100 && !isLoading && canLoadMore) {
+    isLoading = true;
+    var start = $('#timeline .snippet').length;
+
+    var loader = $("#loading-more").html();
+    $('#timeline .snippet-list').append(loader);
+
+    salesFetch.getContextSearch(start, function(data) {
+      isLoading = false;
+      $('#timeline .loader').remove();
+      appendSnippets(data);
+    });
+  }
+});

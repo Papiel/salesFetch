@@ -1,6 +1,6 @@
 'use strict';
 
-var data = window.data;
+var salesFetch = window.salesFetchModule.init();
 
 var activePinButton = function() {
   return $('.snippet.active .pin-btn')[0];
@@ -39,16 +39,10 @@ var updateActiveDocument = function(docUrl) {
  * fetchPinnedDocuments
  */
  var fetchPinnedDocuments = function() {
-
-  var url = '/app/pinned';
-  var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-
-  $.get(urlWithData, function(res) {
+  salesFetch.getPinnedDocuments(0, function(res) {
     $('#pinned-list').html(res);
     updateActiveDocument();
   });
-
  };
 fetchPinnedDocuments();
 
@@ -117,9 +111,7 @@ $("#left-panel").on('click', '.execute', function(e) {
   }
 
   var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
-  var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithData;
+  salesFetch.goTo(url);
 });
 
 /**

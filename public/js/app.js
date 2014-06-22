@@ -5,8 +5,8 @@ var data = window.data;
 
 var goToLocation = function(window, url) {
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithdata = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithdata;
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithData;
 };
 
 var displayFull = function(url) {
@@ -33,7 +33,6 @@ var displayFull = function(url) {
   }
 };
 
-
 /**
  * Open documents URL in custom window
  */
@@ -44,7 +43,7 @@ $(function() {
     var isOnMobile = data.env.deviseType === "mobile";
 
     // Handle the full preview loading
-    $("#snippet-list").on('click', '[data-document-url]', function(e) {
+    $(".snippet-list").on('click', '[data-document-url]', function(e) {
       e.preventDefault();
 
       var url = $(this).data("documentUrl");

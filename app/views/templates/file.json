@@ -1,0 +1,9 @@
+{
+    "id": "5252ce4ce4cfcd16f55cfa3b",
+    "name": "file",
+    "templates": {
+        "snippet": "<h4 class='title'>{{{ title }}}</h4>\n  <pre>{{{ path }}}</pre>",
+        "full": "<article>\n  <h1>{{{ title }}}</h1>\n  </article>\n",
+        "title": "{{ title }}"
+    }
+}

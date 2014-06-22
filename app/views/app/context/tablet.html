@@ -1,0 +1,50 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+<link rel="stylesheet" type="text/css" href="/tablet.css">
+{% endblock %}
+
+{% block bare-js %}
+  <script type="text/javascript" src="/js/tablet.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="left-panel" class="active">
+  {% include '../../components/_switch-navbar.html' %}
+  <div class="tab-content">
+    <div class="tab-pane active" id="timeline">
+      <div class="tab-container snippet-list">
+        {% include '../../components/_snippets-list.html' %}
+      </div>
+      <div id="loading-more" class="hidden">
+        <div class="loader">
+          <img src="/img/ajax-loader.gif">
+          loading more
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="pinned">
+      {% include '../../components/_pinned-tab.html' %}
+    </div>
+    <div class="tab-pane" id="search">
+      {% include '../../components/_search-tab.html' %}
+    </div>
+  </div>
+  <div id="left-toogle">&#8942;</div>
+</div>
+
+
+<div id="right-panel">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <a href="#" id="doc-pin" class="btn navbar-btn pull-right fa fa-star-o pin-btn hidden"></a>
+      <p id="doc-title">Select a document</p>
+    </div>
+  </nav>
+
+  <div class="container-fluid" id="full-container">
+    <p id="empty-message">No document selected</p>
+    <img id="doc-loading-indicator" class="hidden" src="/img/ajax-loader.gif">
+  </div>
+</div>
+{% endblock %}

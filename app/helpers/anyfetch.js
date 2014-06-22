@@ -1,16 +1,40 @@
 'use strict';
 
+var express = require('express');
 var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
 var crypto = require('crypto');
+var _ = require("lodash");
+var fs = require('fs');
+var rarity = require('rarity');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
+var salesfetchHelpers = require('./salesfetch.js');
+
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
+
+var cachedTemplates = {};
+var getOverridedTemplates = function() {
+  if (config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
+    return cachedTemplates;
+  }
+
+  var templatePath = __dirname + '/../views/templates';
+  fs.readdirSync(templatePath).forEach(function(file) {
+    var newPath = templatePath + '/' + file;
+    var templateConfig = require(newPath);
+
+    cachedTemplates[templateConfig.id] = templateConfig;
+  });
+
+  return cachedTemplates;
+};
+module.exports.getOverridedTemplates = getOverridedTemplates;
 
 module.exports.findDocuments = function(params, user, cb) {
   var pages = [];
@@ -33,11 +57,12 @@ module.exports.findDocuments = function(params, user, cb) {
 
       request(fetchApiUrl).get(batchUrl)
         .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .expect(200)
         .end(cb);
     },
     function templateResults(res, cb) {
       if (res.status === 401) {
-        return cb(new Error('Invalid credentials'));
+        return cb(new express.errors.Unauthorized('Invalid credentials'));
       }
 
       var body = res.body;
@@ -52,8 +77,15 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Render the templated data
       docReturn.data.forEach(function(doc) {
+        var relatedTemplate;
 
-        var relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        var overridedTemplate = getOverridedTemplates();
+        if (overridedTemplate[doc.document_type]) {
+          relatedTemplate = overridedTemplate[doc.document_type].templates.snippet;
+        } else {
+          relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+        }
+
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
         doc.provider = providers[doc.provider].name;
@@ -87,7 +119,6 @@ module.exports.findDocuments = function(params, user, cb) {
       docReturn.providers = tempProviders;
 
       cb(null, docReturn);
-
     }
   ], cb);
 };
@@ -95,33 +126,41 @@ module.exports.findDocuments = function(params, user, cb) {
 /**
  * Find and return a single templated document
  */
-module.exports.findDocument = function(id, user, cb) {
+module.exports.findDocument = function(id, user, context, finalCb) {
   var pages = [
     '/document_types',
     '/providers',
     '/documents/' + id
   ];
-
   var batchParams = pages.map(encodeURIComponent).join('&pages=');
-  request(fetchApiUrl).get('/batch?pages=' + batchParams)
-    .set('Authorization', 'Bearer ' + user.anyFetchToken)
-    .end( function(err, res) {
-      if (err) {
-        return cb(err);
-      }
 
+  async.waterfall([
+    function sendBatchRequest(cb) {
+      request(fetchApiUrl).get('/batch?pages=' + batchParams)
+        .set('Authorization', 'Bearer ' + user.anyFetchToken)
+        .end(rarity.carry(pages, cb));
+    },
+    function applyTemplate(typesUrl, providersUrl, docsUrl, res, cb) {
       if (res.status === 401) {
-        return cb(new Error('Invalid credentials'));
+        return cb(new express.errors.Unauthorized('Invalid credentials'));
       }
 
       var body = res.body;
+      var documentTypes = body[typesUrl];
+      var providers = body[providersUrl];
+      var docReturn = body[docsUrl];
 
-      var documentTypes = body[pages[0]];
-      var providers = body[pages[1]];
-      var docReturn = body[pages[2]];
+      var relatedTemplate;
+      var titleTemplate;
 
-      var relatedTemplate = documentTypes[docReturn.document_type].templates.full;
-      var titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      var overridedTemplate = getOverridedTemplates();
+      if (overridedTemplate[docReturn.document_type]) {
+        relatedTemplate = overridedTemplate[docReturn.document_type].templates.full;
+        titleTemplate = overridedTemplate[docReturn.document_type].templates.title;
+      } else {
+        relatedTemplate = documentTypes[docReturn.document_type].templates.full;
+        titleTemplate = documentTypes[docReturn.document_type].templates.title;
+      }
 
       docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
       docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
@@ -130,7 +169,15 @@ module.exports.findDocument = function(id, user, cb) {
       docReturn.document_type = documentTypes[docReturn.document_type].name;
 
       cb(null, docReturn);
-    });
+    },
+    function getPin(doc, cb) {
+      salesfetchHelpers.getPin(context.recordId, doc.id, rarity.carry([doc], cb));
+    },
+    function markIdPinned(doc, pin, cb) {
+      doc.pinned = !!pin;
+      cb(null, doc);
+    }
+  ], finalCb);
 };
 
 
@@ -183,7 +230,9 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.anyFetchId = res.body.id;
@@ -195,7 +244,9 @@ module.exports.initAccount = function(data, done) {
     },
     function createSubCompany(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.token = res.body.token;
@@ -255,7 +306,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new Error('No admin for the comapny has been found'));
+        return cb(new express.errors.NotFound('No admin for the company has been found'));
       }
 
       var adminToken = adminUser.anyFetchToken;
@@ -270,7 +321,9 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
 
       user.anyFetchId = res.body.id;
@@ -282,7 +335,9 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function saveLocalUser(res, cb) {
       if(res.status !== 200){
-        return cb(new Error(res.body));
+        var e = new Error(res.text);
+        e.statusCode = res.status;
+        return cb(e);
       }
       var userToken = res.body.token;
 

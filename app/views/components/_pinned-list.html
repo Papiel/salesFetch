@@ -1,0 +1,10 @@
+{% if pins.counts !== 0 %}
+	{% for doc in pins %}
+  		{% include '_snippet.html' %}
+	{% endfor %}
+{% else %}
+  <div class="zero-state">
+    <h4>No documents pinned</h4>
+    <p>Start using the context and pin a document to keep it here</p>
+  </div>
+{% endif %}

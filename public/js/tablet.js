@@ -130,13 +130,6 @@ $('#left-toogle').click(function() {
 });
 
 /**
-* Hide filters
-*/
-// if (!$('#timeline').find('.section-top.hidden').length) {
-//   $('.snippet-list').scrollTop(60);
-// }
-
-/**
  * Hide left bar on click snippet
  */
 $(document).on('click', '.snippet', function(e) {
@@ -213,6 +206,48 @@ $(document).on( 'click', '.pin-btn', function(e) {
     urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
     $.get(urlWithData, function() {
       fetchPinnedDocuments();
+    });
+  }
+});
+
+/**
+ *  Infinite Scroll
+ */
+var isLoading = false;
+// Can load more if 20 results templated in the rendred HTML
+var canLoadMore = $('#timeline .snippet-list .snippet').length === 20;
+
+var appendSnippets = function(data) {
+  var convertedData = $(data);
+  canLoadMore = $('.snippet', data).length === 20;
+
+  // Check if recieved snippets need to be append in the the last section
+  var firstRetrievedTimeSlice = $('#timeline .section-header legend', convertedData).first().innerHTML;
+  var lastTimeSlice = $('#timeline .section-header legend').last().innerHTML;
+
+  if (firstRetrievedTimeSlice === lastTimeSlice) {
+    var sameTimeSnippets = $('.snippet', convertedData.first());
+    $('#timeline  .section-content').last().append(sameTimeSnippets);
+    convertedData = convertedData.slice(1);
+  }
+
+  // Append the remaining snippets
+  $('#timeline .snippet-list').append(convertedData);
+};
+
+$('#timeline .snippet-list').bind('scroll', function() {
+  if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight - 100 && !isLoading && canLoadMore) {
+    isLoading = true;
+    var start = $('#timeline .snippet-list .snippet').length;
+
+    var loader = $("#loading-more").html();
+    $('#timeline .snippet-list').append(loader);
+
+    var url = '/app/context-search?start=' + start + '&data=' + encodeURIComponent(JSON.stringify(data));
+    $.get(url, function(data) {
+      isLoading = false;
+      $('#timeline .snippet-list .loader').remove();
+      appendSnippets(data);
     });
   }
 });

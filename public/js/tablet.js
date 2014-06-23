@@ -139,9 +139,12 @@ $(document).on('click', '.snippet', function(e) {
   $(this).addClass('active');
   var selectedSnippet = this;
 
-  /* Change title */
+  /* Change document header */
   var title = $(this).find('.title').text();
   $('#doc-title').html(title);
+  var type = $(this).data('type');
+  $('#document-header .item.provider img').remove();
+  $('#document-header .item.provider').append('<img src="/img/document_types-icons/' + type + '.png" >');
 
   /* Update #doc-pin style */
   var pinButton = $(this).find('.pin-btn')[0];

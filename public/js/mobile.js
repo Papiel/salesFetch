@@ -70,15 +70,10 @@ $("#right-panel").on('click', '.execute', function(e) {
   location.reload();
 });
 
-/**
- * Show full
- */
-$("body").on('click', '[data-url]', function(e) {
-  e.preventDefault();
-  var url = $(this).data("url");
-  salesFetch.goTo(url);
-});
 
+/**
+ * Load more
+ */
 var isLoading = false;
 // Can load more if 20 results templated in the rendred HTML
 var canLoadMore = $('#timeline .snippet').length === 20;
@@ -115,4 +110,45 @@ $(window).bind('scroll', function() {
       appendSnippets(data);
     });
   }
+});
+
+/**
+ * Pin & un-Pin docs
+ */
+var updatePinnedDocuments = function(data) {
+  $('#pinned-list').html(data);
+};
+
+$(document).on( 'click', '.pin-btn', function(e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+
+  var star = $(this);
+
+  var isPinned = star.hasClass('fa-star');
+  var docId = star.data('doc');
+
+  if (!isPinned) {
+    salesFetch.pinDocument(docId, function(data) {
+      $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star-o');
+      $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star');
+      updatePinnedDocuments(data);
+    });
+  } else {
+    salesFetch.unpinDocument(docId, function(data) {
+      $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star-o');
+      $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star');
+      updatePinnedDocuments(data);
+    });
+  }
+});
+
+
+/**
+ * Show full
+ */
+$(document).on('click', '[data-url]', function(e) {
+  e.preventDefault();
+  var url = $(this).data("url");
+  salesFetch.goTo(url);
 });

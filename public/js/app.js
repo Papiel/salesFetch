@@ -85,14 +85,14 @@ window.salesFetchModule = (function() {
    */
   ret.pinDocument = function(docId, cb) {
     if (!docId) {
-      return new Error('No document to pin');
+      return cb(new Error('No document to pin'));
     }
 
     var baseUrl = '/app/add-pin/' + docId;
     var url = _setDataInUrl(baseUrl);
 
     $.get(url, function() {
-      ret.getPinnedDocuments(0, cb);
+      return ret.getPinnedDocuments(0, cb);
     });
   };
 
@@ -103,14 +103,14 @@ window.salesFetchModule = (function() {
    */
   ret.unpinDocument = function(docId, cb) {
     if (!docId) {
-      return new Error('No document to unpin');
+      return cb(new Error('No document to unpin'));
     }
 
     var baseUrl = '/app/remove-pin/' + docId;
     var url = _setDataInUrl(baseUrl);
 
     $.get(url, function() {
-      ret.getPinnedDocuments(0, cb);
+      return ret.getPinnedDocuments(0, cb);
     });
   };
 

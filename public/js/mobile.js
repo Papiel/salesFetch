@@ -1,30 +1,9 @@
 'use strict';
 
 var salesFetch = window.salesFetchModule.init();
-
-/**
- *  Left panel management
- */
-var hideLeftPanel = function () {
-  $("#shadow-background").fadeOut(500, function() {
-    $("#shadow-background").unbind("click");
-  });
-
-  $("#right-panel").removeClass('open');
-  $("html").removeClass('stop-scroll');
-};
-
-var showLeftPanel = function (content) {
-  $("#right-panel").html(content);
-
-  $("#shadow-background").fadeIn(500, function() {
-    $("#shadow-background").bind("click", hideLeftPanel);
-  });
-
-  $("#right-panel").addClass('open');
-  $('.navbar').addClass('navbar-hidden');
-  $("html").addClass('stop-scroll');
-};
+salesFetch.getPinnedDocuments(0, function(data) {
+  $('#pinned-list').html(data);
+});
 
 /**
  * Show navbar on scroll-down and hide-it on scroll-up
@@ -51,25 +30,6 @@ $(window).scroll(function() {
   }
   lastPostion = $(window).scrollTop();
 });
-
-/**
- * Filtering
- */
-$("#filter").click(function(e) {
-  e.preventDefault();
-  showLeftPanel($("#filter-template").html());
-});
-
-$("#right-panel").on('click', '.dismiss', function(e) {
-  e.preventDefault();
-  hideLeftPanel();
-});
-
-$("#right-panel").on('click', '.execute', function(e) {
-  e.preventDefault();
-  location.reload();
-});
-
 
 /**
  * Load more
@@ -115,10 +75,6 @@ $(window).bind('scroll', function() {
 /**
  * Pin & un-Pin docs
  */
-var updatePinnedDocuments = function(data) {
-  $('#pinned-list').html(data);
-};
-
 $(document).on( 'click', '.pin-btn', function(e) {
   e.preventDefault();
   e.stopImmediatePropagation();
@@ -132,13 +88,13 @@ $(document).on( 'click', '.pin-btn', function(e) {
     salesFetch.pinDocument(docId, function(data) {
       $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star-o');
       $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star');
-      updatePinnedDocuments(data);
+      $('#pinned-list').html(data);
     });
   } else {
     salesFetch.unpinDocument(docId, function(data) {
       $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star-o');
       $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star');
-      updatePinnedDocuments(data);
+      $('#pinned-list').html(data);
     });
   }
 });

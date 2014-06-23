@@ -142,7 +142,7 @@ $('#left-toogle').click(function() {
 $(document).on('click', '.snippet', function(e) {
   e.preventDefault();
 
-  $('#doc-pin').removeClass('hidden');
+  $('#document-header').removeClass('hidden');
   $('#empty-message').addClass('hidden');
   $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
 

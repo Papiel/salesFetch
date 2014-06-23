@@ -16,7 +16,6 @@ body {
   }
 
   .tab-container {
-    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
     position: absolute;
     top: 54px;
     bottom: 0;
@@ -26,9 +25,6 @@ body {
     margin-top: 0px;
   }
 
-  .snippet {
-    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
-  }
   .snippet.active {
     box-shadow: 0px 0px;
     border-right: 0px;
@@ -42,7 +38,7 @@ body {
 
 #left-toogle {
   width: 30px;
-  height: 50px;
+  height: 54px;
   position: absolute;
   top: 0;
   left: 320px;
@@ -96,6 +92,12 @@ body {
   #left-panel {
     left: 0;
   }
+  .tab-container {
+    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
+  }
+  .snippet {
+    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
+  }
 
   #left-toogle {
     visibility: hidden;
@@ -119,17 +121,17 @@ body {
     left: 0;
   }
 
+  .snippet-list {
+    padding-right: 5px;
+  }
+
   #right-panel {
     left: 0px;
 
     .navbar {
 
-      #doc-title {
-        color: #444444;
-      }
-
-      #doc-pin {
-        color: #444444;
+      #document-header {
+        margin-left: 30px;
       }
     }
   }

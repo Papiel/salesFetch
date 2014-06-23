@@ -1,25 +1,23 @@
-<div class="tab-container snippet-list">
-  {% for timeSlice in documents.faceted %}
+{% for timeSlice in documents.faceted %}
+  {% if timeSlice.data.length !== 0 %}
   <div class="snippet-section">
-    {% if timeSlice.data.length !== 0 %}
     <div class="section-header">
       <fieldset class="timestamp">
         <legend>{{timeSlice.label}}</legend>
       </fieldset>
     </div>
-    {% endif %}
     <div class="section-content">
     {% for doc in timeSlice.data %}
       {% include '_snippet.html' %}
     {% endfor %}
     </div>
   </div>
-  {% endfor %}
-
-  {% if documents.counts === 0 %}
-  <div class="zero-state">
-    <h4>No documents found</h4>
-    <p>Start using the context by connecting first your cloud provider.</p>
-  </div>
   {% endif %}
+{% endfor %}
+
+{% if documents.counts === 0 %}
+<div class="zero-state">
+  <h4>No documents found</h4>
+  <p>Start using the context by connecting first your cloud provider.</p>
 </div>
+{% endif %}

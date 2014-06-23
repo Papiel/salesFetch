@@ -94,6 +94,13 @@ module.exports.contextSearch = function(req, res, next) {
     });
     documents.faceted = timeSlices;
 
+    // If load more results
+    if (req.query.start) {
+      return res.render('components/_snippets-list.html', {
+        documents: documents
+      });
+    }
+
     res.render('app/context/' + req.deviceType + '.html', {
       data: reqParams,
       documents: documents,

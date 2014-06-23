@@ -1,30 +1,9 @@
 'use strict';
 
-var data = window.data;
-
-/**
- *  Left panel management
- */
-var hideLeftPanel = function () {
-  $("#shadow-background").fadeOut(500, function() {
-    $("#shadow-background").unbind("click");
-  });
-
-  $("#right-panel").removeClass('open');
-  $("html").removeClass('stop-scroll');
-};
-
-var showLeftPanel = function (content) {
-  $("#right-panel").html(content);
-
-  $("#shadow-background").fadeIn(500, function() {
-    $("#shadow-background").bind("click", hideLeftPanel);
-  });
-
-  $("#right-panel").addClass('open');
-  $('.navbar').addClass('navbar-hidden');
-  $("html").addClass('stop-scroll');
-};
+var salesFetch = window.salesFetchModule.init();
+salesFetch.getPinnedDocuments(0, function(data) {
+  $('#pinned-list').html(data);
+});
 
 /**
  * Show navbar on scroll-down and hide-it on scroll-up
@@ -53,49 +32,79 @@ $(window).scroll(function() {
 });
 
 /**
- * Filtering
+ * Load more
  */
-$("#filter").click(function(e) {
-  e.preventDefault();
-  showLeftPanel($("#filter-template").html());
-});
+var isLoading = false;
+// Can load more if 20 results templated in the rendred HTML
+var canLoadMore = $('#timeline .snippet').length === 20;
 
-$("#right-panel").on('click', '.dismiss', function(e) {
-  e.preventDefault();
-  hideLeftPanel();
-});
+var appendSnippets = function(data) {
+  var convertedData = $(data);
+  canLoadMore = $('.snippet', data).length === 20;
 
-$("#right-panel").on('click', '.execute', function(e) {
-  e.preventDefault();
+  // Check if recieved snippets need to be append in the the last section
+  var firstRetrievedTimeSlice = $('#timeline .section-header legend', convertedData).first().innerHTML;
+  var lastTimeSlice = $('#timeline .section-header legend').last().innerHTML;
 
-  // Reload the page with right parameters
-  location.reload();
+  if (firstRetrievedTimeSlice === lastTimeSlice) {
+    var sameTimeSnippets = $('.snippet', convertedData.first());
+    $('#timeline  .section-content').last().append(sameTimeSnippets);
+    convertedData = convertedData.slice(1);
+  }
+
+  // Append the remaining snippets
+  $('#timeline .snippet-list').append(convertedData);
+};
+
+$(window).bind('scroll', function() {
+  if($(window).scrollTop() + $(window).height() > $(document).height() - 100 && !isLoading && canLoadMore) {
+    isLoading = true;
+    var start = $('#timeline .snippet').length;
+
+    var loader = $("#loading-more").html();
+    $('#timeline .snippet-list').append(loader);
+
+    salesFetch.getContextSearch(start, function(data) {
+      isLoading = false;
+      $('#timeline .loader').remove();
+      appendSnippets(data);
+    });
+  }
 });
 
 /**
- * Navigation
+ * Pin & un-Pin docs
  */
-$("span.info").click(function(e) {
+$(document).on( 'click', '.pin-btn', function(e) {
   e.preventDefault();
-  showLeftPanel("<h1>Fake meta data</h1>");
+  e.stopImmediatePropagation();
+
+  var star = $(this);
+
+  var isPinned = star.hasClass('fa-star');
+  var docId = star.data('doc');
+
+  if (!isPinned) {
+    salesFetch.pinDocument(docId, function(data) {
+      $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star-o');
+      $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star');
+      $('#pinned-list').html(data);
+    });
+  } else {
+    salesFetch.unpinDocument(docId, function(data) {
+      $('.pin-btn[data-doc=' + docId + ']').addClass('fa-star-o');
+      $('.pin-btn[data-doc=' + docId + ']').removeClass('fa-star');
+      $('#pinned-list').html(data);
+    });
+  }
 });
 
-$("[data-url]").click(function(e) {
-  e.preventDefault();
 
+/**
+ * Show full
+ */
+$(document).on('click', '[data-url]', function(e) {
+  e.preventDefault();
   var url = $(this).data("url");
-  var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-  window.location = urlWithData;
+  salesFetch.goTo(url);
 });
-
-/**
- * Hide filters
- */
-// $(document).ready( function() {
-//   if (!$('#timeline').find('.section-top.hidden').length) {
-//     $('body').scrollTop(60);
-//     $('.navbar').removeClass('navbar-hidden');
-//     $('.navbar').addClass('navbar-fixed');
-//   }
-// });

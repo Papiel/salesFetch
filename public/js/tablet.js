@@ -170,7 +170,7 @@ $(document).on('click', '.snippet', function(e) {
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   $.get(urlWithData, function(res) {
     if ($(selectedSnippet).hasClass('active')) {
-      $('#full-container').html('<div class="well full">' + res + '</div>');
+      $('#full-container').html('<div class="full">' + res + '</div>');
     }
   });
 });

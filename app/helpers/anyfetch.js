@@ -130,7 +130,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
   var pages = [
     '/document_types',
     '/providers',
-    '/documents/' + id
+    '/documents/' + id + '?search=' + context.templatedQuery
   ];
   var batchParams = pages.map(encodeURIComponent).join('&pages=');
 

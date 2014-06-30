@@ -20,11 +20,9 @@ describe('/app/documents page', function() {
   });
 
   describe('GET /app/documents', function() {
-
     checkUnauthenticated(app, 'get', endpoint);
 
     it("should return contextual data", function(done) {
-
       var context = {
         recordType: 'Contact',
         recordId: '003b000000LHOj3',
@@ -49,7 +47,7 @@ describe('/app/documents page', function() {
       ], done);
     });
 
-    it("should return just snippets for infinite scroll if there is a start query parameter", function(done) {
+    it("should return snippets for infinite scroll if there is a start query parameter", function(done) {
 
       var context = {
         recordType: 'Contact',

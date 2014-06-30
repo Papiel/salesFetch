@@ -11,23 +11,23 @@ module.exports.initAccount = function(cb) {
 
   async.waterfall([
     function createCompany(cb) {
-        var org = new Organization({
-          name: "anyFetch",
-          SFDCId: '1234'
-        });
+      var org = new Organization({
+        name: "anyFetch",
+        SFDCId: '1234'
+      });
 
-        org.save(cb);
-      },
-      function createAdminUser(org, _, cb) {
-        createdOrg = org;
+      org.save(cb);
+    },
+    function createAdminUser(org, _, cb) {
+      createdOrg = org;
 
-        var user = new User({
-          SFDCId: '5678',
-          organization: org
-        });
+      var user = new User({
+        SFDCId: '5678',
+        organization: org
+      });
 
-        user.save(cb);
-      },
+      user.save(cb);
+    },
   ], function(err, user) {
     cb(err, user, createdOrg);
   });

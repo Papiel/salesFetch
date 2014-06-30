@@ -10,7 +10,7 @@ module.exports = function(app) {
 
   app.post('/admin/init', controllers.admin.index.get);
 
-  app.get('/app/documents/',
+  app.get('/app/documents',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.requiresContext,

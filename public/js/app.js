@@ -88,7 +88,7 @@ $(function() {
       filters.document_type = dT;
     }
 
-    var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
+    var url = '/app/documents?filters=' + encodeURIComponent(JSON.stringify(filters));
 
     goToLocation(window, url);
   });

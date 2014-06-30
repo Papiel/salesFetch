@@ -31,8 +31,8 @@ describe('<Application controller>', function() {
     "recordType": "Contact"
   };
 
-  describe('/context-search page', function() {
-    var endpoint = '/app/context-search';
+  describe('/app/documents/ page', function() {
+    var endpoint = '/app/documents/';
 
     checkUnauthenticated(app, 'get', endpoint);
 
@@ -115,8 +115,8 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/pinned page', function() {
-    var endpoint = '/app/pinned';
+  describe('/app/pins page', function() {
+    var endpoint = '/app/pins';
 
     checkUnauthenticated(app, 'get', endpoint);
 
@@ -139,11 +139,11 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/add-pin endpoint', function() {
-    var invalidEndpoint = '/app/add-pin/aze';
-    var endpoint = '/app/add-pin/' + sampleDocumentId;
+  describe('POST /pins endpoint', function() {
+    var invalidEndpoint = '/app/pins/aze';
+    var endpoint = '/app/pins/' + sampleDocumentId;
 
-    checkUnauthenticated(app, 'get', endpoint);
+    checkUnauthenticated(app, 'post', endpoint);
 
     it("should err on invalid document ID", function(done) {
       async.waterfall([
@@ -152,7 +152,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(409)
             .end(cb);
         }
@@ -166,7 +166,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(204)
             .end(cb);
         },
@@ -191,13 +191,13 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(204)
             .end(rarity.carry([url], cb));
         },
         function sendRequestAgain(url, res, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(409)
             .end(function(err, res) {
               should(err).equal(null);
@@ -209,11 +209,11 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/remove-pin endpoint', function() {
-    var invalidEndpoint = '/app/remove-pin/aze';
-    var endpoint = '/app/remove-pin/' + sampleDocumentId;
+  describe('DELETE /pins endpoint', function() {
+    var invalidEndpoint = '/app/pins/aze';
+    var endpoint = '/app/pins/' + sampleDocumentId;
 
-    checkUnauthenticated(app, 'get', endpoint);
+    checkUnauthenticated(app, 'del', endpoint);
 
     it("should err on invalid document ID", function(done) {
       async.waterfall([
@@ -222,7 +222,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .del(url)
             .expect(409)
             .end(cb);
         }
@@ -250,7 +250,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, hash, cb) {
           request(app)
-            .get(url)
+            .del(url)
             .expect(202)
             .end(rarity.carryAndSlice([hash], 1, cb));
         },
@@ -271,7 +271,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .del(url)
             .expect(404)
             .end(function(err, res) {
               res.text.toLowerCase().should.containDeep('not pinned');
@@ -298,7 +298,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .del(url)
             .expect(403)
             .end(function(err, res) {
               res.text.toLowerCase().should.containDeep('cannot delete');
@@ -382,10 +382,10 @@ describe('<Application controller>', function() {
     });
   });
 
-  describe('/providers/connect redirection', function() {
-    var endpoint = '/app/providers/connect';
+  describe('/app/providers redirection', function() {
+    var endpoint = '/app/providers';
 
-    checkUnauthenticated(app, 'get', endpoint);
+    checkUnauthenticated(app, 'post', endpoint);
 
     it("should check presence of app_id", function(done) {
       async.waterfall([
@@ -394,7 +394,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(409)
             .expect(function(res) {
               res.text.should.containDeep("app_id");
@@ -413,7 +413,7 @@ describe('<Application controller>', function() {
         },
         function sendRequest(url, cb) {
           request(app)
-            .get(url)
+            .post(url)
             .expect(302)
             .expect(function(res) {
               res.text.should.containDeep("bearer=anyFetchToken");

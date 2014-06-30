@@ -36,9 +36,8 @@ var displayFull = function(url) {
 /**
  * fetchPinnedDocuments
  */
- var fetchPinnedDocuments = function() {
-
-  var url = '/app/pinned';
+var fetchPinnedDocuments = function() {
+  var url = '/app/pins';
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
 
@@ -46,13 +45,13 @@ var displayFull = function(url) {
     $('#pinned-list').html(res);
   });
 
- };
+};
 fetchPinnedDocuments();
 
 /**
  * fetchPinnedDocuments
  */
- var fetchProviders = function() {
+var fetchProviders = function() {
 
   var url = '/app/providers';
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
@@ -62,7 +61,7 @@ fetchPinnedDocuments();
     $('#provider-list').html(res);
   });
 
- };
+};
 fetchProviders();
 
 
@@ -103,7 +102,7 @@ $(".snippet-list").on('click', '.snippet', function(e) {
 /**
  * Pin & un-Pin docs
  */
-$(document).on( 'click', '.pin-btn', function(e) {
+$(document).on('click', '.pin-btn', function(e) {
   e.preventDefault();
   e.stopPropagation();
 

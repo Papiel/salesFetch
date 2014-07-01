@@ -102,11 +102,7 @@ module.exports = function() {
   expressConfig(app);
 
   // Require routes
-  var routesPath = __dirname + '/../app/routes';
-  var routes = autoLoad(routesPath);
-  Object.keys(routes).forEach(function(route) {
-    require(routesPath + '/' + route)(app);
-  });
+  require(__dirname + '/../app/routes.js')(app);
 
   // Require errors
   autoLoad(__dirname + '/../app/errors');

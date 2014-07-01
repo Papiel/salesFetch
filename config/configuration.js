@@ -6,8 +6,6 @@ var _ = require('lodash');
 var dotenv = require('dotenv');
 dotenv.load();
 
-console.log(process.env.FETCHAPI_CREDS);
-
 // Load configurations
 // Set the node environment variable if not set before
 var nodeEnv = process.env.NODE_ENV || 'development';

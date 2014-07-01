@@ -376,6 +376,7 @@ module.exports.getConnectedProviders = function(user, cb) {
   request(fetchApiUrl).get('/providers')
     .set('Authorization', 'Bearer ' + user.anyFetchToken)
     .end(cb);
+
 };
 
 /**

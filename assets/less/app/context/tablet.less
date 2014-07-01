@@ -1,5 +1,6 @@
 body {
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue';
+  font-weight: 300;
 }
 
 #left-panel {
@@ -8,16 +9,36 @@ body {
   bottom: 0;
   width: 320px;
   z-index: 10;
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
 
   .btn-filters {
     margin-right: -15px;
+  }
+
+  .tab-container {
+    position: absolute;
+    top: 54px;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 0px;
+  }
+
+  .snippet.active {
+    box-shadow: 0px 0px;
+    border-right: 0px;
+    background-color: #fff;
+  }
+
+  .navbar {
+    border-right: 1px solid #ccc;
   }
 }
 
 #left-toogle {
   width: 30px;
-  height: 50px;
+  height: 54px;
   position: absolute;
   top: 0;
   left: 320px;
@@ -36,12 +57,46 @@ body {
   bottom: 0;
   right: 0;
   overflow-y: hidden;
-  background-color: #f8f8f8;
+
+  .full {
+    padding: 20px 5px;
+  }
+
+  .arrow {
+    height: 44px;
+    margin: 5px;
+  }
+
+  .provider {
+    height: 54px;
+    width: 40px;
+
+    img {
+      width: 40px;
+      height: 27px;
+      margin-top: 13px
+    }
+  }
+
+  .item {
+    float: left;
+  }
+
+  .email-projection {
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
 }
 
 @media (orientation: landscape) {
   #left-panel {
     left: 0;
+  }
+  .tab-container {
+    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
+  }
+  .snippet {
+    box-shadow: inset -5px 0px 15px -8px #A8A8A8;
   }
 
   #left-toogle {
@@ -66,31 +121,20 @@ body {
     left: 0;
   }
 
+  .snippet-list {
+    padding-right: 5px;
+  }
+
   #right-panel {
     left: 0px;
 
     .navbar {
-      background-color: #F8F8F8;
-      border-bottom: #ddd 1px solid;
 
-      #doc-title {
-        color: #444444;
-      }
-
-      #doc-pin {
-        color: #444444;
+      #document-header {
+        margin-left: 30px;
       }
     }
   }
-}
-
-#left-panel .tab-container {
-  position: absolute;
-  top: 50px;
-  bottom: 0;
-  width: 100%;
-  overflow-y: scroll;
-  margin-top: 0px;
 }
 
 #full-container {
@@ -102,17 +146,19 @@ body {
   overflow-y: scroll;
 }
 
+#document-header {
+
+}
+
 #doc-title {
   color: #fff;
   font-size: 16px;
-  margin: auto;
-  padding-top: 13px;
-  text-align: right;
-  float: right;
-  max-width: 625px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  display: inline-block;
+  max-width: 530px;
+  margin: 14px 5px;
 }
 
 #doc-pin {
@@ -146,20 +192,16 @@ body {
   }
 }
 
-.tab-container {
-  border-right: 1px #ddd solid;
-}
-
-.well.full {
+.full {
   border: none;
   background-color: white;
-
-  .doc-content {
-    overflow: hidden;
 
     .hlt {
       font-weight: 900;
       background-color: #FFFFAF;
     }
+
+  .doc-content {
+    overflow: hidden;
   }
 }

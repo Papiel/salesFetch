@@ -16,29 +16,34 @@
       <div class="tab-container snippet-list">
         {% include '../../components/_snippets-list.html' %}
       </div>
-      <div id="loading-more" class="hidden">
-        <div class="loader">
-          <img src="/img/ajax-loader.gif">
-          loading more
-        </div>
-      </div>
     </div>
     <div class="tab-pane" id="pinned">
       {% include '../../components/_pinned-tab.html' %}
-    </div>
-    <div class="tab-pane" id="search">
-      {% include '../../components/_search-tab.html' %}
     </div>
   </div>
   <div id="left-toogle">&#8942;</div>
 </div>
 
+<div id="loading-more" class="hidden">
+  <div class="loader">
+    <img src="/img/ajax-loader.gif">
+     Loading more
+  </div>
+</div>
 
 <div id="right-panel">
   <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <a href="#" id="doc-pin" class="btn navbar-btn pull-right fa fa-star-o pin-btn hidden"></a>
-      <p id="doc-title">Select a document</p>
+    <div id="document-header" class="container-fluid hidden">
+      <div class="item provider">
+        <img src="/img/document_types-icons/email.png" >
+      </div>
+      <div class="item">
+        <img class="arrow" src="/img/arrow.png" >
+      </div>
+      <div class="item">
+        <p id="doc-title">Select a document</p>
+      </div>
+      <a href="#" id="doc-pin" class="btn navbar-btn pull-right fa fa-star-o pin-btn"></a>
     </div>
   </nav>
 

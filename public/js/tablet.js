@@ -1,6 +1,6 @@
 'use strict';
 
-var data = window.data;
+var salesFetch = window.salesFetchModule.init();
 
 var activePinButton = function() {
   return $('.snippet.active .pin-btn')[0];
@@ -39,16 +39,10 @@ var updateActiveDocument = function(docUrl) {
  * fetchPinnedDocuments
  */
 var fetchPinnedDocuments = function() {
-
-  var url = '/app/pins';
-  var linker = url.indexOf('?') !== -1 ? '&' : '?';
-  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-
-  $.get(urlWithData, function(res) {
+  salesFetch.getPinnedDocuments(0, function(res) {
     $('#pinned-list').html(res);
     updateActiveDocument();
   });
-
 };
 fetchPinnedDocuments();
 
@@ -116,10 +110,15 @@ $("#left-panel").on('click', '.execute', function(e) {
     filters.document_type = dT;
   }
 
+<<<<<<< HEAD
+  var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
+  salesFetch.goTo(url);
+=======
   var url = '/app/documents?filters=' + encodeURIComponent(JSON.stringify(filters));
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   window.location = urlWithData;
+>>>>>>> 6151a2fd17fb186baece68897ee5f98311893794
 });
 
 /**
@@ -135,7 +134,7 @@ $('#left-toogle').click(function() {
 $(document).on('click', '.snippet', function(e) {
   e.preventDefault();
 
-  $('#doc-pin').removeClass('hidden');
+  $('#document-header').removeClass('hidden');
   $('#empty-message').addClass('hidden');
   $('#full-container').html('<img id="doc-loading-indicator"  src="/img/ajax-loader.gif">');
 
@@ -147,9 +146,12 @@ $(document).on('click', '.snippet', function(e) {
   $(this).addClass('active');
   var selectedSnippet = this;
 
-  /* Change title */
+  /* Change document header */
   var title = $(this).find('.title').text();
   $('#doc-title').html(title);
+  var type = $(this).data('type');
+  $('#document-header .item.provider img').remove();
+  $('#document-header .item.provider').append('<img src="/img/document_types-icons/' + type + '.png" >');
 
   /* Update #doc-pin style */
   var pinButton = $(this).find('.pin-btn')[0];
@@ -163,7 +165,7 @@ $(document).on('click', '.snippet', function(e) {
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   $.get(urlWithData, function(res) {
     if ($(selectedSnippet).hasClass('active')) {
-      $('#full-container').html('<div class="well full">' + res + '</div>');
+      $('#full-container').html('<div class="full">' + res + '</div>');
     }
   });
 });

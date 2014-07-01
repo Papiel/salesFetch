@@ -18,7 +18,8 @@
 {% if document.pinned %}
   <span class="pinned"></span>
 {% endif %}
-
+<div class="full">
 {% autoescape false %}{{document.full_rendered}}{% endautoescape %}
+</div>
 
 {% endblock %}

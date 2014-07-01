@@ -3,6 +3,9 @@
 var request = require('supertest');
 var async = require('async');
 
+var mongoose = require('mongoose');
+var Pin = mongoose.model('Pin');
+
 var app = require('../../../../app.js');
 var cleaner = require('../../../hooks/cleaner');
 var requestBuilder = require('../../../helpers/login').requestBuilder;
@@ -18,6 +21,7 @@ describe('/app/pins page', function() {
     APIs.mount('fetchAPI', 'http://api.anyfetch.com', done);
   });
 
+  var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
   var sampleContext = {
     "templatedDisplay": "Chuck Norris",
     "templatedQuery": "Chuck Norris",
@@ -41,6 +45,31 @@ describe('/app/pins page', function() {
         },
         function testNoContent(res, cb) {
           res.text.trim().should.be.empty;
+          cb();
+        }
+      ], done);
+    });
+
+    it("should contain existing pins", function(done) {
+      async.waterfall([
+        function addPin(cb) {
+          var pin = new Pin();
+          pin.SFDCId = sampleContext.recordId;
+          pin.anyFetchId = sampleDocumentId;
+
+          pin.save(cb);
+        },
+        function buildRequest(pin, count, cb) {
+          requestBuilder(endpoint, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(200)
+            .end(cb);
+        },
+        function testNoContent(res, cb) {
+          res.text.should.containDeep("SecuringtheData");
           cb();
         }
       ], done);

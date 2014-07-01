@@ -4,19 +4,19 @@ require("should");
 
 var async = require('async');
 var request = require('supertest');
-var app = require('../../app.js');
-var APIs = require('../helpers/APIs');
-var cleaner = require('../hooks/cleaner');
+var app = require('../../../app.js');
+var APIs = require('../../helpers/APIs');
+var cleaner = require('../../hooks/cleaner');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
 
-describe('<Admin controller>', function() {
+describe('/admin/init endpoint', function() {
+  var endpoint = '/admin/init';
 
   describe('POST /admin/init', function() {
-    var endpoint = '/admin/init';
     var SFDCinfos = {
       user: {
         name: 'Jessy Pinkman',

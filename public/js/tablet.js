@@ -38,12 +38,12 @@ var updateActiveDocument = function(docUrl) {
 /**
  * fetchPinnedDocuments
  */
- var fetchPinnedDocuments = function() {
+var fetchPinnedDocuments = function() {
   salesFetch.getPinnedDocuments(0, function(res) {
     $('#pinned-list').html(res);
     updateActiveDocument();
   });
- };
+};
 fetchPinnedDocuments();
 
 /**
@@ -110,8 +110,15 @@ $("#left-panel").on('click', '.execute', function(e) {
     filters.document_type = dT;
   }
 
+<<<<<<< HEAD
   var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
   salesFetch.goTo(url);
+=======
+  var url = '/app/documents?filters=' + encodeURIComponent(JSON.stringify(filters));
+  var linker = url.indexOf('?') !== -1 ? '&' : '?';
+  var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
+  window.location = urlWithData;
+>>>>>>> 6151a2fd17fb186baece68897ee5f98311893794
 });
 
 /**
@@ -187,20 +194,28 @@ $(document).on( 'click', '.pin-btn', function(e) {
   if (isPinned) {
     setPinned(this, false);
 
-    url = '/app/remove-pin/' + docId;
+    url = '/app/pins/' + docId;
     linker = url.indexOf('?') !== -1 ? '&' : '?';
     urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-    $.get(urlWithData, function() {
-      fetchPinnedDocuments();
+    $.ajax({
+      url: urlWithData,
+      type: 'DELETE',
+      success: function() {
+        fetchPinnedDocuments();
+      }
     });
   } else {
     setPinned(this, true);
 
-    url = '/app/add-pin/' + docId;
+    url = '/app/pins/' + docId;
     linker = url.indexOf('?') !== -1 ? '&' : '?';
     urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
-    $.get(urlWithData, function() {
-      fetchPinnedDocuments();
+    $.ajax({
+      url: urlWithData,
+      type: 'POST',
+      success: function() {
+        fetchPinnedDocuments();
+      }
     });
   }
 });
@@ -238,7 +253,7 @@ $('#timeline .snippet-list').bind('scroll', function() {
     var loader = $("#loading-more").html();
     $('#timeline .snippet-list').append(loader);
 
-    var url = '/app/context-search?start=' + start + '&data=' + encodeURIComponent(JSON.stringify(data));
+    var url = '/app/documents?start=' + start + '&data=' + encodeURIComponent(JSON.stringify(data));
     $.get(url, function(data) {
       isLoading = false;
       $('#timeline .snippet-list .loader').remove();

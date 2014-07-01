@@ -5,13 +5,13 @@
 
 var express = require('express');
 var async = require('async');
-var anyFetchHelper = require('../helpers/anyfetch');
+var anyFetchHelper = require('../../helpers/anyfetch');
 
 /**
  * Create a subcompany and add an admin user
  * Called one time at package installation
  */
-module.exports.init = function(req, res, next) {
+module.exports.get = function(req, res, next) {
   async.waterfall([
     function checkParams(cb) {
       var data = req.body;

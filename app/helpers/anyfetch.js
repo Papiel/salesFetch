@@ -193,13 +193,8 @@ module.exports.initAccount = function(data, done) {
   async.waterfall([
     function checkIfCompanyAlreadyExist(cb) {
       Organization.findOne({'SFDCId': org.id}, function(err, existingOrg) {
-        if (existingOrg && !existingOrg.deleted) {
+        if (existingOrg) {
           return done(null, existingOrg);
-        }
-
-        if (existingOrg && existingOrg.deleted) {
-          existingOrg.deleted = false;
-          return existingOrg.save(done);
         }
 
         cb(null);

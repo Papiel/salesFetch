@@ -69,7 +69,7 @@ window.salesFetchModule = (function() {
    * @param cb(data) The callback containning the HTML generated
    */
   ret.getPinnedDocuments = function(start, cb) {
-    var baseUrl = '/app/pinned';
+    var baseUrl = '/app/pins';
     if (start) {
       baseUrl += '?start=' + start;
     }
@@ -88,11 +88,15 @@ window.salesFetchModule = (function() {
       return cb(new Error('No document to pin'));
     }
 
-    var baseUrl = '/app/add-pin/' + docId;
+    var baseUrl = '/app/pins/' + docId;
     var url = _setDataInUrl(baseUrl);
 
-    $.get(url, function() {
-      return ret.getPinnedDocuments(0, cb);
+    $.ajax({
+      url: url,
+      type: 'POST',
+      success: function() {
+        return ret.getPinnedDocuments(0, cb);
+      }
     });
   };
 
@@ -106,11 +110,15 @@ window.salesFetchModule = (function() {
       return cb(new Error('No document to unpin'));
     }
 
-    var baseUrl = '/app/remove-pin/' + docId;
+    var baseUrl = '/app/pins/' + docId;
     var url = _setDataInUrl(baseUrl);
 
-    $.get(url, function() {
-      return ret.getPinnedDocuments(0, cb);
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function() {
+        return ret.getPinnedDocuments(0, cb);
+      }
     });
   };
 

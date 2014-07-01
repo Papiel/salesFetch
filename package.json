@@ -41,7 +41,8 @@
     "auto-load": "~1.0.0",
     "ua-parser-js": "0.6.2",
     "moment": "2.7.x",
-    "rarity": "^2.1.1"
+    "rarity": "^2.1.1",
+    "dotenv": "^0.4.0"
   },
   "devDependencies": {
     "mocha": "1.18.x",

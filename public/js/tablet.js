@@ -1,6 +1,7 @@
 'use strict';
 
 var salesFetch = window.salesFetchModule.init();
+var data = window.data;
 
 var activePinButton = function() {
   return $('.snippet.active .pin-btn')[0];
@@ -68,7 +69,6 @@ var setPinned = function(elem, pinned) {
   }
 };
 
-
 /**
  * Filtering
  */
@@ -110,15 +110,10 @@ $("#left-panel").on('click', '.execute', function(e) {
     filters.document_type = dT;
   }
 
-<<<<<<< HEAD
-  var url = '/app/context-search?filters=' + encodeURIComponent(JSON.stringify(filters));
-  salesFetch.goTo(url);
-=======
   var url = '/app/documents?filters=' + encodeURIComponent(JSON.stringify(filters));
   var linker = url.indexOf('?') !== -1 ? '&' : '?';
   var urlWithData = url + linker + "data=" + encodeURIComponent(JSON.stringify(data));
   window.location = urlWithData;
->>>>>>> 6151a2fd17fb186baece68897ee5f98311893794
 });
 
 /**

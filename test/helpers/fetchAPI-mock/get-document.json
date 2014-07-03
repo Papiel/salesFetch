@@ -1,5 +1,5 @@
 {
-  "path" : "/batch?pages[0]=%2Fdocument_types&pages[1]=%2Fproviders&pages[2]=%2Fdocuments%2F5309c57d9ba7daaa265ffdc9%3Fsearch%3DChuck%20Norris",
+  "path" : "/batch?pages[0]=%2Fdocuments%3Fid%3D5309c57d9ba7daaa265ffdc9%26search%3DChuck%2520Norris&pages[1]=%2Fdocument_types&pages[2]=%2Fproviders",
   "verb" : "GET",
   "code": 200,
   "reply": {
@@ -85,28 +85,43 @@
             "documents": 27
         }
     },
-    "/documents/5309c57d9ba7daaa265ffdc9?search=Chuck Norris": {
-      "_type": "Document",
-      "id": "5309c57d9ba7daaa265ffdc9",
-      "creation_date": "2014-03-10T19:36:50.000Z",
-      "provider": "5320a6abc8318cc5d1000049",
-      "company": "52fb7b90c8318c4dc800006b",
-      "document_type": "5252ce4ce4cfcd16f55cfa3f",
-      "actions": {
-        "show": "https://mail.google.com/mail/b/anyfetch@gmail.com/?cm#all/144ad48c321261db"
-      },
-      "document_url": "/documents/5309c57d9ba7daaa265ffdc9",
-      "data": {
-        "from": "Matthieu Bacconnier <matthieu.bacconnier@papiel.fr>",
-        "to": "anyfetch@gmail.com",
-        "html": "Inquiry",
-        "html": "<div dir=\"ltr\">Albert Einstein is an awesome customer.<div>We need to convert him to our premium plan.</div><div><br></div><div><br clear=\"all\"><div><div dir=\"ltr\">Matthieu Bacconnier<br><div>+336 69 34 70 15</div><div><a href=\"https://papiel.fr\" target=\"_blank\">https://papiel.fr</a></div>\r\n\r\n</div></div>\r\n</div></div>\r\n",
-        "date": "Monday, March 10, 2014"
-      },
-      "related": [],
-      "title": {
-        "subject": "Inquiry"
-      }
+    "/documents?id=5309c57d9ba7daaa265ffdc9&search=Chuck%20Norris": {
+        "facets": {
+            "document_types": {
+                "5252ce4ce4cfcd16f55cfa3f": 1
+            },
+            "providers": {
+                "5320a682c8318cba94000040": 1
+            },
+            "creation_dates": {
+                "1393632000000": 1
+            }
+        },
+        "data": [
+            {
+              "_type": "Document",
+              "id": "5309c57d9ba7daaa265ffdc9",
+              "creation_date": "2014-03-10T19:36:50.000Z",
+              "provider": "5320a6abc8318cc5d1000049",
+              "company": "52fb7b90c8318c4dc800006b",
+              "document_type": "5252ce4ce4cfcd16f55cfa3f",
+              "actions": {
+                "show": "https://mail.google.com/mail/b/anyfetch@gmail.com/?cm#all/144ad48c321261db"
+              },
+              "document_url": "/documents/5309c57d9ba7daaa265ffdc9",
+              "data": {
+                "from": "Matthieu Bacconnier <matthieu.bacconnier@papiel.fr>",
+                "to": "anyfetch@gmail.com",
+                "html": "<div dir=\"ltr\">Albert Einstein is an awesome customer.<div>We need to convert him to our premium plan.</div><div><br></div><div><br clear=\"all\"><div><div dir=\"ltr\">Matthieu Bacconnier<br><div>+336 69 34 70 15</div><div><a href=\"https://papiel.fr\" target=\"_blank\">https://papiel.fr</a></div>\r\n\r\n</div></div>\r\n</div></div>\r\n",
+                "date": "Monday, March 10, 2014"
+              },
+              "related_count": 0,
+              "score": 1
+            }
+        ],
+        "max_score": null,
+        "next_page_url": "coming",
+        "previous_page_url": "coming"
     }
   }
 }

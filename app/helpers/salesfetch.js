@@ -27,12 +27,8 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         return cb(noPinError, pins);
       }
 
-      console.log('Fetching with infos');
-
       // Fetch all snippets in one call
       var anyfetch = new AnyFetch(user.anyFetchToken);
-      console.log(anyfetch);
-
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;
       });

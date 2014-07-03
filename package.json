@@ -42,7 +42,8 @@
     "ua-parser-js": "0.6.2",
     "moment": "2.7.x",
     "rarity": "^2.1.1",
-    "dotenv": "^0.4.0"
+    "dotenv": "^0.4.0",
+    "anyfetch": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "1.18.x",

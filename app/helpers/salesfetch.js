@@ -27,8 +27,12 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         return cb(noPinError, pins);
       }
 
+      console.log('Fetching with infos');
+
       // Fetch all snippets in one call
       var anyfetch = new AnyFetch(user.anyFetchToken);
+      console.log(anyfetch);
+
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;
       });
@@ -57,6 +61,12 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     if (err === noPinError) {
       err = null;
     }
+    if(docs.status && docs.status !== 200){
+      var e = new Error(docs.text);
+      e.statusCode = docs.status;
+      return finalCb(e);
+    }
+
     finalCb(err, docs);
   });
 };

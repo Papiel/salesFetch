@@ -7,7 +7,7 @@ var async = require('async');
 var querystring = require('querystring');
 var rarity = require('rarity');
 
-var mongoose =require('mongoose');
+var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 
 var anyfetchHelpers = require('../helpers/anyfetch.js');
@@ -72,6 +72,8 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       cb(null, docs);
     }
   ], function(err, docs) {
+    // TODO: do not crash when one of the documents is absent
+
     // See in `fetchDocumentsAndDocumentTypes` above
     if (err === noPinError) {
       err = null;

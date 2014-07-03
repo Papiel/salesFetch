@@ -176,23 +176,11 @@ module.exports.initAccount = function(data, done) {
       anyfetch.postUser(fetchUser, cb);
     },
     function retrieveUserToken(res, cb) {
-      if(res.status !== 200){
-        var e = new Error(res.text);
-        e.statusCode = res.status;
-        return cb(e);
-      }
-
       user.anyFetchId = res.body.id;
       var anyfetchUser = new AnyFetch(user.email, user.password);
       anyfetchUser.getToken(cb);
     },
     function createSubCompany(res, cb) {
-      if(res.status !== 200){
-        var e = new Error(res.text);
-        e.statusCode = res.status;
-        return cb(e);
-      }
-
       user.token = res.body.token;
 
       var subcompany = {
@@ -224,7 +212,13 @@ module.exports.initAccount = function(data, done) {
 
       localUser.save(cb);
     }
-  ], function(err) {
+  ], function(err, res) {
+    if(res && res.status && res.status !== 200){
+      var e = new Error(res.text);
+      e.statusCode = res.status;
+      return done(e);
+    }
+
     done(err, org);
   });
 };
@@ -289,7 +283,7 @@ module.exports.addNewUser = function(user, organization, cb) {
 
       localUser.save(cb);
     }
-  ], cb );
+  ], cb);
 };
 
 /**

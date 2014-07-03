@@ -8,7 +8,7 @@ module.exports = function(app) {
   var middlewares = lib.middlewares;
   var controllers = lib.controllers;
 
-  app.post('/admin/init', controllers.admin.index.get);
+  app.post('/admin/init', controllers.admin.index.post);
 
   app.get('/app/documents',
     middlewares.authorization.requiresLogin,

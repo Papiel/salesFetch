@@ -11,7 +11,7 @@ var anyFetchHelper = require('../../helpers/anyfetch');
  * Create a subcompany and add an admin user
  * Called one time at package installation
  */
-module.exports.get = function(req, res, next) {
+module.exports.post = function(req, res, next) {
   async.waterfall([
     function checkParams(cb) {
       var data = req.body;

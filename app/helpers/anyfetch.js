@@ -294,19 +294,16 @@ module.exports.addNewUser = function(user, organization, cb) {
 };
 
 /**
- * Retrieve all providers
+ * Retrieve all trusted providers from the Manager app
  */
 module.exports.getProviders = function(cb) {
-  var apiUrl = 'https://manager.anyfetch.com';
-
   async.waterfall([
     function retrieveProviders(cb) {
-      request(apiUrl).get('/marketplace.json?trusted=true')
+      request(config.managerUrl).get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {
       var providers = res.body;
-
       cb(null, providers);
     }
   ], cb);
@@ -319,7 +316,6 @@ module.exports.getConnectedProviders = function(user, cb) {
   request(fetchApiUrl).get('/providers')
     .set('Authorization', 'Bearer ' + user.anyFetchToken)
     .end(cb);
-
 };
 
 /**

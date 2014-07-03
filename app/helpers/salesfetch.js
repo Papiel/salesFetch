@@ -1,18 +1,13 @@
 'use strict';
 
 var express = require('express');
-var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
-var querystring = require('querystring');
-var rarity = require('rarity');
+var AnyFetch = require('anyfetch');
 
 var mongoose =require('mongoose');
 var Pin = mongoose.model('Pin');
-
 var anyfetchHelpers = require('../helpers/anyfetch.js');
-var config = require('../../config/configuration.js');
-var fetchApiUrl = config.fetchApiUrl;
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
@@ -33,40 +28,26 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       }
 
       // Fetch all snippets in one call
+      var anyfetch = new AnyFetch(user.anyFetchToken);
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;
       });
-
-      // Batch call: /documents and /document_types
-      var pages = [
-        '/documents?' + querystring.encode({ id: ids, sort: '-creationDate' }),
-        '/document_types'
-      ];
-      request(fetchApiUrl).get('/batch')
-        .query({ pages: pages })
-        .set('Authorization', 'Bearer ' + user.anyFetchToken)
-        .expect(200)
-        .end(rarity.carry(pages, cb));
+      var query = { id: ids, sort: '-creationDate' };
+      anyfetch.getDocumentsWithInfo(query, cb);
     },
-    function extractRes(docUrl, typesUrl, batchRes, cb) {
-      var documents = batchRes.body[docUrl].data;
-      var documentTypes = batchRes.body[typesUrl];
-      cb(null, documents, documentTypes);
-    },
-    function applyTemplates(docs, documentTypes, cb) {
-      docs = docs.map(function(doc) {
-        var template;
+    function applyTemplates(docs, cb) {
+      docs = docs.data.map(function(doc) {
         // TODO: refactor (also used in `findDocuments`)
+        var template;
         var overridedTemplates = anyfetchHelpers.getOverridedTemplates();
-        if (overridedTemplates[doc.document_type]) {
-          template = overridedTemplates[doc.document_type].templates.snippet;
+        if (overridedTemplates[doc.document_type.id]) {
+          template = overridedTemplates[doc.document_type.id].templates.snippet;
         } else {
-          template = documentTypes[doc.document_type].templates.snippet;
+          template = doc.document_type.templates.snippet;
         }
 
         doc.pinned = true;
         doc.snippet_rendered = Mustache.render(template, doc.data);
-        doc.document_type = documentTypes[doc.document_type].name;
         return doc;
       });
       cb(null, docs);

@@ -184,9 +184,7 @@ module.exports.initAccount = function(data, done) {
       }
 
       user.anyFetchId = res.body.id;
-      user.basicAuth = new Buffer(user.email + ':' + user.password).toString('base64');
-
-      var anyfetchUser = new AnyFetch(user.name, user.password);
+      var anyfetchUser = new AnyFetch(user.email, user.password);
       anyfetchUser.getToken(cb);
     },
     function createSubCompany(res, cb) {
@@ -254,15 +252,13 @@ module.exports.addNewUser = function(user, organization, cb) {
         return cb(new express.errors.NotFound('No admin for the company has been found'));
       }
 
-      var adminToken = adminUser.anyFetchToken;
-      request(fetchApiUrl).post('/users')
-        .set('Authorization', 'Bearer ' + adminToken)
-        .send({
-          email: user.name,
-          name: user.name,
-          password: user.password
-        })
-        .end(cb);
+      var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);
+      var user = {
+        email: user.name,
+        name: user.name,
+        password: user.password
+      };
+      anyfetchAdmin.postUser(user, cb);
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
@@ -272,11 +268,8 @@ module.exports.addNewUser = function(user, organization, cb) {
       }
 
       user.anyFetchId = res.body.id;
-      user.basicAuth = new Buffer(user.name + ':' + user.password).toString('base64');
-
-      request(fetchApiUrl).get('/token')
-        .set('Authorization', 'Basic ' + user.basicAuth)
-        .end(cb);
+      var anyfetchUser = new AnyFetch(user.email, user.password);
+      anyfetchUser.getToken(cb);
     },
     function saveLocalUser(res, cb) {
       if(res.status !== 200){

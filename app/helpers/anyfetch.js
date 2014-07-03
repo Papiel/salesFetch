@@ -8,7 +8,7 @@ var crypto = require('crypto');
 var _ = require("lodash");
 var fs = require('fs');
 var rarity = require('rarity');
-var AnyFetch = require('AnyFetch');
+var AnyFetch = require('anyfetch');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');

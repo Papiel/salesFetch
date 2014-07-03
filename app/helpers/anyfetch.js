@@ -8,13 +8,13 @@ var crypto = require('crypto');
 var _ = require("lodash");
 var fs = require('fs');
 var rarity = require('rarity');
+var AnyFetch = require('AnyFetch');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var salesfetchHelpers = require('./salesfetch.js');
-
 var config = require('../../config/configuration.js');
 var fetchApiUrl = config.fetchApiUrl;
 
@@ -37,88 +37,55 @@ var getOverridedTemplates = function() {
 module.exports.getOverridedTemplates = getOverridedTemplates;
 
 module.exports.findDocuments = function(params, user, cb) {
-  var pages = [];
-
   async.waterfall([
     function executeBatchRequest(cb) {
-      var query = [];
-      for(var key in params) {
-        query.push(key + "=" + encodeURIComponent(params[key]));
-      }
-
-      pages = [
-        '/document_types',
-        '/providers',
-        '/documents?' + query.join('&')
-      ];
-
-      var batchParams = pages.map(encodeURIComponent).join('&pages=');
-      var batchUrl = '/batch?pages=' + batchParams;
-
-      request(fetchApiUrl).get(batchUrl)
-        .set('Authorization', 'Bearer ' + user.anyFetchToken)
-        .expect(200)
-        .end(cb);
+      var anyfetch = new AnyFetch(user.anyFetchToken);
+      anyfetch.getDocumentsWithInfo(params, cb);
     },
-    function templateResults(res, cb) {
-      if (res.status === 401) {
-        return cb(new express.errors.Unauthorized('Invalid credentials'));
-      }
-
-      var body = res.body;
-
-      var documentTypes = body[pages[0]];
-      var providers = body[pages[1]];
-      var docReturn = body[pages[2]];
-
-      if (!docReturn.data) {
-        return cb(null, docReturn);
+    function templateResults(docs, cb) {
+      if (!docs.data) {
+        return cb(null, docs);
       }
 
       // Render the templated data
-      docReturn.data.forEach(function(doc) {
+      // At the same time, gather info about the providers and document types
+      // TODO: use `docs.facets` directly, no need for a new key
+      docs.document_types = {};
+      docs.providers = {};
+      docs.data.forEach(function(doc) {
         var relatedTemplate;
 
         var overridedTemplate = getOverridedTemplates();
         if (overridedTemplate[doc.document_type]) {
-          relatedTemplate = overridedTemplate[doc.document_type].templates.snippet;
+          relatedTemplate = overridedTemplate[doc.document_type.id].templates.snippet;
         } else {
-          relatedTemplate = documentTypes[doc.document_type].templates.snippet;
+          relatedTemplate = doc.document_type.templates.snippet;
         }
 
         doc.snippet_rendered = Mustache.render(relatedTemplate, doc.data);
 
-        doc.provider = providers[doc.provider].name;
-        doc.document_type = documentTypes[doc.document_type].name;
+        // We encounter a new document_type
+        var id;
+        if(!(doc.document_type.id in docs.document_types)) {
+          id = doc.document_type.id;
+          docs.document_types[id] = {
+            id: id,
+            count: docs.facets.document_types[id],
+            name: doc.document_type.name
+          };
+        }
+        // We encounter a new provider
+        if(!(doc.provider.id in docs.providers)) {
+          id = doc.provider.id;
+          docs.providers[id] = {
+            id: id,
+            count: docs.facets.providers[id],
+            name: doc.provider.name
+          };
+        }
       });
 
-      // Return all the documents types
-      var tempDocTypes = {};
-      for (var docType in docReturn.facets.document_types) {
-        var dT = {
-          id: docType,
-          count: docReturn.facets.document_types[docType],
-          name: documentTypes[docType].name
-        };
-
-        tempDocTypes[docType] = dT;
-      }
-      docReturn.document_types = tempDocTypes;
-
-      // Return all the providers
-      var tempProviders = {};
-      for (var provider in docReturn.facets.providers) {
-        var p = {
-          id: provider,
-          count: docReturn.facets.providers[provider],
-          name: providers[provider].name
-        };
-
-        tempProviders[provider] = p;
-      }
-      docReturn.providers = tempProviders;
-
-      cb(null, docReturn);
+      cb(null, docs);
     }
   ], cb);
 };
@@ -127,53 +94,41 @@ module.exports.findDocuments = function(params, user, cb) {
  * Find and return a single templated document
  */
 module.exports.findDocument = function(id, user, context, finalCb) {
-  var pages = [
-    '/document_types',
-    '/providers',
-    '/documents/' + id + '?search=' + context.templatedQuery
-  ];
-  var batchParams = pages.map(encodeURIComponent).join('&pages=');
-
   async.waterfall([
     function sendBatchRequest(cb) {
-      request(fetchApiUrl).get('/batch?pages=' + batchParams)
-        .set('Authorization', 'Bearer ' + user.anyFetchToken)
-        .end(rarity.carry(pages, cb));
+      var anyfetch = new AnyFetch(user.anyFetchToken);
+      var query = { id: id, search: context.templatedQuery };
+      // TODO: replace by `getDocumentWithInfo`
+      anyfetch.getDocumentsWithInfo(query, cb);
     },
-    function applyTemplate(typesUrl, providersUrl, docsUrl, res, cb) {
-      if (res.status === 401) {
-        return cb(new express.errors.Unauthorized('Invalid credentials'));
+    function applyTemplate(docs, cb) {
+      if(!docs.data || !docs.data[0]) {
+        return cb(new express.errors.NotFound('Document not found'));
       }
-
-      var body = res.body;
-      var documentTypes = body[typesUrl];
-      var providers = body[providersUrl];
-      var docReturn = body[docsUrl];
+      var doc = docs.data[0];
 
       var relatedTemplate;
       var titleTemplate;
-
       var overridedTemplate = getOverridedTemplates();
-      if (overridedTemplate[docReturn.document_type]) {
-        relatedTemplate = overridedTemplate[docReturn.document_type].templates.full;
-        titleTemplate = overridedTemplate[docReturn.document_type].templates.title;
+      if (overridedTemplate[doc.document_type.id]) {
+        relatedTemplate = overridedTemplate[doc.document_type.id].templates.full;
+        titleTemplate = overridedTemplate[doc.document_type.id].templates.title;
       } else {
-        relatedTemplate = documentTypes[docReturn.document_type].templates.full;
-        titleTemplate = documentTypes[docReturn.document_type].templates.title;
+        relatedTemplate = doc.document_type.templates.full;
+        titleTemplate = doc.document_type.templates.title;
       }
 
-      docReturn.full_rendered = Mustache.render(relatedTemplate, docReturn.data);
-      docReturn.title_rendered = Mustache.render(titleTemplate, docReturn.data);
+      doc.full_rendered = Mustache.render(relatedTemplate, doc.data);
+      doc.title_rendered = Mustache.render(titleTemplate, doc.data);
+      doc.provider = doc.provider.name;
+      doc.document_type = doc.document_type.name;
 
-      docReturn.provider = providers[docReturn.provider].name;
-      docReturn.document_type = documentTypes[docReturn.document_type].name;
-
-      cb(null, docReturn);
+      cb(null, doc);
     },
     function getPin(doc, cb) {
       salesfetchHelpers.getPin(context.recordId, doc.id, rarity.carry([doc], cb));
     },
-    function markIdPinned(doc, pin, cb) {
+    function markIfPinned(doc, pin, cb) {
       doc.pinned = !!pin;
       cb(null, doc);
     }

@@ -170,8 +170,7 @@ module.exports.initAccount = function(data, done) {
       var fetchUser = {
         email: user.name,
         name: user.name,
-        password: user.password,
-        is_admin: false,
+        password: user.password
       };
       anyfetch.postUser(fetchUser, cb);
     },
@@ -184,9 +183,11 @@ module.exports.initAccount = function(data, done) {
       user.token = res.body.token;
 
       var subcompany = {
+        user: user.anyFetchId,
         name: org.name
       };
-      anyfetch.createSubcompanyWithUser(user.anyFetchId, subcompany, cb);
+      // TODO: use `createSubcompanyWithAdmin`
+      anyfetch.postSubcompany(user.anyFetchId, subcompany, cb);
     },
     function saveLocalCompany(res, cb) {
       var localOrg = new Organization({
@@ -246,12 +247,12 @@ module.exports.addNewUser = function(user, organization, cb) {
       }
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);
-      var user = {
+      var newUser = {
         email: user.name,
         name: user.name,
         password: user.password
       };
-      anyfetchAdmin.postUser(user, cb);
+      anyfetchAdmin.postUser(newUser, cb);
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){

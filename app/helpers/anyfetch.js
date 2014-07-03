@@ -16,7 +16,6 @@ var User = mongoose.model('User');
 
 var salesfetchHelpers = require('./salesfetch.js');
 var config = require('../../config/configuration.js');
-var fetchApiUrl = config.fetchApiUrl;
 
 var cachedTemplates = {};
 var getOverridedTemplates = function() {
@@ -313,16 +312,14 @@ module.exports.getProviders = function(cb) {
  * Retrieve all connect provider for an account
  */
 module.exports.getConnectedProviders = function(user, cb) {
-  request(fetchApiUrl).get('/providers')
-    .set('Authorization', 'Bearer ' + user.anyFetchToken)
-    .end(cb);
+  var anyfetch = new AnyFetch(user.anyFetchToken);
+  anyfetch.getProviders(cb);
 };
 
 /**
  * Update the company documents
  */
 module.exports.updateAccount = function(user, cb) {
-  request(fetchApiUrl).post('/company/update')
-    .set('Authorization', 'Bearer ' + user.anyFetchToken)
-    .end(cb);
+  var anyfetch = new AnyFetch(user.anyFetchToken);
+  anyfetch.postCompanyUpdate(cb);
 };

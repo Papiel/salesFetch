@@ -88,7 +88,7 @@ describe('<Authentication middleware>', function() {
 
     async.waterfall([
       function mountAPI(cb) {
-        APIs.mount('fetchAPI', 'http://api.anyfetch.com', cb);
+        APIs.mount('fetchAPI', 'https://api.anyfetch.com', cb);
       },
       function createCompany(api, cb) {
          var org = new Organization({

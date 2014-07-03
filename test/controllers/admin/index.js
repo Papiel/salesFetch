@@ -4,6 +4,7 @@ require("should");
 
 var async = require('async');
 var request = require('supertest');
+
 var app = require('../../../app.js');
 var APIs = require('../../helpers/APIs');
 var cleaner = require('../../hooks/cleaner');
@@ -31,7 +32,7 @@ describe('/admin/init endpoint', function() {
 
     beforeEach(cleaner);
     beforeEach(function(done) {
-      APIs.mount('fetchAPI', 'http://api.anyfetch.com', done);
+      APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
     });
 
     it('should create a user and a company', function(done) {

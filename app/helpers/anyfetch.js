@@ -135,7 +135,6 @@ module.exports.findDocument = function(id, user, context, finalCb) {
   ], finalCb);
 };
 
-
 /**
  * Create a subcompany and an admin on the FetchAPI
  * Store the linking informations btw Salesforce and FetchAPI
@@ -144,6 +143,7 @@ module.exports.initAccount = function(data, done) {
   var user = data.user;
   var org = data.organization;
 
+  var anyfetch = new AnyFetch(config.fetchApiCreds);
 
   async.waterfall([
     function checkIfCompanyAlreadyExist(cb) {
@@ -168,15 +168,13 @@ module.exports.initAccount = function(data, done) {
         user.name = 'dev-' + user.name;
       }
 
-      request(fetchApiUrl).post('/users')
-        .set('Authorization', 'Basic ' + config.fetchApiCreds)
-        .send({
-          email: user.name,
-          name: user.name,
-          password: user.password,
-          is_admin: true,
-        })
-        .end(cb);
+      var fetchUser = {
+        email: user.name,
+        name: user.name,
+        password: user.password,
+        is_admin: false,
+      };
+      anyfetch.postUser(fetchUser, cb);
     },
     function retrieveUserToken(res, cb) {
       if(res.status !== 200){
@@ -186,11 +184,10 @@ module.exports.initAccount = function(data, done) {
       }
 
       user.anyFetchId = res.body.id;
-      user.basicAuth = new Buffer(user.name + ':' + user.password).toString('base64');
+      user.basicAuth = new Buffer(user.email + ':' + user.password).toString('base64');
 
-      request(fetchApiUrl).get('/token')
-        .set('Authorization', 'Basic ' + user.basicAuth)
-        .end(cb);
+      var anyfetchUser = new AnyFetch(user.name, user.password);
+      anyfetchUser.getToken(cb);
     },
     function createSubCompany(res, cb) {
       if(res.status !== 200){
@@ -201,12 +198,10 @@ module.exports.initAccount = function(data, done) {
 
       user.token = res.body.token;
 
-      request(fetchApiUrl).post('/subcompanies')
-        .set('Authorization', 'Bearer ' + user.token)
-        .send({
-          name: org.name
-        })
-        .end(cb);
+      var subcompany = {
+        name: org.name
+      };
+      anyfetch.createSubcompanyWithUser(user.anyFetchId, subcompany, cb);
     },
     function saveLocalCompany(res, cb) {
       var localOrg = new Organization({

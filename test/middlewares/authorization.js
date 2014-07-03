@@ -131,7 +131,7 @@ describe('<Authentication middleware>', function() {
         };
 
         authMiddleware(req, null, cb);
-      }, function CheckUserValidity(cb) {
+      }, function checkUserValidity(cb) {
         User.findOne({name: 'Walter White'}, function(err, user) {
           user.should.have.property('email', 'walter.white@breaking-bad.com');
           user.should.have.property('SFDCId', 'newUser');

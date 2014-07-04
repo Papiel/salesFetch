@@ -96,15 +96,13 @@ module.exports.findDocument = function(id, user, context, finalCb) {
   async.waterfall([
     function sendBatchRequest(cb) {
       var anyfetch = new AnyFetch(user.anyFetchToken);
-      var query = { id: id, search: context.templatedQuery };
-      // TODO: replace by `getDocumentWithInfo`
-      anyfetch.getDocumentsWithInfo(query, cb);
+      var query = { search: context.templatedQuery };
+      anyfetch.getDocumentWithInfo(id, query, cb);
     },
-    function applyTemplate(docs, cb) {
-      if(!docs.data || !docs.data[0]) {
+    function applyTemplate(doc, cb) {
+      if(!doc || !doc.data) {
         return cb(new express.errors.NotFound('Document not found'));
       }
-      var doc = docs.data[0];
 
       var relatedTemplate;
       var titleTemplate;
@@ -161,39 +159,35 @@ module.exports.initAccount = function(data, done) {
         cb(null);
       });
     },
-    function createAccount(cb) {
+    function createAccountAndSubcompany(cb) {
       // Avoid collision with production
       if (config.env === 'development') {
         user.name = 'dev-' + user.name;
       }
 
+      var subcompany = {
+        user: user.anyFetchId,
+        name: org.name
+      };
       var fetchUser = {
         email: user.name,
         name: user.name,
         password: user.password
       };
-      anyfetch.postUser(fetchUser, cb);
+      anyfetch.createSubcompanyWithAdmin(subcompany, fetchUser, cb);
     },
-    function retrieveUserToken(res, cb) {
-      user.anyFetchId = res.body.id;
+    function retrieveUserToken(company, admin, cb) {
+      user.anyFetchId = admin.id;
       var anyfetchUser = new AnyFetch(user.email, user.password);
-      anyfetchUser.getToken(cb);
+      anyfetchUser.getToken(rarity.carry(company, cb));
     },
-    function createSubCompany(res, cb) {
+    function saveLocalCompany(company, res, cb) {
       user.token = res.body.token;
 
-      var subcompany = {
-        user: user.anyFetchId,
-        name: org.name
-      };
-      // TODO: use `createSubcompanyWithAdmin`
-      anyfetch.postSubcompany(user.anyFetchId, subcompany, cb);
-    },
-    function saveLocalCompany(res, cb) {
       var localOrg = new Organization({
         name: org.name,
         SFDCId: org.id,
-        anyFetchId: res.body.id
+        anyFetchId: company.id
       });
 
       localOrg.save(cb);

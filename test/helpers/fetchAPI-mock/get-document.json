@@ -1,5 +1,5 @@
 {
-  "path" : "/batch?pages[0]=%2Fdocument_types&pages[1]=%2Fproviders&pages[2]=%2Fdocuments%2F5309c57d9ba7daaa265ffdc9%3Fsearch%3DChuck%20Norris",
+  "path" : "/batch?pages[0]=%2Fdocument_types&pages[1]=%2Fproviders&pages[2]=%2Fdocuments%2F5309c57d9ba7daaa265ffdc9%3Fsearch%3DChuck%2520Norris",
   "verb" : "GET",
   "code": 200,
   "reply": {
@@ -85,7 +85,7 @@
             "documents": 27
         }
     },
-    "/documents/5309c57d9ba7daaa265ffdc9?search=Chuck Norris": {
+    "/documents/5309c57d9ba7daaa265ffdc9?search=Chuck%20Norris": {
       "_type": "Document",
       "id": "5309c57d9ba7daaa265ffdc9",
       "creation_date": "2014-03-10T19:36:50.000Z",

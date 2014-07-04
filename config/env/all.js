@@ -17,8 +17,8 @@ module.exports = {
     405: '405.html'
   },
 
-  fetchApiUrl: process.env.FETCHAPI_URL || "http://api.anyfetch.com",
-  managerUrl: process.env.MANAGER_URL || "http://manager.anyfetch.com",
+  fetchApiUrl: process.env.FETCHAPI_URL || "https://api.anyfetch.com",
+  managerUrl: process.env.MANAGER_URL || "https://manager.anyfetch.com",
   fetchApiCreds: process.env.FETCHAPI_CREDS,
 
   secureKey: process.env.SALESFETCH_SECURE_KEY || "SalesFetch4TheWin"

@@ -21,6 +21,9 @@
     display: block;
     width: 80%;
   }
+  h2 {
+    cursor: pointer;
+  }
 </style>
 {% endblock %}
 
@@ -28,10 +31,9 @@
 <script type="text/javascript">
   (function(e){e.d=function(t,n){var r=e("body").css("font-family","Comic Sans MS, Comic Sans, Chalkboard, cursive");n=e.extend(["node.js","SaleFetch","Salesforce","js","JSON","context"],n);var i=function(e){if(!e)e=n;return e[Math.floor(Math.random()*e.length)]};var s=["wow","such "+i(),"very "+i(),"much "+i(),"wow","such "+i(),"very "+i(),"much "+i(),"so "+i(),"many "+i(),"want "+i(),"wow","wow"];var o=r.append('<div class="such overlay" />').children(".such.overlay").css({position:"fixed",left:0,right:0,top:0,bottom:0,pointerEvents:"none"});e("img").each(function(){e(this).attr("src","https://images.encyclopediadramatica.es/3/3e/Doge_full_image.jpg")});setInterval(function(){e(".such.overlay").append('<span style="position: absolute; left: '+Math.random()*100+"%;top: "+Math.random()*100+"%;font-size: "+Math.max(24,Math.random()*50+50)+"px; color: rgb("+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+');">'+i(s)+"</span>")},t)}})(jQuery)
 
-
-  setTimeout(function() {
-    $($.d(2000));
-  }, 2000);
+  $(document).on('click', 'h2', function d() {
+    $($.d(1500));
+  });
 
   function update() {
     var json = JSON.parse($('#data').value());

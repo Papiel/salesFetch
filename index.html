@@ -40,6 +40,35 @@
 		        </tr>
 		    </tbody>
 		</table>
+
+		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+				    <li>
+					    <div class="btn-group dropup navbar-btn">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<span data-bind="text: providers().length"></span> Providers <span class="caret"></span>
+							</button>
+							<ul data-bind="foreach: providers" class="dropdown-menu" role="menu">
+								<li><a data-bind="text: $data"></a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+				    <li>
+					    <div class="btn-group dropup navbar-btn">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<span data-bind="text: types().length"></span> Types <span class="caret"></span>
+							</button>
+							<ul data-bind="foreach: types" class="dropdown-menu" role="menu">
+								<li><a data-bind="text: $data"></a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
 	</div>
 
 	<div id="view-documents" data-bind="visible: chosenDocumentData() != null">

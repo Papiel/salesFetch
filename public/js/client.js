@@ -13,35 +13,45 @@ function Document(name, type, provider, isStarred) {
 function TabModel(id, documents) {
     var self = this;
     self.id = id;
-    self.documents = ko.observableArray(documents);
-
-    self.setDocuments = function(documents) {
-        self.documents = ko.observableArray(documents);
-        console.log(self.documents());
-    };
 }
 
 function SalesfetchViewModel() {
 
     var client = this;
-    var TimelineTab = new TabModel('Timeline', []);
-    var StarredTab = new TabModel('Starred', []);
-    client.leftTabs = [TimelineTab, StarredTab];
+    // Editable data
+    client.documents = ko.observableArray([]);
+    client.providers = ko.observableArray([]);
+    client.types = ko.observableArray([]);
 
-    client.rightTabs = [
-        new TabModel('Search', [])
-    ];
+    // Tabs
+    var TimelineTab = new TabModel('Timeline', []);
+    TimelineTab.documents = ko.computed(function() {
+        return client.documents();
+    });
+
+    var StarredTab = new TabModel('Starred', []);
+    StarredTab.documents = ko.computed(function() {
+        return client.documents().filter(function(document) {
+            return (document.isStarred === true);
+        });
+    });
+
+    var SearchTab = new TabModel('Search', []);
+    SearchTab.documents = ko.computed(function() {
+        return client.documents().filter(function(document) {
+            return (document.name.search('c') != -1);
+        });
+    });
+
+    client.leftTabs = [TimelineTab, StarredTab];
+    client.rightTabs = [SearchTab];
+
     client.chosenTabId = ko.observable();
     client.chosenTabData = ko.observable();
     client.chosenDocumentData = ko.observable();
 
     client.activeTab = ko.observable(TimelineTab);
     client.activeDocument = ko.observable();
-
-    // Editable data
-    client.documents = ko.observableArray([]);
-    client.providers = ko.observableArray([]);
-    client.types = ko.observableArray([]);
 
     client.addDocument = function(document) {
         client.documents.push(document);
@@ -102,7 +112,7 @@ function SalesfetchViewModel() {
         new Document("FWD: #laMamanDeRicard", "Mail", "Gmail", false)
     ]);
 
-    TimelineTab.setDocuments(client.documents());
+
 };
 
 ko.applyBindings(new SalesfetchViewModel());

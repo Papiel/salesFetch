@@ -1,0 +1,50 @@
+
+/**********************
+       CONSTANTS
+***********************/
+
+@defaultFontFamily: 'Open Sans', sans-serif;
+@defaultFontWeight: 300;
+
+
+@anyFetchBlue: #14A8E1;
+@anyFetchLightColor: #fff;
+@anyFetchDarkColor: #ddd;
+@anyFetchOrange: #F98D33;
+@anyFetchBlack: #777;
+@anyfetchSoftOrange: @anyFetchOrange + #111;
+@anyFetchLightGray: #F8F8F8;
+
+@bootstrapGray: #ADADAD;
+@bootstrapLightGray: #EBEBEB;
+
+
+/*********************************
+   OPERATIONS & COLOR FUNCTIONS
+**********************************/
+
+.navTab {
+
+	&.active {
+		background-color: @anyFetchDarkColor;
+	}
+}
+
+
+/**********************
+        MIXINS
+***********************/
+
+
+
+/**********************
+         STYLES
+***********************/
+
+.navbar.navbar-default {
+
+	ul.nav.navbar-nav {
+		li a { .navTab }
+	}
+
+}

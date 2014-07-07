@@ -89,7 +89,7 @@ function SalesfetchViewModel() {
     };
 
     client.goBack = function() {
-        client.goToTab(Timeline);
+        client.activeDocument(null);
     }
 
     client.setDocuments = function(documents) {
@@ -103,7 +103,6 @@ function SalesfetchViewModel() {
 
 
     // Demo
-
     client.addDocuments([
         new Document("Contrat 12", "PDF", "Dropbox", false),
         new Document("Oublie pas !", "Note", "Evernote", true),

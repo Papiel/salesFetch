@@ -10,14 +10,33 @@ function Document(name, type, provider, isStarred) {
     self.type = type;
 }
 
+function TabModel(id, documents) {
+    var self = this;
+    self.id = id;
+    self.documents = ko.observableArray(documents);
+
+    self.setDocuments = function(documents) {
+        self.documents = ko.observableArray(documents);
+        console.log(self.documents());
+    };
+}
+
 function SalesfetchViewModel() {
 
     var client = this;
-    client.leftTabs = ['Timeline', 'Stared'];
-    client.rightTabs = ['Search'];
+    var TimelineTab = new TabModel('Timeline', []);
+    var StarredTab = new TabModel('Starred', []);
+    client.leftTabs = [TimelineTab, StarredTab];
+
+    client.rightTabs = [
+        new TabModel('Search', [])
+    ];
     client.chosenTabId = ko.observable();
     client.chosenTabData = ko.observable();
     client.chosenDocumentData = ko.observable();
+
+    client.activeTab = ko.observable(TimelineTab);
+    client.activeDocument = ko.observable();
 
     // Editable data
     client.documents = ko.observableArray([]);
@@ -35,21 +54,32 @@ function SalesfetchViewModel() {
             client.addDocument(document);
         });
     }
+
+    client.getStarredDocuments = ko.computed(function() {
+        return client.documents().filter(function(document) {
+            return (document.isStarred === true);
+        });
+    })
     // Behaviours
     client.goToTab = function(tab) {
         // location.hash = tab
-        client.chosenTabId(tab);
+        client.activeTab(tab);
         client.chosenDocumentData(null);
-        client.chosenTabData(client.documents());
+
+        if (tab === 'Starred') {
+            var starreDocs = client.getStarredDocuments();
+            console.log(starreDocs);
+            client.chosenTabData(starreDocs);
+        } else {
+            client.chosenTabData(client.documents());
+        };
     };
     client.goToDocument = function(document) {
-        // location.hash = document.tab + '/' + document.id
-        client.chosenTabData(null);
-        client.chosenDocumentData(document);
+        client.activeDocument(document);
     };
 
     client.goBack = function() {
-        client.goToTab('Timeline');
+        client.goToTab(Timeline);
     }
 
     client.setDocuments = function(documents) {
@@ -58,7 +88,7 @@ function SalesfetchViewModel() {
 
 
     // Show Timeline by default
-    client.goToTab('Timeline');
+    client.goToTab(TimelineTab);
 
 
 
@@ -71,6 +101,8 @@ function SalesfetchViewModel() {
         new Document("Facture", "PDF", "Drive", true),
         new Document("FWD: #laMamanDeRicard", "Mail", "Gmail", false)
     ]);
+
+    TimelineTab.setDocuments(client.documents());
 };
 
 ko.applyBindings(new SalesfetchViewModel());

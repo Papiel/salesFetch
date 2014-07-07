@@ -12,26 +12,26 @@
 
 	<body>
 
-	<div id="view-documents" data-bind="visible: chosenDocumentData() == null">
+	<div id="view-documents" data-bind="visible: activeDocument() == null">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation">
   			<div class="container">
 				<ul data-bind="foreach: leftTabs" class="nav navbar-nav navbar-left">
-					    <li><a data-bind="text: $data,
-					    				css: { active: $data == $root.chosenTabId() },
+					    <li><a data-bind="text: id,
+					    				css: { active: $data == $root.activeTab() },
 					    				click: $root.goToTab"></a></li>
 				</ul>
 				<ul data-bind="foreach: rightTabs" class="nav navbar-nav navbar-right">
-					    <li><a data-bind="text: $data,
-					    				css: { active: $data == $root.chosenTabId() },
+					    <li><a data-bind="text: id,
+					    				css: { active: $data == $root.activeTab() },
 					    				click: $root.goToTab"></a></li>
 				</ul>
 			</div>
 		</nav>
 
 		<!-- Snippet grid -->
-		<table class="container">
+		<table class="container" data-bind="with: activeTab">
 		    <thead><tr><th>ID</th><th>Name</th><th>Provider</th><th>Starred</th></tr></thead>
-		    <tbody data-bind="foreach: documents">
+		    <tbody data-bind="foreach: $data.documents">
 		        <tr>
 		            <td data-bind="text: id"></td>
 		            <td data-bind="text: name, click: $root.goToDocument"></td>
@@ -71,7 +71,7 @@
 		</nav>
 	</div>
 
-	<div id="view-documents" data-bind="visible: chosenDocumentData() != null">
+	<div id="view-documents" data-bind="visible: activeDocument() != null">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation">
   			<div class="container">
 				<ul class="nav navbar-nav navbar-left">
@@ -80,7 +80,7 @@
 			</div>
 		</nav>
 		<!-- Chosen document -->
-		<div class="viewMail" data-bind="with: chosenDocumentData">
+		<div class="viewMail" data-bind="with: activeDocument">
 		    <div class="container">
 		        <h1 data-bind="text: name"></h1>
 		        <p><label>ID</label>: <span data-bind="text: id"></span></p>

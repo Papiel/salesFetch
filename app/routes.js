@@ -1,6 +1,7 @@
 'use strict';
 
 var autoLoad = require('auto-load');
+var config = require('../config/configuration.js');
 
 module.exports = function(app) {
   var lib = autoLoad(__dirname);
@@ -51,4 +52,8 @@ module.exports = function(app) {
   app.post('/app/providers',
     middlewares.authorization.requiresLogin,
     controllers.app.providers.index.post);
+
+  if(config.env === 'development') {
+    app.get('/', controllers.dev.contextCreator);
+  }
 };

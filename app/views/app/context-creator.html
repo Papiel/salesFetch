@@ -1,0 +1,13 @@
+{% extends '../template.html' %}
+
+{% block content %}
+  <h1>Generating a valid context</h1>
+
+  <!-- Display JSON -->
+  <pre>{{JSON.stringify(json, null, 2)|safe}}</pre>
+
+  <!-- Display clickable link -->
+  <p>
+    <a href="{{url}}">{{url}}</a>
+  </p>
+{% endblock %}

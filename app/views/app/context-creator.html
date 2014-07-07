@@ -1,13 +1,62 @@
 {% extends '../template.html' %}
 
+{% block bare-css %}
+<style>
+  body {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    min-height: 350px;
+    margin: 10px auto;
+  }
+  button {
+    display: block;
+    margin: 10px auto;
+  }
+  a {
+    display: block;
+    width: 80%;
+  }
+</style>
+{% endblock %}
+
+{% block bare-js %}
+<script type="text/javascript">
+  'use strict';
+  function update() {
+    var json = JSON.parse(document.getElementById('data').value);
+    json = encodeURIComponent(JSON.stringify(json));
+
+    var prefix = document.getElementById('prefix').value.trim();
+    var url = prefix + '?data=' + json;
+
+    document.getElementById('link').innerHTML = url;
+    document.getElementById('link').href = url;
+  }
+</script>
+{% endblock %}
+
 {% block content %}
   <h1>Generating a valid context</h1>
 
-  <!-- Display JSON -->
-  <pre>{{JSON.stringify(json, null, 2)|safe}}</pre>
+  <form>
+    <textarea id="data">{{JSON.stringify(json, null, 2)|safe}}</textarea>
+    <input type="text" id="prefix" value="{{prefix|safe}}"/>
+    <input type="submit" onclick="update(); return false;" value="Update"/>
+  </form>
 
-  <!-- Display clickable link -->
   <p>
-    <a href="{{url}}">{{url}}</a>
+    <a id="link" href="{{url}}">{{url}}</a>
   </p>
+
+  <h2>Good to know</h2>
+  <ul>
+    <li>`context.templatedQuery`: this parameter is used to search into your AnyFetch documents</li>
+    <li>`user.id` and `organization.id` are SalesForce ids</li>
+    <li>`hash` is computed server-side based on user, organization, org's master key and a secret key</li>
+  </ul>
 {% endblock %}

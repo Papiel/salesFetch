@@ -8,7 +8,6 @@
 // TODO: how to update hash after user has changed values?
 
 var async = require('async');
-var rarity = require('rarity');
 var crypto = require('crypto');
 var qs = require('querystring');
 
@@ -18,7 +17,7 @@ var Organization = mongoose.model('Organization');
 
 var config = require('../../../config/configuration.js');
 
-module.exports = function(req, res, next) {
+module.exports = function(req, res) {
   // Basic dummy data
   var data = {
     sessionId: 'fake_session_id',
@@ -34,27 +33,45 @@ module.exports = function(req, res, next) {
       templatedQuery: 'Matthieu Bacconnier',
       recordId: '0032000001DoV22AAF',
       recordType: 'Contact'
+    },
+    user: {
+      id: '',
+      name: '',
+      email: ''
+    },
+    organization: {
+      id: '',
+      name: ''
     }
   };
 
   async.waterfall([
-    function user(cb) {
+    function findUser(cb) {
       User.findOne({}, cb);
     },
-    function org(user, cb) {
-      Organization.findOne({ _id: user.organization }, rarity.carry(user, cb));
+    function findOrg(user, cb) {
+      data.user = {
+        id: user.SFDCId,
+        name: user.name,
+        email: user.email
+      };
+      Organization.findOne({ _id: user.organization }, cb);
     }
-  ], function writeResults(err, user, org) {
+  ], function writeResults(err, org) {
+    var prefix = '/app/documents';
+    var url = prefix;
+
     if(err) {
-      res.write(data);
-      return res.end();
+      var error = 'Error trying to generate context: ' + err + '. ';
+      error += 'Make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.';
+      return res.render('app/context-creator.html', {
+        json: data,
+        prefix: prefix,
+        url: url,
+        errorMessage: error
+      });
     }
 
-    data.user = {
-      id: user.SFDCId,
-      name: user.name,
-      email: user.email
-    };
     data.organization = {
       id: org.SFDCId,
       name: org.name
@@ -70,8 +87,7 @@ module.exports = function(req, res, next) {
     var params = {
       data: JSON.stringify(data)
     };
-    var prefix = '/app/documents';
-    var url = prefix + '?' + qs.stringify(params);
+    url += '?' + qs.stringify(params);
     return res.render('app/context-creator.html', {
       json: data,
       prefix: prefix,

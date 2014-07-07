@@ -24,6 +24,10 @@
   h2 {
     cursor: pointer;
   }
+
+  #error {
+    color: red;
+  }
 </style>
 {% endblock %}
 
@@ -51,6 +55,10 @@
 
 {% block content %}
   <h1>Generating a valid context</h1>
+
+  {% if errorMessage %}
+  <p id="error">{{errorMessage}}</p>
+  {% endif %}
 
   <form>
     <textarea id="data">{{JSON.stringify(json, null, 2)|safe}}</textarea>

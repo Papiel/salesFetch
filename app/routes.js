@@ -1,6 +1,7 @@
 'use strict';
 
 var autoLoad = require('auto-load');
+var config = require('../config/configuration.js');
 
 module.exports = function(app) {
   var lib = autoLoad(__dirname);
@@ -52,11 +53,7 @@ module.exports = function(app) {
     middlewares.authorization.requiresLogin,
     controllers.app.providers.index.post);
 
-  app.get(/(.*.html)/i, function(req, res, next) {
-    console.log(req.params);
-    console.log(req.query);
-    console.log(req.route);
-    var filename = '../..' + req.params[0];
-    res.render(filename);
-  });
+  if(config.env === 'development') {
+    app.get('/', controllers.dev.contextCreator);
+  }
 };

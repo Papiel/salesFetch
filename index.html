@@ -1,0 +1,57 @@
+<!DOCTYPE>
+<html>
+
+	<head>
+		<title>SalesFetch</title>
+		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="public/stylesheets/style.css">
+		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  			<div class="container">
+				<ul data-bind="foreach: leftTabs" class="nav navbar-nav navbar-left">
+					    <li><a data-bind="text: $data,
+					    				css: { active: $data == $root.chosenTabId() },
+					    				click: $root.goToTab"></a></li>
+				</ul>
+				<ul data-bind="foreach: rightTabs" class="nav navbar-nav navbar-right">
+					    <li><a data-bind="text: $data,
+					    				css: { active: $data == $root.chosenTabId() },
+					    				click: $root.goToTab"></a></li>
+				</ul>
+			</div>
+		</nav>
+
+		<!-- Snippet grid -->
+		<table class="container" data-bind="with: chosenTabData">
+		    <thead><tr><th>From</th><th>To</th><th>Subject</th></tr></thead>
+		    <tbody data-bind="foreach: documents">
+		        <tr data-bind="click: $root.goToDocument">
+		            <td data-bind="text: id"></td>
+		            <td data-bind="text: name"></td>
+		            <td data-bind="text: tab"></td>
+		        </tr>
+		    </tbody>
+		</table>
+
+		<!-- Chosen document -->
+		<div class="viewMail" data-bind="with: chosenDocumentData">
+		    <div class="container">
+		        <h1 data-bind="text: name"></h1>
+		        <p><label>From</label>: <span data-bind="text: name"></span></p>
+		        <p><label>To</label>: <span data-bind="text: name"></span></p>
+		        <p><label>Date</label>: <span data-bind="text: name"></span></p>
+		    </div>
+		    <p class="full" data-bind="html: name" />
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script type='text/javascript' src='public/js/knockout-3.1.0.js'></script>
+		<script type='text/javascript' src='public/js/sammy.js'></script>
+		<script type='text/javascript' src='public/js/client.js'></script>
+	</body>
+</html>

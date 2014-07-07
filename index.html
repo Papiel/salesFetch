@@ -4,12 +4,15 @@
 	<head>
 		<title>SalesFetch</title>
 		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
 		<link rel="stylesheet" type="text/css" href="public/stylesheets/style.css">
 		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 	</head>
 
 	<body>
 
+	<div id="view-documents" data-bind="visible: chosenDocumentData() == null">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation">
   			<div class="container">
 				<ul data-bind="foreach: leftTabs" class="nav navbar-nav navbar-left">
@@ -26,27 +29,38 @@
 		</nav>
 
 		<!-- Snippet grid -->
-		<table class="container" data-bind="with: chosenTabData">
-		    <thead><tr><th>From</th><th>To</th><th>Subject</th></tr></thead>
+		<table class="container">
+		    <thead><tr><th>ID</th><th>Name</th><th>Provider</th><th>Starred</th></tr></thead>
 		    <tbody data-bind="foreach: documents">
-		        <tr data-bind="click: $root.goToDocument">
+		        <tr>
 		            <td data-bind="text: id"></td>
-		            <td data-bind="text: name"></td>
-		            <td data-bind="text: tab"></td>
+		            <td data-bind="text: name, click: $root.goToDocument"></td>
+		            <td data-bind="text: provider"></td>
+		            <td><input type="checkbox" data-bind="checked: isStarred"></td>
 		        </tr>
 		    </tbody>
 		</table>
+	</div>
 
+	<div id="view-documents" data-bind="visible: chosenDocumentData() != null">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+					    <li><a class="fa fa-chevron-left" data-bind="click: goBack"></a></li>
+				</ul>
+			</div>
+		</nav>
 		<!-- Chosen document -->
 		<div class="viewMail" data-bind="with: chosenDocumentData">
 		    <div class="container">
 		        <h1 data-bind="text: name"></h1>
-		        <p><label>From</label>: <span data-bind="text: name"></span></p>
-		        <p><label>To</label>: <span data-bind="text: name"></span></p>
-		        <p><label>Date</label>: <span data-bind="text: name"></span></p>
+		        <p><label>ID</label>: <span data-bind="text: id"></span></p>
+		        <p><label>Provider</label>: <span data-bind="text: provider"></span></p>
+		        <p><label>Starred</label>: <span data-bind="text: isStarred"></span></p>
 		    </div>
-		    <p class="full" data-bind="html: name" />
+		    <p class="full" data-bind="html: name" /></p>
 		</div>
+	</div>
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

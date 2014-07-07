@@ -78,10 +78,7 @@ module.exports = function(req, res) {
     };
 
     // Compute secure hash
-    var hash = data.organization.id +
-               data.user.id +
-               org.masterKey +
-               config.secureKey;
+    var hash = data.organization.id + data.user.id + org.masterKey + config.secureKey;
     data.hash = crypto.createHash('sha1').update(hash).digest("base64");
 
     var params = {

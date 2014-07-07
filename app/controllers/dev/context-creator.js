@@ -5,8 +5,7 @@
  * Useful when developping on localhost.
  */
 // TODO: if no user or company is available, create one from AnyFetch credentials
-// TODO: make env (desktop/tablet/mobile) customizable
-// TODO: make context customizable
+// TODO: how to update hash after user has changed values?
 
 var async = require('async');
 var rarity = require('rarity');
@@ -71,9 +70,11 @@ module.exports = function(req, res, next) {
     var params = {
       data: JSON.stringify(data)
     };
-    var url = '/app/documents?' + qs.stringify(params);
+    var prefix = '/app/documents';
+    var url = prefix + '?' + qs.stringify(params);
     return res.render('app/context-creator.html', {
       json: data,
+      prefix: prefix,
       url: url
     });
   });

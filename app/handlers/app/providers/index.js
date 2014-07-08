@@ -3,6 +3,7 @@
 var async = require("async");
 var restify = require("restify");
 
+var config = require('../../../../config/configuration.js');
 var anyfetchHelpers = require('../../../helpers/anyfetch.js');
 
 /**
@@ -23,7 +24,7 @@ module.exports.get = function(req, res, next) {
     function sendResponse(results, cb) {
       res.send({
         providers: results.providersInformation,
-        connectProviders: results.connectedProviders.body
+        connectedProviders: results.connectedProviders.body
       });
       cb();
     }
@@ -31,14 +32,15 @@ module.exports.get = function(req, res, next) {
 };
 
 /**
- * Redirect the user to the connection page
+ * Produce the url to which the user should get redirected
+ * in order to grant access
  */
 module.exports.post = function(req, res, next) {
   if (!req.query.app_id) {
     return next(new restify.MissingParameterError('Missing app_id query string.'));
   }
 
-  var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
-  res.redirect(connectUrl);
+  var connectUrl = config.managerUrl + '/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
+  res.send({ connectUrl: connectUrl });
   next();
 };

@@ -1,7 +1,8 @@
-"use strict";
+'use strict';
 
 var request = require('supertest');
 var async = require('async');
+var should = require('should');
 
 var app = require('../../../../app.js');
 var cleaner = require('../../../hooks/cleaner');
@@ -33,8 +34,10 @@ describe('/app/providers page', function() {
             .get(url)
             .expect(200)
             .expect(function(res) {
-              res.text.toLowerCase().should.containDeep("dropbox");
-              res.text.toLowerCase().should.containDeep("/providers/connect?app_id=52bff114c8318c29e9000005");
+              should(res.body).be.ok;
+              res.body.should.have.keys('providers', 'connectedProviders');
+              res.body.providers.should.be.an.instanceOf(Array);
+              res.body.providers[0].should.have.property('name', 'Dropbox');
             })
             .end(cb);
         }
@@ -54,9 +57,7 @@ describe('/app/providers page', function() {
           request(app)
             .post(url)
             .expect(409)
-            .expect(function(res) {
-              res.text.should.containDeep("app_id");
-            })
+            .expect(/app_id/)
             .end(cb);
         }
       ], done);
@@ -72,10 +73,11 @@ describe('/app/providers page', function() {
         function sendRequest(url, cb) {
           request(app)
             .post(url)
-            .expect(302)
+            .expect(200)
             .expect(function(res) {
-              res.text.should.containDeep("bearer=anyFetchToken");
-              res.text.should.containDeep("52bff114c8318c29e9000005");
+              should(res.body).be.ok;
+              res.body.should.have.keys('connectUrl');
+              res.body.connectUrl.should.have.containEql('bearer=anyFetchToken');
             })
             .end(cb);
         }

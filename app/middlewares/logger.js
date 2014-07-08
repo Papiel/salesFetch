@@ -11,12 +11,12 @@ module.exports = function(req, res, next) {
   var publicFolder = /img|js|lib|stylesheet/;
   var timeStamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-  var logFomat = "[%s] %s";
+  var logFormat = "[%s] %s";
 
   if (publicFolder.test(req.url)) {
-    console.log(timeStamp + " - " + logFomat.assets, req.method, req._parsedUrl.pathname);
+    console.log(timeStamp + " - " + logFormat.assets, req.method, req.route.path);
   } else {
-    console.log(timeStamp + " - " + logFomat.route, req.method, req._parsedUrl.pathname);
+    console.log(timeStamp + " - " + logFormat.route, req.method, req.route.path);
   }
 
   next();

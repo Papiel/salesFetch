@@ -2,6 +2,7 @@
 
 var crypto = require('crypto');
 var async = require('async');
+
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
@@ -11,7 +12,7 @@ var secureKey = require('../../config/configuration.js').secureKey;
 
 /**
  * Authenticate the user based on the request's context
- * return the user
+ * @return {Object} the user
  */
 var authenticateUser = function(context, org, done) {
   var userContext = context.user;

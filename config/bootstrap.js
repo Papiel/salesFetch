@@ -1,7 +1,6 @@
 'use strict';
 
 var restify = require('restify');
-var bodyParser = require('body-parser');
 var errorsStack = require('errorhandler');
 var autoLoad = require('auto-load');
 
@@ -49,8 +48,7 @@ module.exports = function(server) {
   }
 
   // Common middlewares
-  server.use(bodyParser());
-  server.use(require('../app/middlewares/ua-parser.js'));
+  server.use(restify.bodyParser());
   server.use(require('../app/middlewares/CORS.js'));
 
   // Routes

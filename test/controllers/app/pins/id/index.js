@@ -34,7 +34,6 @@ describe('/app/pins/:id page', function() {
     APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
   });
 
-
   describe('POST /app/pins/:id', function() {
     checkUnauthenticated(app, 'post', endpoint);
 
@@ -71,7 +70,7 @@ describe('/app/pins/:id page', function() {
           Pin.findOne(hash, cb);
         },
         function pinShouldExist(pin, cb) {
-          should(pin).not.equal(null);
+          should(pin).be.ok;
           cb(null);
         }
       ], done);
@@ -92,11 +91,8 @@ describe('/app/pins/:id page', function() {
           request(app)
             .post(url)
             .expect(409)
-            .end(function(err, res) {
-              should(err).equal(null);
-              res.text.toLowerCase().should.containDeep('already pinned');
-              cb(err);
-            });
+            .expect(/already pinned/i)
+            .end(cb);
         }
       ], done);
     });
@@ -148,7 +144,7 @@ describe('/app/pins/:id page', function() {
           Pin.findOne(hash, cb);
         },
         function checkDeleted(pin, cb) {
-          should(pin).equal(null);
+          should(pin).not.be.ok;
           cb();
         }
       ], done);
@@ -163,10 +159,8 @@ describe('/app/pins/:id page', function() {
           request(app)
             .del(url)
             .expect(404)
-            .end(function(err, res) {
-              res.text.toLowerCase().should.containDeep('not pinned');
-              cb(err);
-            });
+            .expect(/not pinned/i)
+            .end(cb);
         }
       ], done);
     });
@@ -190,10 +184,8 @@ describe('/app/pins/:id page', function() {
           request(app)
             .del(url)
             .expect(403)
-            .end(function(err, res) {
-              res.text.toLowerCase().should.containDeep('cannot delete');
-              cb(err);
-            });
+            .expect(/cannot delete/i)
+            .end(cb);
         }
       ], done);
     });

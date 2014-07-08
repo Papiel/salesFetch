@@ -1,8 +1,7 @@
 "use strict";
-var express = require("express");
+var restify = require("restify");
 
 var salesfetchHelpers = require('../../../../helpers/salesfetch.js');
-
 
 /**
  * Pin a document
@@ -13,7 +12,7 @@ module.exports.post = function(req, res, next) {
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
       if (err.name && err.name === 'MongoError' && err.code === 11000) {
-        return next(new express.errors.InvalidArgument('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId));
+        return next(new restify.InvalidArgumentError('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId));
       }
 
       return next(err);
@@ -22,7 +21,6 @@ module.exports.post = function(req, res, next) {
     res.send(204);
   });
 };
-
 
 /**
  * Unpin a document

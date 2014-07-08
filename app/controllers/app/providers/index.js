@@ -1,10 +1,9 @@
 "use strict";
 
+var async = require("async");
+var restify = require("restify");
 
 var anyfetchHelpers = require('../../../helpers/anyfetch.js');
-var async = require("async");
-var express = require("express");
-
 
 /**
  * Display list of all providers
@@ -36,7 +35,7 @@ module.exports.get = function(req, res, next) {
  */
 module.exports.post = function(req, res, next) {
   if (!req.query.app_id) {
-    return next(new express.errors.MissingArgument('Missing app_id query string.'));
+    return next(new restify.MissingArgumentError('Missing app_id query string.'));
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

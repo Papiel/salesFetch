@@ -1,6 +1,6 @@
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 var request = require('supertest');
 var Mustache = require('mustache');
 var async = require('async');
@@ -101,7 +101,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
     },
     function applyTemplate(doc, cb) {
       if(!doc || !doc.data) {
-        return cb(new express.errors.NotFound('Document not found'));
+        return cb(new restify.NotFoundError('Document not found'));
       }
 
       var relatedTemplate;
@@ -237,7 +237,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new express.errors.NotFound('No admin for the company has been found'));
+        return cb(new restify.NotFoundError('No admin for the company has been found'));
       }
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);

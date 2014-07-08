@@ -56,9 +56,6 @@ module.exports = function(server) {
   // Routes
   require(__dirname + '/../app/routes.js')(server);
 
-  // Errors
-  autoLoad(__dirname + '/../app/errors');
-
   // Apply errors if routing fails or doesn't match
   errorsHandlers(server);
 

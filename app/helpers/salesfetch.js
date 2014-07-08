@@ -1,6 +1,6 @@
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 var Mustache = require('mustache');
 var async = require('async');
 var AnyFetch = require('anyfetch');
@@ -11,7 +11,7 @@ var anyfetchHelpers = require('../helpers/anyfetch.js');
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
-  var noPinError = new express.errors.NotFound('No pin was found for this context');
+  var noPinError = new restify.NotFoundError('No pin was found for this context');
 
   // Retrieve documents pinned to that context
   async.waterfall([
@@ -143,10 +143,10 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
     },
     function checkPin(pin, cb) {
       if(!pin) {
-        return cb(new express.errors.NotFound('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
+        return cb(new restify.NotFoundError('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
       }
       if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
-        return cb(new express.errors.Forbidden('You cannot delete a pin from another organization'));
+        return cb(new restify.ForbiddenError('You cannot delete a pin from another organization'));
       }
 
       cb(null, pin);

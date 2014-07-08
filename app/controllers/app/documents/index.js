@@ -1,6 +1,6 @@
 'use strict';
 
-var express = require("express");
+var restify = require("restify");
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment");
@@ -15,7 +15,7 @@ module.exports.get = function(req, res, next) {
   var reqParams = req.reqParams;
 
   if(!reqParams.context || !reqParams.context.templatedQuery || !reqParams.context.templatedDisplay) {
-    return next(new express.errors.MissingArgument('Check your context profiler configuration, a template is missing.'));
+    return next(new restify.MissingArgumentError('Check your context profiler configuration, a template is missing.'));
   }
 
   var params = {

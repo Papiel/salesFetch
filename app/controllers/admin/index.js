@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 var async = require('async');
 var anyFetchHelper = require('../../helpers/anyfetch');
 
@@ -16,7 +16,7 @@ module.exports.post = function(req, res, next) {
     function checkParams(cb) {
       var data = req.body;
       if (!data.user || !data.organization) {
-        return cb(new express.errors.MissingArgument('The init account should provide user and org informations'));
+        return cb(new restify.MissingArgumentError('The init account should provide user and org informations'));
       }
 
       cb(null, data);

@@ -1,6 +1,6 @@
 'use strict';
 
-require("should");
+var should = require("should");
 var async = require('async');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
@@ -24,8 +24,10 @@ describe('<Authentication middleware>', function() {
       query: []
     };
 
-    authMiddleware(req, res, function(next) {
-      next.status.should.eql(401);
+    authMiddleware(req, res, function(err) {
+      should(err).be.ok;
+      err.statusCode.should.equal(401);
+      err.message.should.match(/missing `data` query parameter/i);
       done();
     });
   });
@@ -44,15 +46,16 @@ describe('<Authentication middleware>', function() {
 
     req.query.data = JSON.stringify(params);
 
-    authMiddleware(req, res, function(next) {
-      next.status.should.eql(401);
-      next.message.should.match(/company/);
+    authMiddleware(req, res, function(err) {
+      should(err).be.ok;
+      err.statusCode.should.equal(401);
+      err.message.should.match(/no company matching this id/i);
       done();
     });
   });
 
 
-  it('should reject call if the hash dont match', function(done) {
+  it('should reject call if the hash doesn\'t match', function(done) {
 
     async.waterfall([
       function createCompany(cb) {
@@ -74,9 +77,10 @@ describe('<Authentication middleware>', function() {
           }
         };
 
-        authMiddleware(req, null, function(next) {
-          next.status.should.eql(401);
-          next.message.should.match(/Master Key/);
+        authMiddleware(req, null, function(err) {
+          should(err).be.ok;
+          err.statusCode.should.equal(401);
+          err.message.should.match(/Master Key/i);
           cb();
         });
       }

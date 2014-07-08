@@ -83,15 +83,17 @@ module.exports.get = function(req, res, next) {
         }
       });
       documents.faceted = timeSlices;
-      cb(documents);
+      cb(null, documents);
     },
     function sendResponse(documents, cb) {
       // If load more results
       // TODO: make sure that format is adapted
       if (req.query.start) {
-        return res.send(documents);
+        res.send(documents);
       }
-      res.send({ documents: documents, filters: filters });
+      else {
+        res.send({ documents: documents, filters: filters });
+      }
       cb();
     }
   ], next);

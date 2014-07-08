@@ -11,7 +11,7 @@ var APIs = require('../../../helpers/APIs');
 var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
 
 
-describe('/app/documents page', function() {
+describe.only('/app/documents page', function() {
   var endpoint = '/app/documents';
 
   beforeEach(cleaner);

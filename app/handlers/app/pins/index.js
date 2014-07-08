@@ -15,7 +15,7 @@ module.exports.get = function(req, res, next) {
       salesfetchHelpers.findPins(sfdcId, req.user, cb);
     },
     function sendResponse(pins, cb) {
-      res.send({ pins: pins });
+      res.send(pins);
       cb();
     }
   ], next);

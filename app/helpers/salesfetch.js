@@ -87,11 +87,9 @@ module.exports.getPin = function(sfdcId, anyFetchId, cb) {
  */
 module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
   async.waterfall([
-
     function getPinsForThisContext(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
-
     function traversePins(pins, cb) {
       if(pins) {
         var hash = {};
@@ -109,7 +107,6 @@ module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
         cb(null, documents);
       }
     }
-
   ], finalCb);
 };
 

@@ -13,7 +13,7 @@ module.exports.get = function(req, res, next) {
       anyfetchHelpers.findDocument(req.params.id, req.user, req.data.context, cb);
     },
     function sendResponse(document, cb) {
-      res.send({ document: document });
+      res.send(document);
       cb();
     }
   ], next);

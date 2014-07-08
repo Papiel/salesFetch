@@ -3,9 +3,9 @@
 var UAParser = require('ua-parser-js');
 
 /**
+ * User-agent parser
  * Determine the device type of the request
  */
-
 module.exports = function(req, res, next) {
 
   // Check if use the salesforce desktop version

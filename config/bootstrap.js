@@ -1,114 +1,66 @@
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 var bodyParser = require('body-parser');
-var swig = require('swig');
-var lessMiddleware = require('less-middleware');
 var errorsStack = require('errorhandler');
 var autoLoad = require('auto-load');
 
 var config = require('./configuration.js');
 
-var expressConfig = function(app) {
+// TODO: reinstate less compile middleware?
+// TODO: reinstate some sort of basic static folder to serve the app's client?
 
-  // Simplified logger for dev and production
-  if (config.env !== 'test') {
-    app.use(require('../app/middlewares/logger.js'));
-  }
-
-  // Other middlewares
-  app.use(bodyParser());
-  app.use(require('../app/middlewares/CORS.js'));
-
-  // Less middleware
-  var lessPath = config.root + '/assets/less';
-  var publicPath = config.root + '/public';
-  var bootstrapPath = config.root + '/public/lib/bootstrap/less';
-  app.use(lessMiddleware(lessPath, {
-    dest: publicPath,
-    force: !config.less.cache || false,
-    preprocess: {
-      path: function(pathname) {
-        return pathname.replace('/stylesheets', '');
-      }
-    },
-    parser: {
-      paths: [bootstrapPath],
-    }
-  }));
-
-  // Views engine
-  swig.setDefaults({
-    cache: config.swig.cache
-  });
-  app.engine('html', swig.renderFile);
-
-  // View directory
-  app.set('view engine', 'html');
-  app.set('views', config.root + '/app/views');
-
-  // Static files
-  app.use('/img', express.static(config.root + '/public/lib/bootstrap/img'));
-  app.use(express.static(config.root + '/public'));
-};
-
-var errorsHandlers = function(app) {
+// TODO: not needed anymore?
+var errorsHandlers = function(server) {
   // This middleware is used to provide a next
-  app.use(function(err, req, res, next) {
-
+  server.use(function(err, req, res, next) {
     if (config.env !== 'test') {
       console.error(err.stack);
     }
 
     // Error page
-    var code = err.statusCode || err.status || err.code || 500;
-    // Use specific error page template (if available)
-    var page = config.errorsPath + '/error';
-    if (code in config.errorFiles) {
-      page = config.errorsPath + '/' + config.errorFiles[code];
-    }
-    return res.status(code).render(page, {
-      error: err.stack,
-      message: err.message,
-      url: req.originalUrl // Used in 404 error
-    });
+    err.statusCode = err.statusCode || err.code || err.status || 500;
+    return next(err);
   });
 
   // Default error: 404 (no other middleware responded)
-  app.use(function(req, res) {
-    return res.status(404).render('errors/404', {
-      url: req.originalUrl,
-      error: 'Not found'
-    });
+  server.use(function(req, res, next) {
+    return next(new restify.NotFoundError('Not found'));
   });
 
   if (config.env === 'development') {
-    app.use(errorsStack());
+    server.use(errorsStack());
   }
 };
 
-module.exports = function() {
+module.exports = function(server) {
   // Check if fetchApi token is set before continuing!
   if (config.env !== 'test' && !config.fetchApiCreds) {
     console.log('Please provide a FetchApi token before launching the server.');
     process.exit(1);
   }
 
-  // Require models
+  // Models
   autoLoad(__dirname + '/../app/models');
 
-  // Configure express
-  var app = express();
-  expressConfig(app);
+  // Simplified logger for dev and production
+  if (config.env !== 'test') {
+    server.use(require('../app/middlewares/logger.js'));
+  }
 
-  // Require routes
-  require(__dirname + '/../app/routes.js')(app);
+  // Common middlewares
+  server.use(bodyParser());
+  server.use(require('../app/middlewares/ua-parser.js'));
+  server.use(require('../app/middlewares/CORS.js'));
 
-  // Require errors
+  // Routes
+  require(__dirname + '/../app/routes.js')(server);
+
+  // Errors
   autoLoad(__dirname + '/../app/errors');
 
   // Apply errors if routing fails or doesn't match
-  errorsHandlers(app);
+  errorsHandlers(server);
 
-  return app;
+  return server;
 };

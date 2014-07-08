@@ -16,6 +16,12 @@ function Provider(name) {
     self.isActive = ko.observable(true);
 }
 
+function Type(name) {
+    var self = this;
+    self.name = name;
+    self.isActive = ko.observable(true);
+}
+
 function TabModel(id, documents) {
     var self = this;
     self.id = id;
@@ -64,7 +70,7 @@ function SalesfetchViewModel() {
     client.addDocument = function(document) {
         client.documents.push(document);
         client.addProvider(document.provider);
-        client.types.push(document.type);
+        client.addType(document.type);
     };
 
     client.addDocuments = function(documents) {
@@ -80,6 +86,16 @@ function SalesfetchViewModel() {
 
         if (!alreadyExist) {
             client.providers.push(new Provider(providerName));
+        };
+    }
+
+    client.addType = function(typeName) {
+        var alreadyExist = client.types().some(function(type) {
+            return (type.name === typeName);
+        });
+
+        if (!alreadyExist) {
+            client.types.push(new Type(typeName));
         };
     }
 

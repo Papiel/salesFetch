@@ -5,7 +5,7 @@ function Document(name, type, provider, isStarred) {
     var self = this;
     self.name = name;
     self.provider = provider;
-    self.isStarred = isStarred;
+    self.isStarred = ko.observable(isStarred);
     self.id = docTotalNumber++;
     self.type = type;
 }
@@ -32,7 +32,7 @@ function SalesfetchViewModel() {
     var StarredTab = new TabModel('Starred', []);
     StarredTab.documents = ko.computed(function() {
         return client.documents().filter(function(document) {
-            return (document.isStarred === true);
+            return (document.isStarred() === true);
         });
     });
 
@@ -61,11 +61,6 @@ function SalesfetchViewModel() {
         });
     }
 
-    client.getStarredDocuments = ko.computed(function() {
-        return client.documents().filter(function(document) {
-            return (document.isStarred === true);
-        });
-    })
     // Behaviours
     client.goToTab = function(tab) {
         client.activeTab(tab);

@@ -81,14 +81,12 @@ module.exports = function(req, res) {
     var hash = data.organization.id + data.user.id + org.masterKey + config.secureKey;
     data.hash = crypto.createHash('sha1').update(hash).digest("base64");
 
+    // TODO: move that nice view client-side
+    // app/context-creator.html
     var params = {
       data: JSON.stringify(data)
     };
-    url += '?' + qs.stringify(params);
-    return res.render('app/context-creator.html', {
-      json: data,
-      prefix: prefix,
-      url: url
-    });
+    data.url = 'https://' + req.headers.host + url + '?' + qs.stringify(params);
+    return res.send(data);
   });
 };

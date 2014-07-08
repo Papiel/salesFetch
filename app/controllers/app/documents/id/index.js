@@ -12,9 +12,6 @@ module.exports.get = function(req, res, next) {
       return next(err);
     }
 
-    res.render('app/full/' + req.deviceType + '.html', {
-      data: reqParams,
-      document: document
-    });
+    res.send({ document: document });
   });
 };

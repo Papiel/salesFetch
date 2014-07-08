@@ -21,8 +21,7 @@ module.exports.get = function(req, res, next) {
       return next(err);
     }
 
-    res.render('app/providers.html', {
-      data: reqParams,
+    res.send({
       providers: data.providersInformation,
       connectProviders: data.connectedProviders.body
     });

@@ -90,15 +90,9 @@ module.exports.get = function(req, res, next) {
 
     // If load more results
     if (req.query.start) {
-      return res.render('components/_snippets-list.html', {
-        documents: documents
-      });
+      return res.send(documents);
     }
 
-    res.render('app/context/' + req.deviceType + '.html', {
-      data: reqParams,
-      documents: documents,
-      filters: filters
-    });
+    res.send({ documents: documents, filters: filters });
   });
 };

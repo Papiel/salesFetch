@@ -14,6 +14,6 @@ module.exports.get = function(req, res, next) {
       next(err);
     }
 
-    res.render('components/_pinned-list.html', { pins: pins });
+    res.send({ pins: pins });
   });
 };

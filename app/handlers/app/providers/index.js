@@ -9,23 +9,25 @@ var anyfetchHelpers = require('../../../helpers/anyfetch.js');
  * Display list of all providers
  */
 module.exports.get = function(req, res, next) {
-  async.parallel({
-    providersInformation: function(cb) {
-      anyfetchHelpers.getProviders(cb);
+  async.waterfall([
+    function retrieveInfo(cb) {
+      async.parallel({
+        providersInformation: function(cb) {
+          anyfetchHelpers.getProviders(cb);
+        },
+        connectedProviders: function(cb) {
+          anyfetchHelpers.getConnectedProviders(req.user, cb);
+        }
+      }, cb);
     },
-    connectedProviders: function(cb) {
-      anyfetchHelpers.getConnectedProviders(req.user, cb);
+    function sendResponse(results, cb) {
+      res.send({
+        providers: results.providersInformation,
+        connectProviders: results.connectedProviders.body
+      });
+      cb();
     }
-  }, function(err, data) {
-    if (err) {
-      return next(err);
-    }
-
-    res.send({
-      providers: data.providersInformation,
-      connectProviders: data.connectedProviders.body
-    });
-  });
+  ], next);
 };
 
 /**
@@ -38,4 +40,5 @@ module.exports.post = function(req, res, next) {
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
   res.redirect(connectUrl);
+  next();
 };

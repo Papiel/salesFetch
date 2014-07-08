@@ -23,12 +23,10 @@ module.exports.post = function(req, res, next) {
     },
     function initAccount(data, cb) {
       anyFetchHelper.initAccount(data, cb);
+    },
+    function sendResponse(createdOrg, cb) {
+      res.send(200, createdOrg.masterKey);
+      cb();
     }
-  ], function(err, createdOrg) {
-    if (err) {
-      return next(err);
-    }
-
-    res.send(200, createdOrg.masterKey);
-  });
+  ], next);
 };

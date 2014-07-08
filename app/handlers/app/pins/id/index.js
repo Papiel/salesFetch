@@ -1,5 +1,8 @@
-"use strict";
+'use strict';
+
 var restify = require("restify");
+var async = require("async");
+var rarity = require("rarity");
 
 var salesfetchHelpers = require('../../../../helpers/salesfetch.js');
 
@@ -9,16 +12,22 @@ var salesfetchHelpers = require('../../../../helpers/salesfetch.js');
 module.exports.post = function(req, res, next) {
   var sfdcId = req.data.context.recordId;
   var anyFetchId = req.params.id;
-  salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
-    if(err) {
-      if (err.name && err.name === 'MongoError' && err.code === 11000) {
-        return next(new restify.InvalidArgumentError('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId));
-      }
 
-      return next(err);
+  async.waterfall([
+    function addPin(cb) {
+      salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, cb);
+    },
+    function sendResponse(cb) {
+      res.send(204);
+      cb();
+    }
+  ], function handleMongoError(err) {
+    // Error post processing
+    if (err && err.name === 'MongoError' && err.code === 11000) {
+      err = new restify.InvalidArgumentError('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
     }
 
-    res.send(204);
+    return next(err);
   });
 };
 
@@ -28,11 +37,14 @@ module.exports.post = function(req, res, next) {
 module.exports.del = function(req, res, next) {
   var sfdcId = req.data.context.recordId;
   var anyFetchId = req.params.id;
-  salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
-    if(err) {
-      return next(err);
-    }
 
-    res.send(202);
-  });
+  async.waterfall([
+    function removePin(cb) {
+      salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, rarity.slice(1, cb));
+    },
+    function sendResponse(cb) {
+      res.send(202);
+      cb();
+    }
+  ], next);
 };

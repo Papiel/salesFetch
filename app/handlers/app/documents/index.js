@@ -40,59 +40,59 @@ module.exports.get = function(req, res, next) {
     },
     function markPinned(documents, cb) {
       salesfetchHelpers.markIfPinned(req.data.context.recordId, documents, cb);
-    }
-  ], function(err, documents) {
-    if(err) {
-      return next(err);
-    }
+    },
+    function sliceInTime(documents, cb) {
+      var timeSlices = [{
+        label: 'Today',
+        maxDate: moment().startOf('day'),
+        data: []
+      }, {
+        label: 'Earlier this Week',
+        maxDate: moment().startOf('week'),
+        data: []
+      }, {
+        label: 'Earlier this Month',
+        maxDate: moment().startOf('month'),
+        data: []
+      }, {
+        label: 'Earlier this Year',
+        maxDate: moment().startOf('year'),
+        data: []
+      }, {
+        label: 'Last Year',
+        maxDate: moment().startOf('year').subtract('year', 1),
+        data: []
+      }, {
+        label: 'Older',
+        data: []
+      }];
 
-    var timeSlices = [{
-      label: 'Today',
-      maxDate: moment().startOf('day'),
-      data: []
-    }, {
-      label: 'Earlier this Week',
-      maxDate: moment().startOf('week'),
-      data: []
-    }, {
-      label: 'Earlier this Month',
-      maxDate: moment().startOf('month'),
-      data: []
-    }, {
-      label: 'Earlier this Year',
-      maxDate: moment().startOf('year'),
-      data: []
-    }, {
-      label: 'Last Year',
-      maxDate: moment().startOf('year').subtract('year', 1),
-      data: []
-    }, {
-      label: 'Older',
-      data: []
-    }];
+      documents.data.forEach(function(doc) {
+        var creationDate = moment(doc.creation_date);
+        var found = false;
+        for (var i = 0; i < timeSlices.length && !found; i+=1) {
+          if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+            found = true;
+            timeSlices[i].data.push(doc);
+          }
 
-    documents.data.forEach(function(doc) {
-      var creationDate = moment(doc.creation_date);
-      var found = false;
-      for (var i = 0; i < timeSlices.length && !found; i+=1) {
-        if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
-          found = true;
-          timeSlices[i].data.push(doc);
+          if(!found && (!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate))) {
+            found = true;
+            timeSlices[i].data.push(doc);
+          }
         }
-
-        if(!found && (!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate))) {
-          found = true;
-          timeSlices[i].data.push(doc);
-        }
+      });
+      documents.faceted = timeSlices;
+      cb(documents);
+    },
+    function sendResponse(documents, cb) {
+      // If load more results
+      // TODO: make sure that format is adapted
+      if (req.query.start) {
+        return res.send(documents);
       }
-    });
-    documents.faceted = timeSlices;
-
-    // If load more results
-    if (req.query.start) {
-      return res.send(documents);
+      res.send({ documents: documents, filters: filters });
+      cb();
     }
-
-    res.send({ documents: documents, filters: filters });
-  });
+  ], next);
 };

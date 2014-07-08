@@ -10,6 +10,12 @@ function Document(name, type, provider, isStarred) {
     self.type = type;
 }
 
+function Provider(name) {
+    var self = this;
+    self.name = name;
+    self.isActive = ko.observable(true);
+}
+
 function TabModel(id, documents) {
     var self = this;
     self.id = id;
@@ -23,22 +29,28 @@ function SalesfetchViewModel() {
     client.providers = ko.observableArray([]);
     client.types = ko.observableArray([]);
 
+    // Return documents filtered by providers and types
+    client.filteredDocuments = ko.computed(function() {
+        return client.documents().filter(function(document) {
+            return true;
+            // return (client.providers.indexOf(document.provider) >= 0) && (client.types.indexOf(document.type) >= 0);
+        });
+    });
+
     // Tabs
     var TimelineTab = new TabModel('Timeline', []);
-    TimelineTab.documents = ko.computed(function() {
-        return client.documents();
-    });
+    TimelineTab.documents = client.filteredDocuments;
 
     var StarredTab = new TabModel('Starred', []);
     StarredTab.documents = ko.computed(function() {
-        return client.documents().filter(function(document) {
+        return client.filteredDocuments().filter(function(document) {
             return (document.isStarred() === true);
         });
     });
 
     var SearchTab = new TabModel('Search', []);
     SearchTab.documents = ko.computed(function() {
-        return client.documents().filter(function(document) {
+        return client.filteredDocuments().filter(function(document) {
             return (document.name.search('c') != -1);
         });
     });
@@ -51,7 +63,7 @@ function SalesfetchViewModel() {
 
     client.addDocument = function(document) {
         client.documents.push(document);
-        client.providers.push(document.provider);
+        client.addProvider(document.provider);
         client.types.push(document.type);
     };
 
@@ -59,6 +71,16 @@ function SalesfetchViewModel() {
         documents.forEach(function(document) {
             client.addDocument(document);
         });
+    }
+
+    client.addProvider = function(providerName) {
+        var alreadyExist = client.providers().some(function(provider) {
+            return (provider.name === providerName);
+        });
+
+        if (!alreadyExist) {
+            client.providers.push(new Provider(providerName));
+        };
     }
 
     // Behaviours

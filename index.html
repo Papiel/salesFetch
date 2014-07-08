@@ -50,7 +50,7 @@
 								<span data-bind="text: providers().length"></span> Providers <span class="caret"></span>
 							</button>
 							<ul data-bind="foreach: providers" class="dropdown-menu" role="menu">
-								<li><a data-bind="text: $data"></a></li>
+								<li><a data-bind="text: name"></a></li>
 							</ul>
 						</div>
 					</li>
@@ -85,7 +85,7 @@
 		        <h1 data-bind="text: name"></h1>
 		        <p><label>ID</label>: <span data-bind="text: id"></span></p>
 		        <p><label>Provider</label>: <span data-bind="text: provider"></span></p>
-		        <p><label>Starred</label>: <span data-bind="text: isStarred"></span></p>
+		        <p><label>Starred</label>: <input type="checkbox" data-bind="checked: isStarred"></p>
 		    </div>
 		    <p class="full" data-bind="html: name" /></p>
 		</div>

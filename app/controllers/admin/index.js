@@ -16,7 +16,7 @@ module.exports.post = function(req, res, next) {
     function checkParams(cb) {
       var data = req.body;
       if (!data.user || !data.organization) {
-        return cb(new restify.MissingArgumentError('The init account should provide user and org informations'));
+        return cb(new restify.MissingParameterError('The init account should provide user and org informations'));
       }
 
       cb(null, data);

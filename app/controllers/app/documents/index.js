@@ -15,7 +15,7 @@ module.exports.get = function(req, res, next) {
   var reqParams = req.reqParams;
 
   if(!reqParams.context || !reqParams.context.templatedQuery || !reqParams.context.templatedDisplay) {
-    return next(new restify.MissingArgumentError('Check your context profiler configuration, a template is missing.'));
+    return next(new restify.MissingParameterError('Check your context profiler configuration, a template is missing.'));
   }
 
   var params = {

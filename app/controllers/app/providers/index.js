@@ -35,7 +35,7 @@ module.exports.get = function(req, res, next) {
  */
 module.exports.post = function(req, res, next) {
   if (!req.query.app_id) {
-    return next(new restify.MissingArgumentError('Missing app_id query string.'));
+    return next(new restify.MissingParameterError('Missing app_id query string.'));
   }
 
   var connectUrl = 'https://manager.anyfetch.com/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;

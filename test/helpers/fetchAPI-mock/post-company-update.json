@@ -1,0 +1,6 @@
+{
+  "path" : "/company/update",
+  "verb" : "POST",
+  "code": 202,
+  "reply": {}
+}

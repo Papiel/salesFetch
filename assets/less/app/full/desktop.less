@@ -1,0 +1,51 @@
+body {
+  background-color: #F8F8F8;
+}
+
+.container-fluid.full {
+  padding: 25px;
+  margin: 15px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+
+  .doc-content {
+    overflow: scroll;
+    position: absolute;
+    top: 70px;
+    left: 25px;
+    right: 25px;
+    bottom: 25px;
+
+    .hlt {
+      font-weight: 900;
+      background-color: #FFFFAF;
+    }
+  }
+
+  .email-projection {
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+
+  .full-header {
+    font-size: 16px;
+    color: #777;
+
+    .doc-type,
+    .provider {
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .pin-btn {
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+}

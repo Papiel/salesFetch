@@ -1,0 +1,12 @@
+<div class="media snippet" data-url="/app/documents/{{doc.id}}" data-type="{{doc.document_type}}">
+  <div class="icon icon-{{doc.document_type}}">
+  </div>
+  <div class="media-body">
+    {% autoescape false %}{{doc.snippet_rendered}}{% endautoescape %}
+    {% if doc.pinned %}
+    <a class="info fa fa-star pin-btn" data-doc="{{doc.id}}"></a>
+    {% else %}
+    <a class="info fa fa-star-o pin-btn" data-doc="{{doc.id}}"></a>
+    {% endif %}
+  </div>
+</div>

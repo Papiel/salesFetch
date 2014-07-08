@@ -1,0 +1,13 @@
+{
+  "path" : "/users",
+  "verb" : "POST",
+  "code": 200,
+  "reply": {
+    "_type": "User",
+    "id": "533d6b2a6355285e5563d005",
+    "name": "Jessy Pinkman",
+    "email": "jessy.pinkman@breaking-bad.com",
+    "is_admin": true,
+    "user_url": "/users/533d6b2a6355285e5563d005"
+  }
+}

@@ -1,0 +1,28 @@
+// Array of document types
+@record-types: document, file, email, image, contact;
+
+// Document types colors
+@document-color: #00AEEF;
+@file-color: #0084EE;
+@email-color: #C81802;
+@image-color: #F7931D;
+@contact-color: #8732BC;
+
+// Looper
+.loop(@n) when (@n > 0) {
+  .loop((@n - 1));
+
+  @type: extract(@record-types, @n);
+  @color-variable: "@{type}-color";
+
+  .icon.icon-@{type} {
+    background-color: @@color-variable;
+    background-image: url('/img/document_types-icons/@{type}.png');
+  }
+
+  .item .icon.icon-@{type} {
+    background-image: url('/img/document_types-icons/@{type}.png');
+  }
+}
+
+.loop(5);

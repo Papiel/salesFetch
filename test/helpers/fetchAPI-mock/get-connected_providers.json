@@ -1,0 +1,13 @@
+{
+  "path" : "/providers",
+  "verb" : "GET",
+  "code": 200,
+  "reply": {
+    "5320a6abc8318cc5d1000049": {
+      "application": "53047faac8318c2d65000096",
+      "name": "GMail",
+      "updated": "2014-03-20T19:15:11.048Z",
+      "document_count": 26
+    }
+  }
+}

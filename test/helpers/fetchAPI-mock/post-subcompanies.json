@@ -1,0 +1,18 @@
+{
+  "path" : "/subcompanies",
+  "verb" : "POST",
+  "code": 200,
+  "reply": {
+    "_type": "Company",
+    "id": "533d9161162215a5375d34d2",
+    "name": "Breaking Bad",
+    "hydraters": [
+      "http://plaintext.hydrater.anyfetch.com/hydrate",
+      "http://pdf.hydrater.anyfetch.com/hydrate",
+      "http://office.hydrater.anyfetch.com/hydrate",
+      "http://image.hydrater.anyfetch.com/hydrate",
+      "http://ocr.hydrater.anyfetch.com/hydrate",
+      "http://eml.hydrater.anyfetch.com/hydrate"
+    ]
+  }
+}

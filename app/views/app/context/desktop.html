@@ -1,0 +1,38 @@
+{% extends '../../template.html' %}
+
+{% block bare-css %}
+  <link rel="stylesheet" type="text/css" href="/desktop.css">
+{% endblock %}
+
+{% block bare-js %}
+  <script type="text/javascript" src="/js/desktop.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="nav-panel">
+  {% include '../../components/_switch-navbar-desktop.html' %}
+</div>
+<div id="right-panel">
+  <div class="tab-content">
+    <div class="tab-pane active" id="timeline">
+    	<h2 id="context-title"><span class="fa fa-user"></span> {{data.context.templatedDisplay}}</h2>
+        <div class="snippet-list">
+      	{% include '../../components/_snippets-list.html' %}
+        </div>
+    </div>
+    <div class="tab-pane" id="pinned">
+    	<h2 id="context-title"><span class="fa fa-star"></span> Documents pinned to {{data.context.templatedDisplay}}</h2>
+      	{% include '../../components/_pinned-tab.html' %}
+    </div>
+    <div class="tab-pane" id="search">
+    	<h2 id="context-title"><span class="fa fa-search"></span> Search in all your documents</h2>
+      	{% include '../../components/_search-tab.html' %}
+    </div>
+    <div class="tab-pane" id="providers">
+    	<div id="provider-list">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

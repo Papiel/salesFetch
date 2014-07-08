@@ -1,0 +1,49 @@
+
+  <section class="container-fluid">
+    <h2><span class="fa fa-link"></span> Connected providers</h2>
+    <div class="row">
+      {% for provider in connectProviders %}
+        <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+          <div class="well provider">
+            <img src="/img/provider-icons/{{provider.client}}.png" class="pull-left provider-icon">
+            <div class="pull-left">
+
+              <p>
+                <strong>{{provider.name}}</strong><br/>
+                Last update: {{provider.updated|date('Y-m-d')}}<br/>
+                {{provider.document_count}} documents
+              </p>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% if Object.keys(connectProviders).length === 0 %}
+        <p>
+          No providers has already been connected. <br/>
+          There is a delay before the provider appears if you just connecter the application.
+        </p>
+      {% endif %}
+    </div>
+
+    <hr/>
+
+    <h2><span class="fa fa-link"></span> Available providers</h2>
+
+    <div class="row">
+      {% for provider in providers %}
+        <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+          <div class="well provider">
+            <img src="/img/provider-icons/{{provider.id}}.png" class="pull-left provider-icon">
+            <div class="pull-left">
+              <p><strong>{{provider.name}}</strong></p>
+              <a href="/app/providers/connect?app_id={{provider.id}}" class="link link-popup btn btn-primary btn-sm" >Connect</a>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+

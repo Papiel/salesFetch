@@ -51,7 +51,6 @@ function SalesfetchViewModel() {
 
     // Return documents filtered by providers and types
     client.filteredDocuments = ko.computed(function() {
-        console.log(client.filteredProviders());
         return client.documents().filter(function(document) {
             return document.provider.isActive() && document.type.isActive();
         });
@@ -83,7 +82,6 @@ function SalesfetchViewModel() {
 
     client.addDocument = function(json) {
         client.documents.push(client.DocumentWithJson(json));
-        console.log(client.documents());
     };
 
     client.addDocuments = function(array) {
@@ -96,7 +94,6 @@ function SalesfetchViewModel() {
         var document = new Document(json['name'], json['starred']);
         document.provider = client.ProviderWithName(json['provider']);
         document.type = client.TypeWithName(json['type']);
-        console.log(document);
         return document;
     }
 
@@ -159,11 +156,6 @@ function SalesfetchViewModel() {
         {name: 'Vacance 117.jpg', type: 'Picture', provider: 'Dropbox', starred: false},
         {name: 'Facture', type: 'PDF', provider: 'Drive', starred: true},
         {name: 'FWD: #laMamanDeRicard', type: 'Mail', provider: 'Gmail', starred: false}
-        // new Document("Contrat 12", "PDF", "Dropbox", false),
-        // new Document("Oublie pas !", "Note", "Evernote", true),
-        // new Document("Vacance 117.jpg", "Picture", "Dropbox", false),
-        // new Document("Facture", "PDF", "Drive", true),
-        // new Document("FWD: #laMamanDeRicard", "Mail", "Gmail", false)
     ]);
 
 

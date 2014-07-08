@@ -1,6 +1,6 @@
 "use strict";
 
-require('should');
+var should = require('should');
 var request = require('supertest');
 var async = require('async');
 
@@ -11,7 +11,7 @@ var APIs = require('../../../helpers/APIs');
 var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
 
 
-describe.only('/app/documents page', function() {
+describe('/app/documents page', function() {
   var endpoint = '/app/documents';
 
   beforeEach(cleaner);
@@ -39,8 +39,9 @@ describe.only('/app/documents page', function() {
             .get(url)
             .expect(200)
             .expect(function(res) {
-              res.text.should.containDeep("Walter White");
-              res.text.should.containDeep("/app/documents/5320a773bc2e51d7135f0c8f");
+              should(res.body).be.ok;
+              res.body.should.have.keys('documents', 'filters');
+              res.body.documents.should.have.properties('facets', 'data');
             })
             .end(cb);
         }
@@ -67,15 +68,16 @@ describe.only('/app/documents page', function() {
             .get(url)
             .expect(200)
             .expect(function(res) {
+              should(res.body).be.ok;
+              res.body.should.have.properties('facets', 'data');
               res.text.should.containDeep("National Security");
-              res.text.should.not.containDeep("<body>");
             })
             .end(cb);
         }
       ], done);
     });
 
-    it("should display error if no template found", function(done) {
+    it("should err if no template found", function(done) {
 
       var context = {
         recordType: 'Contact',
@@ -91,9 +93,7 @@ describe.only('/app/documents page', function() {
           request(app)
             .get(url)
             .expect(409)
-            .expect(function(res) {
-              res.text.should.containDeep("a template is missing");
-            })
+            .expect(/a template is missing/i)
             .end(cb);
         }
       ], done);

@@ -21,7 +21,7 @@ module.exports.get = function(req, res, next) {
     search: req.data.context.templatedQuery
   };
 
-  var filters;
+  var filters = {};
   if (req.query.filters) {
     filters = JSON.parse(req.query.filters);
     params = _.merge(params, filters);

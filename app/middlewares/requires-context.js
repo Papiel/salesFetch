@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 
 module.exports = function requiresContext(req, res, next) {
-  if(!req.reqParams || !req.reqParams.context || !req.reqParams.context.recordId) {
-    return next(new express.errors.MissingArgument('Missing or incomplete `context` argument in querystring'));
+  if (!req.data || !req.data.context || !req.data.context.recordId) {
+    return next(new restify.MissingParameterError('Missing or incomplete `context` argument in querystring'));
   }
 
   next();

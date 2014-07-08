@@ -5,23 +5,29 @@
  * Notice that the application loading order is important
  */
 
-var mongoose = require('mongoose');
+var restify = require('restify');
 
 // Init system variables
 var config = require('./config/configuration.js');
+var bootstrap = require('./config/bootstrap.js');
+
+var mongoose = require('mongoose');
 mongoose.connect(config.mongo_url);
 
-// Bootstrap Models, Dependencies, Routes and the app as an express app
-var app = require('./config/bootstrap.js')();
 
 // Init server in the right mode
-// With HTTPS in development, Heroku manage HTTPS in production
-var server;
+// With HTTPS in development, Heroku manages HTTPS in production
+var serverOptions = {
+  name: "SalesFetch"
+};
 if (config.env === 'development') {
-  server = require('https').createServer(config.certificates, app);
-} else {
-  server = require('http').createServer(app);
+  serverOptions.certificate = config.certificates.cert;
+  serverOptions.key = config.certificates.key;
 }
+
+var server = restify.createServer(serverOptions);
+// Bootstrap Models, Dependencies, Routes, Middlewares
+server = bootstrap(server);
 
 // Boot the server
 server.listen(config.port, function() {

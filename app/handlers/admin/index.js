@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var express = require('express');
+var restify = require('restify');
 var async = require('async');
 var anyFetchHelper = require('../../helpers/anyfetch');
 
@@ -16,19 +16,17 @@ module.exports.post = function(req, res, next) {
     function checkParams(cb) {
       var data = req.body;
       if (!data.user || !data.organization) {
-        return cb(new express.errors.MissingArgument('The init account should provide user and org informations'));
+        return cb(new restify.MissingParameterError('The init account should provide user and org informations'));
       }
 
       cb(null, data);
     },
     function initAccount(data, cb) {
       anyFetchHelper.initAccount(data, cb);
+    },
+    function sendResponse(createdOrg, cb) {
+      res.send(200, createdOrg.masterKey);
+      cb();
     }
-  ], function(err, createdOrg) {
-    if (err) {
-      return next(err);
-    }
-
-    res.send(200, createdOrg.masterKey);
-  });
+  ], next);
 };

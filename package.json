@@ -31,7 +31,6 @@
   "dependencies": {
     "mongoose": "3.8.x",
     "connect-mongo": "0.4.x",
-    "express": "4.3.x",
     "swig": "1.3.x",
     "less-middleware": "1.0.3",
     "async": "0.9.x",
@@ -54,7 +53,9 @@
     "moment": "2.7.x",
     "rarity": "^2.1.1",
     "dotenv": "^0.4.0",
-    "anyfetch": "^1.0.1"
+    "anyfetch": "^1.0.1",
+    "restify": "^2.8.1",
+    "morgan": "^1.1.1"
   },
   "devDependencies": {
     "mocha": "1.18.x",

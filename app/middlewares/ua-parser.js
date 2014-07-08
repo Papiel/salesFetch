@@ -3,13 +3,13 @@
 var UAParser = require('ua-parser-js');
 
 /**
+ * User-agent parser
  * Determine the device type of the request
  */
-
 module.exports = function(req, res, next) {
 
   // Check if use the salesforce desktop version
-  if (req.reqParams.env.env === 'desktop') {
+  if (req.reqParams && req.reqParams.env && req.reqParams.env.env === 'desktop') {
     req.deviceType = 'desktop';
     return next();
   }

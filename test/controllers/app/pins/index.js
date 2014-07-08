@@ -44,7 +44,7 @@ describe('/app/pins page', function() {
             .end(cb);
         },
         function testNoContent(res, cb) {
-          res.text.trim().should.be.empty;
+          res.body.should.be.empty;
           cb();
         }
       ], done);
@@ -66,11 +66,8 @@ describe('/app/pins page', function() {
           request(app)
             .get(url)
             .expect(200)
+            .expect(/SecuringtheData/i)
             .end(cb);
-        },
-        function testNoContent(res, cb) {
-          res.text.should.containDeep("SecuringtheData");
-          cb();
         }
       ], done);
     });

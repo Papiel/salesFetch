@@ -7,53 +7,53 @@ module.exports = function(app) {
   var lib = autoLoad(__dirname);
 
   var middlewares = lib.middlewares;
-  var controllers = lib.controllers;
+  var handlers = lib.handlers;
 
-  app.post('/admin/init', controllers.admin.index.post);
+  app.post('/admin/init', handlers.admin.index.post);
 
   app.get('/app/documents',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.requiresContext,
-    controllers.app.documents.index.get);
+    handlers.app.documents.index.get);
 
   app.get('/app/documents/:id',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.documents.id.index.get);
+    handlers.app.documents.id.index.get);
 
   app.get('/app/pins',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.requiresContext,
-    controllers.app.pins.index.get);
+    handlers.app.pins.index.get);
 
   app.post('/app/pins/:id',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.pins.id.index.post);
+    handlers.app.pins.id.index.post);
 
   app.del('/app/pins/:id',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.pins.id.index.del);
+    handlers.app.pins.id.index.del);
 
   app.get('/app/providers',
     middlewares.authorization.requiresLogin,
     middlewares.uaParser,
-    controllers.app.providers.index.get);
+    handlers.app.providers.index.get);
 
   app.post('/app/providers',
     middlewares.authorization.requiresLogin,
-    controllers.app.providers.index.post);
+    handlers.app.providers.index.post);
 
   if(config.env === 'development') {
-    app.get('/', controllers.dev.contextCreator);
+    app.get('/', handlers.dev.contextCreator);
   }
 };

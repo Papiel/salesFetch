@@ -9,7 +9,6 @@ var anyfetchHelpers = require('../../../helpers/anyfetch.js');
  * Display list of all providers
  */
 module.exports.get = function(req, res, next) {
-  var reqParams = req.reqParams;
   async.parallel({
     providersInformation: function(cb) {
       anyfetchHelpers.getProviders(cb);

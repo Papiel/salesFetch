@@ -7,7 +7,7 @@ var salesfetchHelpers = require('../../../../helpers/salesfetch.js');
  * Pin a document
  */
 module.exports.post = function(req, res, next) {
-  var sfdcId = req.reqParams.context.recordId;
+  var sfdcId = req.data.context.recordId;
   var anyFetchId = req.params.id;
   salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {
@@ -26,7 +26,7 @@ module.exports.post = function(req, res, next) {
  * Unpin a document
  */
 module.exports.del = function(req, res, next) {
-  var sfdcId = req.reqParams.context.recordId;
+  var sfdcId = req.data.context.recordId;
   var anyFetchId = req.params.id;
   salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, function(err) {
     if(err) {

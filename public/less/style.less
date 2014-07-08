@@ -18,10 +18,21 @@
 @bootstrapGray: #ADADAD;
 @bootstrapLightGray: #EBEBEB;
 
+@navbarVerticalPadding: 20px;
+@navbarFontSize: 18px;
+@navbarLineHeight: 20px;
+
 
 /*********************************
    OPERATIONS & COLOR FUNCTIONS
 **********************************/
+
+@navbarHeight: 2*@navbarVerticalPadding + @navbarLineHeight;
+
+
+/**********************
+        MIXINS
+***********************/
 
 .navTab {
 
@@ -30,16 +41,42 @@
 	}
 }
 
+.snippet {
+	margin: 5px;
+	border: 1px solid #ddd;
+	height: 60px;
+}
 
-/**********************
-        MIXINS
-***********************/
+.navbar {
+	border: 0px;
+	margin-bottom: 0px;
+	min-height: 0px;
+
+	li a {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+	}
+}
+
+.MobileBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @navbarHeight;
+}
+
 
 
 
 /**********************
          STYLES
 ***********************/
+
+#mobile {
+
+	#view-body { .MobileBody }
+}
 
 .navbar.navbar-default {
 

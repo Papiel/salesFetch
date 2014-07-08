@@ -7,7 +7,7 @@
 var fs = require('fs');
 var nock = require('nock');
 
-var APIs= {};
+var APIs = {};
 
 /**
  * Retrieve all the paths

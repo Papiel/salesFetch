@@ -30,12 +30,13 @@
 
 		<!-- Snippet grid -->
 		<table class="container" data-bind="with: activeTab">
-		    <thead><tr><th>ID</th><th>Name</th><th>Provider</th><th>Starred</th></tr></thead>
+		    <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Provider</th><th>Starred</th></tr></thead>
 		    <tbody data-bind="foreach: $data.documents">
 		        <tr>
 		            <td data-bind="text: id"></td>
 		            <td data-bind="text: name, click: $root.goToDocument"></td>
-		            <td data-bind="text: provider"></td>
+		            <td data-bind="text: type.name"></td>
+		            <td data-bind="text: provider.name"></td>
 		            <td><input type="checkbox" data-bind="checked: isStarred"></td>
 		        </tr>
 		    </tbody>
@@ -50,7 +51,7 @@
 								<span data-bind="text: providers().length"></span> Providers <span class="caret"></span>
 							</button>
 							<ul data-bind="foreach: providers" class="dropdown-menu" role="menu">
-								<li><a data-bind="text: name"></a></li>
+								<li><input type="checkbox" data-bind="checked: isActive"><a data-bind="text: name"></a></li>
 							</ul>
 						</div>
 					</li>
@@ -62,7 +63,7 @@
 								<span data-bind="text: types().length"></span> Types <span class="caret"></span>
 							</button>
 							<ul data-bind="foreach: types" class="dropdown-menu" role="menu">
-								<li><a data-bind="text: $data"></a></li>
+								<li><input type="checkbox" data-bind="checked: isActive"><a data-bind="text: name"></a></li>
 							</ul>
 						</div>
 					</li>

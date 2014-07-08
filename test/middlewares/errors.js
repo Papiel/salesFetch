@@ -11,9 +11,7 @@ describe('<Errors middleware>', function() {
 
     request(app).get('/it/does/not/exist')
       .expect(404)
-      .expect(function(res) {
-        res.text.should.containDeep('Page not found');
-      })
+      .expect(/does not exist/i)
       .end(done);
   });
 });

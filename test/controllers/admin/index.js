@@ -48,7 +48,7 @@ describe('/admin/init endpoint', function() {
             .end(cb);
         },
         function findCompany(res, cb) {
-          masterKey = res.text;
+          masterKey = res.body;
           Organization.find({}, cb);
         },
         function checkCompany(orgs, cb) {
@@ -103,7 +103,7 @@ describe('/admin/init endpoint', function() {
             .post(endpoint)
             .send(SFDCinfos)
             .expect(function(res){
-              res.text.should.eql(org.masterKey);
+              res.body.should.eql(org.masterKey);
             })
             .end(cb);
         }

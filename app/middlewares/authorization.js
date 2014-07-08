@@ -1,5 +1,6 @@
 'use strict';
 
+var restify = require('restify');
 var crypto = require('crypto');
 var async = require('async');
 
@@ -37,14 +38,14 @@ module.exports.requiresLogin = function(req, res, next) {
   var organization;
 
   if (!req.query.data) {
-    return next({message: "Bad Request", status: 401});
+    return next(new restify.InvalidCredentialsError('Bad Request: missing `data` query parameter'));
   }
   var data = JSON.parse(req.query.data);
 
   async.waterfall([
     function retrieveCompany(cb) {
       if (!data.organization.id) {
-        return next({message: "Bad Request", status: 401});
+        return next(new restify.InvalidCredentialsError('Bad Request: missing organization id'));
       }
 
       Organization.findOne({SFDCId: data.organization.id}, cb);
@@ -52,14 +53,14 @@ module.exports.requiresLogin = function(req, res, next) {
     function checkRequestValidity(org, cb){
       organization = org;
       if (!org) {
-        return next({message: "No matching company has been found", status: 401});
+        return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
       var hash = data.organization.id + data.user.id + org.masterKey + secureKey;
       var check = crypto.createHash('sha1').update(hash).digest("base64");
 
       if (check !== data.hash) {
-        return next({message: "Please check your salesFetch Master Key!", status: 401});
+        return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
       cb(null, data);
     },

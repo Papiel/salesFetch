@@ -182,7 +182,7 @@ describe('<Authentication middleware>', function() {
 
         authMiddleware(req, null, function() {
           req.user.should.have.property('SFDCId', user.SFDCId);
-          req.reqParams.should.have.keys('hash', 'user', 'organization');
+          req.data.should.have.keys('hash', 'user', 'organization');
           cb();
         });
       }

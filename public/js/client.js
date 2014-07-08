@@ -46,10 +46,6 @@ function SalesfetchViewModel() {
     client.leftTabs = [TimelineTab, StarredTab];
     client.rightTabs = [SearchTab];
 
-    client.chosenTabId = ko.observable();
-    client.chosenTabData = ko.observable();
-    client.chosenDocumentData = ko.observable();
-
     client.activeTab = ko.observable(TimelineTab);
     client.activeDocument = ko.observable();
 
@@ -72,17 +68,8 @@ function SalesfetchViewModel() {
     })
     // Behaviours
     client.goToTab = function(tab) {
-        // location.hash = tab
         client.activeTab(tab);
-        client.chosenDocumentData(null);
-
-        if (tab === 'Starred') {
-            var starreDocs = client.getStarredDocuments();
-            console.log(starreDocs);
-            client.chosenTabData(starreDocs);
-        } else {
-            client.chosenTabData(client.documents());
-        };
+        client.activeDocument(null);
     };
     client.goToDocument = function(document) {
         client.activeDocument(document);
@@ -92,15 +79,8 @@ function SalesfetchViewModel() {
         client.activeDocument(null);
     }
 
-    client.setDocuments = function(documents) {
-        client.chosenTabData(documents);
-    };
-
-
     // Show Timeline by default
     client.goToTab(TimelineTab);
-
-
 
     // Demo
     client.addDocuments([

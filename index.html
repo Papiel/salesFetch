@@ -72,16 +72,18 @@
 		</nav>
 	</div>
 
-	<div id="view-documents" data-bind="visible: activeDocument() != null">
+	<div id="view-displayFull" data-bind="with: activeDocument">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation">
   			<div class="container">
 				<ul class="nav navbar-nav navbar-left">
-					    <li><a class="fa fa-chevron-left" data-bind="click: goBack"></a></li>
+					    <li><a class="fa fa-chevron-left" data-bind="click: $root.goBack"> <span data-bind="text: $root.activeTab().id"></span></a></li>
 				</ul>
 			</div>
 		</nav>
+
+
 		<!-- Chosen document -->
-		<div class="viewMail" data-bind="with: activeDocument">
+		<div class="viewMail">
 		    <div class="container">
 		        <h1 data-bind="text: name"></h1>
 		        <p><label>ID</label>: <span data-bind="text: id"></span></p>
@@ -90,6 +92,15 @@
 		    </div>
 		    <p class="full" data-bind="html: name" /></p>
 		</div>
+
+
+		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+					    <li><input type="checkbox" data-bind="checked: isStarred"></li>
+				</ul>
+			</div>
+		</nav>
 	</div>
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

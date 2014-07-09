@@ -74,20 +74,26 @@
 		<nav class="navbar navbar-default navbar-fixed-bottom">
 
 			<!-- MAIN VIEW NAV -->
-			<ul class="nav nav-pills" data-bind="visible: !activeDocument()">
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Dropdown</span></a>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Dropdown</span></a>
-					</ul>
-				</li>
-			</ul>
+			<div id="filter-tabs" data-bind="visible: !activeDocument()">
+				<ul class="nav nav-pills">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Provider <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu" data-bind="foreach: providers">
+							<li>
+								<a data-bind="text: name"></a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Types <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu" data-bind="foreach: types">
+							<li>
+								<a data-bind="text: name"></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
 
 			<!-- DOCUMENT FULL NAV -->
 			<ul class="nav nav-pills" data-bind="visible: activeDocument()">

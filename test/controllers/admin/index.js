@@ -34,6 +34,28 @@ describe('/admin/init endpoint', function() {
       APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
     });
 
+    it('should err on missing user parameter', function(done) {
+      var incompleteData = {
+        user: null,
+        organization: {
+          name: 'Breaking Bad',
+          id: '1234'
+        }
+      };
+
+      async.waterfall([
+        function pokeEndpoint(cb) {
+          // Fake request to our app
+          request(app)
+            .post(endpoint)
+            .send(incompleteData)
+            .expect(409)
+            .expect(/should provide user/i)
+            .end(cb);
+        }
+      ], done);
+    });
+
     it('should create a user and a company', function(done) {
       var masterKey;
       var generatedMasterKey;

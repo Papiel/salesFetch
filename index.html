@@ -20,8 +20,11 @@
 	<![endif]-->
   </head>
   <body>
-	<div id="mobile">
-	<!-- NAVIGATION TOP -->
+
+  	<!-- MOBILE VIEW -->
+	<div id="mobile" data-bind="if: isMobile">
+
+		<!-- NAVIGATION TOP -->
 		<nav class="navbar navbar-default navbar-fixed-top">
 
 			<!-- MAIN VIEW NAV -->
@@ -34,6 +37,7 @@
 					</li>
 				</ul>
 			</div>
+			<!-- END MAIN VIEW NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
 			<div data-bind="with: activeDocument()">
@@ -43,11 +47,15 @@
 					</li>
 				</ul>
 			</div>
+			<!-- END DOCUMENT FULL NAV -->
+
 		</nav>
+		<!-- END NAVIGATION TOP -->
 
 
 		<!-- VIEW BODY -->
 		<div id="view-body">
+
 			<!-- SNIPPET LIST -->
 			<div class="tab-body-view" data-bind="with: activeTab, visible: !activeDocument()">
 				<div class="snippet-list" data-bind="foreach: $data.documents">
@@ -57,6 +65,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- END SNIPPET LIST -->
 
 
 			<!-- DOCUMENT DISPLAY -->
@@ -67,15 +76,18 @@
 				<p><label>Type</label>: <span data-bind="text: type.name"></span></p>
 				<p class="full" data-bind="html: name" /></p>
 			</div>
+			<!-- END DOCUMENT DISPLAY -->
 
 		</div>
 
 		<!-- NAVIGATION BOTTOM -->
 		<nav class="navbar navbar-default navbar-fixed-bottom">
 
-			<!-- MAIN VIEW NAV -->
+			<!-- MAIN VIEW FILTER NAV -->
 			<div id="filter-tabs" data-bind="visible: !activeDocument()">
 				<ul class="nav nav-pills">
+
+					<!-- FILTER PROVIDERS -->
 					<li class="dropdown dropup drop-left">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 							<span data-bind="text: filteredProviders().length"></span>
@@ -95,6 +107,9 @@
 							</li>
 						</ul>
 					</li>
+					<!-- END FILTER PROVIDERS -->
+
+					<!-- FILTER TYPES -->
 					<li class="dropdown dropup drop-right">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 							<span data-bind="text: filteredTypes().length"></span>
@@ -114,8 +129,11 @@
 							</li>
 						</ul>
 					</li>
+					<!-- END FILTER TYPES -->
+
 				</ul>
-			</li>
+			</div>
+			<!-- END MAIN VIEW FILTER NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
 			<ul class="nav nav-pills" data-bind="visible: activeDocument()">
@@ -123,10 +141,13 @@
 					<a class="fa fa-star" href="#"></a>
 				</li>
 			</ul>
+			<!-- END DOCUMENT FULL NAV -->
 
 		</nav>
+		<!-- END NAVIGATION BOTTOM -->
 
 	</div>
+  	<!--END  MOBILE VIEW -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

@@ -42,6 +42,11 @@ function TabModel(id, documents) {
 function SalesfetchViewModel() {
 
     var client = this;
+
+    client.isMobile = device.mobile();
+    client.isTablet = device.tablet();
+    client.isDesktop = device.desktop();
+
     // Editable data
     client.documents = ko.observableArray([]);
     client.providers = ko.observableArray([]);

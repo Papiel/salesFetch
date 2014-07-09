@@ -237,7 +237,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new restify.NotFoundError('No admin for the company has been found'));
+        return cb(new restify.InvalidCredentialsError('No admin for the company has been found'));
       }
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);

@@ -114,12 +114,12 @@
 		<nav class="navbar navbar-default toolbar">
 
 			<!-- MAIN VIEW FILTER NAV -->
-			<div id="filter-tabs" data-bind="visible: !activeDocument()">
+			<div id="filter-tabs" data-bind="visible: shouldDisplayFilterToolbar()">
 				<ul class="nav nav-pills">
 
 					<!-- FILTER PROVIDERS -->
 					<li class="dropdown dropup drop-left">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<a class="dropdown-toggle" data-toggle="dropdown">
 							<span data-bind="text: filteredProviders().length"></span>
 							 Provider<span data-bind="visible: filteredProviders().length > 0">s</span>
 							 <span class="caret"></span>
@@ -141,7 +141,7 @@
 
 					<!-- FILTER TYPES -->
 					<li class="dropdown dropup drop-right">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<a class="dropdown-toggle" data-toggle="dropdown">
 							<span data-bind="text: filteredTypes().length"></span>
 							 Type<span data-bind="visible: filteredTypes().length > 0">s</span>
 							 <span class="caret"></span>
@@ -166,7 +166,7 @@
 			<!-- END MAIN VIEW FILTER NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
-			<ul class="nav nav-pills" data-bind="with: activeDocument">
+			<ul class="nav nav-pills" data-bind="with: activeDocument, visible: !shouldDisplayFilterToolbar()">
 				<li>
 					<a class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></a>
 				</li>

@@ -24,6 +24,10 @@
 
 @filterCellFontSize: 14px;
 
+// desktop
+
+@desktopNavbarWidth: 100px;
+
 
 /*********************************
    OPERATIONS & COLOR FUNCTIONS
@@ -36,6 +40,9 @@
         MIXINS
 ***********************/
 
+
+// Global
+
 .Snippet {
 	margin: 5px;
 	border: 1px solid #ddd;
@@ -43,7 +50,8 @@
 	padding: 5px;
 }
 
-.Navbar {
+.NavBar {
+	z-index: 1030;
 	border: 0px;
 	margin-bottom: 0px;
 	min-height: 0px;
@@ -54,13 +62,11 @@
 	}
 }
 
-.MobileBody {
-	position: absolute;
-	top: @navbarHeight;
-	left: 0px;
-	right: 0px;
-	bottom: @navbarHeight;
-	overflow: scroll;
+.Toolbar { .NavBar;
+	position: fixed;
+	right: 0;
+	left: 0;
+	bottom: 0;
 }
 
 .FilterToolbarButton {
@@ -102,18 +108,79 @@
 	right: 0px;
 }
 
+// Desktop
+
+
+.DesktopNavbar { .NavBar;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: @desktopNavbarWidth;
+}
+
+.DesktopBody {
+	position: fixed;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	left: @desktopNavbarWidth;
+}
+
+
+// Mobile
+
+
+.MobileNavbar { .NavBar;
+	position: fixed;
+	right: 0;
+	left: 0;
+	top: 0;
+
+	.tab-left {
+		float: left;
+	}
+
+	.tab-right {
+		float: right;
+	}
+}
+
+.MobileBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @navbarHeight;
+	overflow: scroll;
+}
+
 
 /**********************
          STYLES
 ***********************/
 
-#mobile {
+html.desktop {
+
+	.snippet { .Snippet }
+
+	.toolbar { .Toolbar }
+
+	.navbar-tab { .DesktopNavbar }
+
+	#view-body { .DesktopBody }
+
+}
+
+html.mobile {
 
 	#view-body { .MobileBody }
 
 	.snippet { .Snippet }
 
-	.navbar { .Navbar }
+	.navbar-tab { .MobileNavbar }
+
+	.toolbar { .Toolbar }
 
 	#filter-tabs {
 		li { .FilterToolbarButton }

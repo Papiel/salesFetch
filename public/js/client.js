@@ -34,10 +34,11 @@ function Type(name) {
 }
 
 var tabTotalNumer = 0;
-function TabModel(name) {
+function TabModel(name, pullRight) {
     var self = this;
     self.name = name;
     self.id = tabTotalNumer++;
+    self.pullRight = pullRight;
 }
 
 function SalesfetchViewModel() {
@@ -75,25 +76,22 @@ function SalesfetchViewModel() {
     });
 
     // Tabs
-    var TimelineTab = new TabModel('Timeline', []);
+    var TimelineTab = new TabModel('Timeline', false);
     TimelineTab.documents = client.filteredDocuments;
-    TimelineTab.pullRight = false;
 
-    var StarredTab = new TabModel('Starred', []);
+    var StarredTab = new TabModel('Starred', false);
     StarredTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.isStarred() === true);
         });
     });
-    StarredTab.pullRight = false;
 
-    var SearchTab = new TabModel('Search', []);
+    var SearchTab = new TabModel('Search', true);
     SearchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.name.search('c') != -1);
         });
     });
-    SearchTab.pullRight = true;
 
     client.tabs = [TimelineTab, StarredTab, SearchTab];
 

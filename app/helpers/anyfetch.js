@@ -100,7 +100,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       anyfetch.getDocumentWithInfo(id, query, cb);
     },
     function applyTemplate(doc, cb) {
-      if(!doc || !doc.data) {
+      if(!doc || !doc.data) {
         return cb(new restify.NotFoundError('Document not found'));
       }
 

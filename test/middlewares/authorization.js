@@ -20,9 +20,7 @@ describe('<Authentication middleware>', function() {
 
   it('should reject empty calls', function(done) {
     var res;
-    var req = {
-      query: []
-    };
+    var req = { query: [] };
 
     authMiddleware(req, res, function(err) {
       should(err).be.ok;
@@ -32,11 +30,29 @@ describe('<Authentication middleware>', function() {
     });
   });
 
-  it('should send message if no company has been found', function(done) {
+  it('should err on missing organization id', function(done) {
     var res;
-    var req = {
-      query: {}
+    var req = { query: {} };
+
+    var params = {
+      organization: {
+        id: null
+      }
     };
+
+    req.query.data = JSON.stringify(params);
+
+    authMiddleware(req, res, function(err) {
+      should(err).be.ok;
+      err.statusCode.should.equal(401);
+      err.message.should.match(/missing organization id/i);
+      done();
+    });
+  });
+
+  it('should err if no company has been found', function(done) {
+    var res;
+    var req = { query: {} };
 
     var params = {
       organization: {
@@ -53,7 +69,6 @@ describe('<Authentication middleware>', function() {
       done();
     });
   });
-
 
   it('should reject call if the hash doesn\'t match', function(done) {
 
@@ -128,14 +143,10 @@ describe('<Authentication middleware>', function() {
           }
         };
 
-        var req = {
-          query: {
-            data: JSON.stringify(authObj)
-          }
-        };
-
-        authMiddleware(req, null, cb);
-      }, function checkUserValidity(cb) {
+        var query = { data: JSON.stringify(authObj) };
+        authMiddleware({ query: query }, null, cb);
+      },
+      function checkUserValidity(cb) {
         User.findOne({name: 'Walter White'}, function(err, user) {
           user.should.have.property('email', 'walter.white@breaking-bad.com');
           user.should.have.property('SFDCId', 'newUser');
@@ -144,6 +155,46 @@ describe('<Authentication middleware>', function() {
         });
       }
     ], done);
+  });
+
+  it('should err if there\'s no admin in the company', function(done) {
+    async.waterfall([
+      function mountAPI(cb) {
+        APIs.mount('fetchAPI', 'https://api.anyfetch.com', cb);
+      },
+      function createCompany(api, cb) {
+         var org = new Organization({
+          name: "anyFetch",
+          SFDCId: '1234'
+        });
+
+        org.save(cb);
+      },
+      // Do not create an admin for this org on purpose
+      // (we want to provoke an error)
+      function makeCall(org, count, cb) {
+        var hash = org.SFDCId + 'newUser' + org.masterKey + secureKey;
+        hash = crypto.createHash('sha1').update(hash).digest("base64");
+
+        var authObj = {
+          hash: hash,
+          organization: {id: org.SFDCId},
+          user: {
+            id: 'newUser',
+            name: 'Walter White',
+            email: 'walter.white@breaking-bad.com'
+          }
+        };
+
+        var query = { data: JSON.stringify(authObj) };
+        authMiddleware({ query: query }, null, cb);
+      }
+    ], function expectError(err) {
+      should(err).be.ok;
+      err.statusCode.should.eql(401);
+      err.message.should.match(/no admin for the company/i);
+      done();
+    });
   });
 
   it('should pass variable in request', function(done) {

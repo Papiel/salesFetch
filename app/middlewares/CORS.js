@@ -1,16 +1,12 @@
 'use strict';
 
 module.exports = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  var allowHeaders = ['Accept', 'Accept-Version', 'Authorization', 'Content-Type', 'Api-Version', 'X-Requested-With'];
 
-  // Intercept only OPTIONS methods
-  // and let pass all others
-  if (req.method === 'OPTIONS') {
-    res.send(200);
-  }
-  else {
-    next();
-  }
+  res.header('Access-Control-Allow-Headers', allowHeaders.join(', '));
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Origin', '*');
+
+  return next();
 };

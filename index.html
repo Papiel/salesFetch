@@ -28,20 +28,18 @@
 		<nav class="navbar navbar-default navbar-tab">
 
 			<!-- MAIN VIEW NAV -->
-			<div data-bind="visible: !activeDocument()">
+			<div data-bind="visible: shouldDisplayTabsNavbar()">
 				<ul class="nav nav-pills" data-bind="">
 					<!-- ko foreach: tabs -->
-					<li data-bind="css: {'tab-right': pullRight}">
-						<a data-bind="text: id,
-										css: { active: $data == $root.activeTab() },
+					<li data-bind="css: {'tab-right': pullRight, active: $data == $root.activeTab()}">
+						<a data-bind="text: name,
 										click: $root.goToTab"></a>
 					</li>
 					<!-- /ko -->
 
 					<!-- ko if: isDesktop -->
-					<li data-bind="with: providerTab">
-						<a data-bind="text: id,
-										css: { active: $data == $root.activeTab() },
+					<li data-bind="with: providerTab, css: {active: providerTab == $root.activeTab()}">
+						<a data-bind="text: name,
 										click: $root.goToTab"></a>
 					</li>
 					<!-- /ko -->
@@ -53,7 +51,7 @@
 			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
 					<li class="tab-left">
-						<a data-bind="click: $root.goBack"><span class="fa fa-chevron-left"></span> <span data-bind="text: $root.activeTab().id"></span></a>
+						<a data-bind="click: $root.goBack"><span class="fa fa-chevron-left"></span> <span data-bind="text: $root.activeTab().name"></span></a>
 					</li>
 					<li class="tab-right">
 						<a data-bind="text: name"></a>

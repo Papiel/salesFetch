@@ -1,124 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Salesfetch</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bootstrap 101 Template</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="public/stylesheets/style.css">
 	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
   </head>
   <body>
+	<div id="mobile">
+	<!-- NAVIGATION TOP -->
+		<nav class="navbar navbar-default navbar-fixed-top">
 
-	<div id="view-documents" data-bind="visible: activeDocument() == null">
-		<nav class="navbar navbar-default" role="navigation">
-  			<div class="container">
-				<ul data-bind="foreach: leftTabs" class="nav navbar-nav navbar-left">
-					    <li><a data-bind="text: id,
-					    				css: { active: $data == $root.activeTab() },
-					    				click: $root.goToTab"></a></li>
-				</ul>
-				<ul data-bind="foreach: rightTabs" class="nav navbar-nav navbar-right">
-					    <li><a data-bind="text: id,
-					    				css: { active: $data == $root.activeTab() },
-					    				click: $root.goToTab"></a></li>
-				</ul>
-			</div>
-		</nav>
-
-		<!-- Snippet grid -->
-		<table class="container" data-bind="with: activeTab">
-		    <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Provider</th><th>Starred</th></tr></thead>
-		    <tbody data-bind="foreach: $data.documents">
-		        <tr>
-		            <td data-bind="text: id"></td>
-		            <td data-bind="text: name, click: $root.goToDocument"></td>
-		            <td data-bind="text: type.name"></td>
-		            <td data-bind="text: provider.name"></td>
-		            <td><input type="checkbox" data-bind="checked: isStarred"></td>
-		        </tr>
-		    </tbody>
-		</table>
-
-		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-  			<div class="container">
-				<ul class="nav navbar-nav navbar-left">
-				    <li>
-					    <div class="btn-group dropup navbar-btn">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								<span data-bind="text: providers().length"></span> Providers <span class="caret"></span>
-							</button>
-							<ul data-bind="foreach: providers" class="dropdown-menu" role="menu">
-								<li><input type="checkbox" data-bind="checked: isActive"><a data-bind="text: name"></a></li>
-							</ul>
-						</div>
+			<!-- MAIN VIEW NAV -->
+			<div data-bind="visible: !activeDocument()">
+				<ul class="nav nav-pills" data-bind="foreach: leftTabs">
+					<li>
+						<a data-bind="text: id,
+										css: { active: $data == $root.activeTab() },
+										click: $root.goToTab"></a>
 					</li>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-				    <li>
-					    <div class="btn-group dropup navbar-btn">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								<span data-bind="text: types().length"></span> Types <span class="caret"></span>
-							</button>
-							<ul data-bind="foreach: types" class="dropdown-menu" role="menu">
-								<li><input type="checkbox" data-bind="checked: isActive"><a data-bind="text: name"></a></li>
-							</ul>
-						</div>
+			</div>
+
+			<!-- DOCUMENT FULL NAV -->
+			<div class="container" data-bind="with: activeDocument()">
+				<ul class="nav navbar-pills">
+					<li>
+						<a data-bind="click: $root.goBack"><span class="fa fa-chevron-left"></span> <span data-bind="text: id"></span></a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-	</div>
 
-	<div id="view-displayFull" data-bind="with: activeDocument">
-		<nav class="navbar navbar-default navbar-static-top" role="navigation">
-  			<div class="container">
-				<ul class="nav navbar-nav navbar-left">
-					    <li><a class="fa fa-chevron-left" data-bind="click: $root.goBack"> <span data-bind="text: $root.activeTab().id"></span></a></li>
-				</ul>
+
+		<!-- VIEW BODY -->
+		<div id="view-body">
+			<!-- SNIPPET LIST -->
+			<div class="snippet-list" data-bind="with: activeTab">
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
+				<div class="snippet">
+					Snippet
+				</div>
 			</div>
-		</nav>
-
-
-		<!-- Chosen document -->
-		<div class="viewMail">
-		    <div class="container">
-		        <h1 data-bind="text: name"></h1>
-		        <p><label>ID</label>: <span data-bind="text: id"></span></p>
-		        <p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
-		        <p><label>Type</label>: <span data-bind="text: type.name"></span></p>
-		    </div>
-		    <p class="full" data-bind="html: name" /></p>
 		</div>
 
+		<!-- NAVIGATION BOTTOM -->
+		<nav class="navbar navbar-default navbar-fixed-bottom">
 
-		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-  			<div class="container">
-				<ul class="nav navbar-nav navbar-left">
-					    <li><input type="checkbox" data-bind="checked: isStarred"></li>
-				</ul>
-			</div>
+			<!-- MAIN VIEW NAV -->
+			<ul class="nav nav-pills" data-bind="visible: !activeDocument()">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Dropdown</span></a>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Dropdown</span></a>
+					</ul>
+				</li>
+			</ul>
+
+			<!-- DOCUMENT FULL NAV -->
+			<ul class="nav nav-pills" data-bind="visible: activeDocument()">
+				<li>
+					<a class="fa fa-star" href="#"></a>
+				</li>
+			</ul>
+
 		</nav>
+
 	</div>
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script type='text/javascript' src='public/js/knockout-3.1.0.js'></script>
 	<script type='text/javascript' src='public/js/device.js'></script>
 	<script type='text/javascript' src='public/js/client.js'></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   </body>
 </html>

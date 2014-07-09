@@ -191,7 +191,7 @@ function SalesfetchViewModel() {
     };
 
     // Conditional view
-
+    // Do no use ko.computed when not needed
     client.shouldDisplayDocumentList = ko.computed(function() {
         return (!client.activeDocument()) || client.isTablet;
     });

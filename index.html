@@ -183,6 +183,34 @@
   	<!-- SUBVIEW -->
   	<!-- ko if: isTablet -->
   	<div id="subview">
+
+		<!-- DOCUMENT NAVBAR -->
+		<nav class="navbar navbar-default navbar-tab">
+
+			<!-- WHEN DOC SELECTED -->
+			<div data-bind="with: activeDocument">
+				<ul class="nav navbar-pills">
+					<li class="tab-right">
+						<a data-bind="text: name"></a>
+					</li>
+				</ul>
+			</div>
+			<!-- END WHEN DOC SELECTED -->
+
+			<!-- WHEN NO DOC -->
+			<div data-bind="visible: !activeDocument()">
+				<ul class="nav navbar-pills">
+					<li class="tab-right">
+						<a>Select a document</a>
+					</li>
+				</ul>
+			</div>
+			<!-- END WHEN NO DOC -->
+
+  		</nav>
+		<!-- END DOCUMENT NAVBAR -->
+
+		<!-- DOCUMENT DISPLAY -->
 		<div class="document-display" data-bind="with: activeDocument">
 			<p><label>ID</label>: <span data-bind="text: id"></span></p>
 			<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
@@ -190,6 +218,8 @@
 			<hr>
 			<p class="full" data-bind="html: name" /></p>
 		</div>
+		<!-- END DOCUMENT DISPLAY -->
+
 	</div>
 	<!-- /ko -->
   	<!-- END SUBVIEW -->

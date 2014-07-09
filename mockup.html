@@ -23,7 +23,9 @@
     <div id="mobile">
     <!-- NAVIGATION TOP -->
 	    <nav class="navbar navbar-default navbar-fixed-top">
-	    	<ul class="nav nav-pills">
+
+	    	<!-- MAIN VIEW NAV -->
+	    	<ul class="nav nav-pills hidden">
 				<li class="">
 					<a class="btn btn-nav" data-toggle="dropdown" href="#">Timeline</a>
 				</li>
@@ -34,6 +36,15 @@
 					<a class="btn btn-nav" data-toggle="dropdown" href="#">Search</a>
 				</li>
 			</ul>
+
+			<!-- DOCUMENT FULL NAV -->
+			<div class="container">
+		    	<ul class="nav navbar-pills">
+		    		<li>
+						<a href="#"><span class="fa fa-chevron-left"></span> Timeline</a>
+					</li>
+				</ul>
+			</div>
 	    </nav>
 
 
@@ -71,11 +82,11 @@
 			</div>
 		</div>
 
-    </div>
-
-    <!-- NAVIGATION BOTTOM -->
+    	<!-- NAVIGATION BOTTOM -->
 	    <nav class="navbar navbar-default navbar-fixed-bottom">
-	    	<ul class="nav nav-pills">
+
+	    	<!-- MAIN VIEW NAV -->
+	    	<ul class="nav nav-pills hidden">
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
@@ -89,7 +100,17 @@
 					</ul>
 				</li>
 			</ul>
+
+			<!-- DOCUMENT FULL NAV -->
+	    	<ul class="nav nav-pills">
+	    		<li>
+	    			<a class="fa fa-star" href="#"></a>
+	    		</li>
+	    	</ul>
+
 	    </nav>
+
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

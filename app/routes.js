@@ -51,4 +51,12 @@ module.exports = function(app) {
   app.post('/app/providers',
     middlewares.authorization.requiresLogin,
     controllers.app.providers.index.post);
+
+  app.get(/(.*.html)/i, function(req, res, next) {
+    console.log(req.params);
+    console.log(req.query);
+    console.log(req.route);
+    var filename = '../..' + req.params[0];
+    res.render(filename);
+  });
 };

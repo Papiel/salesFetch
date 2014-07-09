@@ -26,8 +26,8 @@
 
 			<!-- MAIN VIEW NAV -->
 			<div data-bind="visible: !activeDocument()">
-				<ul class="nav nav-pills" data-bind="foreach: leftTabs">
-					<li>
+				<ul class="nav nav-pills" data-bind="foreach: tabs">
+					<li data-bind="css: {'pull-right': pullRight}">
 						<a data-bind="text: id,
 										css: { active: $data == $root.activeTab() },
 										click: $root.goToTab"></a>

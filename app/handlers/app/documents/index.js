@@ -9,7 +9,7 @@ var anyfetchHelpers = require('../../../helpers/anyfetch.js');
 var salesfetchHelpers = require('../../../helpers/salesfetch.js');
 
 /**
- * Display Context page
+ * Context-related documents
  */
 module.exports.get = function(req, res, next) {
   if(!req.data.context || !req.data.context.templatedQuery || !req.data.context.templatedDisplay) {
@@ -23,7 +23,7 @@ module.exports.get = function(req, res, next) {
 
   var filters = {};
   if (req.query.filters) {
-    filters = JSON.parse(req.query.filters);
+    filters = req.query.filters;
     params = _.merge(params, filters);
   }
 
@@ -32,6 +32,7 @@ module.exports.get = function(req, res, next) {
   }
 
   async.waterfall([
+    // TODO: only send an update once per session?
     function updateDocuments(cb) {
       anyfetchHelpers.updateAccount(req.user, cb);
     },

@@ -77,7 +77,11 @@
 			<div id="filter-tabs" data-bind="visible: !activeDocument()">
 				<ul class="nav nav-pills">
 					<li class="dropdown dropup drop-left">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span data-bind="text: filteredProviders().length"></span> Providers <span class="caret"></span></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<span data-bind="text: filteredProviders().length"></span>
+							 Provider<span data-bind="visible: filteredProviders().length > 0">s</span>
+							 <span class="caret"></span>
+						</a>
 						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: providers">
 							<li>
 								<a data-bind="click: toggleActive">
@@ -92,7 +96,11 @@
 						</ul>
 					</li>
 					<li class="dropdown dropup drop-right">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span data-bind="text: filteredTypes().length"></span> Types <span class="caret"></span></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<span data-bind="text: filteredTypes().length"></span>
+							 Type<span data-bind="visible: filteredTypes().length > 0">s</span>
+							 <span class="caret"></span>
+						</a>
 						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: types">
 							<li>
 								<a data-bind="click: toggleActive">

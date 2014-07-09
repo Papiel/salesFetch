@@ -129,7 +129,12 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       doc.pinned = !!pin;
       cb(null, doc);
     }
-  ], finalCb);
+  ], function(err, doc) {
+    if(err && err.message && err.message.indexOf(404) !== -1) {
+      err = new restify.NotFoundError('Document not found');
+    }
+    finalCb(err, doc);
+  });
 };
 
 /**

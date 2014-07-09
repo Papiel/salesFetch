@@ -24,9 +24,15 @@
 
 @filterCellFontSize: 14px;
 
+@defaultBorder: 1px solid #ddd;
+
 // desktop
 
 @desktopNavbarWidth: 100px;
+
+// tablet
+
+@tabletLeftPanelWidth: 320px;
 
 
 /*********************************
@@ -51,6 +57,7 @@
 }
 
 .Navbar {
+	position: absolute;
 	z-index: 1030;
 	border: 0px;
 	margin-bottom: 0px;
@@ -63,7 +70,6 @@
 }
 
 .Toolbar { .Navbar;
-	position: fixed;
 	right: 0;
 	left: 0;
 	bottom: 0;
@@ -93,7 +99,7 @@
 .FilterDropdownMenu {
 	border-radius: 0px;
 	border: 0px;
-	border-top: 1px solid #ddd;
+	border-top: @defaultBorder;
 
 	li { .FilterCell }
 }
@@ -111,7 +117,6 @@
 // Desktop
 
 .DesktopNavbar { .Navbar;
-	position: fixed;
 	left: 0;
 	top: 0;
 	bottom: 0;
@@ -119,19 +124,46 @@
 }
 
 .DesktopBody {
-	position: fixed;
+	position: absolute;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	left: @desktopNavbarWidth;
 }
 
+// Tablet
+
+.TabletPanel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+
+.TabletLeftPanel { .TabletPanel;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: @tabletLeftPanelWidth;
+
+	border-right: @defaultBorder;
+}
+
+.TabletRightPanel { .TabletPanel;
+	left: @tabletLeftPanelWidth;
+	right: 0;
+}
+
+
+.ActiveSnippet { .Snippet;
+	margin-right: 0px;
+	border-right: 0px;
+}
 
 // Mobile
 
 
 .MobileNavbar { .Navbar;
-	position: fixed;
 	right: 0;
 	left: 0;
 	top: 0;
@@ -168,6 +200,38 @@ html.desktop {
 	.navbar-tab { .DesktopNavbar }
 
 	#view-body { .DesktopBody }
+
+}
+
+html.tablet {
+
+	#mainview { .TabletLeftPanel;
+
+		#view-body { .MobileBody }
+
+		.snippet { .Snippet }
+		.snippet.active { .ActiveSnippet }
+
+		.navbar-tab { .MobileNavbar }
+
+		.toolbar { .Toolbar }
+
+		#filter-tabs {
+			li { .FilterToolbarButton }
+
+			li.drop-left {
+				.filter-menu { .FilterDropdownMenuLeft }
+			}
+			li.drop-right {
+				.filter-menu { .FilterDropdownMenuRight }
+			}
+		}
+
+	}
+
+	#subview { .TabletRightPanel;
+
+	}
 
 }
 

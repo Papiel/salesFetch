@@ -51,7 +51,7 @@
 
 .Snippet {
 	margin: 5px;
-	border: 1px solid #ddd;
+	border: @defaultBorder;
 	height: 60px;
 	padding: 5px;
 }
@@ -152,6 +152,7 @@
 .TabletRightPanel { .TabletPanel;
 	left: @tabletLeftPanelWidth;
 	right: 0;
+	padding-top: @navbarHeight;
 }
 
 
@@ -230,6 +231,8 @@ html.tablet {
 	}
 
 	#subview { .TabletRightPanel;
+
+		.navbar-tab { .MobileNavbar }
 
 	}
 

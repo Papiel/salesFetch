@@ -27,3 +27,5 @@ var customLogger = function(tokens, req, res) {
 };
 
 module.exports = morgan(customLogger);
+// Used to test the logging function
+module.exports.customLogger = customLogger;

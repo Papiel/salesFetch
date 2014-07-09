@@ -53,7 +53,7 @@ module.exports = function(app) {
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.post);
 
-  if(config.env === 'development') {
+  if(config.env === 'development' || config.env === 'test') {
     app.get('/', handlers.dev.contextCreator);
   }
 };

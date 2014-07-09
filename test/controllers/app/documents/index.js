@@ -77,8 +77,7 @@ describe('/app/documents page', function() {
       ], done);
     });
 
-    it("should err if no template found", function(done) {
-
+    it("should err if no template is found", function(done) {
       var context = {
         recordType: 'Contact',
         recordId: '003b000000LHOj3',

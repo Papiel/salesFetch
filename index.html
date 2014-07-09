@@ -40,10 +40,13 @@
 			<!-- END MAIN VIEW NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
-			<div data-bind="with: activeDocument()">
+			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
-					<li>
+					<li class="pull-left">
 						<a data-bind="click: $root.goBack"><span class="fa fa-chevron-left"></span> <span data-bind="text: $root.activeTab().id"></span></a>
+					</li>
+					<li class="pull-right">
+						<a data-bind="text: name"></a>
 					</li>
 				</ul>
 			</div>
@@ -70,10 +73,10 @@
 
 			<!-- DOCUMENT DISPLAY -->
 			<div class="document-display" data-bind="with: activeDocument">
-				<h3 data-bind="text: name"></h3>
 				<p><label>ID</label>: <span data-bind="text: id"></span></p>
 				<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
 				<p><label>Type</label>: <span data-bind="text: type.name"></span></p>
+				<hr>
 				<p class="full" data-bind="html: name" /></p>
 			</div>
 			<!-- END DOCUMENT DISPLAY -->
@@ -136,9 +139,9 @@
 			<!-- END MAIN VIEW FILTER NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
-			<ul class="nav nav-pills" data-bind="visible: activeDocument()">
+			<ul class="nav nav-pills" data-bind="with: activeDocument">
 				<li>
-					<a class="fa fa-star" href="#"></a>
+					<a class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></a>
 				</li>
 			</ul>
 			<!-- END DOCUMENT FULL NAV -->

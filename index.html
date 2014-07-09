@@ -76,19 +76,33 @@
 			<!-- MAIN VIEW NAV -->
 			<div id="filter-tabs" data-bind="visible: !activeDocument()">
 				<ul class="nav nav-pills">
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Provider <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" data-bind="foreach: providers">
+					<li class="dropdown dropup drop-left">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span data-bind="text: filteredProviders().length"></span> Providers <span class="caret"></span></a>
+						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: providers">
 							<li>
-								<a data-bind="text: name"></a>
+								<a data-bind="click: toggleActive">
+									<div class="icon-column">
+										<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+									</div>
+									<div class="text-column">
+										<span data-bind="text: name"></span>
+									</div>
+								</a>
 							</li>
 						</ul>
 					</li>
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Types <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" data-bind="foreach: types">
+					<li class="dropdown dropup drop-right">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><span data-bind="text: filteredTypes().length"></span> Types <span class="caret"></span></a>
+						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: types">
 							<li>
-								<a data-bind="text: name"></a>
+								<a data-bind="click: toggleActive">
+									<div class="icon-column">
+										<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+									</div>
+									<div class="text-column">
+										<span data-bind="text: name"></span>
+									</div>
+								</a>
 							</li>
 						</ul>
 					</li>
@@ -113,5 +127,6 @@
 	<script type='text/javascript' src='public/js/knockout-3.1.0.js'></script>
 	<script type='text/javascript' src='public/js/device.js'></script>
 	<script type='text/javascript' src='public/js/client.js'></script>
+	<script type='text/javascript' src='public/js/divers.js'></script>
   </body>
 </html>

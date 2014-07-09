@@ -68,8 +68,9 @@ module.exports.requiresLogin = function(req, res, next) {
       authenticateUser(envelope, organization, cb);
     }
   ], function (err, user) {
-    if (err) {
-      return next({status: 401});
+    // Generic authentication error
+    if (err && !err.statusCode) {
+      return next(new restify.InvalidCredentialsError(err.message || 'Authentication error'));
     }
 
     req.user = user;

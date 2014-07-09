@@ -34,20 +34,13 @@
         MIXINS
 ***********************/
 
-.navTab {
-
-	&.active {
-		background-color: @anyFetchDarkColor;
-	}
-}
-
-.snippet {
+.Snippet {
 	margin: 5px;
 	border: 1px solid #ddd;
 	height: 60px;
 }
 
-.navbar {
+.Navbar {
 	border: 0px;
 	margin-bottom: 0px;
 	min-height: 0px;
@@ -67,7 +60,11 @@
 	overflow: scroll;
 }
 
-
+.FilterToolbarButton {
+	width: 50%;
+	margin: 0px;
+	text-align: center;
+}
 
 
 /**********************
@@ -77,12 +74,12 @@
 #mobile {
 
 	#view-body { .MobileBody }
-}
 
-.navbar.navbar-default {
+	.snippet { .Snippet }
 
-	ul.nav.navbar-nav {
-		li a { .navTab }
+	.navbar { .Navbar }
+
+	#filter-tabs {
+		li { .FilterToolbarButton }
 	}
-
 }

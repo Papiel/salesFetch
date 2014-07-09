@@ -170,14 +170,17 @@ function SalesfetchViewModel() {
     // Behaviours
     client.goToTab = function(tab) {
         client.activeTab(tab);
-        client.activeDocument(null);
+
+        if (client.isMobile) {
+            client.activeDocument(null);
+        };
     };
 
     client.goToDocument = function(document) {
         if (client.isMobile) {
             client.activeDocument(document);
         } else if (client.isTablet) {
-
+            client.activeDocument(document);
         } else if (client.isDesktop) {
             window.open('','_blank');
         }
@@ -188,8 +191,13 @@ function SalesfetchViewModel() {
     };
 
     // Conditional view
+
+    client.shouldDisplayDocumentList = ko.computed(function() {
+        return (!client.activeDocument()) || client.isTablet;
+    });
+
     client.shouldDisplayTabsNavbar = function() {
-        return (client.activeDocument() === null) || client.isDesktop;
+        return (client.activeDocument() === null) || client.isDesktop || client.isTablet;
     };
 
     client.shouldDisplayDocumentNavbar = function() {

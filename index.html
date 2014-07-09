@@ -4,13 +4,12 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Bootstrap 101 Template</title>
+	<title>SalesFetch</title>
 
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="public/stylesheets/style.css">
-	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -21,8 +20,8 @@
   </head>
   <body>
 
-  	<!-- MOBILE VIEW -->
-	<div id="mobile" data-bind="">
+  	<!-- MAIN VIEW -->
+	<div id="mainview">
 
 		<!-- NAVIGATION TOP -->
 		<nav class="navbar navbar-default navbar-tab">
@@ -39,6 +38,7 @@
 			<!-- END MAIN VIEW NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
+			<!-- ko if: isMobile -->
 			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
 					<li class="tab-left">
@@ -49,6 +49,7 @@
 					</li>
 				</ul>
 			</div>
+			<!-- /ko -->
 			<!-- END DOCUMENT FULL NAV -->
 
 		</nav>
@@ -59,9 +60,10 @@
 		<div id="view-body">
 
 			<!-- SNIPPET LIST -->
-			<div class="document-list" data-bind="with: activeTab, visible: !activeDocument()">
+			<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
 				<div class="snippet-list" data-bind="foreach: $data.documents">
-					<div class="snippet" data-bind="click: $root.goToDocument">
+					<div class="snippet" data-bind="click: $root.goToDocument,
+														css: {active: $data == $root.activeDocument()}">
 						<p data-bind="text: name"></p>
 						<span class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
 					</div>
@@ -71,6 +73,7 @@
 
 
 			<!-- DOCUMENT DISPLAY -->
+			<!-- ko if: isMobile -->
 			<div class="document-display" data-bind="with: activeDocument">
 				<p><label>ID</label>: <span data-bind="text: id"></span></p>
 				<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
@@ -78,6 +81,7 @@
 				<hr>
 				<p class="full" data-bind="html: name" /></p>
 			</div>
+			<!-- /ko -->
 			<!-- END DOCUMENT DISPLAY -->
 
 			<!-- PROVIDERS TAB DISPLAY -->
@@ -106,7 +110,7 @@
 		</div>
 
 		<!-- NAVIGATION BOTTOM -->
-		<!-- ko if: isMobile -->
+		<!-- ko if: !isDesktop -->
 		<nav class="navbar navbar-default toolbar">
 
 			<!-- MAIN VIEW FILTER NAV -->
@@ -174,15 +178,31 @@
 		<!-- END NAVIGATION BOTTOM -->
 
 	</div>
-  	<!--END  MOBILE VIEW -->
+  	<!--END MAIN VIEW -->
+
+  	<!-- SUBVIEW -->
+  	<!-- ko if: isTablet -->
+  	<div id="subview">
+		<div class="document-display" data-bind="with: activeDocument">
+			<p><label>ID</label>: <span data-bind="text: id"></span></p>
+			<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
+			<p><label>Type</label>: <span data-bind="text: type.name"></span></p>
+			<hr>
+			<p class="full" data-bind="html: name" /></p>
+		</div>
+	</div>
+	<!-- /ko -->
+  	<!-- END SUBVIEW -->
+
+
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script type='text/javascript' src='public/client/knockout-3.1.0.js'></script>
-	<script type='text/javascript' src='public/client/device.js'></script>
-	<script type='text/javascript' src='public/client/client.js'></script>
-	<script type='text/javascript' src='public/client/divers.js'></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script type='text/javascript' src='/client/knockout-3.1.0.js'></script>
+	<script type='text/javascript' src='/client/device.js'></script>
+	<script type='text/javascript' src='/client/client.js'></script>
+	<script type='text/javascript' src='/client/divers.js'></script>
   </body>
 </html>

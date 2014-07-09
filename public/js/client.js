@@ -8,6 +8,10 @@ function Document(name, isStarred) {
     self.id = docTotalNumber++;
     self.type = null;
     self.provider = null;
+
+    self.toggleStarred = function() {
+        this.isStarred(!this.isStarred());
+    }
 }
 
 function Provider(name) {

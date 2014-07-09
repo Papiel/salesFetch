@@ -18,12 +18,20 @@ function Provider(name) {
     var self = this;
     self.name = name;
     self.isActive = ko.observable(true);
+
+    self.toggleActive = function() {
+        this.isActive(!this.isActive());
+    }
 }
 
 function Type(name) {
     var self = this;
     self.name = name;
     self.isActive = ko.observable(true);
+
+    self.toggleActive = function() {
+        this.isActive(!this.isActive());
+    }
 }
 
 function TabModel(id, documents) {
@@ -168,3 +176,5 @@ function SalesfetchViewModel() {
 };
 
 ko.applyBindings(new SalesfetchViewModel());
+
+

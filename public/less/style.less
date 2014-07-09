@@ -22,6 +22,8 @@
 @navbarFontSize: 18px;
 @navbarLineHeight: 20px;
 
+@filterCellFontSize: 14px;
+
 
 /*********************************
    OPERATIONS & COLOR FUNCTIONS
@@ -66,6 +68,39 @@
 	text-align: center;
 }
 
+.FilterCell {
+	width: 100%;
+
+	a {
+		padding: 5px 20px;
+		font-size: @filterCellFontSize;
+
+		.icon-column {
+			float: left;
+			min-width: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+			min-height: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+		}
+	}
+}
+
+.FilterDropdownMenu {
+	border-radius: 0px;
+	border: 0px;
+	border-top: 1px solid #ddd;
+
+	li { .FilterCell }
+}
+
+.FilterDropdownMenuLeft { .FilterDropdownMenu;
+	left: 0px;
+	right: -100%;
+}
+
+.FilterDropdownMenuRight { .FilterDropdownMenu;
+	left: -100%;
+	right: 0px;
+}
+
 
 /**********************
          STYLES
@@ -81,5 +116,12 @@
 
 	#filter-tabs {
 		li { .FilterToolbarButton }
+
+		li.drop-left {
+			.filter-menu { .FilterDropdownMenuLeft }
+		}
+		li.drop-right {
+			.filter-menu { .FilterDropdownMenuRight }
+		}
 	}
 }

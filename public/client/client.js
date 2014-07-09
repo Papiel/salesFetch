@@ -4,13 +4,14 @@ function Document(name, isStarred) {
     var self = this;
     self.name = name;
     self.isStarred = ko.observable(isStarred);
-    self.id = docTotalNumber++;
+    self.id = docTotalNumber;
+    docTotalNumber += 1;
     self.type = null;
     self.provider = null;
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
-    }
+    };
 }
 
 function Provider(name) {
@@ -20,7 +21,7 @@ function Provider(name) {
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
-    }
+    };
 }
 
 function Type(name) {
@@ -30,14 +31,15 @@ function Type(name) {
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
-    }
+    };
 }
 
 var tabTotalNumer = 0;
 function TabModel(name, pullRight) {
     var self = this;
     self.name = name;
-    self.id = tabTotalNumer++;
+    self.id = tabTotalNumer;
+    tabTotalNumer += 1;
     self.pullRight = pullRight;
 }
 
@@ -89,7 +91,7 @@ function SalesfetchViewModel() {
     var searchTab = new TabModel('Search', true);
     searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
-            return (document.name.search('c') != -1);
+            return (document.name.search('c') !== -1);
         });
     });
 
@@ -107,7 +109,7 @@ function SalesfetchViewModel() {
         });
 
         client.tabs.push(client.providerTab);
-    };
+    }
 
     client.activeTab = ko.observable();
     client.activeDocument = ko.observable();
@@ -120,14 +122,14 @@ function SalesfetchViewModel() {
         array.forEach(function(json) {
             client.addDocument(json);
         });
-    }
+    };
 
     client.DocumentWithJson = function(json) {
-        var document = new Document(json['name'], json['starred']);
-        document.provider = client.ProviderWithName(json['provider']);
-        document.type = client.TypeWithName(json['type']);
+        var document = new Document(json.name, json.starred);
+        document.provider = client.ProviderWithName(json.provider);
+        document.type = client.TypeWithName(json.type);
         return document;
-    }
+    };
 
     client.ProviderWithName = function(providerName) {
         var provider = null;
@@ -135,7 +137,7 @@ function SalesfetchViewModel() {
             if (providerIte.name === providerName) {
                 provider = providerIte;
                 return true;
-            };
+            }
             return false;
         });
 
@@ -145,7 +147,7 @@ function SalesfetchViewModel() {
         }
 
         return provider;
-    }
+    };
 
     client.TypeWithName = function(typeName) {
         var type = null;
@@ -153,7 +155,7 @@ function SalesfetchViewModel() {
             if (typeIte.name === typeName) {
                 type = typeIte;
                 return true;
-            };
+            }
             return false;
         });
 
@@ -163,7 +165,7 @@ function SalesfetchViewModel() {
         }
 
         return type;
-    }
+    };
 
     // Behaviours
     client.goToTab = function(tab) {
@@ -178,21 +180,21 @@ function SalesfetchViewModel() {
 
         } else if (client.isDesktop) {
             window.open('','_blank');
-        };
+        }
     };
 
     client.goBack = function() {
         client.activeDocument(null);
-    }
+    };
 
     // Conditional view
     client.shouldDisplayTabsNavbar = function() {
-        return (client.activeDocument() == null) || client.isDesktop;
-    }
+        return (client.activeDocument() === null) || client.isDesktop;
+    };
 
     client.shouldDisplayDocumentNavbar = function() {
         return client.activeDocument && !client.isDesktop;
-    }
+    };
 
     // Show Timeline by default
     client.goToTab(timelineTab);
@@ -207,7 +209,7 @@ function SalesfetchViewModel() {
     ]);
 
 
-};
+}
 
 ko.applyBindings(new SalesfetchViewModel());
 

@@ -76,27 +76,38 @@ function SalesfetchViewModel() {
     });
 
     // Tabs
-    var TimelineTab = new TabModel('Timeline', false);
-    TimelineTab.documents = client.filteredDocuments;
+    var timelineTab = new TabModel('Timeline', false);
+    timelineTab.documents = client.filteredDocuments;
 
-    var StarredTab = new TabModel('Starred', false);
-    StarredTab.documents = ko.computed(function() {
+    var starredTab = new TabModel('Starred', false);
+    starredTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.isStarred() === true);
         });
     });
 
-    var SearchTab = new TabModel('Search', true);
-    SearchTab.documents = ko.computed(function() {
+    var searchTab = new TabModel('Search', true);
+    searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.name.search('c') != -1);
         });
     });
 
-    client.tabs = [TimelineTab, StarredTab, SearchTab];
+    // Set default tabs
+    client.tabs = [timelineTab, starredTab, searchTab];
 
-    // Add providers tab if desktop
-    client.providerTab = client.isDesktop ? new TabModel('Providers', []) : null;
+    // Add ProviderTab if desktop
+    if (client.isDesktop) {
+        client.providerTab = new TabModel('Providers', false);
+        client.providerTab.availableProviders = ko.computed(function() {
+            return client.providers();
+        });
+        client.providerTab.connectedProviders = ko.computed(function() {
+            return client.providers();
+        });
+
+        client.tabs.push(client.providerTab);
+    };
 
     client.activeTab = ko.observable();
     client.activeDocument = ko.observable();
@@ -184,7 +195,7 @@ function SalesfetchViewModel() {
     }
 
     // Show Timeline by default
-    client.goToTab(TimelineTab);
+    client.goToTab(timelineTab);
 
     // Demo
     client.addDocuments([

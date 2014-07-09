@@ -29,20 +29,11 @@
 
 			<!-- MAIN VIEW NAV -->
 			<div data-bind="visible: shouldDisplayTabsNavbar()">
-				<ul class="nav nav-pills" data-bind="">
-					<!-- ko foreach: tabs -->
+				<ul class="nav nav-pills" data-bind="foreach: tabs">
 					<li data-bind="css: {'tab-right': pullRight, active: $data == $root.activeTab()}">
 						<a data-bind="text: name,
 										click: $root.goToTab"></a>
 					</li>
-					<!-- /ko -->
-
-					<!-- ko if: isDesktop -->
-					<li data-bind="with: providerTab, css: {active: providerTab == $root.activeTab()}">
-						<a data-bind="text: name,
-										click: $root.goToTab"></a>
-					</li>
-					<!-- /ko -->
 				</ul>
 			</div>
 			<!-- END MAIN VIEW NAV -->
@@ -68,7 +59,7 @@
 		<div id="view-body">
 
 			<!-- SNIPPET LIST -->
-			<div class="tab-body-view" data-bind="with: activeTab, visible: !activeDocument()">
+			<div class="document-list" data-bind="with: activeTab, visible: !activeDocument()">
 				<div class="snippet-list" data-bind="foreach: $data.documents">
 					<div class="snippet" data-bind="click: $root.goToDocument">
 						<p data-bind="text: name"></p>
@@ -88,6 +79,29 @@
 				<p class="full" data-bind="html: name" /></p>
 			</div>
 			<!-- END DOCUMENT DISPLAY -->
+
+			<!-- PROVIDERS TAB DISPLAY -->
+			<!-- ko if: isDesktop -->
+			<div class="providers-view" data-bind="with: providerTab, visible: $root.activeTab() == providerTab">
+				<div class="connected-providers">
+					<h2>Connected providers</h2>
+					<div class="row provider-list" data-bind="foreach: connectedProviders">
+						<div class="col-xs-6 col-sm-4 col-md-3 provider">
+							<p data-bind="text: name"></p>
+						</div>
+					</div>
+				</div>
+				<div class="available-providers">
+					<h2>Available providers</h2>
+					<div class="row provider-list" data-bind="foreach: availableProviders">
+						<div class="col-xs-6 col-sm-4 col-md-3 provider">
+							<p data-bind="text: name"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- END PROVIDERS TAB DISPLAY -->
 
 		</div>
 

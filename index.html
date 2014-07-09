@@ -51,9 +51,9 @@
 			<!-- SNIPPET LIST -->
 			<div class="tab-body-view" data-bind="with: activeTab, visible: !activeDocument()">
 				<div class="snippet-list" data-bind="foreach: $data.documents">
-					<div class="snippet" data-bind="click: $root.goToDocument">
+					<div class="snippet" data-bind="">
 						<p data-bind="text: name"></p>
-						<input type="checkbox" data-bind="checked: isStarred">
+						<span class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
 					</div>
 				</div>
 			</div>

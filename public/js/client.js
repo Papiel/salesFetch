@@ -96,6 +96,9 @@ function SalesfetchViewModel() {
 
     client.tabs = [TimelineTab, StarredTab, SearchTab];
 
+    // Add providers tab if desktop
+    client.providerTab = client.isDesktop ? new TabModel('Providers', []) : null;
+
     client.activeTab = ko.observable();
     client.activeDocument = ko.observable();
 

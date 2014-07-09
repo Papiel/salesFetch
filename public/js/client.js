@@ -1,6 +1,5 @@
 
 var docTotalNumber = 0;
-
 function Document(name, isStarred) {
     var self = this;
     self.name = name;
@@ -34,9 +33,11 @@ function Type(name) {
     }
 }
 
-function TabModel(id, documents) {
+var tabTotalNumer = 0;
+function TabModel(name) {
     var self = this;
-    self.id = id;
+    self.name = name;
+    self.id = tabTotalNumer++;
 }
 
 function SalesfetchViewModel() {
@@ -160,12 +161,28 @@ function SalesfetchViewModel() {
         client.activeTab(tab);
         client.activeDocument(null);
     };
+
     client.goToDocument = function(document) {
-        client.activeDocument(document);
+        if (client.isMobile) {
+            client.activeDocument(document);
+        } else if (client.isTablet) {
+
+        } else if (client.isDesktop) {
+            window.open('','_blank');
+        };
     };
 
     client.goBack = function() {
         client.activeDocument(null);
+    }
+
+    // Conditional view
+    client.shouldDisplayTabsNavbar = function() {
+        return (client.activeDocument() == null) || client.isDesktop;
+    }
+
+    client.shouldDisplayDocumentNavbar = function() {
+        return client.activeDocument && !client.isDesktop;
     }
 
     // Show Timeline by default

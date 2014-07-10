@@ -13,40 +13,34 @@ module.exports = function(server) {
 
   server.get('/app/documents',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.requiresContext,
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
 
   server.get('/app/pins',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.requiresContext,
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
 
   server.del('/app/pins/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
 
   server.get('/app/providers',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     handlers.app.providers.index.get);
 
   server.post('/app/providers',

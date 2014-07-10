@@ -1,6 +1,7 @@
 'use strict';
 
 var autoLoad = require('auto-load');
+var config = require('../config/configuration.js');
 
 module.exports = function(app) {
   var lib = autoLoad(__dirname);
@@ -8,7 +9,7 @@ module.exports = function(app) {
   var middlewares = lib.middlewares;
   var controllers = lib.controllers;
 
-  app.post('/admin/init', controllers.admin.index.get);
+  app.post('/admin/init', controllers.admin.index.post);
 
   app.get('/app/documents',
     middlewares.authorization.requiresLogin,
@@ -52,11 +53,13 @@ module.exports = function(app) {
     middlewares.authorization.requiresLogin,
     controllers.app.providers.index.post);
 
+  // render knockout at /index.html
   app.get(/(.*.html)/i, function(req, res, next) {
-    console.log(req.params);
-    console.log(req.query);
-    console.log(req.route);
     var filename = '../..' + req.params[0];
     res.render(filename);
   });
+
+  if(config.env === 'development') {
+    app.get('/', controllers.dev.contextCreator);
+  }
 };

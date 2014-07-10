@@ -1,5 +1,5 @@
 {
-  "path" : "/batch?pages[0]=%2Fdocument_types&pages[1]=%2Fproviders&pages[2]=%2Fdocuments%3Fsort%3D-creationDate%26search%3DWalter%2520White",
+  "path" : "/batch?pages[0]=%2Fdocuments%3Fsort%3D-creationDate%26search%3DWalter%2520White&pages[1]=%2Fdocument_types&pages[2]=%2Fproviders",
   "verb" : "GET",
   "code": 200,
   "reply": {

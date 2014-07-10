@@ -25,7 +25,7 @@ describe('/app/documents/:id page', function() {
 
   beforeEach(cleaner);
   beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'http://api.anyfetch.com', done);
+    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
   });
 
 

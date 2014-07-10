@@ -2,6 +2,16 @@
   "name": "salesFetch",
   "version": "1.0.0",
   "author": "Pierre-Marie Dartus <dartus.pierremarie@gmail.com>",
+  "contributors": [
+    {
+      "name": "Tanguy Hélesbeux",
+      "email": "tanguy@anyfetch.com"
+    },
+    {
+      "name": "Merlin Nimier-David",
+      "email": "merlin@anyfetch.com"
+    }
+  ],
   "scripts": {
     "start": "node ./bin/server",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
@@ -14,6 +24,7 @@
   },
   "keywords": [
     "salesforce",
+    "AnyFetch",
     "FetchAPI",
     "integration"
   ],
@@ -42,7 +53,8 @@
     "ua-parser-js": "0.6.2",
     "moment": "2.7.x",
     "rarity": "^2.1.1",
-    "dotenv": "^0.4.0"
+    "dotenv": "^0.4.0",
+    "anyfetch": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "1.18.x",
@@ -51,7 +63,7 @@
     "mocha-mongoose": "1.0.x",
     "nock": "0.31.x"
   },
-  "licence": "Copyright Papiel",
+  "licence": "Copyright AnyFetch",
   "engines": {
     "node": ">=0.10"
   }

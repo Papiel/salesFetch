@@ -41,11 +41,9 @@
 
 @navbarHeight: 2*@navbarVerticalPadding + @navbarLineHeight;
 
-
 /**********************
         MIXINS
 ***********************/
-
 
 // Global
 
@@ -72,12 +70,46 @@
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
 	}
+
+	.tab-left {
+		float: left;
+	}
+
+	.tab-right {
+		float: right;
+	}
+}
+
+.NavigationBar { .Navbar;
+	right: 0;
+	left: 0;
+	top: 0;
+}
+
+.MainViewBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @navbarHeight;
+	overflow: scroll;
 }
 
 .Toolbar { .Navbar;
 	right: 0;
 	left: 0;
 	bottom: 0;
+}
+
+.FilterToolBar {
+	li { .FilterToolbarButton }
+
+	li.drop-left {
+		.filter-menu { .FilterDropdownMenuLeft }
+	}
+	li.drop-right {
+		.filter-menu { .FilterDropdownMenuRight }
+	}
 }
 
 .FilterToolbarButton {
@@ -117,6 +149,15 @@
 .FilterDropdownMenuRight { .FilterDropdownMenu;
 	left: -100%;
 	right: 0px;
+}
+
+.MainViewBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @navbarHeight;
+	overflow: scroll;
 }
 
 // Desktop
@@ -179,40 +220,17 @@
 
 // Mobile
 
-
-.MobileNavbar { .Navbar;
-	right: 0;
-	left: 0;
-	top: 0;
-
-	.tab-left {
-		float: left;
-	}
-
-	.tab-right {
-		float: right;
-	}
-}
-
-.MobileBody {
-	position: absolute;
-	top: @navbarHeight;
-	left: 0px;
-	right: 0px;
-	bottom: @navbarHeight;
-	overflow: scroll;
-}
-
-
 /**********************
          STYLES
 ***********************/
 
+
+// Global
 .toolbar { .Toolbar }
 .snippet { .Snippet }
 nav .star-btn { .StarBarButton }
 
-
+// Desktop
 html.desktop {
 
 	.navbar-tab { .DesktopNavbar }
@@ -221,51 +239,35 @@ html.desktop {
 
 }
 
+// Tablet
 html.tablet {
 
 	#mainview { .TabletLeftPanel;
 
-		#view-body { .MobileBody }
+		#view-body { .MainViewBody }
 
 		.snippet.active { .ActiveSnippet }
 
-		.navbar-tab { .MobileNavbar }
+		.navbar-tab { .NavigationBar }
 
-		#filter-tabs {
-			li { .FilterToolbarButton }
-
-			li.drop-left {
-				.filter-menu { .FilterDropdownMenuLeft }
-			}
-			li.drop-right {
-				.filter-menu { .FilterDropdownMenuRight }
-			}
-		}
+		#filter-tabs { .FilterToolBar }
 
 	}
 
 	#subview { .TabletRightPanel;
 
-		.navbar-tab { .MobileNavbar }
+		.navbar-tab { .NavigationBar }
 
 	}
 
 }
 
+// Mobile
 html.mobile {
 
-	#view-body { .MobileBody }
+	#view-body { .MainViewBody }
 
-	.navbar-tab { .MobileNavbar }
+	.navbar-tab { .NavigationBar }
 
-	#filter-tabs {
-		li { .FilterToolbarButton }
-
-		li.drop-left {
-			.filter-menu { .FilterDropdownMenuLeft }
-		}
-		li.drop-right {
-			.filter-menu { .FilterDropdownMenuRight }
-		}
-	}
+	#filter-tabs { .FilterToolBar }
 }

@@ -2,21 +2,23 @@
 
 var should = require("should");
 var async = require('async');
-var mongoose = require('mongoose');
 var crypto = require('crypto');
+var AnyFetch = require('anyfetch');
+
+var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var APIs = require('../helpers/APIs');
 var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
+var mock = require('../helpers/mock.js');
 var authMiddleware  = require('../../app/middlewares/authorization').requiresLogin;
 
 var secureKey = require('../../config/configuration.js').secureKey;
 
 describe('<Authentication middleware>', function() {
-
   beforeEach(cleaner);
+  after(mock.restore);
 
   it('should reject empty calls', function(done) {
     var res;
@@ -106,10 +108,12 @@ describe('<Authentication middleware>', function() {
     var createdOrg;
 
     async.waterfall([
-      function mountAPI(cb) {
-        APIs.mount('anyfetch', 'https://api.anyfetch.com', cb);
+      function mount(cb) {
+        AnyFetch.server.override('/token', mock.dir + '/get-token.json');
+        AnyFetch.server.override('post', '/users', mock.dir + '/post-users.json');
+        cb();
       },
-      function createCompany(api, cb) {
+      function createCompany(cb) {
          var org = new Organization({
           name: "anyFetch",
           SFDCId: '1234'
@@ -159,10 +163,7 @@ describe('<Authentication middleware>', function() {
 
   it("should err if there's no admin in the company", function(done) {
     async.waterfall([
-      function mountAPI(cb) {
-        APIs.mount('anyfetch', 'https://api.anyfetch.com', cb);
-      },
-      function createCompany(api, cb) {
+      function createCompany(cb) {
          var org = new Organization({
           name: "anyFetch",
           SFDCId: '1234'

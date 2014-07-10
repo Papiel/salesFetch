@@ -31,21 +31,14 @@ var walk = function(path, api) {
 /**
  * Override all the HTTP requests on the server
  */
-module.exports.mount = function(name, root, cb) {
-  APIs[name] = nock(root);
-
-  // Walk through the folder to find endpoints for the mock server
-  var apiPath = __dirname + '/' + name + '-mock';
-  walk(apiPath, APIs[name]);
-
-  cb(null, APIs[name]);
+module.exports.mount = function() {
+  throw new Error('Deprecated');
 };
 
 
 /**
  * Reset the HTTP calls on the fetchAPI
  */
-module.exports.unmount = function(name) {
-  APIs[name].restore();
-  return;
+module.exports.unmount = function() {
+  throw new Error('Deprecated');
 };

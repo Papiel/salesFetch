@@ -196,6 +196,10 @@ function SalesfetchViewModel() {
         return (!client.activeDocument()) || client.isTablet;
     });
 
+    client.shouldDisplayFilterToolbar = ko.computed(function() {
+        return (!client.activeDocument()) || client.isTablet;
+    });
+
     client.shouldDisplayTabsNavbar = function() {
         return (client.activeDocument() === null) || client.isDesktop || client.isTablet;
     };

@@ -63,7 +63,7 @@ describe('/app/providers page', function() {
       ], done);
     });
 
-    it("should redirect user to connection page", function(done) {
+    it("should redirect the user to the connection page", function(done) {
       var dropboxConnectEndpoint = endpoint + '?app_id=52bff114c8318c29e9000005';
 
       async.waterfall([
@@ -73,12 +73,8 @@ describe('/app/providers page', function() {
         function sendRequest(url, cb) {
           request(app)
             .post(url)
-            .expect(200)
-            .expect(function(res) {
-              should(res.body).be.ok;
-              res.body.should.have.keys('connectUrl');
-              res.body.connectUrl.should.have.containEql('bearer=anyFetchToken');
-            })
+            .expect(302)
+            .expect('Location', /bearer=anyFetchToken/i)
             .end(cb);
         }
       ], done);

@@ -3,6 +3,7 @@
 var restify = require('restify');
 var crypto = require('crypto');
 var async = require('async');
+var rarity = require('rarity');
 
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
@@ -65,17 +66,13 @@ module.exports.requiresLogin = function(req, res, next) {
       cb(null, data);
     },
     function loadUser(envelope, cb){
-      authenticateUser(envelope, organization, cb);
+      authenticateUser(envelope, organization, rarity.slice(2, cb));
+    },
+    function writeRes(user, cb) {
+      req.user = user;
+      req.organization = organization;
+      req.data = data;
+      cb();
     }
-  ], function (err, user) {
-    if (err) {
-      return next({status: 401});
-    }
-
-    req.user = user;
-    req.organization = organization;
-    req.data = data;
-
-    next();
-  });
+  ], next);
 };

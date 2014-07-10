@@ -31,7 +31,7 @@ describe('/app/pins/:id page', function() {
 
   beforeEach(cleaner);
   beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
   });
 
   describe('POST /app/pins/:id', function() {

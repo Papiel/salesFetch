@@ -107,7 +107,7 @@ describe('<Authentication middleware>', function() {
 
     async.waterfall([
       function mountAPI(cb) {
-        APIs.mount('fetchAPI', 'https://api.anyfetch.com', cb);
+        APIs.mount('anyfetch', 'https://api.anyfetch.com', cb);
       },
       function createCompany(api, cb) {
          var org = new Organization({
@@ -160,7 +160,7 @@ describe('<Authentication middleware>', function() {
   it("should err if there's no admin in the company", function(done) {
     async.waterfall([
       function mountAPI(cb) {
-        APIs.mount('fetchAPI', 'https://api.anyfetch.com', cb);
+        APIs.mount('anyfetch', 'https://api.anyfetch.com', cb);
       },
       function createCompany(api, cb) {
          var org = new Organization({

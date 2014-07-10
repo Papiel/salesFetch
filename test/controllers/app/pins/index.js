@@ -18,7 +18,7 @@ describe('/app/pins page', function() {
 
   beforeEach(cleaner);
   beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
   });
 
   var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';

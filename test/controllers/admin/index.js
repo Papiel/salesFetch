@@ -31,7 +31,7 @@ describe('/admin/init endpoint', function() {
 
     beforeEach(cleaner);
     beforeEach(function(done) {
-      APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+      APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
     });
 
     it('should err on missing user parameter', function(done) {

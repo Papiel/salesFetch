@@ -12,7 +12,7 @@ var APIs = require('../helpers/APIs');
 describe('<Validation middleware>', function() {
   beforeEach(cleaner);
   beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
   });
 
   it('should err on missing `context` argument', function(done) {

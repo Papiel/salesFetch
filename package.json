@@ -35,15 +35,12 @@
     "bower": "1.x.x",
     "grunt": "~0.4.4",
     "grunt-concurrent": "~0.5.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-jshint": "~0.10.0",
     "grunt-nodemon": "0.2.1",
     "grunt-env": "~0.4.1",
     "mustache": "0.8.x",
     "lodash": "2.4.1",
-    "supertest": "0.13.x",
     "body-parser": "~1.2.0",
-    "auto-load": ">=1.1.0",
+    "auto-load": "^1.1.0",
     "moment": "2.7.x",
     "rarity": "^2.1.1",
     "dotenv": "^0.4.0",
@@ -53,10 +50,13 @@
   },
   "devDependencies": {
     "mocha": "1.18.x",
+    "mocha-mongoose": "1.0.x",
     "should": "4.0.x",
     "jshint": "2.5.x",
-    "mocha-mongoose": "1.0.x",
-    "nock": "0.31.x"
+    "nock": "0.31.x",
+    "supertest": "0.13.x",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0"
   },
   "licence": "Copyright AnyFetch",
   "engines": {

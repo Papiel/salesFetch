@@ -56,6 +56,11 @@
 	padding: 5px;
 }
 
+.StarBarButton {
+	padding: @navbarVerticalPadding;
+	line-height: @navbarLineHeight;
+}
+
 .Navbar {
 	position: absolute;
 	z-index: 1030;
@@ -203,11 +208,12 @@
          STYLES
 ***********************/
 
+.toolbar { .Toolbar }
+.snippet { .Snippet }
+nav .star-btn { .StarBarButton }
+
+
 html.desktop {
-
-	.snippet { .Snippet }
-
-	.toolbar { .Toolbar }
 
 	.navbar-tab { .DesktopNavbar }
 
@@ -221,12 +227,9 @@ html.tablet {
 
 		#view-body { .MobileBody }
 
-		.snippet { .Snippet }
 		.snippet.active { .ActiveSnippet }
 
 		.navbar-tab { .MobileNavbar }
-
-		.toolbar { .Toolbar }
 
 		#filter-tabs {
 			li { .FilterToolbarButton }
@@ -253,11 +256,7 @@ html.mobile {
 
 	#view-body { .MobileBody }
 
-	.snippet { .Snippet }
-
 	.navbar-tab { .MobileNavbar }
-
-	.toolbar { .Toolbar }
 
 	#filter-tabs {
 		li { .FilterToolbarButton }

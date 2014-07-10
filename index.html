@@ -65,7 +65,7 @@
 					<div class="snippet" data-bind="click: $root.goToDocument,
 														css: {active: $data == $root.activeDocument()}">
 						<p data-bind="text: name"></p>
-						<span class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
+						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 					</div>
 				</div>
 			</div>
@@ -169,7 +169,7 @@
 			<!-- ko if: isMobile -->
 			<ul class="nav nav-pills" data-bind="with: activeDocument">
 				<li>
-					<a class="fa fa-star" data-bind="click: toggleStarred"></a>
+					<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 				</li>
 			</ul>
 			<!-- /ko -->
@@ -193,7 +193,7 @@
 			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
 					<li class="tab-right">
-						<span class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 					</li>
 					<li class="tab-right">
 						<span data-bind="text: name" />

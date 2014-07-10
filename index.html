@@ -59,6 +59,12 @@
 		<!-- VIEW BODY -->
 		<div id="view-body">
 
+			<!-- ko if: isDesktop -->
+			<div class="tab-header">
+				<h2 data-bind="text: activeTab().name" />
+			</div>
+			<!-- /ko -->
+
 			<!-- DOCUMENT LIST TAB -->
 			<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
 				<div class="snippet-list" data-bind="foreach: $data.documents">

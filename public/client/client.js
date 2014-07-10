@@ -217,6 +217,17 @@ function SalesfetchViewModel() {
         {name: 'Oublie pas !', type: 'Note', provider: 'Evernote', starred: true},
         {name: 'Vacance 117.jpg', type: 'Picture', provider: 'Dropbox', starred: false},
         {name: 'Facture', type: 'PDF', provider: 'Drive', starred: true},
+        {name: 'FWD: #laMamanDeRicard', type: 'Mail', provider: 'Gmail', starred: false},
+
+        {name: 'Contrat 12', type: 'PDF', provider: 'Dropbox', starred: false},
+        {name: 'Oublie pas !', type: 'Note', provider: 'Evernote', starred: true},
+        {name: 'Vacance 117.jpg', type: 'Picture', provider: 'Dropbox', starred: false},
+        {name: 'Facture', type: 'PDF', provider: 'Drive', starred: true},
+        {name: 'FWD: #laMamanDeRicard', type: 'Mail', provider: 'Gmail', starred: false},
+        {name: 'Contrat 12', type: 'PDF', provider: 'Dropbox', starred: false},
+        {name: 'Oublie pas !', type: 'Note', provider: 'Evernote', starred: true},
+        {name: 'Vacance 117.jpg', type: 'Picture', provider: 'Dropbox', starred: false},
+        {name: 'Facture', type: 'PDF', provider: 'Drive', starred: true},
         {name: 'FWD: #laMamanDeRicard', type: 'Mail', provider: 'Gmail', starred: false}
     ]);
 

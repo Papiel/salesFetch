@@ -54,7 +54,12 @@ module.exports = function(server) {
     handlers.app.providers.index.post);
 
   if(config.env === 'development' || config.env === 'test') {
-    server.get('/', handlers.dev.contextCreator);
+    server.get('/', function(req, res, next) {
+      res.header('Location', '/context-creator');
+      res.send(302);
+      next();
+    });
+    server.get('/context-creator', handlers.dev.contextCreator);
   }
 
   /**

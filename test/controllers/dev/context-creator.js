@@ -8,12 +8,24 @@ var app = require('../../../app.js');
 var cleaner = require('../../hooks/cleaner');
 var requestBuilder = require('../../helpers/login').requestBuilder;
 
-describe('/ (dev context-creator page)', function() {
-  var endpoint = '/';
+describe('/context-creator (dev only)', function() {
 
   beforeEach(cleaner);
 
   describe('GET /', function() {
+    var endpoint = '/';
+
+    it('should redirect to /context-creator', function(done) {
+      request(app)
+        .get(endpoint)
+        .expect(302)
+        .expect('Location', '/context-creator')
+        .end(done);
+    });
+  });
+
+  describe('GET /context-creator', function() {
+    var endpoint = '/context-creator';
 
     it('should return a valid context', function(done) {
       async.waterfall([

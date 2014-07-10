@@ -29,7 +29,7 @@ describe('Logger', function() {
   });
 
   // This is really for coverage only...
-  it('should not print response\'s body on 3xx calls', function() {
+  it("should not print response's body on 3xx calls", function() {
     var res = {
       statusCode: 302,
       _body: 'Description of the error'
@@ -41,7 +41,7 @@ describe('Logger', function() {
     log.should.not.match(/description of the error/i);
   });
 
-  it('should print response\'s body on 4xx and 5xx calls', function() {
+  it("should print response's body on 4xx and 5xx calls", function() {
     var res = {
       statusCode: 401,
       _body: 'Description of the error'

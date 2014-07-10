@@ -70,7 +70,7 @@ describe('<Authentication middleware>', function() {
     });
   });
 
-  it('should reject call if the hash doesn\'t match', function(done) {
+  it("should reject call if the hash doesn't match", function(done) {
 
     async.waterfall([
       function createCompany(cb) {
@@ -157,7 +157,7 @@ describe('<Authentication middleware>', function() {
     ], done);
   });
 
-  it('should err if there\'s no admin in the company', function(done) {
+  it("should err if there's no admin in the company", function(done) {
     async.waterfall([
       function mountAPI(cb) {
         APIs.mount('fetchAPI', 'https://api.anyfetch.com', cb);

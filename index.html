@@ -167,7 +167,7 @@
 
 			<!-- DOCUMENT FULL NAV -->
 			<!-- ko if: isMobile -->
-			<ul class="nav nav-pills" data-bind="with: activeDocument, visible: !shouldDisplayFilterToolbar()">
+			<ul class="nav nav-pills" data-bind="with: activeDocument">
 				<li>
 					<a class="fa fa-star" data-bind="click: toggleStarred"></a>
 				</li>
@@ -192,6 +192,9 @@
 			<!-- WHEN DOC SELECTED -->
 			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
+					<li class="tab-right">
+						<a class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></a>
+					</li>
 					<li class="tab-right">
 						<a data-bind="text: name"></a>
 					</li>

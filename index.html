@@ -166,11 +166,13 @@
 			<!-- END MAIN VIEW FILTER NAV -->
 
 			<!-- DOCUMENT FULL NAV -->
+			<!-- ko if: isMobile -->
 			<ul class="nav nav-pills" data-bind="with: activeDocument, visible: !shouldDisplayFilterToolbar()">
 				<li>
-					<a class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></a>
+					<a class="fa fa-star" data-bind="click: toggleStarred"></a>
 				</li>
 			</ul>
+			<!-- /ko -->
 			<!-- END DOCUMENT FULL NAV -->
 
 		</nav>

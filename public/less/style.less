@@ -153,8 +153,19 @@
 	left: @tabletLeftPanelWidth;
 	right: 0;
 	padding-top: @navbarHeight;
+
+	nav.navbar { .RightNavbar }
 }
 
+.RightNavbar { .Navbar;
+
+	li span {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+		position: relative;
+		display: block;
+	}
+}
 
 .ActiveSnippet { .Snippet;
 	margin-right: 0px;

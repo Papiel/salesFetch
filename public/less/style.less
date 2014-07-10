@@ -29,6 +29,7 @@
 // desktop
 
 @desktopNavbarWidth: 100px;
+@desktopBodyPadding: 20px;
 
 // tablet
 
@@ -84,15 +85,6 @@
 	right: 0;
 	left: 0;
 	top: 0;
-}
-
-.MainViewBody {
-	position: absolute;
-	top: @navbarHeight;
-	left: 0px;
-	right: 0px;
-	bottom: @navbarHeight;
-	overflow: scroll;
 }
 
 .Toolbar { .Navbar;
@@ -175,6 +167,8 @@
 	top: 0;
 	bottom: 0;
 	left: @desktopNavbarWidth;
+	padding: @desktopBodyPadding;
+	overflow: scroll;
 }
 
 // Tablet

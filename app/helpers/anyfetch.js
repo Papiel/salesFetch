@@ -100,7 +100,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       anyfetch.getDocumentWithInfo(id, query, cb);
     },
     function applyTemplate(doc, cb) {
-      if(!doc || !doc.data) {
+      if(!doc || !doc.data) {
         return cb(new restify.NotFoundError('Document not found'));
       }
 
@@ -129,7 +129,12 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       doc.pinned = !!pin;
       cb(null, doc);
     }
-  ], finalCb);
+  ], function(err, doc) {
+    if(err && err.message && err.message.indexOf(404) !== -1) {
+      err = new restify.NotFoundError('Document not found');
+    }
+    finalCb(err, doc);
+  });
 };
 
 /**
@@ -237,7 +242,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function createNewUser(adminUser, cb) {
       if (!adminUser) {
-        return cb(new restify.NotFoundError('No admin for the company has been found'));
+        return cb(new restify.InvalidCredentialsError('No admin for the company has been found'));
       }
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);

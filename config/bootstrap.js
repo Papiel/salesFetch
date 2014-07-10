@@ -28,10 +28,15 @@ module.exports = function(server) {
   // Common middlewares
   server.use(restify.queryParser());
   server.use(restify.bodyParser());
-  server.use(require('../app/middlewares/CORS.js'));
+  server.use(require('../app/middlewares/cors.js'));
 
   // Routes
   addRoutes(server);
+
+  // Prefer 404 over 405
+  server.on('MethodNotAllowed', function(req, res) {
+    return res.send(new restify.NotFoundError('Not found: ' + req.url + ' does not exist'));
+  });
 
   // Error handling
   server.on('uncaughtException', function(req, res, route, err) {

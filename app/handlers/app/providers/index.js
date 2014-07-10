@@ -32,8 +32,7 @@ module.exports.get = function(req, res, next) {
 };
 
 /**
- * Produce the url to which the user should get redirected
- * in order to grant access
+ * Redirect the user to the grant page
  */
 module.exports.post = function(req, res, next) {
   if (!req.query.app_id) {
@@ -41,6 +40,7 @@ module.exports.post = function(req, res, next) {
   }
 
   var connectUrl = config.managerUrl + '/connect/' + req.query.app_id + '?bearer=' + req.user.anyFetchToken;
-  res.send({ connectUrl: connectUrl });
+  res.header('Location', connectUrl);
+  res.send(302);
   next();
 };

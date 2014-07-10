@@ -1,0 +1,12 @@
+{
+  "path" : "/batch?pages[0]=%2Fdocument_types&pages[1]=%2Fproviders&pages[2]=%2Fdocuments%2F1234c57d9ba7daaa265f1234%3Fsearch%3DChuck%2520Norris",
+  "verb" : "GET",
+  "code": 404,
+  "reply": {
+    "errored": "/documents/1234c57d9ba7daaa265f1234?search=Chuck%20Norris",
+    "/documents/1234c57d9ba7daaa265f1234": {
+        "code": "ResourceNotFound",
+        "message": ""
+    }
+  }
+}

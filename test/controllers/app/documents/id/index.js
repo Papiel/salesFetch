@@ -3,6 +3,7 @@
 var request = require('supertest');
 var async = require('async');
 var rarity = require('rarity');
+var should = require('should');
 
 var app = require('../../../../../app.js');
 var cleaner = require('../../../../hooks/cleaner');
@@ -14,6 +15,7 @@ var checkUnauthenticated = require('../../../../helpers/access').checkUnauthenti
 describe('/app/documents/:id page', function() {
   var sampleUserId = '0000c57d9ba7bbbb265ffdc9';
   var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
+  var inexistantId = '1234c57d9ba7daaa265f1234';
   var sampleContext = {
     "templatedDisplay": "Chuck Norris",
     "templatedQuery": "Chuck Norris",
@@ -28,11 +30,25 @@ describe('/app/documents/:id page', function() {
     APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
   });
 
-
   describe('GET /app/documents/:id', function() {
     checkUnauthenticated(app, 'get', endpoint);
 
-    it("should render the full template", function(done) {
+    it('should err on inexistant document', function(done) {
+      async.waterfall([
+        function buildRequest(cb) {
+          requestBuilder('/app/documents/' + inexistantId, sampleContext, null, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(/document not found/i)
+            .expect(404)
+            .end(cb);
+        }
+      ], done);
+    });
+
+    it('should render the full template', function(done) {
       async.waterfall([
         function buildRequest(cb) {
           requestBuilder(endpoint, sampleContext, null, cb);
@@ -40,17 +56,16 @@ describe('/app/documents/:id page', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            .expect(function(res) {
-              res.text.toLowerCase().should.containDeep("email");
-              res.text.toLowerCase().should.containDeep("gmail");
-              res.text.toLowerCase().should.containDeep("albert einstein");
-            })
+            .expect(200)
+            .expect(/email/i)
+            .expect(/gmail/i)
+            .expect(/albert einstein/i)
             .end(cb);
         }
       ], done);
     });
 
-    it("should mark a pinned document as pinned", function(done) {
+    it('should mark a pinned document as pinned', function(done) {
       async.waterfall([
         function addPin(cb) {
           var user = { id: sampleUserId };
@@ -63,8 +78,13 @@ describe('/app/documents/:id page', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
+            .expect(200)
             .expect(function(res) {
-              res.text.toLowerCase().should.containDeep("pinned");
+              should(res).be.okay;
+              should(res.body).be.okay;
+
+              var doc = res.body;
+              doc.should.have.properties({ pinned: true });
             })
             .end(cb);
         }

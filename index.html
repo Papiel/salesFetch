@@ -193,10 +193,10 @@
 			<div data-bind="with: activeDocument">
 				<ul class="nav navbar-pills">
 					<li class="tab-right">
-						<a class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></a>
+						<span class="fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 					</li>
 					<li class="tab-right">
-						<a data-bind="text: name"></a>
+						<span data-bind="text: name" />
 					</li>
 				</ul>
 			</div>
@@ -206,7 +206,7 @@
 			<div data-bind="visible: !activeDocument()">
 				<ul class="nav navbar-pills">
 					<li class="tab-right">
-						<a>Select a document</a>
+						<span>Select a document</span>
 					</li>
 				</ul>
 			</div>

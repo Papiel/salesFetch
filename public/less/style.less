@@ -26,6 +26,8 @@
 
 @defaultBorder: 1px solid #ddd;
 
+@defaultNavbarZIndex: 1030;
+
 // desktop
 
 @desktopNavbarWidth: 100px;
@@ -34,6 +36,11 @@
 // tablet
 
 @tabletLeftPanelWidth: 320px;
+@tabletTogglePanelButtonWidth: 40px;
+
+@tabletMainViewZIndex: 1020;
+@tabletSubViewNavbarZIndex: 1010;
+
 
 
 /*********************************
@@ -41,6 +48,8 @@
 **********************************/
 
 @navbarHeight: 2*@navbarVerticalPadding + @navbarLineHeight;
+
+@snippetListBackground: white;
 
 /**********************
         MIXINS
@@ -55,14 +64,18 @@
 	padding: 5px;
 }
 
+.SnippetList {
+	background: @snippetListBackground;
+}
+
 .StarBarButton {
 	padding: @navbarVerticalPadding;
 	line-height: @navbarLineHeight;
 }
 
-.Navbar {
+.Navbar(@z-index: @defaultNavbarZIndex) {
 	position: absolute;
-	z-index: 1030;
+	z-index: @z-index;
 	border: 0px;
 	margin-bottom: 0px;
 	min-height: 0px;
@@ -152,6 +165,15 @@
 	overflow: scroll;
 }
 
+.TogglePanelButton {
+	position: absolute;
+	right: -@tabletTogglePanelButtonWidth;
+	width: @tabletTogglePanelButtonWidth;
+	top: 0;
+	height: @navbarHeight;
+	background-color: red;
+}
+
 // Desktop
 
 .DesktopNavbar { .Navbar;
@@ -185,19 +207,29 @@
 	bottom: 0;
 	left: 0;
 	width: @tabletLeftPanelWidth;
+	z-index: @tabletMainViewZIndex;
 
 	border-right: @defaultBorder;
 }
 
 .TabletRightPanel { .TabletPanel;
-	left: @tabletLeftPanelWidth;
 	right: 0;
 	padding-top: @navbarHeight;
 
-	nav.navbar { .RightNavbar }
+	nav.navbar { .RightNavbar(@tabletSubViewNavbarZIndex) }
 }
 
-.RightNavbar { .Navbar;
+.TabletRightPanel(portrait) {
+	.TabletRightPanel;
+	left: 0px;
+}
+
+.TabletRightPanel(landscape) {
+	.TabletRightPanel;
+	left: @tabletLeftPanelWidth;
+}
+
+.RightNavbar(@z-index: @defaultNavbarZIndex) { .Navbar(@z-index);
 
 	li span {
 		padding: @navbarVerticalPadding;
@@ -221,7 +253,13 @@
 
 // Global
 .toolbar { .Toolbar }
-.snippet { .Snippet }
+
+.snippet-list {
+	.SnippetList;
+
+	.snippet { .Snippet }
+}
+
 nav .star-btn { .StarBarButton }
 
 // Desktop
@@ -247,13 +285,30 @@ html.tablet {
 		#filter-tabs { .FilterToolBar }
 
 	}
+}
 
-	#subview { .TabletRightPanel;
+html.tablet.landscape {
+
+	#toggle-panel-btn {
+		display: none;
+	}
+
+	#subview { .TabletRightPanel(landscape);
 
 		.navbar-tab { .NavigationBar }
 
 	}
+}
 
+html.tablet.portrait {
+
+	#toggle-panel-btn { .TogglePanelButton }
+
+	#subview { .TabletRightPanel(portrait);
+
+		.navbar-tab { .NavigationBar }
+
+	}
 }
 
 // Mobile

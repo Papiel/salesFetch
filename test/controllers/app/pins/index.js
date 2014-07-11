@@ -2,6 +2,7 @@
 
 var request = require('supertest');
 var async = require('async');
+var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
@@ -17,9 +18,12 @@ describe('/app/pins page', function() {
   var endpoint = '/app/pins';
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
+  beforeEach(function mount() {
+    AnyFetch.server.override('/document_types', mock.dir + '/get-document_types.json');
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
+    AnyFetch.server.override('/documents', mock.dir + '/get-documents.json');
   });
+  afterEach(mock.restore);
 
   var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
   var sampleContext = {

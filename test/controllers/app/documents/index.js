@@ -4,15 +4,16 @@ var should = require('should');
 var request = require('supertest');
 var async = require('async');
 var rarity = require('rarity');
+var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 
 var app = require('../../../../app.js');
 var cleaner = require('../../../hooks/cleaner');
+var mock = require('../../../helpers/mock.js');
 var requestBuilder = require('../../../helpers/login').requestBuilder;
 var getUser = require('../../../helpers/login').getUser;
-var APIs = require('../../../helpers/APIs');
 var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
 
 describe('/app/documents page', function() {
@@ -25,9 +26,12 @@ describe('/app/documents page', function() {
   };
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
+  before(function mount() {
+    AnyFetch.server.override('/document_types', mock.dir + '/get-document_types.json');
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
+    AnyFetch.server.override('/documents', mock.dir + '/get-documents.json');
   });
+  after(mock.restore);
 
   describe('GET /app/documents', function() {
     checkUnauthenticated(app, 'get', endpoint);

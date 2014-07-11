@@ -4,18 +4,19 @@ var request = require('supertest');
 var async = require('async');
 var rarity = require('rarity');
 var should = require('should');
+var AnyFetch = require('anyfetch');
 
 var app = require('../../../../../app.js');
-var cleaner = require('../../../../hooks/cleaner');
+var cleaner = require('../../../../hooks/cleaner.js');
+var mock = require('../../../../helpers/mock.js');
 var salesfetchHelpers = require('../../../../../app/helpers/salesfetch.js');
-var requestBuilder = require('../../../../helpers/login').requestBuilder;
-var APIs = require('../../../../helpers/APIs');
-var checkUnauthenticated = require('../../../../helpers/access').checkUnauthenticated;
+var requestBuilder = require('../../../../helpers/login.js').requestBuilder;
+var checkUnauthenticated = require('../../../../helpers/access.js').checkUnauthenticated;
 
 describe('/app/documents/:id page', function() {
   var sampleUserId = '0000c57d9ba7bbbb265ffdc9';
   var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
-  var inexistantId = '1234c57d9ba7daaa265f1234';
+  var nonexistantId = '1234c57d9ba7daaa265f1234';
   var sampleContext = {
     "templatedDisplay": "Chuck Norris",
     "templatedQuery": "Chuck Norris",
@@ -26,17 +27,20 @@ describe('/app/documents/:id page', function() {
   var endpoint = '/app/documents/' + sampleDocumentId;
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
+  beforeEach(function mount() {
+    AnyFetch.server.override('/document_types', mock.dir + '/get-document_types.json');
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
+    AnyFetch.server.override('/documents', mock.dir + '/get-documents.json');
   });
+  afterEach(mock.restore);
 
   describe('GET /app/documents/:id', function() {
     checkUnauthenticated(app, 'get', endpoint);
 
-    it('should err on inexistant document', function(done) {
+    it('should err on nonexistant document', function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder('/app/documents/' + inexistantId, sampleContext, null, cb);
+          requestBuilder('/app/documents/' + nonexistantId, sampleContext, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -50,6 +54,10 @@ describe('/app/documents/:id page', function() {
 
     it('should render the full template', function(done) {
       async.waterfall([
+        function mount(cb) {
+          AnyFetch.server.override('/documents/5309c57d9ba7daaa265ffdc9', mock.dir + '/get-document-with-search.json');
+          cb();
+        },
         function buildRequest(cb) {
           requestBuilder(endpoint, sampleContext, null, cb);
         },
@@ -67,6 +75,10 @@ describe('/app/documents/:id page', function() {
 
     it('should mark a pinned document as pinned', function(done) {
       async.waterfall([
+        function mount(cb) {
+          AnyFetch.server.override('/documents/5309c57d9ba7daaa265ffdc9', mock.dir + '/get-document-with-search.json');
+          cb();
+        },
         function addPin(cb) {
           var user = { id: sampleUserId };
           cb = rarity.slice(1, cb);

@@ -4,17 +4,26 @@ require("should");
 
 var async = require('async');
 var request = require('supertest');
+var AnyFetch = require('anyfetch');
 
 var app = require('../../../app.js');
-var APIs = require('../../helpers/APIs');
-var cleaner = require('../../hooks/cleaner');
-
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
+var cleaner = require('../../hooks/cleaner');
+var mock = require('../../helpers/mock.js');
+
 describe('/admin/init endpoint', function() {
   var endpoint = '/admin/init';
+
+  beforeEach(cleaner);
+  before(function mount() {
+    AnyFetch.server.override('/token', mock.dir + '/get-token.json');
+    AnyFetch.server.override('post', '/users', mock.dir + '/post-users.json');
+    AnyFetch.server.override('post', '/subcompanies', mock.dir + '/post-subcompanies.json');
+  });
+  after(mock.restore);
 
   describe('POST /admin/init', function() {
     var SFDCinfos = {
@@ -29,11 +38,6 @@ describe('/admin/init endpoint', function() {
       }
     };
 
-    beforeEach(cleaner);
-    beforeEach(function(done) {
-      APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
-    });
-
     it('should err on missing user parameter', function(done) {
       var incompleteData = {
         user: null,
@@ -45,7 +49,6 @@ describe('/admin/init endpoint', function() {
 
       async.waterfall([
         function pokeEndpoint(cb) {
-          // Fake request to our app
           request(app)
             .post(endpoint)
             .send(incompleteData)

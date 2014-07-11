@@ -7,10 +7,10 @@ var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 
 var app = require('../../../../app.js');
-var cleaner = require('../../../hooks/cleaner');
-var requestBuilder = require('../../../helpers/login').requestBuilder;
-var APIs = require('../../../helpers/APIs');
-var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
+var cleaner = require('../../../hooks/cleaner.js');
+var mock = require('../../../helpers/mock.js');
+var requestBuilder = require('../../../helpers/login.js').requestBuilder;
+var checkUnauthenticated = require('../../../helpers/access.js').checkUnauthenticated;
 
 
 describe('/app/pins page', function() {

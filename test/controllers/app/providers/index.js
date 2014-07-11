@@ -5,10 +5,10 @@ var async = require('async');
 var should = require('should');
 
 var app = require('../../../../app.js');
-var cleaner = require('../../../hooks/cleaner');
-var requestBuilder = require('../../../helpers/login').requestBuilder;
-var APIs = require('../../../helpers/APIs');
-var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
+var cleaner = require('../../../hooks/cleaner.js');
+var mock = require('../../../helpers/mock.js');
+var requestBuilder = require('../../../helpers/login.js').requestBuilder;
+var checkUnauthenticated = require('../../../helpers/access.js').checkUnauthenticated;
 
 describe('/app/providers page', function() {
   var endpoint = '/app/providers';

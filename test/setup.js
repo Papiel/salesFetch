@@ -22,6 +22,7 @@ before(function(done) {
     AnyFetch.server = server;
     AnyFetch.setApiUrl(mockUrl);
     AnyFetch.setManagerUrl(mockUrl);
+    config.managerUrl = mockUrl;
 
     done();
   });

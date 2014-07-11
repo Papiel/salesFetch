@@ -3,6 +3,7 @@
 var request = require('supertest');
 var async = require('async');
 var should = require('should');
+var AnyFetch = require('anyfetch');
 
 var app = require('../../../../app.js');
 var cleaner = require('../../../hooks/cleaner.js');
@@ -14,14 +15,13 @@ describe('/app/providers page', function() {
   var endpoint = '/app/providers';
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('anyfetch', 'https://api.anyfetch.com', done);
+  beforeEach(function mount() {
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
+    AnyFetch.server.override('/marketplace.json', mock.dir + '/get-marketplace.json');
   });
+  afterEach(mock.restore);
 
   describe('GET /app/providers', function() {
-    beforeEach(function(done) {
-      APIs.mount('manager', 'https://manager.anyfetch.com', done);
-    });
     checkUnauthenticated(app, 'get', endpoint);
 
     it("should return all providers", function(done) {

@@ -386,7 +386,12 @@ html.tablet.landscape {
 
 		#filter-tabs {
 
-			li:last-child a {
+			li.open ul {
+				box-shadow: 0px 0px;
+				-webkit-box-shadow: 0px 0px;
+			}
+
+			li:last-child a.dropdown-toggle {
 				box-shadow: @tabletSnippetListShadow;
 			}
 		}

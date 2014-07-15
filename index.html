@@ -37,9 +37,8 @@
 			<!-- MAIN VIEW NAV -->
 			<div data-bind="visible: shouldDisplayTabsNavbar()">
 				<ul class="nav nav-pills" data-bind="foreach: tabs">
-					<li data-bind="css: {'tab-right': pullRight, active: $data == $root.activeTab()}">
-						<a data-bind="text: name,
-										click: $root.goToTab"></a>
+					<li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
+						<a data-bind="click: $root.goToTab, css: display" class="fa"></a>
 					</li>
 				</ul>
 			</div>

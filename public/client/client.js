@@ -35,9 +35,10 @@ function Type(name) {
 }
 
 var tabTotalNumer = 0;
-function TabModel(name, pullRight) {
+function TabModel(name, display, pullRight) {
     var self = this;
     self.name = name;
+    self.display = display;
     self.id = tabTotalNumer;
     tabTotalNumer += 1;
     self.pullRight = pullRight;
@@ -78,17 +79,17 @@ function SalesfetchViewModel() {
     });
 
     // Tabs
-    var timelineTab = new TabModel('Timeline', false);
+    var timelineTab = new TabModel('Timeline', 'fa-list', false);
     timelineTab.documents = client.filteredDocuments;
 
-    var starredTab = new TabModel('Starred', false);
+    var starredTab = new TabModel('Starred', 'fa-star-o', false);
     starredTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.isStarred() === true);
         });
     });
 
-    var searchTab = new TabModel('Search', true);
+    var searchTab = new TabModel('Search', 'fa-search', true);
     searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
             return (document.name.search('c') !== -1);
@@ -100,7 +101,7 @@ function SalesfetchViewModel() {
 
     // Add ProviderTab if desktop
     if (client.isDesktop) {
-        client.providerTab = new TabModel('Providers', false);
+        client.providerTab = new TabModel('Providers', 'fa-link', false);
         client.providerTab.availableProviders = ko.computed(function() {
             return client.providers();
         });

@@ -18,9 +18,18 @@
 @bootstrapGray: #ADADAD;
 @bootstrapLightGray: #EBEBEB;
 
-@navbarVerticalPadding: 20px;
-@navbarFontSize: 18px;
+@navbarVerticalPadding: 15px;
+@navbarHorizontalPadding: 20px;
 @navbarLineHeight: 20px;
+@navbarBackgroundColor: #474747;
+@navbarItemsBorderRadius: 0px;
+@navbarItemSpacing: 10px;
+@navbarItemFontSize: 20px;
+
+@toolbarLineHeight: 20px;
+@toolbarVerticalPadding: 15px;
+@toolbarHorizontalPadding: 20px;
+
 
 @snippetBackgroundColor: transparent;
 @snippetActiveBackgroundColor: #fff;
@@ -44,7 +53,7 @@
 @tabletMainViewZIndex: 1020;
 @tabletSubViewNavbarZIndex: 1010;
 
-@tabletSnippetListShadow: inset -15px 0px 25px -20px;
+@tabletSnippetListShadow: inset -10px 0px 25px -20px;
 
 
 
@@ -52,9 +61,13 @@
    OPERATIONS & COLOR FUNCTIONS
 **********************************/
 
-@navbarHeight: 2*@navbarVerticalPadding + @navbarLineHeight;
+@navbarHeight: 2*@navbarVerticalPadding + @navbarLineHeight + @navbarItemSpacing;
+@toolbarHeight: 2*@toolbarVerticalPadding + @toolbarLineHeight;
 
 @tabletActiveSnippetZIndex: @tabletMainViewZIndex + 10;
+
+@navbarTabLeftMargin: @navbarItemSpacing 0px 0px @navbarItemSpacing;
+@navbarTabRightMargin: @navbarItemSpacing @navbarItemSpacing 0px 0px;
 
 @snippetListBackground: #fff;
 
@@ -73,6 +86,7 @@
 }
 
 .SnippetList {
+	padding: 5px 0px;
 	background: @snippetListBackground;
 }
 
@@ -87,18 +101,22 @@
 	border: 0px;
 	margin-bottom: 0px;
 	min-height: 0px;
+	border-radius: 0px;
 
 	li a {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
+		border-radius: @navbarItemsBorderRadius;
 	}
 
 	.tab-left {
 		float: left;
+		margin: @navbarTabLeftMargin;
 	}
 
 	.tab-right {
 		float: right;
+		margin: @navbarTabRightMargin;
 	}
 }
 
@@ -106,6 +124,12 @@
 	right: 0;
 	left: 0;
 	top: 0;
+	background-color: @navbarBackgroundColor;
+
+	li a {
+		padding: @navbarVerticalPadding @navbarHorizontalPadding;
+		font-size: @navbarItemFontSize;
+	}
 }
 
 .Toolbar { .Navbar;
@@ -169,7 +193,7 @@
 	top: @navbarHeight;
 	left: 0px;
 	right: 0px;
-	bottom: @navbarHeight;
+	bottom: @toolbarHeight;
 	overflow: scroll;
 }
 
@@ -310,8 +334,15 @@ html.tablet.landscape {
 		display: none;
 	}
 
-	#mainview .snippet-list {
-		box-shadow: @tabletSnippetListShadow;
+	#mainview {
+
+		.snippet-list {
+			box-shadow: @tabletSnippetListShadow;
+		}
+
+		#filter-tabs {
+			box-shadow: @tabletSnippetListShadow;
+		}
 	}
 
 	#subview { .TabletRightPanel(landscape);

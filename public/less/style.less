@@ -385,7 +385,10 @@ html.tablet.landscape {
 		}
 
 		#filter-tabs {
-			box-shadow: @tabletSnippetListShadow;
+
+			li:last-child a {
+				box-shadow: @tabletSnippetListShadow;
+			}
 		}
 	}
 

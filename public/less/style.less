@@ -33,6 +33,13 @@
 
 @snippetBackgroundColor: transparent;
 @snippetActiveBackgroundColor: #fff;
+@snippetIconDivWidth: 20px;
+@snippetPadding: 5px;
+@snippetMargin: 5px;
+@snippetBorderWidth: 1px;
+@snippetBorderColor: #ddd;
+
+@starButtonFontSize: 25px;
 
 @filterCellFontSize: 14px;
 
@@ -71,6 +78,7 @@
 
 @snippetListBackground: #fff;
 
+
 /**********************
         MIXINS
 ***********************/
@@ -78,11 +86,27 @@
 // Global
 
 .Snippet {
-	margin: 5px;
-	border: @defaultBorder;
+	margin: @snippetMargin;
+	border: @snippetBorderColor @snippetBorderWidth solid;
 	height: 60px;
-	padding: 5px;
+	padding: @snippetPadding;
+	padding-left: @snippetPadding + @snippetIconDivWidth;
 	background-color: @snippetBackgroundColor;
+	position: relative; // needed for icon to stay in
+
+	.icon {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: @snippetIconDivWidth;
+		background: #ccc;
+	}
+
+	.star-btn {
+		float: right;
+		font-size: @starButtonFontSize;
+	}
 }
 
 .SnippetList {
@@ -280,6 +304,7 @@
 .ActiveSnippet { .Snippet;
 	margin-right: 0px;
 	border-right: 0px;
+	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
 }
 

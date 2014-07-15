@@ -29,6 +29,7 @@
 @toolbarLineHeight: 20px;
 @toolbarVerticalPadding: 15px;
 @toolbarHorizontalPadding: 20px;
+@toolbarBackground: #F1F1F1;
 
 
 @snippetBackgroundColor: transparent;
@@ -38,8 +39,13 @@
 @snippetMargin: 5px;
 @snippetBorderWidth: 1px;
 @snippetBorderColor: #ddd;
+@snippetHeight: 80px;
 
-@starButtonFontSize: 25px;
+@snippetListBackground: #F0F0F0;
+
+
+@starButtonFontSize: 20px;
+@starButtonColor: #C4C4C4;
 
 @filterCellFontSize: 14px;
 
@@ -60,7 +66,7 @@
 @tabletMainViewZIndex: 1020;
 @tabletSubViewNavbarZIndex: 1010;
 
-@tabletSnippetListShadow: inset -10px 0px 25px -20px;
+@tabletSnippetListShadow: inset -12px 0px 25px -20px;
 
 
 
@@ -76,8 +82,6 @@
 @navbarTabLeftMargin: @navbarItemSpacing 0px 0px @navbarItemSpacing;
 @navbarTabRightMargin: @navbarItemSpacing @navbarItemSpacing 0px 0px;
 
-@snippetListBackground: #fff;
-
 
 /**********************
         MIXINS
@@ -85,10 +89,20 @@
 
 // Global
 
+.StarButton {
+	color: @starButtonColor;
+	font-size: @starButtonFontSize;
+}
+
+.StarBarButton { .StarButton;
+	padding: @navbarVerticalPadding;
+	line-height: @navbarLineHeight;
+}
+
 .Snippet {
 	margin: @snippetMargin;
 	border: @snippetBorderColor @snippetBorderWidth solid;
-	height: 60px;
+	height: @snippetHeight;
 	padding: @snippetPadding;
 	padding-left: @snippetPadding + @snippetIconDivWidth;
 	background-color: @snippetBackgroundColor;
@@ -103,20 +117,21 @@
 		background: #ccc;
 	}
 
-	.star-btn {
+	.star-btn { .StarButton;
 		float: right;
-		font-size: @starButtonFontSize;
+		margin-top: (@snippetHeight - 2*@snippetPadding - @starButtonFontSize)/2 ;
 	}
 }
 
 .SnippetList {
 	padding: 5px 0px;
 	background: @snippetListBackground;
+	height: 100%;
+	overflow: scroll;
 }
 
-.StarBarButton {
-	padding: @navbarVerticalPadding;
-	line-height: @navbarLineHeight;
+.DocumentList {
+	height: 100%;
 }
 
 .Navbar(@z-index: @defaultNavbarZIndex) {
@@ -160,6 +175,8 @@
 	right: 0;
 	left: 0;
 	bottom: 0;
+	background: @toolbarBackground;
+	border-top: @defaultBorder;
 }
 
 .FilterToolBar {
@@ -218,7 +235,6 @@
 	left: 0px;
 	right: 0px;
 	bottom: @toolbarHeight;
-	overflow: scroll;
 }
 
 .TogglePanelButton {
@@ -318,10 +334,13 @@
 // Global
 .toolbar { .Toolbar }
 
-.snippet-list {
-	.SnippetList;
+.document-list { .DocumentList;
 
-	.snippet { .Snippet }
+	.snippet-list {
+		.SnippetList;
+
+		.snippet { .Snippet }
+	}
 }
 
 nav .star-btn { .StarBarButton }

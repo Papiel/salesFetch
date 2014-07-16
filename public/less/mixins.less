@@ -279,12 +279,19 @@
 	width: @tabletLeftPanelWidth;
 	z-index: @tabletMainViewZIndex;
 
-	left: -@tabletLeftPanelWidth;
-	-webkit-transition: left .5s ease-in-out;
-	transition: left .5s ease-in-out;
+	-webkit-transition: left 0s ease-in-out;
+	transition: left 0s ease-in-out;
 
-	&.active {
-		left: 0px;
+	@media (orientation: portrait) {
+
+		left: -@tabletLeftPanelWidth;
+		-webkit-transition: left .5s ease-in-out;
+		transition: left .5s ease-in-out;
+		border-right: @defaultBorder;
+
+		&.active {
+			left: 0px;
+		}
 	}
 }
 
@@ -307,8 +314,10 @@
 
 .RightNavbar(@z-index: @defaultNavbarZIndex) { .Navbar(@z-index);
 
-	ul {
-		margin-left: @tabletTogglePanelButtonWidth;
+	@media (orientation: portrait) {
+		ul {
+			margin-left: @tabletTogglePanelButtonWidth;
+		}
 	}
 
 	li span {

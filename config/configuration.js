@@ -14,9 +14,9 @@ var nodeEnv = process.env.NODE_ENV || 'development';
 var rootPath = path.normalize(__dirname + '/../..');
 var errorsPath = rootPath + '/app/views/errors';
 
-// Tokens to access third party serices
-var tokens = {};
-tokens.opbeat = {
+// Third party serices
+var services = {};
+services.opbeat = {
   organization_id: 'ef1cbc5161b744f29c81043057d8f769',
   app_id: 'b8d9323837',
   secret_token: '0edab6fccb28d6d984609b6fd05baebc76bde702',
@@ -44,7 +44,7 @@ var baseConfig = {
 
   secureKey: process.env.SALESFETCH_SECURE_KEY || "SalesFetch4TheWin",
 
-  tokens: tokens
+  services: services
 };
 
 // Extend the base configuration in all.js with environment

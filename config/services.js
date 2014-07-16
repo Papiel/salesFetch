@@ -7,10 +7,10 @@ var opbeatClient = require('./vendors').opbeat;
  * Will be logged on the console and sent a third-party logging service.
  * The `extra` hash  can be used to store additional informations.
  */
-module.exports.logError = function logError(err, extra) {
+module.exports.logError = function logError(err, extra, cb) {
   delete err.domain;
   delete err.domainThrown;
   console.warn(err, extra);
 
-  opbeatClient.captureError(err, {extra: extra});
+  opbeatClient.captureError(err, {extra: extra}, cb);
 };

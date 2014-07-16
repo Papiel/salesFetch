@@ -7,4 +7,4 @@
 var config = require('../config/configuration.js');
 
 var opbeat = require('opbeat');
-module.exports.opbeat = opbeat.createClient(config.tokens.opbeat);
+module.exports.opbeat = opbeat.createClient(config.services.opbeat);

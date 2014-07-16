@@ -44,7 +44,7 @@
     "moment": "2.7.x",
     "rarity": "^2.1.1",
     "dotenv": "^0.4.0",
-    "anyfetch": "^1.0.1",
+    "anyfetch": "^1.0.7",
     "restify": "^2.8.1",
     "morgan": "^1.1.1"
   },
@@ -53,7 +53,6 @@
     "mocha-mongoose": "1.0.x",
     "should": "4.0.x",
     "jshint": "2.5.x",
-    "nock": "0.31.x",
     "supertest": "0.13.x",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-jshint": "^0.10.0"

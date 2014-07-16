@@ -292,7 +292,8 @@ module.exports.addNewUser = function(user, organization, cb) {
 module.exports.getProviders = function(cb) {
   async.waterfall([
     function retrieveProviders(cb) {
-      request(config.managerUrl).get('/marketplace.json?trusted=true')
+      request(config.managerUrl)
+        .get('/marketplace.json?trusted=true')
         .end(cb);
     },
     function setId(res, cb) {

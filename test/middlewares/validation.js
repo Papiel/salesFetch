@@ -5,15 +5,13 @@ var request = require('supertest');
 var async = require('async');
 
 var app = require('../../app.js');
-var cleaner = require('../hooks/cleaner');
-var requestBuilder = require('../helpers/login').requestBuilder;
-var APIs = require('../helpers/APIs');
+var cleaner = require('../hooks/cleaner.js');
+var mock = require('../helpers/mock.js');
+var requestBuilder = require('../helpers/login.js').requestBuilder;
 
 describe('<Validation middleware>', function() {
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
-  });
+  after(mock.restore);
 
   it('should err on missing `context` argument', function(done) {
     var endpoint = '/app/documents';
@@ -32,7 +30,7 @@ describe('<Validation middleware>', function() {
     ], done);
   });
 
-  it('should err on missing id', function(done) {
+  it('should err on missing `id`', function(done) {
     var endpoint = '/app/documents/';
 
     async.waterfall([

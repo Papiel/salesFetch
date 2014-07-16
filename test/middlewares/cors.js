@@ -8,7 +8,6 @@ var app = require('../../app.js');
 
 describe('CORS', function() {
   it('should return nice headers for OPTION calls', function(done) {
-
     request(app)
       .options('/app/documents')
       .expect(204)

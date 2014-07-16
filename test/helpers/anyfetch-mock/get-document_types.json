@@ -1,0 +1,62 @@
+{
+  "5252ce4ce4cfcd16f55cfa3c": {
+    "_type": "DocumentType",
+    "id": "5252ce4ce4cfcd16f55cfa3c",
+    "name": "document",
+    "templates": {
+      "snippet": "<article>\n  <h1>{{{ title }}}</h1>\n  <blockquote>\n  \t{{{ snippet }}}\n  </blockquote>\n</article>\n",
+      "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
+      "title": "{{ title }}"
+    },
+    "updated": "2014-03-28T13:53:35.513Z",
+    "documents": 7
+  },
+  "5252ce4ce4cfcd16f55cfa3d": {
+    "_type": "DocumentType",
+    "id": "5252ce4ce4cfcd16f55cfa3d",
+    "name": "image",
+    "templates": {
+      "snippet": "<article>\n  <h1>{{{ title }}}</h1>\n  <blockquote>\n  \t{{{ snippet }}}\n  </blockquote>\n</article>\n",
+      "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
+      "title": "{{ title }}"
+    },
+    "updated": null,
+    "documents": 7
+  },
+  "5252ce4ce4cfcd16f55cfa41": {
+    "_type": "DocumentType",
+    "id": "5252ce4ce4cfcd16f55cfa41",
+    "name": "task",
+    "templates": {
+      "snippet": "<article>\n  <h1>{{{ title }}}</h1>\n  <blockquote>\n  \t{{{ snippet }}}\n  </blockquote>\n</article>\n",
+      "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
+      "title": "{{ title }}"
+    },
+    "updated": "2014-03-14T18:15:37.603Z",
+    "documents": 2
+  },
+  "5252ce4ce4cfcd16f55cfa3b": {
+    "_type": "DocumentType",
+    "id": "5252ce4ce4cfcd16f55cfa3b",
+    "name": "file",
+    "templates": {
+      "snippet": "<article>\n  <h1>{{{ title }}}</h1>\n  <blockquote>\n  \t{{{ snippet }}}\n  </blockquote>\n</article>\n",
+      "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
+      "title": "{{ title }}"
+    },
+    "updated": "2014-03-21T16:48:16.486Z",
+    "documents": 1
+  },
+  "5252ce4ce4cfcd16f55cfa3f": {
+    "_type": "DocumentType",
+    "id": "5252ce4ce4cfcd16f55cfa3f",
+    "name": "email",
+    "templates": {
+      "snippet": "<article>\n  <h1>{{{ title }}}</h1>\n  <blockquote>\n  \t{{{ snippet }}}\n  </blockquote>\n</article>\n",
+      "full": "<article>\n  <section>\n    <h1>{{{ title.subject }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ html }}}\n  </section>\n</article>\n",
+      "title": "{{ title }}"
+    },
+    "updated": "2014-03-28T13:53:24.454Z",
+    "documents": 27
+  }
+}

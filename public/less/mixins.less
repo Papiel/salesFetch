@@ -90,6 +90,14 @@
 	border-radius: 0px;
 	background-color: @navbarBackgroundColor;
 
+	.no-frame {
+		background-color: transparent !important;
+		max-width: @navbarNoFrameMaxWidth;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
 	li a {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;

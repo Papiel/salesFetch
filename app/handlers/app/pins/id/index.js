@@ -15,7 +15,7 @@ module.exports.post = function(req, res, next) {
 
   async.waterfall([
     function addPin(cb) {
-      salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, cb);
+      salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, rarity.slice(1, cb));
     },
     function sendResponse(cb) {
       res.send(204);

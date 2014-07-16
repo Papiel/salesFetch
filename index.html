@@ -87,17 +87,19 @@
 			<!-- END DOCUMENT LIST TAB -->
 
 
-			<!-- DOCUMENT DISPLAY -->
+			<!-- DOCUMENT VIEW -->
 			<!-- ko if: isMobile -->
-			<div class="document-display" data-bind="with: activeDocument">
-				<p><label>ID</label>: <span data-bind="text: id"></span></p>
-				<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
-				<p><label>Type</label>: <span data-bind="text: type.name"></span></p>
-				<hr>
+			<div class="document-view" data-bind="with: activeDocument">
 				<p class="full" data-bind="html: name" /></p>
+				<hr>
+				<p>
+					<span class="type" data-bind="text: type.name"></span>
+					 from
+					 <span class="provider" data-bind="text: provider.name"></span>
+				</p>
 			</div>
 			<!-- /ko -->
-			<!-- END DOCUMENT DISPLAY -->
+			<!-- END DOCUMENT VIEW -->
 
 			<!-- PROVIDERS TAB DISPLAY -->
 			<!-- ko if: isDesktop -->
@@ -230,15 +232,17 @@
   		</nav>
 		<!-- END DOCUMENT NAVBAR -->
 
-		<!-- DOCUMENT DISPLAY -->
-		<div class="document-display" data-bind="with: activeDocument">
-			<p><label>ID</label>: <span data-bind="text: id"></span></p>
-			<p><label>Provider</label>: <span data-bind="text: provider.name"></span></p>
-			<p><label>Type</label>: <span data-bind="text: type.name"></span></p>
-			<hr>
+		<!-- DOCUMENT VIEW -->
+		<div class="document-view" data-bind="with: activeDocument">
 			<p class="full" data-bind="html: name" /></p>
+			<hr>
+			<p>
+				<span class="type" data-bind="text: type.name"></span>
+				 from
+				 <span class="provider" data-bind="text: provider.name"></span>
+			</p>
 		</div>
-		<!-- END DOCUMENT DISPLAY -->
+		<!-- END DOCUMENT VIEW -->
 
 	</div>
 	<!-- /ko -->

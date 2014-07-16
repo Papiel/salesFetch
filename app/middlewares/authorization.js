@@ -1,7 +1,6 @@
 'use strict';
 
 var restify = require('restify');
-var crypto = require('crypto');
 var async = require('async');
 var rarity = require('rarity');
 
@@ -10,7 +9,7 @@ var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var anyFetchHelper = require('../helpers/anyfetch.js');
-var secureKey = require('../../config/configuration.js').secureKey;
+var getSecureHash = require('../helpers/get-secure-hash.js');
 
 /**
  * Authenticate the user based on the request's context
@@ -57,9 +56,7 @@ module.exports.requiresLogin = function(req, res, next) {
         return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
-      var hash = data.organization.id + data.user.id + org.masterKey + secureKey;
-      var check = crypto.createHash('sha1').update(hash).digest("base64");
-
+      var check = getSecureHash(data, org.masterKey);
       if (check !== data.hash) {
         return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }

@@ -1,20 +1,19 @@
 'use strict';
 
-var should = require("should");
+var should = require('should');
 var async = require('async');
-var crypto = require('crypto');
 var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
+var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
 var authMiddleware  = require('../../app/middlewares/authorization').requiresLogin;
 
-var secureKey = require('../../config/configuration.js').secureKey;
 
 describe('<Authentication middleware>', function() {
   beforeEach(cleaner);
@@ -72,20 +71,22 @@ describe('<Authentication middleware>', function() {
     });
   });
 
-  it("should reject call if the hash doesn't match", function(done) {
+  it("should reject call if the hash is missing the organization's master key", function(done) {
 
     async.waterfall([
       function createCompany(cb) {
         factories.initAccount(cb);
       },
       function makeCall(user, org, cb) {
-        var hash = org.SFDCId + user.SFDCId + secureKey;
-        hash = crypto.createHash('sha1').update(hash).digest("base64");
+        var invalidHash = getSecureHash({
+          organization: org,
+          user: {id: user.SFDCId}
+        }, '');
 
         var authObj = {
-          hash: hash,
+          hash: invalidHash,
           organization: {id: org.SFDCId},
-          user: {id: user.userId}
+          user: {id: user.SFDCId}
         };
 
         var req = {
@@ -134,20 +135,20 @@ describe('<Authentication middleware>', function() {
         user.save(cb);
       },
       function makeCall(user, count, cb) {
-        var hash = createdOrg.SFDCId + 'newUser' + createdOrg.masterKey + secureKey;
-        hash = crypto.createHash('sha1').update(hash).digest("base64");
-
-        var authObj = {
-          hash: hash,
-          organization: {id: createdOrg.SFDCId},
-          user: {
-            id: 'newUser',
-            name: 'Walter White',
-            email: 'walter.white@breaking-bad.com'
-          }
+        var theUser = {
+          id: 'newUser',
+          name: 'Walter White',
+          email: 'walter.white@breaking-bad.com'
         };
 
-        var query = { data: JSON.stringify(authObj) };
+        var data = {
+          organization: {id: createdOrg.SFDCId},
+          user: theUser
+        };
+        var hash = getSecureHash(data, createdOrg.masterKey);
+        data.hash = hash;
+
+        var query = { data: JSON.stringify(data) };
         authMiddleware({ query: query }, null, cb);
       },
       function checkUserValidity(cb) {
@@ -174,20 +175,20 @@ describe('<Authentication middleware>', function() {
       // Do not create an admin for this org on purpose
       // (we want to provoke an error)
       function makeCall(org, count, cb) {
-        var hash = org.SFDCId + 'newUser' + org.masterKey + secureKey;
-        hash = crypto.createHash('sha1').update(hash).digest("base64");
-
-        var authObj = {
-          hash: hash,
-          organization: {id: org.SFDCId},
-          user: {
-            id: 'newUser',
-            name: 'Walter White',
-            email: 'walter.white@breaking-bad.com'
-          }
+        var user = {
+          id: 'newUser',
+          name: 'Walter White',
+          email: 'walter.white@breaking-bad.com'
         };
 
-        var query = { data: JSON.stringify(authObj) };
+        var data = {
+          organization: {id: org.SFDCId },
+          user: user
+        };
+        var hash = getSecureHash(data, org.masterKey);
+        data.hash = hash;
+
+        var query = { data: JSON.stringify(data) };
         authMiddleware({ query: query }, null, cb);
       }
     ], function expectError(err) {
@@ -221,21 +222,16 @@ describe('<Authentication middleware>', function() {
 
         user.save(cb);
       },function makeCall(user, _, cb) {
-        var hash = createdOrg.SFDCId + user.SFDCId + createdOrg.masterKey + secureKey;
-        hash = crypto.createHash('sha1').update(hash).digest("base64");
-
-        var authObj = {
-          hash: hash,
-          organization: {id: createdOrg.SFDCId},
-          user: {id: user.SFDCId}
+        var data = {
+          organization: {id: createdOrg.SFDCId },
+          user: { id: user.SFDCId }
         };
+        var hash = getSecureHash(data, createdOrg.masterKey);
+        data.hash = hash;
 
         var req = {
-          query: {
-            data: JSON.stringify(authObj)
-          }
+          query: { data: JSON.stringify(data) }
         };
-
         authMiddleware(req, null, function() {
           req.user.should.have.property('SFDCId', user.SFDCId);
           req.data.should.have.keys('hash', 'user', 'organization');

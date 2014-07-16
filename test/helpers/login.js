@@ -5,13 +5,12 @@
  */
 
 var async = require('async');
-var crypto = require('crypto');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var secureKey = require('../../config/configuration.js').secureKey;
+var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 
 var userInfo = {
   anyFetchId: 'anyFetchId',
@@ -45,9 +44,13 @@ module.exports.requestBuilder = function(endpoint, context, env, cb) {
       return cb(err);
     }
 
-    var hash = createdOrg.SFDCId + user.SFDCId + createdOrg.masterKey + secureKey;
-    hash = crypto.createHash('sha1').update(hash).digest("base64");
+    // TODO: soon, we'll probably need more info to indentify a request
+    var hash = getSecureHash({
+      organization: { id: createdOrg.SFDCId },
+      user: { id: user.SFDCId }
+    }, createdOrg.masterKey);
 
+    // TODO: not needed anymore
     var contextEnv = env || {
       deviseType: 'desktop',
       height: 500,

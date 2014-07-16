@@ -8,14 +8,13 @@
 // TODO: how to update hash after user has changed values?
 
 var async = require('async');
-var crypto = require('crypto');
 var qs = require('querystring');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var config = require('../../../config/configuration.js');
+var getSecureHash = require('../../helpers/get-secure-hash.js');
 
 module.exports = function(req, res) {
   // Basic dummy data
@@ -78,8 +77,7 @@ module.exports = function(req, res) {
     };
 
     // Compute secure hash
-    var hash = data.organization.id + data.user.id + org.masterKey + config.secureKey;
-    data.hash = crypto.createHash('sha1').update(hash).digest("base64");
+    data.hash = getSecureHash(data, org.masterKey);
 
     // TODO: move that nice view client-side
     // app/context-creator.html

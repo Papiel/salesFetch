@@ -1,10 +1,11 @@
 'use strict';
 
 var restify = require('restify');
-var logger = require('../app/middlewares/logger.js');
 var autoLoad = require('auto-load');
 
 var config = require('./configuration.js');
+var logger = require('../app/middlewares/logger.js');
+var logError = require('./services.js').logError;
 var addRoutes = require(__dirname + '/../app/routes.js');
 
 // TODO: reinstate less compile middleware?
@@ -40,9 +41,15 @@ module.exports = function(server) {
 
   // Error handling
   server.on('uncaughtException', function(req, res, route, err) {
-    if (config.env !== 'test') {
-      console.error(err.stack);
-    }
+    logError(err, {
+      uncaughtRestifyException: true,
+      path: true,
+      headers: req.headers.join(', '),
+      statusCode: req.statusCode,
+      query: JSON.stringify(req.query),
+      body: JSON.stringify(req.body),
+      authorization: req.authorization,
+    });
 
     // Generic error
     if(!res._headerSent) {

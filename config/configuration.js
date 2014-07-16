@@ -14,6 +14,15 @@ var nodeEnv = process.env.NODE_ENV || 'development';
 var rootPath = path.normalize(__dirname + '/../..');
 var errorsPath = rootPath + '/app/views/errors';
 
+// Third party services
+var services = {};
+services.opbeat = {
+  organization_id: 'ef1cbc5161b744f29c81043057d8f769',
+  app_id: 'b8d9323837',
+  secret_token: '0edab6fccb28d6d984609b6fd05baebc76bde702',
+  silent: true,
+};
+
 var baseConfig = {
   env: nodeEnv,
 
@@ -33,7 +42,9 @@ var baseConfig = {
   managerUrl: process.env.MANAGER_URL || "https://manager.anyfetch.com",
   fetchApiCreds: process.env.FETCHAPI_CREDS,
 
-  secureKey: process.env.SALESFETCH_SECURE_KEY || "SalesFetch4TheWin"
+  secureKey: process.env.SALESFETCH_SECURE_KEY || "SalesFetch4TheWin",
+
+  services: services
 };
 
 // Extend the base configuration in all.js with environment

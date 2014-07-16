@@ -4,16 +4,17 @@ var request = require('supertest');
 var should = require('should');
 var async = require('async');
 var rarity = require('rarity');
+var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 
 var app = require('../../../../../app.js');
-var cleaner = require('../../../../hooks/cleaner');
-var requestBuilder = require('../../../../helpers/login').requestBuilder;
-var getUser = require('../../../../helpers/login').getUser;
-var APIs = require('../../../../helpers/APIs');
-var checkUnauthenticated = require('../../../../helpers/access').checkUnauthenticated;
+var cleaner = require('../../../../hooks/cleaner.js');
+var mock = require('../../../../helpers/mock.js');
+var requestBuilder = require('../../../../helpers/login.js').requestBuilder;
+var getUser = require('../../../../helpers/login.js').getUser;
+var checkUnauthenticated = require('../../../../helpers/access.js').checkUnauthenticated;
 
 
 describe('/app/pins/:id page', function() {
@@ -30,10 +31,12 @@ describe('/app/pins/:id page', function() {
   var endpoint = '/app/pins/' + sampleDocumentId;
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+  beforeEach(function mount() {
+    AnyFetch.server.override('/document_types', mock.dir + '/get-document_types.json');
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
+    AnyFetch.server.override('/documents', mock.dir + '/get-documents.json');
   });
-
+  afterEach(mock.restore);
 
   describe('POST /app/pins/:id', function() {
     checkUnauthenticated(app, 'post', endpoint);
@@ -41,7 +44,7 @@ describe('/app/pins/:id page', function() {
     it("should err on invalid document ID", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(invalidEndpoint, sampleContext, null, cb);
+          requestBuilder(invalidEndpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -55,7 +58,7 @@ describe('/app/pins/:id page', function() {
     it("should add a pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -71,7 +74,7 @@ describe('/app/pins/:id page', function() {
           Pin.findOne(hash, cb);
         },
         function pinShouldExist(pin, cb) {
-          should(pin).not.equal(null);
+          should(pin).be.ok;
           cb(null);
         }
       ], done);
@@ -80,7 +83,7 @@ describe('/app/pins/:id page', function() {
     it("should err on duplicate pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -92,11 +95,8 @@ describe('/app/pins/:id page', function() {
           request(app)
             .post(url)
             .expect(409)
-            .end(function(err, res) {
-              should(err).equal(null);
-              res.text.toLowerCase().should.containDeep('already pinned');
-              cb(err);
-            });
+            .expect(/already pinned/i)
+            .end(cb);
         }
       ], done);
     });
@@ -108,7 +108,7 @@ describe('/app/pins/:id page', function() {
     it("should err on invalid document ID", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(invalidEndpoint, sampleContext, null, cb);
+          requestBuilder(invalidEndpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -122,7 +122,7 @@ describe('/app/pins/:id page', function() {
     it("should remove an existing pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function getUserId(url, cb) {
           getUser(rarity.carry([url], cb));
@@ -148,7 +148,7 @@ describe('/app/pins/:id page', function() {
           Pin.findOne(hash, cb);
         },
         function checkDeleted(pin, cb) {
-          should(pin).equal(null);
+          should(pin).not.be.ok;
           cb();
         }
       ], done);
@@ -157,16 +157,14 @@ describe('/app/pins/:id page', function() {
     it("should err on non-existing pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .del(url)
             .expect(404)
-            .end(function(err, res) {
-              res.text.toLowerCase().should.containDeep('not pinned');
-              cb(err);
-            });
+            .expect(/not pinned/i)
+            .end(cb);
         }
       ], done);
     });
@@ -184,16 +182,14 @@ describe('/app/pins/:id page', function() {
           pin.save(rarity.slice(1, cb));
         },
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .del(url)
             .expect(403)
-            .end(function(err, res) {
-              res.text.toLowerCase().should.containDeep('cannot delete');
-              cb(err);
-            });
+            .expect(/cannot delete/i)
+            .end(cb);
         }
       ], done);
     });

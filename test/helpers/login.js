@@ -5,13 +5,12 @@
  */
 
 var async = require('async');
-var crypto = require('crypto');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var secureKey = require('../../config/configuration.js').secureKey;
+var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 
 var userInfo = {
   anyFetchId: 'anyFetchId',
@@ -22,7 +21,7 @@ var userInfo = {
   isAdmin: true
 };
 
-module.exports.requestBuilder = function(endpoint, context, env, cb) {
+module.exports.requestBuilder = function(endpoint, context, cb) {
   var createdOrg;
 
   async.waterfall([
@@ -45,30 +44,20 @@ module.exports.requestBuilder = function(endpoint, context, env, cb) {
       return cb(err);
     }
 
-    var hash = createdOrg.SFDCId + user.SFDCId + createdOrg.masterKey + secureKey;
-    hash = crypto.createHash('sha1').update(hash).digest("base64");
 
-    var contextEnv = env || {
-      deviseType: 'desktop',
-      height: 500,
-      width: 500
-    };
-
-    var authObj = {
-      hash: hash,
-      env: contextEnv,
+    var data = {
       organization: {id: createdOrg.SFDCId},
       user: {id: user.SFDCId},
       context: context,
       anyFetchURL: 'http://api.anyfetch.com',
       instanceURL: 'https://eu2.salesforce.com'
     };
+    var hash = getSecureHash(data, createdOrg.masterKey);
+    data.hash = hash;
 
     var separator = endpoint.indexOf('?') !== -1 ? '&' : '?';
-
-    var ret = endpoint + separator + 'data=' + encodeURIComponent(JSON.stringify(authObj));
-
-    cb(null, ret);
+    var url = endpoint + separator + 'data=' + encodeURIComponent(JSON.stringify(data));
+    cb(null, url);
   });
 };
 

@@ -54,8 +54,17 @@ html.tablet.landscape {
 
 	#mainview {
 
-		.snippet-list {
+		#view-body {
 			box-shadow: @tabletSnippetListShadow;
+		}
+
+		.snippet-list {
+			border-right: @defaultBorder;
+
+			.snippet { .Snippet(tablet-landscape) }
+			.snippet.active { .ActiveSnippet;
+				z-index: @tabletActiveSnippetZIndex;
+			}
 		}
 
 		#filter-tabs {

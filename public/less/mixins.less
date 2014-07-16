@@ -40,15 +40,15 @@
 	}
 }
 
+.Snippet(tablet-landscape) { .Snippet;
+	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+}
+
 .SnippetList {
 	padding: 5px 0px;
-	background: @snippetListBackground;
-	height: 100%;
-	overflow: scroll;
 }
 
 .DocumentList {
-	height: 100%;
 }
 
 .Navbar(@z-index: @defaultNavbarZIndex) {
@@ -58,16 +58,24 @@
 	margin-bottom: 0px;
 	min-height: 0px;
 	border-radius: 0px;
+	background-color: @navbarBackgroundColor;
 
 	li a {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
 		border-radius: @navbarItemsBorderRadius;
+		background-color: @navbarItemBackgroundColor;
+		color: @navbarItemColor;
+	}
+
+	li.active a {
+		background-color: @navbarItemActiveBackgroundColor;
+		color: @navbarBackgroundColor;
 	}
 
 	.tab-left {
 		float: left;
-		margin: @navbarTabRightMargin;
+		margin: @navbarTabLeftMargin;
 	}
 
 	.tab-right {
@@ -80,7 +88,6 @@
 	right: 0;
 	left: 0;
 	top: 0;
-	background-color: @navbarBackgroundColor;
 
 	li a {
 		padding: @navbarVerticalPadding @navbarHorizontalPadding;
@@ -152,6 +159,8 @@
 	left: 0px;
 	right: 0px;
 	bottom: @toolbarHeight;
+	overflow: scroll;
+	background: @bodyBackground;
 }
 
 .TogglePanelButton {
@@ -170,6 +179,11 @@
 	top: 0;
 	bottom: 0;
 	width: @desktopNavbarWidth;
+
+	li a {
+		padding: @desktopNavbarItemPadding;
+		font-size: @desktopNavbarFontSize;
+	}
 
 	.tab-left {
 		float: right;
@@ -190,6 +204,7 @@
 	left: @desktopNavbarWidth;
 	padding: @desktopBodyPadding;
 	overflow: scroll;
+	background: @bodyBackground;
 }
 
 // Tablet
@@ -245,7 +260,7 @@
 }
 
 .ActiveSnippet { .Snippet;
-	margin-right: 0px;
+	margin-right: @snippetMarginRight;
 	border-right: 0px;
 	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;

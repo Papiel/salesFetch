@@ -212,8 +212,10 @@
 					<li class="tab-right">
 						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 					</li>
-					<li class="tab-right">
-						<span data-bind="text: name" />
+					<li class="tab-left">
+						<span data-bind="text: provider.name"></span>
+						<span class="fa fa-chevron-right"></span>
+						<span data-bind="text: name"></span>
 					</li>
 				</ul>
 			</div>

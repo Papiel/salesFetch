@@ -39,7 +39,7 @@ describe('/app/documents page', function() {
     it('should return a list of documents', function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, context, null, cb);
+          requestBuilder(endpoint, context, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -60,7 +60,7 @@ describe('/app/documents page', function() {
 
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpointWithStart, context, null, cb);
+          requestBuilder(endpointWithStart, context, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -82,7 +82,7 @@ describe('/app/documents page', function() {
 
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, context, null, cb);
+          requestBuilder(endpoint, context, cb);
         },
         function getTestUser(theUrl, cb) {
           url = theUrl;
@@ -130,7 +130,7 @@ describe('/app/documents page', function() {
 
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, context, null, cb);
+          requestBuilder(endpoint, context, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -166,7 +166,7 @@ describe('/app/documents page', function() {
 
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, context, null, cb);
+          requestBuilder(endpoint, context, cb);
         },
         function sendRequest(url, cb) {
           request(app)

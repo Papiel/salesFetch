@@ -8,14 +8,13 @@
 // TODO: how to update hash after user has changed values?
 
 var async = require('async');
-var crypto = require('crypto');
 var qs = require('querystring');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var config = require('../../../config/configuration.js');
+var getSecureHash = require('../../helpers/get-secure-hash.js');
 
 module.exports = function(req, res) {
   // Basic dummy data
@@ -23,11 +22,6 @@ module.exports = function(req, res) {
     sessionId: 'fake_session_id',
     salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
     instanceURL: 'https://eu0.salesforce.com',
-    env: {
-      'width': 1084,
-      'height': 400,
-      'env': 'desktop'
-    },
     context: {
       templatedDisplay: 'Matthieu Bacconnier',
       templatedQuery: 'Matthieu Bacconnier',
@@ -64,11 +58,9 @@ module.exports = function(req, res) {
     if(err) {
       var error = 'Error trying to generate context: ' + err + '. ';
       error += 'Make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.';
-      return res.render('app/context-creator.html', {
-        json: data,
-        prefix: prefix,
-        url: url,
-        errorMessage: error
+      return res.send({
+        error: error,
+        json: data
       });
     }
 
@@ -78,8 +70,7 @@ module.exports = function(req, res) {
     };
 
     // Compute secure hash
-    var hash = data.organization.id + data.user.id + org.masterKey + config.secureKey;
-    data.hash = crypto.createHash('sha1').update(hash).digest("base64");
+    data.hash = getSecureHash(data, org.masterKey);
 
     // TODO: move that nice view client-side
     // app/context-creator.html

@@ -44,7 +44,7 @@ describe('/app/pins/:id page', function() {
     it("should err on invalid document ID", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(invalidEndpoint, sampleContext, null, cb);
+          requestBuilder(invalidEndpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -58,7 +58,7 @@ describe('/app/pins/:id page', function() {
     it("should add a pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -83,7 +83,7 @@ describe('/app/pins/:id page', function() {
     it("should err on duplicate pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -108,7 +108,7 @@ describe('/app/pins/:id page', function() {
     it("should err on invalid document ID", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(invalidEndpoint, sampleContext, null, cb);
+          requestBuilder(invalidEndpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -122,7 +122,7 @@ describe('/app/pins/:id page', function() {
     it("should remove an existing pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function getUserId(url, cb) {
           getUser(rarity.carry([url], cb));
@@ -157,7 +157,7 @@ describe('/app/pins/:id page', function() {
     it("should err on non-existing pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -182,7 +182,7 @@ describe('/app/pins/:id page', function() {
           pin.save(rarity.slice(1, cb));
         },
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)

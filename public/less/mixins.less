@@ -173,7 +173,7 @@
 }
 
 .DocumentView {
-	padding: 20px;
+	padding: @documentViewPadding;
 	overflow: scroll;
 
 	.type, .provider {
@@ -270,7 +270,8 @@
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
 		position: relative;
-		display: block;
+		display: inline-block;
+		color: @navbarItemColor;
 	}
 }
 

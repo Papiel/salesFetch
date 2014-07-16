@@ -58,11 +58,9 @@ module.exports = function(req, res) {
     if(err) {
       var error = 'Error trying to generate context: ' + err + '. ';
       error += 'Make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.';
-      return res.render('app/context-creator.html', {
-        json: data,
-        prefix: prefix,
-        url: url,
-        errorMessage: error
+      return res.send({
+        error: error,
+        json: data
       });
     }
 

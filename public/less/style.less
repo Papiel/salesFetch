@@ -81,6 +81,7 @@
 
 @navbarTabLeftMargin: @navbarItemSpacing 0px 0px @navbarItemSpacing;
 @navbarTabRightMargin: @navbarItemSpacing @navbarItemSpacing 0px 0px;
+@navbarTabDesktopMargin: @navbarTabLeftMargin;
 
 
 /**********************
@@ -150,7 +151,7 @@
 
 	.tab-left {
 		float: left;
-		margin: @navbarTabLeftMargin;
+		margin: @navbarTabRightMargin;
 	}
 
 	.tab-right {
@@ -253,6 +254,16 @@
 	top: 0;
 	bottom: 0;
 	width: @desktopNavbarWidth;
+
+	.tab-left {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
+
+	.tab-right {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
 }
 
 .DesktopBody {

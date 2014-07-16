@@ -172,6 +172,21 @@
 	background-color: red;
 }
 
+.DocumentView {
+	padding: 20px;
+	overflow: scroll;
+
+	.type, .provider {
+		font-weight: 600;
+	}
+}
+
+.DocumentView(tablet) { .DocumentView;
+}
+
+.DocumentView(mobile) { .DocumentView;
+}
+
 // Desktop
 
 .DesktopNavbar { .Navbar;

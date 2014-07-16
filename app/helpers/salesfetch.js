@@ -1,13 +1,13 @@
 'use strict';
 
 var restify = require('restify');
-var Mustache = require('mustache');
 var async = require('async');
 var AnyFetch = require('anyfetch');
 
 var mongoose =require('mongoose');
 var Pin = mongoose.model('Pin');
-var anyfetchHelpers = require('../helpers/anyfetch.js');
+
+var templates = require('./templates.js');
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
@@ -37,17 +37,8 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     },
     function applyTemplates(docs, cb) {
       docs = docs.data.map(function(doc) {
-        // TODO: refactor (also used in `findDocuments`)
-        var template;
-        var overridedTemplates = anyfetchHelpers.getOverridedTemplates();
-        if (overridedTemplates[doc.document_type.id]) {
-          template = overridedTemplates[doc.document_type.id].templates.snippet;
-        } else {
-          template = doc.document_type.templates.snippet;
-        }
-
         doc.pinned = true;
-        doc.snippet_rendered = Mustache.render(template, doc.data);
+        doc.snippet_rendered = templates.render(doc, 'snippet');
         return doc;
       });
       cb(null, docs);

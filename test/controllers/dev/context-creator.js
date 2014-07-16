@@ -30,7 +30,7 @@ describe('/context-creator (dev only)', function() {
     it('should return a valid context', function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, {}, null, cb);
+          requestBuilder(endpoint, {}, cb);
         },
         function sendRequest(url, cb) {
           request(app)

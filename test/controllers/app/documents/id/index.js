@@ -40,7 +40,7 @@ describe('/app/documents/:id page', function() {
     it('should err on nonexistant document', function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder('/app/documents/' + nonexistantId, sampleContext, null, cb);
+          requestBuilder('/app/documents/' + nonexistantId, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -59,7 +59,7 @@ describe('/app/documents/:id page', function() {
           cb();
         },
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -85,7 +85,7 @@ describe('/app/documents/:id page', function() {
           salesfetchHelpers.addPin(sampleContext.recordId, sampleDocumentId, user, cb);
         },
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)

@@ -22,11 +22,6 @@ module.exports = function(req, res) {
     sessionId: 'fake_session_id',
     salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
     instanceURL: 'https://eu0.salesforce.com',
-    env: {
-      'width': 1084,
-      'height': 400,
-      'env': 'desktop'
-    },
     context: {
       templatedDisplay: 'Matthieu Bacconnier',
       templatedQuery: 'Matthieu Bacconnier',

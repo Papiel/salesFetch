@@ -39,7 +39,7 @@ describe('/app/pins page', function() {
     it("should be empty when there's no pin", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)
@@ -64,7 +64,7 @@ describe('/app/pins page', function() {
           pin.save(cb);
         },
         function buildRequest(pin, count, cb) {
-          requestBuilder(endpoint, sampleContext, null, cb);
+          requestBuilder(endpoint, sampleContext, cb);
         },
         function sendRequest(url, cb) {
           request(app)

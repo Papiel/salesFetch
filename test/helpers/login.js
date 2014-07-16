@@ -21,7 +21,7 @@ var userInfo = {
   isAdmin: true
 };
 
-module.exports.requestBuilder = function(endpoint, context, env, cb) {
+module.exports.requestBuilder = function(endpoint, context, cb) {
   var createdOrg;
 
   async.waterfall([
@@ -50,16 +50,8 @@ module.exports.requestBuilder = function(endpoint, context, env, cb) {
       user: { id: user.SFDCId }
     }, createdOrg.masterKey);
 
-    // TODO: not needed anymore
-    var contextEnv = env || {
-      deviseType: 'desktop',
-      height: 500,
-      width: 500
-    };
-
     var authObj = {
       hash: hash,
-      env: contextEnv,
       organization: {id: createdOrg.SFDCId},
       user: {id: user.SFDCId},
       context: context,

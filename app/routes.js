@@ -53,6 +53,12 @@ module.exports = function(app) {
     middlewares.authorization.requiresLogin,
     controllers.app.providers.index.post);
 
+  // render knockout at /index.html
+  app.get(/(.*.html)/i, function(req, res, next) {
+    var filename = '../..' + req.params[0];
+    res.render(filename);
+  });
+
   if(config.env === 'development') {
     app.get('/', controllers.dev.contextCreator);
   }

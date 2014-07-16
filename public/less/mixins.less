@@ -207,7 +207,10 @@
 	width: @tabletTogglePanelButtonWidth;
 	top: 0;
 	height: @navbarHeight;
-	background-color: red;
+	background-color: @navbarBackgroundColor;
+	color: #fff;
+	font-size: 30px;
+	padding: 10px;
 }
 
 .DocumentView {
@@ -303,6 +306,10 @@
 }
 
 .RightNavbar(@z-index: @defaultNavbarZIndex) { .Navbar(@z-index);
+
+	ul {
+		margin-left: @tabletTogglePanelButtonWidth;
+	}
 
 	li span {
 		padding: @navbarVerticalPadding;

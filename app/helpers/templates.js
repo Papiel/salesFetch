@@ -47,21 +47,18 @@ var getOverridedTemplates = function() {
  * @return {HTML}
  */
 module.exports.render = function render(doc, name, documentType) {
-  var id = documentType;
-  if(!id) {
-    id = doc.document_type.id;
-  }
+  var documentTypeId = documentType || doc.document_type.id;
 
   var overrided = getOverridedTemplates();
   var template;
-  if(overrided[id]) {
-    template = overrided[id].templates[name];
+  if(overrided[documentTypeId]) {
+    template = overrided[documentTypeId].templates[name];
   } else if(doc.document_type && doc.document_type.templates) {
     template = doc.document_type.templates[name];
   }
 
   if(!template) {
-    throw new Error('No template `' + name + '` is available for document type ' + id);
+    throw new Error('No template `' + name + '` is available for document type ' + documentTypeId);
   }
 
   return mustache.render(template, doc.data);

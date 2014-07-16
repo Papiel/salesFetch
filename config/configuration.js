@@ -14,7 +14,7 @@ var nodeEnv = process.env.NODE_ENV || 'development';
 var rootPath = path.normalize(__dirname + '/../..');
 var errorsPath = rootPath + '/app/views/errors';
 
-// Third party serices
+// Third party services
 var services = {};
 services.opbeat = {
   organization_id: 'ef1cbc5161b744f29c81043057d8f769',

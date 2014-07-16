@@ -28,7 +28,6 @@ module.exports.findDocuments = function(params, user, cb) {
 
       // Render the templated data
       // At the same time, gather info about the providers and document types
-      // TODO: use `docs.facets` directly, no need for a new key
       docs.document_types = {};
       docs.providers = {};
       docs.data.forEach(function(doc) {
@@ -53,6 +52,8 @@ module.exports.findDocuments = function(params, user, cb) {
           };
         }
       });
+      // Reduce footprint by deleting unneeded data
+      delete docs.facets;
 
       cb(null, docs);
     }

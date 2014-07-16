@@ -48,7 +48,7 @@ describe('/app/documents page', function() {
             .expect(function(res) {
               should(res.body).be.ok;
               res.body.should.have.keys('documents', 'filters');
-              res.body.documents.should.have.properties('facets', 'data');
+              res.body.documents.should.have.properties('data');
             })
             .end(cb);
         }
@@ -68,7 +68,7 @@ describe('/app/documents page', function() {
             .expect(200)
             .expect(function(res) {
               should(res.body).be.ok;
-              res.body.should.have.properties('facets', 'data');
+              res.body.should.have.properties('data');
               res.text.should.containDeep('National Security');
             })
             .end(cb);

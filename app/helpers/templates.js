@@ -54,10 +54,9 @@ module.exports.render = function render(doc, name, documentType) {
 
   var overrided = getOverridedTemplates();
   var template;
-
-  if (overrided[id]) {
+  if(overrided[id]) {
     template = overrided[id].templates[name];
-  } else {
+  } else if(doc.document_type && doc.document_type.templates) {
     template = doc.document_type.templates[name];
   }
 

@@ -44,26 +44,20 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
       return cb(err);
     }
 
-    // TODO: soon, we'll probably need more info to indentify a request
-    var hash = getSecureHash({
-      organization: { id: createdOrg.SFDCId },
-      user: { id: user.SFDCId }
-    }, createdOrg.masterKey);
 
-    var authObj = {
-      hash: hash,
+    var data = {
       organization: {id: createdOrg.SFDCId},
       user: {id: user.SFDCId},
       context: context,
       anyFetchURL: 'http://api.anyfetch.com',
       instanceURL: 'https://eu2.salesforce.com'
     };
+    var hash = getSecureHash(data, createdOrg.masterKey);
+    data.hash = hash;
 
     var separator = endpoint.indexOf('?') !== -1 ? '&' : '?';
-
-    var ret = endpoint + separator + 'data=' + encodeURIComponent(JSON.stringify(authObj));
-
-    cb(null, ret);
+    var url = endpoint + separator + 'data=' + encodeURIComponent(JSON.stringify(data));
+    cb(null, url);
   });
 };
 

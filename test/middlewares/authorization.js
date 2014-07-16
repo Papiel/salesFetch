@@ -199,7 +199,7 @@ describe('<Authentication middleware>', function() {
     });
   });
 
-  it('should pass variable in request', function(done) {
+  it('should pass variables in `req` object', function(done) {
     var createdOrg;
 
     async.waterfall([
@@ -233,6 +233,7 @@ describe('<Authentication middleware>', function() {
           query: { data: JSON.stringify(data) }
         };
         authMiddleware(req, null, function() {
+          should(req).have.properties('user', 'data');
           req.user.should.have.property('SFDCId', user.SFDCId);
           req.data.should.have.keys('hash', 'user', 'organization');
           cb();

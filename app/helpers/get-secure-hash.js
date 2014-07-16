@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var crypto = require('crypto');
 
 var config = require('../../config/configuration.js');
@@ -11,6 +12,9 @@ var config = require('../../config/configuration.js');
  * @return {String} The hashed string which uniquely identifies a request.
  */
 module.exports = function getSecureHash(data, masterKey) {
-  var hash = data.organization.id + data.user.id + masterKey + config.secureKey;
+  var usefulData = _.merge({}, data);
+  delete usefulData.hash;
+
+  var hash = JSON.stringify(usefulData) + masterKey + config.secretKey;
   return crypto.createHash('sha1').update(hash).digest("base64");
 };

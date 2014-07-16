@@ -20,10 +20,8 @@ describe('<Authentication middleware>', function() {
   after(mock.restore);
 
   it('should reject empty calls', function(done) {
-    var res;
     var req = { query: [] };
-
-    authMiddleware(req, res, function(err) {
+    authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
       err.message.should.match(/missing `data` query parameter/i);
@@ -32,18 +30,14 @@ describe('<Authentication middleware>', function() {
   });
 
   it('should err on missing organization id', function(done) {
-    var res;
-    var req = { query: {} };
-
     var params = {
       organization: {
         id: null
       }
     };
 
-    req.query.data = JSON.stringify(params);
-
-    authMiddleware(req, res, function(err) {
+    var req = { query: { data: JSON.stringify(params) } };
+    authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
       err.message.should.match(/missing organization id/i);
@@ -52,18 +46,14 @@ describe('<Authentication middleware>', function() {
   });
 
   it('should err if no company has been found', function(done) {
-    var res;
-    var req = { query: {} };
-
     var params = {
       organization: {
         id: '00Db0000000dVoIEAU'
       }
     };
 
-    req.query.data = JSON.stringify(params);
-
-    authMiddleware(req, res, function(err) {
+    var req = { query: { data: JSON.stringify(params) } };
+    authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
       err.message.should.match(/no company matching this id/i);
@@ -72,29 +62,52 @@ describe('<Authentication middleware>', function() {
   });
 
   it("should reject call if the hash is missing the organization's master key", function(done) {
-
     async.waterfall([
       function createCompany(cb) {
         factories.initAccount(cb);
       },
       function makeCall(user, org, cb) {
-        var invalidHash = getSecureHash({
-          organization: org,
-          user: {id: user.SFDCId}
-        }, '');
-
-        var authObj = {
-          hash: invalidHash,
+        var data = {
           organization: {id: org.SFDCId},
           user: {id: user.SFDCId}
         };
+        var invalidHash = getSecureHash(data, '');
+        data.hash = invalidHash;
 
-        var req = {
-          query: {
-            data: JSON.stringify(authObj)
-          }
+        var req = { query: { data: JSON.stringify(data) } };
+        authMiddleware(req, null, function(err) {
+          should(err).be.ok;
+          err.statusCode.should.equal(401);
+          err.message.should.match(/Master Key/i);
+          cb();
+        });
+      }
+    ], done);
+  });
+
+  it('should reject call if the request is tampered with', function(done) {
+    async.waterfall([
+      function createCompany(cb) {
+        factories.initAccount(cb);
+      },
+      function makeCall(user, org, cb) {
+        var data = {
+          context: {
+            templatedDisplay: 'Matthieu Bacconnier',
+            templatedQuery: 'Matthieu Bacconnier',
+            recordId: '0032000001DoV22AAF',
+            recordType: 'Contact'
+          },
+          organization: {id: org.SFDCId},
+          user: {id: user.SFDCId}
         };
+        var initialHash = getSecureHash(data, org.masterKey);
+        data.hash = initialHash;
 
+        // Tamper with the request
+        data.context.templatedQuery = 'Unicorns';
+
+        var req = { query: { data: JSON.stringify(data) } };
         authMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
@@ -229,9 +242,7 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var req = {
-          query: { data: JSON.stringify(data) }
-        };
+        var req = { query: { data: JSON.stringify(data) } };
         authMiddleware(req, null, function() {
           should(req).have.properties('user', 'data');
           req.user.should.have.property('SFDCId', user.SFDCId);

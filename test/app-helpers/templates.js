@@ -3,9 +3,9 @@
 var should = require('should');
 var _ = require('lodash');
 
-var templates = require('../app/helpers/templates.js');
+var templates = require('../../app/helpers/templates.js');
 
-describe.only('<Helper functions>', function() {
+describe('<Helper functions>', function() {
 
   describe('Templating', function() {
     var documentType = '5252ce4ce4cfcd16f55cfa3c';

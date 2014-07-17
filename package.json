@@ -51,6 +51,7 @@
     "should": "4.0.x",
     "jshint": "2.5.x",
     "supertest": "0.13.x",
+    "gulp": "^3.8.6"
   },
   "licence": "Copyright AnyFetch",
   "engines": {

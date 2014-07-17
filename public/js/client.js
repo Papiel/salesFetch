@@ -175,7 +175,7 @@ function SalesfetchViewModel() {
 
         if (client.isMobile) {
             client.activeDocument(null);
-        };
+        }
     };
 
     client.goToDocument = function(document) {

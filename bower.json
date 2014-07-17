@@ -10,5 +10,6 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.1.0"
+    "knockout": "~3.1.0",
   }
 }

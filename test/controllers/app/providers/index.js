@@ -1,40 +1,42 @@
-"use strict";
+'use strict';
 
 var request = require('supertest');
 var async = require('async');
+var should = require('should');
+var AnyFetch = require('anyfetch');
 
 var app = require('../../../../app.js');
-var cleaner = require('../../../hooks/cleaner');
-var requestBuilder = require('../../../helpers/login').requestBuilder;
-var APIs = require('../../../helpers/APIs');
-var checkUnauthenticated = require('../../../helpers/access').checkUnauthenticated;
+var cleaner = require('../../../hooks/cleaner.js');
+var mock = require('../../../helpers/mock.js');
+var requestBuilder = require('../../../helpers/login.js').requestBuilder;
+var checkUnauthenticated = require('../../../helpers/access.js').checkUnauthenticated;
 
 describe('/app/providers page', function() {
   var endpoint = '/app/providers';
 
   beforeEach(cleaner);
-  beforeEach(function(done) {
-    APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+  beforeEach(function mount() {
+    AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
   });
+  afterEach(mock.restore);
 
   describe('GET /app/providers', function() {
-    beforeEach(function(done) {
-      APIs.mount('manager', 'https://manager.anyfetch.com', done);
-    });
     checkUnauthenticated(app, 'get', endpoint);
 
     it("should return all providers", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, null, null, cb);
+          requestBuilder(endpoint, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .get(url)
             .expect(200)
             .expect(function(res) {
-              res.text.toLowerCase().should.containDeep("dropbox");
-              res.text.toLowerCase().should.containDeep("/providers/connect?app_id=52bff114c8318c29e9000005");
+              var providers = res.body;
+              should(providers).be.ok;
+              providers.should.have.keys('providers', 'connectedProviders');
+              providers.providers.should.be.an.instanceOf(Array);
             })
             .end(cb);
         }
@@ -48,35 +50,30 @@ describe('/app/providers page', function() {
     it("should check for the presence of app_id", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, null, null, cb);
+          requestBuilder(endpoint, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .post(url)
             .expect(409)
-            .expect(function(res) {
-              res.text.should.containDeep("app_id");
-            })
+            .expect(/app_id/)
             .end(cb);
         }
       ], done);
     });
 
-    it("should redirect user to connection page", function(done) {
+    it("should redirect the user to the connection page", function(done) {
       var dropboxConnectEndpoint = endpoint + '?app_id=52bff114c8318c29e9000005';
 
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(dropboxConnectEndpoint, null, null, cb);
+          requestBuilder(dropboxConnectEndpoint, null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .post(url)
             .expect(302)
-            .expect(function(res) {
-              res.text.should.containDeep("bearer=anyFetchToken");
-              res.text.should.containDeep("52bff114c8318c29e9000005");
-            })
+            .expect('Location', /bearer=anyFetchToken/i)
             .end(cb);
         }
       ], done);

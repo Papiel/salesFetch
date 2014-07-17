@@ -3,57 +3,64 @@
 var autoLoad = require('auto-load');
 var config = require('../config/configuration.js');
 
-module.exports = function(app) {
+module.exports = function(server) {
   var lib = autoLoad(__dirname);
 
   var middlewares = lib.middlewares;
-  var controllers = lib.controllers;
+  var handlers = lib.handlers;
 
-  app.post('/admin/init', controllers.admin.index.post);
+  server.post('/admin/init', handlers.admin.index.post);
 
-  app.get('/app/documents',
+  server.get('/app/documents',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.requiresContext,
-    controllers.app.documents.index.get);
+    handlers.app.documents.index.get);
 
-  app.get('/app/documents/:id',
+  server.get('/app/documents/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.documents.id.index.get);
+    handlers.app.documents.id.index.get);
 
-  app.get('/app/pins',
+  server.get('/app/pins',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.requiresContext,
-    controllers.app.pins.index.get);
+    handlers.app.pins.index.get);
 
-  app.post('/app/pins/:id',
+  server.post('/app/pins/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.pins.id.index.post);
+    handlers.app.pins.id.index.post);
 
-  app.del('/app/pins/:id',
+  server.del('/app/pins/:id',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
-    controllers.app.pins.id.index.del);
+    handlers.app.pins.id.index.del);
 
-  app.get('/app/providers',
+  server.get('/app/providers',
     middlewares.authorization.requiresLogin,
-    middlewares.uaParser,
-    controllers.app.providers.index.get);
+    handlers.app.providers.index.get);
 
-  app.post('/app/providers',
+  server.post('/app/providers',
     middlewares.authorization.requiresLogin,
-    controllers.app.providers.index.post);
+    handlers.app.providers.index.post);
 
-  if(config.env === 'development') {
-    app.get('/', controllers.dev.contextCreator);
+  if(config.env === 'development' || config.env === 'test') {
+    server.get('/', function(req, res, next) {
+      res.header('Location', '/context-creator');
+      res.send(302);
+      next();
+    });
+    server.get('/context-creator', handlers.dev.contextCreator);
   }
+
+  /**
+   * Allow cross-origin OPTION requests
+   */
+  server.opts(/\.*/, function(req, res, next) {
+    res.send(204);
+    next();
+  });
 };

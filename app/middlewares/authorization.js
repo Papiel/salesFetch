@@ -1,17 +1,19 @@
 'use strict';
 
-var crypto = require('crypto');
+var restify = require('restify');
 var async = require('async');
+var rarity = require('rarity');
+
 var mongoose =require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var anyFetchHelper = require('../helpers/anyfetch.js');
-var secureKey = require('../../config/configuration.js').secureKey;
+var getSecureHash = require('../helpers/get-secure-hash.js');
 
 /**
  * Authenticate the user based on the request's context
- * return the user
+ * @return {Object} the user
  */
 var authenticateUser = function(context, org, done) {
   var userContext = context.user;
@@ -36,14 +38,14 @@ module.exports.requiresLogin = function(req, res, next) {
   var organization;
 
   if (!req.query.data) {
-    return next({message: "Bad Request", status: 401});
+    return next(new restify.InvalidCredentialsError('Bad Request: missing `data` query parameter'));
   }
   var data = JSON.parse(req.query.data);
 
   async.waterfall([
     function retrieveCompany(cb) {
       if (!data.organization.id) {
-        return next({message: "Bad Request", status: 401});
+        return next(new restify.InvalidCredentialsError('Bad Request: missing organization id'));
       }
 
       Organization.findOne({SFDCId: data.organization.id}, cb);
@@ -51,29 +53,23 @@ module.exports.requiresLogin = function(req, res, next) {
     function checkRequestValidity(org, cb){
       organization = org;
       if (!org) {
-        return next({message: "No matching company has been found", status: 401});
+        return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
-      var hash = data.organization.id + data.user.id + org.masterKey + secureKey;
-      var check = crypto.createHash('sha1').update(hash).digest("base64");
-
+      var check = getSecureHash(data, org.masterKey);
       if (check !== data.hash) {
-        return next({message: "Please check your salesFetch Master Key!", status: 401});
+        return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
       cb(null, data);
     },
     function loadUser(envelope, cb){
-      authenticateUser(envelope, organization, cb);
+      authenticateUser(envelope, organization, rarity.slice(2, cb));
+    },
+    function writeRes(user, cb) {
+      req.user = user;
+      req.organization = organization;
+      req.data = data;
+      cb();
     }
-  ], function (err, user) {
-    if (err) {
-      return next({status: 401});
-    }
-
-    req.user = user;
-    req.organization = organization;
-    req.reqParams = data;
-
-    next();
-  });
+  ], next);
 };

@@ -183,9 +183,18 @@ function SalesfetchViewModel() {
         } else if (client.isTablet) {
             client.activeDocument(document);
         } else if (client.isDesktop) {
-            window.open('','_blank');
+            client.openDocumentInOtherWindow(document);
         }
     };
+
+    client.openDocumentInOtherWindow = function(document) {
+
+        var w = window.open();
+        var html = document.name;
+
+        $(w.document.body).html(html);
+
+    }
 
     client.goBack = function() {
         client.activeDocument(null);

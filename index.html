@@ -80,6 +80,43 @@
 			</div>
 			<!-- END DOCUMENT LIST TAB -->
 
+			<!-- FILTERS COLUMN -->
+			<!-- ko if: isDesktop -->
+			<div class="filter-column">
+				<div class="filter-providers">
+					<h4>Providers</h4>
+					<ul class="filter-menu" data-bind="foreach: providers">
+						<li>
+							<a data-bind="click: toggleActive">
+								<div class="icon-column">
+									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								</div>
+								<div class="text-column">
+									<span data-bind="text: name"></span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="filter-types">
+					<h4>Types</h4>
+					<ul class="filter-menu" role="menu" data-bind="foreach: types">
+						<li>
+							<a data-bind="click: toggleActive">
+								<div class="icon-column">
+									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								</div>
+								<div class="text-column">
+									<span data-bind="text: name"></span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- END FILTERS COLUMN -->
 
 			<!-- DOCUMENT VIEW -->
 			<!-- ko if: isMobile -->

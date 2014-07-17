@@ -1,3 +1,5 @@
+'use strict';
+
 (function() {
   var previousDevice, _addClass, _doc_element, _find, _handleOrientation, _hasClass, _orientation_event, _removeClass, _supports_orientation, _user_agent;
 

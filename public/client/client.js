@@ -1,3 +1,4 @@
+'use strict';
 
 var docTotalNumber = 0;
 function Document(name, isStarred) {
@@ -236,5 +237,3 @@ function SalesfetchViewModel() {
 }
 
 ko.applyBindings(new SalesfetchViewModel());
-
-

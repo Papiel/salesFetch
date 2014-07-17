@@ -56,7 +56,8 @@
     "jshint": "2.5.x",
     "supertest": "0.13.x",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-jshint": "^0.10.0"
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^0.11.3"
   },
   "licence": "Copyright AnyFetch",
   "engines": {

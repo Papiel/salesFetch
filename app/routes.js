@@ -69,7 +69,7 @@ module.exports = function(server) {
    * Allow HTML to be served directly
    * TODO: serve all static content
    */
-  server.get(/.*\.(css|html|js|woff|ttf|svg)/i, restify.serveStatic({
+  server.get(/.*\.(css|html|js|woff|ttf|svg|png|jpg|jpeg|gif)/i, restify.serveStatic({
     directory: 'public',
     default: 'index.hml'
   }));

@@ -134,10 +134,10 @@
 
 			<!-- PROVIDERS TAB DISPLAY -->
 			<!-- ko if: isDesktop -->
-			<div class="providers-view" data-bind="with: providerTab, visible: $root.activeTab() == providerTab">
+			<div class="providers-view" data-bind="visible: $root.activeTab() == providerTab">
 				<div class="connected-providers">
 					<h2>Connected providers</h2>
-					<div class="row provider-list" data-bind="foreach: connectedProviders">
+					<div class="row provider-list" data-bind="foreach: providers">
 						<div class="col-xs-6 col-sm-4 col-md-3 provider">
 							<p data-bind="text: name"></p>
 						</div>

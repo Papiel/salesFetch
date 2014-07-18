@@ -1,0 +1,16 @@
+#!/bin/env node
+// Start SalesFetch server
+
+// Load configuration
+var config = require('../config/configuration.js');
+
+// Load third-party services
+require('../config/vendors.js');
+
+// Load server
+var server = require('../app.js');
+
+// Start the server
+server.listen(config.port, function() {
+  console.log('Server [' + config.env + '] listening on ' + config.port);
+});

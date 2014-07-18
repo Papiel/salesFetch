@@ -24,6 +24,7 @@
 	padding-left: @snippetPadding + @snippetIconDivWidth;
 	background-color: @snippetBackgroundColor;
 	position: relative; // needed for icon to stay in
+	overflow: hidden;
 
 	.icon {
 		position: absolute;
@@ -263,7 +264,6 @@
 	bottom: 0;
 	left: @desktopNavbarWidth;
 	padding: @desktopBodyPadding;
-	overflow: scroll;
 	background: @bodyBackground;
 }
 
@@ -273,7 +273,7 @@
 	bottom: 0;
 	left: 0;
 	right: @filterColumnWidth;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 .DesktopFilterMenu { .FilterCell;

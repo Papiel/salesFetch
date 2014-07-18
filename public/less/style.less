@@ -1,0 +1,113 @@
+@import "mixins.less";
+
+/**********************
+         STYLES
+***********************/
+
+
+// Global
+.toolbar { .Toolbar }
+
+.document-list { .DocumentList;
+
+	.snippet-list {
+		.SnippetList;
+
+		.snippet { .Snippet }
+	}
+}
+
+nav .star-btn { .StarBarButton }
+
+// Desktop
+html.desktop {
+
+	.navbar-tab { .DesktopNavbar }
+
+	#view-body { .DesktopBody }
+
+}
+
+// Tablet
+html.tablet {
+
+	#mainview { .TabletLeftPanel;
+
+		#view-body { .MainViewBody }
+
+		.snippet.active { .ActiveSnippet;
+			z-index: @tabletActiveSnippetZIndex;
+		}
+
+		.navbar-tab { .NavigationBar }
+
+		#filter-tabs { .FilterToolBar }
+
+	}
+
+	.document-view { .DocumentView(tablet) }
+}
+
+html.tablet.landscape {
+
+	#toggle-panel-btn {
+		display: none;
+	}
+
+	#mainview {
+
+		#view-body {
+			box-shadow: @tabletSnippetListShadow;
+		}
+
+		.snippet-list {
+			border-right: @defaultBorder;
+
+			.snippet { .Snippet(tablet-landscape) }
+			.snippet.active { .ActiveSnippet;
+				z-index: @tabletActiveSnippetZIndex;
+			}
+		}
+
+		#filter-tabs {
+
+			li.open ul {
+				box-shadow: 0px 0px;
+				-webkit-box-shadow: 0px 0px;
+			}
+
+			li:last-child a.dropdown-toggle {
+				box-shadow: @tabletSnippetListShadow;
+			}
+		}
+	}
+
+	#subview { .TabletRightPanel(landscape);
+
+		.navbar-tab { .NavigationBar }
+
+	}
+}
+
+html.tablet.portrait {
+
+	#toggle-panel-btn { .TogglePanelButton }
+
+	#subview { .TabletRightPanel(portrait);
+
+		.navbar-tab { .NavigationBar }
+
+	}
+}
+
+// Mobile
+html.mobile {
+
+	#view-body { .MainViewBody }
+
+	.navbar-tab { .NavigationBar }
+
+	#filter-tabs { .FilterToolBar }
+
+	.document-view { .DocumentView(mobile) }
+}

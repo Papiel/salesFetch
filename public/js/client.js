@@ -1,30 +1,31 @@
 'use strict';
 
 var docTotalNumber = 0;
-function Document(name, isStarred) {
+function Document(snippetRendered, isStarred) {
     var self = this;
-    self.name = name;
+    self.name = "none";
     self.isStarred = ko.observable(isStarred);
     self.id = docTotalNumber;
     docTotalNumber += 1;
     self.type = null;
     self.provider = null;
+    self.snippetRendered = snippetRendered;
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
     };
 }
 
-function Provider(info) {
+function Provider(json) {
     var self = this;
     self.isActive = ko.observable(false);
 
-    if (info) {
-        self.name = info.name;
-        self.id = info.id;
-        self.redirect_uri = info.redirect_uri;
-        self.trusted = info.trusted;
-        self.featured = info.featured;
+    if (json) {
+        self.name = json.name;
+        self.id = json.id;
+        self.redirect_uri = json.redirect_uri;
+        self.trusted = json.trusted;
+        self.featured = json.featured;
     }
 
     self.toggleActive = function() {
@@ -32,10 +33,13 @@ function Provider(info) {
     };
 }
 
-function Type(name) {
+function Type(json) {
     var self = this;
-    self.name = name;
     self.isActive = ko.observable(false);
+
+    if (json) {
+        self.name = json.name;
+    }
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
@@ -64,7 +68,7 @@ function SalesfetchViewModel() {
     client.documents = ko.observableArray([]);
     client.connectedProviders = ko.observableArray([]);
     client.types = ko.observableArray([]);
-    client.availableProviders = null;
+    client.availableProviders = ko.observableArray([]);
 
     client.filterByProvider = ko.observable(false);
     client.filterByType = ko.observable(false);
@@ -116,7 +120,9 @@ function SalesfetchViewModel() {
     var searchTab = new TabModel('Search', 'fa-search', true);
     searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
-            return (document.name.search('c') !== -1);
+            // return (document.name.search('c') !== -1);
+            // TODO search
+            return true;
         });
     });
 
@@ -143,30 +149,32 @@ function SalesfetchViewModel() {
     };
 
     client.DocumentWithJson = function(json) {
-        var document = new Document(json.name, json.starred);
-        document.provider = client.ProviderWithName(json.provider);
-        document.type = client.TypeWithName(json.type);
+        var document = new Document(json.snippet_rendered, json.pinned);
+        document.provider = client.ProviderWithJson(json.provider);
+        document.type = client.TypeWithJson(json.document_type);
         return document;
     };
 
     client.setAvailableProviders = function(json) {
-        client.availableProviders = ko.observableArray([]);
+        var availableProviders = [];
         json.forEach(function(providerInfo) {
-            client.availableProviders.push(new Provider(providerInfo));
+            availableProviders.push(new Provider(providerInfo));
         });
+        client.availableProviders(availableProviders);
     };
 
     client.setConnectedProvider = function(json) {
-        client.connectedProviders = ko.observableArray([]);
+        connectedProviders = [];
         json.forEach(function(providerInfo) {
-            client.connectedProviders.push(new Provider(providerInfo));
+            connectedProviders.push(new Provider(providerInfo));
         });
+        client.connectedProviders(connectedProviders);
     }
 
-    client.ProviderWithName = function(providerName) {
+    client.ProviderWithJson = function(json) {
         var provider = null;
         client.connectedProviders().some(function(providerIte) {
-            if (providerIte.name === providerName) {
+            if (providerIte.name === json.name) {
                 provider = providerIte;
                 return true;
             }
@@ -174,18 +182,17 @@ function SalesfetchViewModel() {
         });
 
         if (!provider) {
-            console.log('Could not find provider: '+providerName);
-            provider = new Provider();
-            provider.name = "none";
+            provider = new Provider(json);
+            client.connectedProviders.push(provider);
         }
 
         return provider;
     };
 
-    client.TypeWithName = function(typeName) {
+    client.TypeWithJson = function(json) {
         var type = null;
         client.types().some(function(typeIte) {
-            if (typeIte.name === typeName) {
+            if (typeIte.name === json.name) {
                 type = typeIte;
                 return true;
             }
@@ -193,7 +200,7 @@ function SalesfetchViewModel() {
         });
 
         if (!type) {
-            type = new Type(typeName);
+            type = new Type(json);
             client.types.push(type);
         }
 
@@ -254,10 +261,7 @@ function SalesfetchViewModel() {
     client.goToTab(timelineTab);
 
     if (client.isDesktop) {
-        client.availableProviders = ko.observableArray([]);
-
         client.fetchAvailableProviders = function() {
-
             var url = "/app/providers";
             var data = "data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
 
@@ -273,29 +277,26 @@ function SalesfetchViewModel() {
                 }
             });
         };
-
         client.fetchAvailableProviders();
     }
 
-    // Demo
-    var demoDocuments = [
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false},
+    client.fetchDocuments = function() {
+        var url = "/app/documents";
+        var data = "data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
 
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false},
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false}
-    ];
+        $.ajax({
+            dataType: "json",
+            url: url,
+            data: data,
+            success: function(data, textStatus, jqXHR) {
+                client.addDocuments(data.documents.data);
+            },
+            error: function() {
+                console.log('Could not retrieve providers');
+            }
+        });
+    };
+    client.fetchDocuments();
 }
 
 ko.applyBindings(new SalesfetchViewModel());

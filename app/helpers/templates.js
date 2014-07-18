@@ -28,7 +28,7 @@ var getOverridedTemplates = function() {
     return cachedTemplates;
   }
 
-  var templateDirectory = __dirname + '/../views/templates';
+  var templateDirectory = __dirname + '/../templates';
   fs.readdirSync(templateDirectory).forEach(function(file) {
     var templatePath = templateDirectory + '/' + file;
     var template = require(templatePath);

@@ -1,3 +1,5 @@
+'use strict';
+
 /*===============
   GLOBAL
  ================*/
@@ -25,7 +27,7 @@ $('#toggle-panel-btn').click(function() {
 /**
  * Hide left bar on click snippet
  */
-$('html.tablet.portrait .snippet').click(function(e) {
+$('html.tablet.portrait .snippet').click(function() {
   $("#mainview").removeClass('active');
   $("#toggle-panel-btn span").removeClass('fa-toggle-left');
 });
@@ -33,7 +35,7 @@ $('html.tablet.portrait .snippet').click(function(e) {
 /**
  * Hide left bar on click subview
  */
-$('html.tablet.portrait #subview').click(function(e) {
+$('html.tablet.portrait #subview').click(function() {
   $("#mainview").removeClass('active');
   $("#toggle-panel-btn span").removeClass('fa-toggle-left');
 });

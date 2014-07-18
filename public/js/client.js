@@ -3,7 +3,7 @@
 var docTotalNumber = 0;
 function Document(snippetRendered, isStarred) {
     var self = this;
-    self.name = "none";
+    self.title = "TODO: titles";
     self.isStarred = ko.observable(isStarred);
     self.id = docTotalNumber;
     docTotalNumber += 1;
@@ -229,7 +229,7 @@ function SalesfetchViewModel() {
     client.openDocumentInOtherWindow = function(document) {
 
         var w = window.open();
-        var html = document.name;
+        var html = document.snippetRendered;
 
         $(w.document.body).html(html);
 

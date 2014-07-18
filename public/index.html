@@ -53,7 +53,7 @@
 						<a data-bind="click: $root.goBack" class="fa fa-chevron-left no-frame"></a>
 					</li>
 					<li class="tab-right">
-						<a data-bind="text: name" class="no-frame"></a>
+						<a data-bind="text: title" class="no-frame"></a>
 					</li>
 				</ul>
 			</div>
@@ -121,7 +121,7 @@
 			<!-- DOCUMENT VIEW -->
 			<!-- ko if: isMobile -->
 			<div class="document-view" data-bind="with: activeDocument">
-				<p class="full" data-bind="html: name" /></p>
+				<p class="full" data-bind="html: snippetRendered" /></p>
 				<hr>
 				<p>
 					<span class="type" data-bind="text: type.name"></span>
@@ -246,7 +246,7 @@
 					<li class="tab-left">
 						<span data-bind="text: provider.name"></span>
 						<span class="fa fa-chevron-right"></span>
-						<span data-bind="text: name"></span>
+						<span data-bind="html: title"></span>
 					</li>
 				</ul>
 			</div>
@@ -267,7 +267,7 @@
 
 		<!-- DOCUMENT VIEW -->
 		<div class="document-view" data-bind="with: activeDocument">
-			<p class="full" data-bind="html: name" /></p>
+			<p class="full" data-bind="html: snippetRendered" /></p>
 			<hr>
 			<p>
 				<span class="type" data-bind="text: type.name"></span>

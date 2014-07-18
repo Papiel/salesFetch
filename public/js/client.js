@@ -62,7 +62,7 @@ function SalesfetchViewModel() {
 
     // Editable data
     client.documents = ko.observableArray([]);
-    client.providers = ko.observableArray([]);
+    client.connectedProviders = ko.observableArray([]);
     client.types = ko.observableArray([]);
     client.availableProviders = null;
 
@@ -71,14 +71,14 @@ function SalesfetchViewModel() {
 
     // Return providers filtered isActive
     client.filteredProviders = ko.computed(function() {
-        var activeProviders = client.providers().filter(function(provider) {
+        var activeProviders = client.connectedProviders().filter(function(provider) {
             return provider.isActive();
         });
 
         //update client.filterByProvider
         client.filterByProvider(activeProviders.length !== 0);
 
-        return client.filterByProvider() ? activeProviders : client.providers();
+        return client.filterByProvider() ? activeProviders : client.connectedProviders();
     });
 
     // Return types filtered isActive
@@ -150,14 +150,22 @@ function SalesfetchViewModel() {
     };
 
     client.setAvailableProviders = function(json) {
+        client.availableProviders = ko.observableArray([]);
         json.forEach(function(providerInfo) {
             client.availableProviders.push(new Provider(providerInfo));
         });
     };
 
+    client.setConnectedProvider = function(json) {
+        client.connectedProviders = ko.observableArray([]);
+        json.forEach(function(providerInfo) {
+            client.connectedProviders.push(new Provider(providerInfo));
+        });
+    }
+
     client.ProviderWithName = function(providerName) {
         var provider = null;
-        client.providers().some(function(providerIte) {
+        client.connectedProviders().some(function(providerIte) {
             if (providerIte.name === providerName) {
                 provider = providerIte;
                 return true;
@@ -250,8 +258,8 @@ function SalesfetchViewModel() {
 
         client.fetchAvailableProviders = function() {
 
-            var url = "/app/providers?data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
-            var data = null;
+            var url = "/app/providers";
+            var data = "data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
 
             $.ajax({
                 dataType: "json",
@@ -270,7 +278,7 @@ function SalesfetchViewModel() {
     }
 
     // Demo
-    client.addDocuments([
+    var demoDocuments = [
         {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
         {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
         {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
@@ -287,7 +295,7 @@ function SalesfetchViewModel() {
         {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
         {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
         {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false}
-    ]);
+    ];
 }
 
 ko.applyBindings(new SalesfetchViewModel());

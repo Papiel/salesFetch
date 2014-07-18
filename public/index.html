@@ -88,8 +88,8 @@
 					<ul class="filter-menu" data-bind="foreach: providers">
 						<li>
 							<a data-bind="click: toggleActive">
-								<div class="icon-column">
-									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								<div class="icon-column" data-bind="css: {'passive': !$root.filterByProvider()}">
+									<span class="fa" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive())}"></span>
 								</div>
 								<div class="text-column">
 									<span data-bind="text: name"></span>
@@ -104,8 +104,8 @@
 					<ul class="filter-menu" role="menu" data-bind="foreach: types">
 						<li>
 							<a data-bind="click: toggleActive">
-								<div class="icon-column">
-									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								<div class="icon-column" data-bind="css: {'passive': !$root.filterByType()}">
+									<span class="fa" data-bind="css: {'fa-check': (!$root.filterByType()||isActive())}"></span>
 								</div>
 								<div class="text-column">
 									<span data-bind="text: name"></span>

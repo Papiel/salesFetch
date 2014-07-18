@@ -162,7 +162,7 @@
 	width: 100%;
 
 	a {
-		padding: 5px 20px;
+		padding: @filterCellPadding;
 		font-size: @filterCellFontSize;
 
 		.icon-column {
@@ -177,6 +177,7 @@
 	border-radius: 0px;
 	border: 0px;
 	border-top: @defaultBorder;
+	text-transform: capitalize;
 
 	li { .FilterCell }
 }
@@ -219,6 +220,7 @@
 
 	.type, .provider {
 		font-weight: 600;
+		text-transform: capitalize;
 	}
 }
 
@@ -235,6 +237,8 @@
 	top: 0;
 	bottom: 0;
 	width: @desktopNavbarWidth;
+	overflow-y: scroll;
+	padding-bottom: @navbarItemSpacing;
 
 	li a {
 		padding: @desktopNavbarItemPadding;
@@ -261,6 +265,44 @@
 	padding: @desktopBodyPadding;
 	overflow: scroll;
 	background: @bodyBackground;
+}
+
+.DesktopSnippetList { .SnippetList;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: @filterColumnWidth;
+	overflow: scroll;
+}
+
+.DesktopFilterMenu { .FilterCell;
+	list-style-type: none;
+	padding: @filterColumnListPadding;
+
+	li a {
+		cursor: pointer;
+		color: @filterColumnColor;
+
+		.passive {
+			color: @filterColumnPassiveColor;
+		}
+
+		div {
+			display: inline-block;
+		}
+	}
+}
+
+.DestkopFilterColumn {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: @filterColumnWidth;
+	padding: @filterColumnPadding;
+
+	ul { .DesktopFilterMenu }
 }
 
 // Tablet

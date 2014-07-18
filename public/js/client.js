@@ -18,7 +18,7 @@ function Document(name, isStarred) {
 function Provider(name) {
     var self = this;
     self.name = name;
-    self.isActive = ko.observable(true);
+    self.isActive = ko.observable(false);
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
@@ -28,7 +28,7 @@ function Provider(name) {
 function Type(name) {
     var self = this;
     self.name = name;
-    self.isActive = ko.observable(true);
+    self.isActive = ko.observable(false);
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
@@ -58,24 +58,39 @@ function SalesfetchViewModel() {
     client.providers = ko.observableArray([]);
     client.types = ko.observableArray([]);
 
+    client.filterByProvider = ko.observable(false);
+    client.filterByType = ko.observable(false);
+
     // Return providers filtered isActive
     client.filteredProviders = ko.computed(function() {
-        return client.providers().filter(function(provider) {
+        var activeProviders = client.providers().filter(function(provider) {
             return provider.isActive();
         });
+
+        //update client.filterByProvider
+        client.filterByProvider(activeProviders.length !== 0);
+
+        return client.filterByProvider() ? activeProviders : client.providers();
     });
 
     // Return types filtered isActive
     client.filteredTypes = ko.computed(function() {
-        return client.types().filter(function(type) {
+        var activeTypes = client.types().filter(function(type) {
             return type.isActive();
         });
+
+        //update client.filterByType
+        client.filterByType(activeTypes.length !== 0);
+
+        return client.filterByType() ? activeTypes : client.types();
     });
 
     // Return documents filtered by providers and types
     client.filteredDocuments = ko.computed(function() {
         return client.documents().filter(function(document) {
-            return document.provider.isActive() && document.type.isActive();
+            var providerFilter = document.provider.isActive() || !client.filterByProvider();
+            var typeFilter = document.type.isActive() || !client.filterByType();
+            return providerFilter && typeFilter;
         });
     });
 
@@ -184,8 +199,17 @@ function SalesfetchViewModel() {
         } else if (client.isTablet) {
             client.activeDocument(document);
         } else if (client.isDesktop) {
-            window.open('','_blank');
+            client.openDocumentInOtherWindow(document);
         }
+    };
+
+    client.openDocumentInOtherWindow = function(document) {
+
+        var w = window.open();
+        var html = document.name;
+
+        $(w.document.body).html(html);
+
     };
 
     client.goBack = function() {

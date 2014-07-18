@@ -29,9 +29,4 @@ var server = restify.createServer(serverOptions);
 // Bootstrap Models, Dependencies, Routes, Middlewares
 server = bootstrap(server);
 
-// Boot the server
-server.listen(config.port, function() {
-  console.log("Server [" + config.env + "] listening on " + config.port);
-});
-
 module.exports = server;

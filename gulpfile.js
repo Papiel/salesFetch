@@ -27,7 +27,7 @@ var paths = {
 };
 
 var nodemonOptions = {
-  script: 'app.js',
+  script: 'bin/server',
   ext: 'js',
   env: {
     NODE_ENV: 'development',
@@ -77,5 +77,4 @@ gulp.task('watch', function() {
 
 // Run main tasks on launch
 gulp.task('default', ['lint', 'less', 'watch', 'nodemon'], function() {
-  console.log('Hello gulp');
 });

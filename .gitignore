@@ -1,13 +1,18 @@
+# Backend
 node_modules
 .env
-*.css
-.sass-cache/
+apex/config
+apex/apex-scripts
+
+# Fronted
 .bower-*/
 public/lib
-.DS_Store
+public/dist
+.sass-cache/
+*.css
+
+# Other
 .nodemonignore
 coverage
 *.sublime-*
-keys.sh
-apex/config
-apex/apex-scripts
+.DS_Store

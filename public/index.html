@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SalesFetch</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/lib/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="/lib/html5shiv/dist/html5shiv.min.js"></script>
+	  <script src="/lib/respond/dist/respond.min.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+
+  	<!-- MAIN VIEW -->
+	<div id="mainview" class="active">
+
+
+		<!-- TOGGLE PANEL BUTTON -->
+		<!-- ko if: isTablet -->
+		<div id="toggle-panel-btn">
+			<span class="fa fa-toggle-left fa-toggle-right"></span>
+		</div>
+		<!-- /ko -->
+		<!-- TOGGLE PANEL BUTTON -->
+
+		<!-- NAVIGATION TOP -->
+		<nav class="navbar navbar-default navbar-tab">
+
+			<!-- MAIN VIEW NAV -->
+			<div data-bind="visible: shouldDisplayTabsNavbar()">
+				<ul class="nav nav-pills" data-bind="foreach: tabs">
+					<li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
+						<a data-bind="click: $root.goToTab, css: display" class="fa"></a>
+					</li>
+				</ul>
+			</div>
+			<!-- END MAIN VIEW NAV -->
+
+			<!-- DOCUMENT FULL NAV -->
+			<!-- ko if: isMobile -->
+			<div data-bind="with: activeDocument">
+				<ul class="nav navbar-pills">
+					<li class="tab-left">
+						<a data-bind="click: $root.goBack" class="fa fa-chevron-left no-frame"></a>
+					</li>
+					<li class="tab-right">
+						<a data-bind="text: name" class="no-frame"></a>
+					</li>
+				</ul>
+			</div>
+			<!-- /ko -->
+			<!-- END DOCUMENT FULL NAV -->
+
+		</nav>
+		<!-- END NAVIGATION TOP -->
+
+		<!-- VIEW BODY -->
+		<div id="view-body">
+
+			<!-- DOCUMENT LIST TAB -->
+			<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
+				<div class="snippet-list" data-bind="foreach: $data.documents">
+					<div class="snippet" data-bind="click: $root.goToDocument,
+														css: {active: $data == $root.activeDocument()}">
+						<div class="icon" data-bind="css: type.name">
+						</div>
+						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
+						<p data-bind="text: name"></p>
+					</div>
+				</div>
+			</div>
+			<!-- END DOCUMENT LIST TAB -->
+
+			<!-- FILTERS COLUMN -->
+			<!-- ko if: isDesktop -->
+			<div class="filter-column">
+				<div class="filter-providers">
+					<h4>Providers</h4>
+					<ul class="filter-menu" data-bind="foreach: providers">
+						<li>
+							<a data-bind="click: toggleActive">
+								<div class="icon-column">
+									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								</div>
+								<div class="text-column">
+									<span data-bind="text: name"></span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="filter-types">
+					<h4>Types</h4>
+					<ul class="filter-menu" role="menu" data-bind="foreach: types">
+						<li>
+							<a data-bind="click: toggleActive">
+								<div class="icon-column">
+									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+								</div>
+								<div class="text-column">
+									<span data-bind="text: name"></span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- END FILTERS COLUMN -->
+
+			<!-- DOCUMENT VIEW -->
+			<!-- ko if: isMobile -->
+			<div class="document-view" data-bind="with: activeDocument">
+				<p class="full" data-bind="html: name" /></p>
+				<hr>
+				<p>
+					<span class="type" data-bind="text: type.name"></span>
+					 from
+					 <span class="provider" data-bind="text: provider.name"></span>
+				</p>
+			</div>
+			<!-- /ko -->
+			<!-- END DOCUMENT VIEW -->
+
+			<!-- PROVIDERS TAB DISPLAY -->
+			<!-- ko if: isDesktop -->
+			<div class="providers-view" data-bind="with: providerTab, visible: $root.activeTab() == providerTab">
+				<div class="connected-providers">
+					<h2>Connected providers</h2>
+					<div class="row provider-list" data-bind="foreach: connectedProviders">
+						<div class="col-xs-6 col-sm-4 col-md-3 provider">
+							<p data-bind="text: name"></p>
+						</div>
+					</div>
+				</div>
+				<div class="available-providers">
+					<h2>Available providers</h2>
+					<div class="row provider-list" data-bind="foreach: availableProviders">
+						<div class="col-xs-6 col-sm-4 col-md-3 provider">
+							<p data-bind="text: name"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- END PROVIDERS TAB DISPLAY -->
+
+		</div>
+
+		<!-- NAVIGATION BOTTOM -->
+		<!-- ko if: !isDesktop -->
+		<nav class="navbar navbar-default toolbar">
+
+			<!-- MAIN VIEW FILTER NAV -->
+			<div id="filter-tabs" data-bind="visible: shouldDisplayFilterToolbar()">
+				<ul class="nav nav-pills">
+
+					<!-- FILTER PROVIDERS -->
+					<li class="dropdown dropup drop-left">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<span data-bind="text: filteredProviders().length"></span>
+							 Provider<span data-bind="visible: filteredProviders().length > 1">s</span>
+							 <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: providers">
+							<li>
+								<a data-bind="click: toggleActive">
+									<div class="icon-column">
+										<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+									</div>
+									<div class="text-column">
+										<span data-bind="text: name"></span>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<!-- END FILTER PROVIDERS -->
+
+					<!-- FILTER TYPES -->
+					<li class="dropdown dropup drop-right">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<span data-bind="text: filteredTypes().length"></span>
+							 Type<span data-bind="visible: filteredTypes().length > 1">s</span>
+							 <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: types">
+							<li>
+								<a data-bind="click: toggleActive">
+									<div class="icon-column">
+										<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
+									</div>
+									<div class="text-column">
+										<span data-bind="text: name"></span>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<!-- END FILTER TYPES -->
+
+				</ul>
+			</div>
+			<!-- END MAIN VIEW FILTER NAV -->
+
+			<!-- DOCUMENT FULL NAV -->
+			<!-- ko if: isMobile -->
+			<ul class="nav nav-pills" data-bind="with: activeDocument">
+				<li>
+					<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+				</li>
+			</ul>
+			<!-- /ko -->
+			<!-- END DOCUMENT FULL NAV -->
+
+		</nav>
+		<!-- /ko -->
+		<!-- END NAVIGATION BOTTOM -->
+
+	</div>
+  	<!--END MAIN VIEW -->
+
+  	<!-- SUBVIEW -->
+  	<!-- ko if: isTablet -->
+  	<div id="subview">
+
+		<!-- DOCUMENT NAVBAR -->
+		<nav class="navbar navbar-default navbar-tab">
+
+			<!-- WHEN DOC SELECTED -->
+			<div data-bind="with: activeDocument">
+				<ul class="nav navbar-pills">
+					<li class="tab-right">
+						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+					</li>
+					<li class="tab-left">
+						<span data-bind="text: provider.name"></span>
+						<span class="fa fa-chevron-right"></span>
+						<span data-bind="text: name"></span>
+					</li>
+				</ul>
+			</div>
+			<!-- END WHEN DOC SELECTED -->
+
+			<!-- WHEN NO DOC -->
+			<div data-bind="visible: !activeDocument()">
+				<ul class="nav navbar-pills">
+					<li class="tab-right">
+						<span>Select a document</span>
+					</li>
+				</ul>
+			</div>
+			<!-- END WHEN NO DOC -->
+
+  		</nav>
+		<!-- END DOCUMENT NAVBAR -->
+
+		<!-- DOCUMENT VIEW -->
+		<div class="document-view" data-bind="with: activeDocument">
+			<p class="full" data-bind="html: name" /></p>
+			<hr>
+			<p>
+				<span class="type" data-bind="text: type.name"></span>
+				 from
+				 <span class="provider" data-bind="text: provider.name"></span>
+			</p>
+		</div>
+		<!-- END DOCUMENT VIEW -->
+
+	</div>
+	<!-- /ko -->
+  	<!-- END SUBVIEW -->
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script type='text/javascript' src="/lib/jquery/dist/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script type='text/javascript' src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type='text/javascript' src='/lib/knockout/dist/knockout.js'></script>
+	<script type='text/javascript' src='/lib/devicejs/lib/device.min.js'></script>
+	<script type='text/javascript' src='/js/client.js'></script>
+	<script type='text/javascript' src='/js/misc.js'></script>
+  </body>
+</html>

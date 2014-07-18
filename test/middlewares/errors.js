@@ -2,18 +2,15 @@
 
 require("should");
 var request = require('supertest');
+
 var app = require('../../app.js');
 
-
 describe('<Errors middleware>', function() {
-
-  it('should render 404 page if not found', function(done) {
-
-    request(app).get('/it/does/not/exist')
+  it('should respond with 404 when not found', function(done) {
+    request(app).get('/unknown_route')
       .expect(404)
-      .expect(function(res) {
-        res.text.should.containDeep('Page not found');
-      })
+      .expect(/unknown_route/i)
+      .expect(/does not exist/i)
       .end(done);
   });
 });

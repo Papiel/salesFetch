@@ -4,17 +4,26 @@ require("should");
 
 var async = require('async');
 var request = require('supertest');
+var AnyFetch = require('anyfetch');
 
 var app = require('../../../app.js');
-var APIs = require('../../helpers/APIs');
-var cleaner = require('../../hooks/cleaner');
-
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
+var cleaner = require('../../hooks/cleaner');
+var mock = require('../../helpers/mock.js');
+
 describe('/admin/init endpoint', function() {
   var endpoint = '/admin/init';
+
+  beforeEach(cleaner);
+  before(function mount() {
+    AnyFetch.server.override('/token', mock.dir + '/get-token.json');
+    AnyFetch.server.override('post', '/users', mock.dir + '/post-users.json');
+    AnyFetch.server.override('post', '/subcompanies', mock.dir + '/post-subcompanies.json');
+  });
+  after(mock.restore);
 
   describe('POST /admin/init', function() {
     var SFDCinfos = {
@@ -29,9 +38,25 @@ describe('/admin/init endpoint', function() {
       }
     };
 
-    beforeEach(cleaner);
-    beforeEach(function(done) {
-      APIs.mount('fetchAPI', 'https://api.anyfetch.com', done);
+    it('should err on missing user parameter', function(done) {
+      var incompleteData = {
+        user: null,
+        organization: {
+          name: 'Breaking Bad',
+          id: '1234'
+        }
+      };
+
+      async.waterfall([
+        function pokeEndpoint(cb) {
+          request(app)
+            .post(endpoint)
+            .send(incompleteData)
+            .expect(409)
+            .expect(/should provide user/i)
+            .end(cb);
+        }
+      ], done);
     });
 
     it('should create a user and a company', function(done) {
@@ -48,7 +73,7 @@ describe('/admin/init endpoint', function() {
             .end(cb);
         },
         function findCompany(res, cb) {
-          masterKey = res.text;
+          masterKey = res.body;
           Organization.find({}, cb);
         },
         function checkCompany(orgs, cb) {
@@ -103,7 +128,7 @@ describe('/admin/init endpoint', function() {
             .post(endpoint)
             .send(SFDCinfos)
             .expect(function(res){
-              res.text.should.eql(org.masterKey);
+              res.body.should.eql(org.masterKey);
             })
             .end(cb);
         }

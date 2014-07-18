@@ -1,5 +1,6 @@
 'use strict';
 
+var restify = require('restify');
 var autoLoad = require('auto-load');
 var config = require('../config/configuration.js');
 
@@ -63,4 +64,13 @@ module.exports = function(server) {
     res.send(204);
     next();
   });
+
+  /**
+   * Allow HTML to be served directly
+   * TODO: serve all static content
+   */
+  server.get(/.*\.(css|html|js|woff|ttf|svg|png|jpg|jpeg|gif)/i, restify.serveStatic({
+    directory: 'public',
+    default: 'index.hml'
+  }));
 };

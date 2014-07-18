@@ -17,7 +17,6 @@ describe('/app/providers page', function() {
   beforeEach(cleaner);
   beforeEach(function mount() {
     AnyFetch.server.override('/providers', mock.dir + '/get-providers.json');
-    AnyFetch.server.override('/marketplace.json', mock.dir + '/get-marketplace.json');
   });
   afterEach(mock.restore);
 
@@ -34,10 +33,10 @@ describe('/app/providers page', function() {
             .get(url)
             .expect(200)
             .expect(function(res) {
-              should(res.body).be.ok;
-              res.body.should.have.keys('providers', 'connectedProviders');
-              res.body.providers.should.be.an.instanceOf(Array);
-              res.body.providers[0].should.have.property('name', 'Dropbox');
+              var providers = res.body;
+              should(providers).be.ok;
+              providers.should.have.keys('providers', 'connectedProviders');
+              providers.providers.should.be.an.instanceOf(Array);
             })
             .end(cb);
         }

@@ -1,3 +1,4 @@
+'use strict';
 
 var docTotalNumber = 0;
 function Document(name, isStarred) {
@@ -174,7 +175,7 @@ function SalesfetchViewModel() {
 
         if (client.isMobile) {
             client.activeDocument(null);
-        };
+        }
     };
 
     client.goToDocument = function(document) {
@@ -236,5 +237,3 @@ function SalesfetchViewModel() {
 }
 
 ko.applyBindings(new SalesfetchViewModel());
-
-

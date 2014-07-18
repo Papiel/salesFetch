@@ -68,7 +68,9 @@
     "before",
     "beforeEach",
     "afterEach",
-    "$"
+    "$",
+    "device",
+    "ko"
   ],
   "indent"        : 2,
   "maxstatements" : 40,

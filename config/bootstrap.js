@@ -2,6 +2,7 @@
 
 var restify = require('restify');
 var autoLoad = require('auto-load');
+var AnyFetch = require('anyfetch');
 
 var config = require('./configuration.js');
 var logger = require('../app/middlewares/logger.js');
@@ -17,6 +18,10 @@ module.exports = function(server) {
     console.log('Please provide a FetchApi token before launching the server.');
     process.exit(1);
   }
+
+  // Configure anyfetch.js access URLs
+  AnyFetch.setApiUrl(config.fetchApiUrl);
+  AnyFetch.setManagerUrl(config.managerUrl);
 
   // Models
   autoLoad(__dirname + '/../app/models');

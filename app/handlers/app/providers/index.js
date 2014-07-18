@@ -11,21 +11,11 @@ var anyfetchHelpers = require('../../../helpers/anyfetch.js');
  */
 module.exports.get = function(req, res, next) {
   async.waterfall([
-    function retrieveInfo(cb) {
-      async.parallel({
-        providersInformation: function(cb) {
-          anyfetchHelpers.getProviders(cb);
-        },
-        connectedProviders: function(cb) {
-          anyfetchHelpers.getConnectedProviders(req.user, cb);
-        }
-      }, cb);
+    function getAvailableProviders(cb) {
+      anyfetchHelpers.getProviders(cb);
     },
-    function sendResponse(results, cb) {
-      res.send({
-        providers: results.providersInformation,
-        connectedProviders: results.connectedProviders.body
-      });
+    function sendResponse(providers, cb) {
+      res.send(providers);
       cb();
     }
   ], next);

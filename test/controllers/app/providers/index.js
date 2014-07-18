@@ -23,7 +23,7 @@ describe('/app/providers page', function() {
   describe('GET /app/providers', function() {
     checkUnauthenticated(app, 'get', endpoint);
 
-    it("should return all providers", function(done) {
+    it("should return an array of trusted providers", function(done) {
       async.waterfall([
         function buildRequest(cb) {
           requestBuilder(endpoint, null, cb);
@@ -35,8 +35,10 @@ describe('/app/providers page', function() {
             .expect(function(res) {
               var providers = res.body;
               should(providers).be.ok;
-              providers.should.have.keys('providers', 'connectedProviders');
-              providers.providers.should.be.an.instanceOf(Array);
+              providers.should.be.an.instanceOf(Array);
+              providers.forEach(function(provider) {
+                provider.should.have.property('trusted', true);
+              });
             })
             .end(cb);
         }

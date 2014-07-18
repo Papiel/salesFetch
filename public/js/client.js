@@ -15,9 +15,13 @@ function Document(name, isStarred) {
     };
 }
 
-function Provider(name) {
+function Provider(info) {
     var self = this;
-    self.name = name;
+    self.name = info.name;
+    self.id = info.id;
+    self.redirect_uri = info.redirect_uri;
+    self.trusted = info.trusted;
+    self.featured = info.featured;
     self.isActive = ko.observable(false);
 
     self.toggleActive = function() {
@@ -148,6 +152,12 @@ function SalesfetchViewModel() {
         return document;
     };
 
+    client.setProviders = function(info) {
+        info.forEach(function(providerInfo) {
+            client.providers.push(new Provider(providerInfo));
+        });
+    };
+
     client.ProviderWithName = function(providerName) {
         var provider = null;
         client.providers().some(function(providerIte) {
@@ -159,8 +169,7 @@ function SalesfetchViewModel() {
         });
 
         if (!provider) {
-            provider = new Provider(providerName);
-            client.providers.push(provider);
+            console.log('Could not find provider: '+providerName);
         }
 
         return provider;
@@ -237,27 +246,72 @@ function SalesfetchViewModel() {
     // Show Timeline by default
     client.goToTab(timelineTab);
 
+    var providers = [
+        {
+            "id": "53232d1dc8318cba94000042",
+            "name": "Evernote",
+            "redirect_uri": "http://anyfetch-provider-evernote.herokuapp.com/init/connect",
+            "developer": {
+                "name": "Matthieu"
+            },
+            "trusted": true,
+            "featured": true
+        },
+        {
+            "id": "539ef7289f240405465a2e1f",
+            "name": "Google Drive",
+            "redirect_uri": "http://gdrive.provider.anyfetch.com/init/connect",
+            "developer": {
+                "name": "AnyFetch"
+            },
+            "trusted": true,
+            "featured": true,
+            "description": "Add your Google Drive to AnyFetch."
+        },
+        {
+            "id": "52bff114c8318c29e9000005",
+            "name": "Dropbox",
+            "redirect_uri": "http://dropbox.provider.anyfetch.com/init/connect",
+            "developer": {
+                "name": "AnyFetch"
+            },
+            "trusted": true,
+            "featured": true,
+            "description": "Add your Dropbox to AnyFetch."
+        },
+        {
+            "id": "52bff1eec8318cb228000001",
+            "name": "Google Contacts",
+            "redirect_uri": "http://gcontacts.provider.anyfetch.com/init/connect",
+            "developer": {
+                "name": "AnyFetch"
+            },
+            "trusted": true,
+            "featured": true,
+            "description": "Add your Google Contacts to AnyFetch."
+        }
+    ];
+    client.setProviders(providers);
+
     // Demo
     client.addDocuments([
         {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
         {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
         {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false},
+        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
+        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false},
 
         {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
         {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
         {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false},
+        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
+        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false},
         {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
         {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
         {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false}
+        {name: 'Facture', type: 'salesforce', provider: 'Google Drive', starred: true},
+        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Google Contacts', starred: false}
     ]);
-
-
 }
 
 ko.applyBindings(new SalesfetchViewModel());

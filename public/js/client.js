@@ -252,6 +252,7 @@ function SalesfetchViewModel() {
     };
 
     client.goBack = function() {
+        scrollToTop();
         client.activeDocument(null);
     };
 

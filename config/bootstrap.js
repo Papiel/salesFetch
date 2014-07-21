@@ -2,6 +2,7 @@
 
 var restify = require('restify');
 var autoLoad = require('auto-load');
+var url = require('url');
 var AnyFetch = require('anyfetch');
 
 var config = require('./configuration.js');
@@ -41,7 +42,9 @@ module.exports = function(server) {
 
   // Prefer 404 over 405
   server.on('MethodNotAllowed', function(req, res) {
-    return res.send(new restify.NotFoundError('Not found: ' + req.url + ' does not exist'));
+    var parsed = url.parse(req.url);
+    var path = parsed.pathname.replace(/%/g, '%%');
+    return res.send(new restify.NotFoundError('Not found: ' + path + ' does not exist'));
   });
 
   // Error handling

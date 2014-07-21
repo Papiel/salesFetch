@@ -66,7 +66,7 @@ module.exports = function(server) {
   });
 
   /**
-   * Allow HTML to be served directly
+   * Allow static resources to be served directly
    * We assume that static files have an extension
    * (presence of a `.`), but backend routes don't
    */

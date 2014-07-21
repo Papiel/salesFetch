@@ -1,14 +1,12 @@
 'use strict';
 
-var getURLParameter = function(sParam) {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i+=1)
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] === sParam)
-        {
-            return sParameterName[1];
+var getURLParameter = function(name) {
+    var querystring = window.location.search.substring(1);
+    var variables = querystring.split('&');
+    for (var i = 0; i < variables.length; i+=1) {
+        var param = variables[i].split('=');
+        if (param[0] === name) {
+            return param[1];
         }
     }
 };
@@ -87,25 +85,25 @@ function SalesfetchViewModel() {
     client.filterByProvider = ko.observable(false);
     client.filterByType = ko.observable(false);
 
-    // Return providers filtered isActive
+    // Return providers filtered by isActive
     client.filteredProviders = ko.computed(function() {
         var activeProviders = client.connectedProviders().filter(function(provider) {
             return provider.isActive();
         });
 
-        //update client.filterByProvider
+        // Update client.filterByProvider
         client.filterByProvider(activeProviders.length !== 0);
 
         return client.filterByProvider() ? activeProviders : client.connectedProviders();
     });
 
-    // Return types filtered isActive
+    // Return types filtered by isActive
     client.filteredTypes = ko.computed(function() {
         var activeTypes = client.types().filter(function(type) {
             return type.isActive();
         });
 
-        //update client.filterByType
+        // Update client.filterByType
         client.filterByType(activeTypes.length !== 0);
 
         return client.filterByType() ? activeTypes : client.types();
@@ -134,8 +132,8 @@ function SalesfetchViewModel() {
     var searchTab = new TabModel('Search', 'fa-search', true);
     searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
+            // TODO: search with fuzzy matching
             // return (document.name.search('c') !== -1);
-            // TODO search
             return true;
         });
     });
@@ -143,7 +141,7 @@ function SalesfetchViewModel() {
     // Set default tabs
     client.tabs = [timelineTab, starredTab, searchTab];
 
-    // Add ProviderTab if desktop
+    // Desktop has an additional `Providers` tab
     if (client.isDesktop) {
         client.providerTab = new TabModel('Providers', 'fa-link', false);
         client.tabs.push(client.providerTab);
@@ -257,7 +255,7 @@ function SalesfetchViewModel() {
     };
 
     // Conditional view
-    // Do no use ko.computed when not needed
+    // Do no use ko.computed when not needed for performance reasons
     client.shouldDisplayDocumentList = ko.computed(function() {
         return (!client.activeDocument()) || client.isTablet;
     });

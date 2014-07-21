@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SalesFetch</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/lib/fontawesome/css/font-awesome.min.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="/lib/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/lib/respond/dist/respond.min.js"></script>
+  <![endif]-->
+  </head>
+  <body>
+
+    <div id="app-container">
+      <img src="/img/ajax-loader.gif" alt="Loading..."/>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type='text/javascript' src="/lib/jquery/dist/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script type='text/javascript' src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='/lib/knockout/dist/knockout.js'></script>
+    <script type='text/javascript' src='/lib/devicejs/lib/device.min.js'></script>
+
+    <!-- Load app -->
+    <script type="text/javascript">
+      var appUrl = '/app.html';
+      // Forward querystring
+      appUrl += window.location.search;
+
+      var container = $('#app-container');
+
+      $.ajax({
+        url: appUrl,
+        contentType: 'html',
+        success: function(html) {
+          container.html(html);
+        },
+        error: function(res, status, err) {
+          container.html(err);
+       }
+     });
+    </script>
+
+  </body>
+</html>

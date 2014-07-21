@@ -138,16 +138,20 @@
 				<div class="connected-providers">
 					<h2>Connected providers</h2>
 					<div class="row provider-list" data-bind="foreach: connectedProviders">
-						<div class="col-xs-6 col-sm-4 col-md-3 provider">
-							<p data-bind="text: name"></p>
+						<div class="col-xs-6 col-sm-4 col-md-3">
+							<div class="provider">
+								<p data-bind="text: name"></p>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="available-providers">
 					<h2>Available providers</h2>
 					<div class="row provider-list" data-bind="foreach: availableProviders">
-						<div class="col-xs-6 col-sm-4 col-md-3 provider">
-							<p data-bind="text: name"></p>
+						<div class="col-xs-6 col-sm-4 col-md-3">
+							<div class="provider">
+								<p data-bind="text: name"></p>
+							</div>
 						</div>
 					</div>
 				</div>

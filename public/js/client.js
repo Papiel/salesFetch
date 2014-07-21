@@ -11,6 +11,48 @@ var getURLParameter = function(name) {
     }
 };
 
+/**
+ * @param {String} url
+ * @param {String} [options] Additional options for the AJAX call
+ * @param {Function} success
+ * @param {Function} [error]
+ */
+var call = function(url, options, success, error) {
+    var defaultError = function(res, status, err) {
+        console.log('Error when communicating with the server:', err);
+        if(res.responseJSON && res.responseJSON.message) {
+            console.log(res.responseJSON.message);
+        }
+        else {
+            console.log(res.responseText);
+        }
+    };
+
+    // `options` and `errorMessage` can be omitted
+    if(!error && success) {
+        error = success;
+        success = options;
+        options = {};
+    }
+    else if(!error && !success) {
+        success = options;
+        options = {};
+        error = defaultError;
+    }
+
+    url += '?data=' + getURLParameter('data');
+    var params = {
+        dataType: 'json',
+        type: 'get',
+        url: url,
+        success: success,
+        error: error
+    };
+    params = $.extend(params, options);
+
+    $.ajax(params);
+};
+
 function Document(json) {
     var self = this;
     self.isStarred = ko.observable(json.pinned);
@@ -25,25 +67,23 @@ function Document(json) {
 
     self.toggleStarred = function() {
         var url = '/app/pins/' + self.id;
-        url += '?data=' + getURLParameter('data');
-        var method = (this.isStarred() ? 'delete' : 'post');
+
+        // We can't use 'json' as data type,
+        // otherwise empty responses (desired) get treated as an error
+        var options = {
+            dataType: 'text',
+            type: (this.isStarred() ? 'delete' : 'post')
+        };
 
         // We do not wait on request to display the new status
         // But we will reverse on error (i.e. ask forgiveness)
         var successState = !self.isStarred();
         self.isStarred(successState);
 
-        $.ajax({
-            url: url,
-            type: method,
-            // We can't use 'json', otherwise empty responses (desired)
-            // get treated as an error
-            dataType: 'text',
-            error: function(err) {
-                self.isStarred(!successState);
-                console.log('Could not star/unstar document ' + self.id);
-                console.log(err);
-            }
+        call(url, options, null, function error(res) {
+            self.isStarred(!successState);
+            console.log('Could not star/unstar document ' + self.id);
+            console.log(res.responseText);
         });
     };
 }
@@ -151,11 +191,12 @@ function SalesfetchViewModel() {
 
     var searchTab = new TabModel('Search', 'fa-search', true);
     searchTab.documents = ko.computed(function() {
-        return client.filteredDocuments().filter(function(document) {
-            // TODO: search with fuzzy matching
-            // return (document.name.search('c') !== -1);
-            return true;
-        });
+        // TODO: search with fuzzy matching
+        return client.filteredDocuments();
+        // return client.filteredDocuments().filter(function(document) {
+        //     // return (document.name.search('c') !== -1);
+        //     return true;
+        // });
     });
 
     // Set default tabs
@@ -297,56 +338,23 @@ function SalesfetchViewModel() {
 
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
-            var url = '/app/providers';
-            var data = 'data=' + getURLParameter('data');
-
-            $.ajax({
-                dataType: 'json',
-                url: url,
-                data: data,
-                success: function(data) {
-                    client.setAvailableProviders(data.providers);
-                },
-                error: function() {
-                    console.log('Could not retrieve providers');
-                }
+            call('/app/providers', function success(data) {
+                client.setAvailableProviders(data.providers);
             });
         };
         client.fetchAvailableProviders();
     }
 
     client.fetchDocuments = function() {
-        var url = '/app/documents';
-        var data = 'data=' + getURLParameter('data');
-
-        $.ajax({
-            dataType: 'json',
-            url: url,
-            data: data,
-            success: function(data) {
-                client.addDocuments(data.documents.data);
-            },
-            error: function() {
-                console.log('Could not retrieve providers');
-            }
+        call('/app/documents', function success(data) {
+            client.addDocuments(data.documents.data);
         });
     };
     client.fetchDocuments();
 
     client.fetchFullDocument = function(document) {
-        var url = '/app' + document.url;
-        var data = 'data=' + getURLParameter('data');
-
-        $.ajax({
-            dataType: 'json',
-            url: url,
-            data: data,
-            success: function(data) {
-                document.full(data.rendered.full);
-            },
-            error: function() {
-                console.log('Could not retrieve full document');
-            }
+        call('/app' + document.url, function success(data) {
+            document.full(data.rendered.full);
         });
     };
 }

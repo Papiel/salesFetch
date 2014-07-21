@@ -49,7 +49,7 @@ module.exports.requiresLogin = function(req, res, next) {
 
   async.waterfall([
     function retrieveCompany(cb) {
-      if (!data.organization.id) {
+      if (!data.organization || !data.organization.id) {
         return next(new restify.InvalidCredentialsError('Bad Request: missing organization id'));
       }
 

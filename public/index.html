@@ -53,7 +53,7 @@
 						<a data-bind="click: $root.goBack" class="fa fa-chevron-left no-frame"></a>
 					</li>
 					<li class="tab-right">
-						<a data-bind="text: name" class="no-frame"></a>
+						<a data-bind="text: title" class="no-frame"></a>
 					</li>
 				</ul>
 			</div>
@@ -74,7 +74,7 @@
 						<div class="icon" data-bind="css: type.name">
 						</div>
 						<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
-						<p data-bind="text: name"></p>
+						<p data-bind="html: snippet"></p>
 					</div>
 				</div>
 			</div>
@@ -82,10 +82,10 @@
 
 			<!-- FILTERS COLUMN -->
 			<!-- ko if: isDesktop -->
-			<div class="filter-column">
+			<div class="filter-column" data-bind="visible: shouldDisplayDocumentList">
 				<div class="filter-providers">
 					<h4>Providers</h4>
-					<ul class="filter-menu" data-bind="foreach: providers">
+					<ul class="filter-menu" data-bind="foreach: connectedProviders">
 						<li>
 							<a data-bind="click: toggleActive">
 								<div class="icon-column" data-bind="css: {'passive': !$root.filterByProvider()}">
@@ -121,7 +121,7 @@
 			<!-- DOCUMENT VIEW -->
 			<!-- ko if: isMobile -->
 			<div class="document-view" data-bind="with: activeDocument">
-				<p class="full" data-bind="html: name" /></p>
+				<p class="full" data-bind="html: full" /></p>
 				<hr>
 				<p>
 					<span class="type" data-bind="text: type.name"></span>
@@ -134,7 +134,7 @@
 
 			<!-- PROVIDERS TAB DISPLAY -->
 			<!-- ko if: isDesktop -->
-			<div class="providers-view" data-bind="with: providerTab, visible: $root.activeTab() == providerTab">
+			<div class="providers-view" data-bind="visible: $root.activeTab() == providerTab">
 				<div class="connected-providers">
 					<h2>Connected providers</h2>
 					<div class="row provider-list" data-bind="foreach: connectedProviders">
@@ -176,7 +176,7 @@
 							 Provider<span data-bind="visible: filteredProviders().length > 1">s</span>
 							 <span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: providers">
+						<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: connectedProviders">
 							<li>
 								<a data-bind="click: toggleActive">
 									<div class="icon-column">
@@ -250,7 +250,7 @@
 					<li class="tab-left">
 						<span data-bind="text: provider.name"></span>
 						<span class="fa fa-chevron-right"></span>
-						<span data-bind="text: name"></span>
+						<span data-bind="html: title"></span>
 					</li>
 				</ul>
 			</div>
@@ -271,7 +271,7 @@
 
 		<!-- DOCUMENT VIEW -->
 		<div class="document-view" data-bind="with: activeDocument">
-			<p class="full" data-bind="html: name" /></p>
+			<p class="full" data-bind="html: full" /></p>
 			<hr>
 			<p>
 				<span class="type" data-bind="text: type.name"></span>

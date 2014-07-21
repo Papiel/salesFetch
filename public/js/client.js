@@ -1,34 +1,59 @@
 'use strict';
 
-var docTotalNumber = 0;
-function Document(name, isStarred) {
+var getURLParameter = function(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i+=1)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+};
+
+function Document(json) {
     var self = this;
-    self.name = name;
-    self.isStarred = ko.observable(isStarred);
-    self.id = docTotalNumber;
-    docTotalNumber += 1;
+    self.isStarred = ko.observable(json.pinned);
+    self.id = json.id;
+    self.snippet = json.rendered.snippet;
+    self.title = json.rendered.title;
+    self.url = json.document_url;
+
     self.type = null;
     self.provider = null;
+    self.full = ko.observable();
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
     };
 }
 
-function Provider(name) {
+function Provider(json) {
     var self = this;
-    self.name = name;
     self.isActive = ko.observable(false);
+
+    if (json) {
+        self.name = json.name;
+        self.id = json.id;
+        self.redirect_uri = json.redirect_uri;
+        self.trusted = json.trusted;
+        self.featured = json.featured;
+    }
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
     };
 }
 
-function Type(name) {
+function Type(json) {
     var self = this;
-    self.name = name;
     self.isActive = ko.observable(false);
+
+    if (json) {
+        self.name = json.name;
+    }
 
     self.toggleActive = function() {
         this.isActive(!this.isActive());
@@ -55,22 +80,23 @@ function SalesfetchViewModel() {
 
     // Editable data
     client.documents = ko.observableArray([]);
-    client.providers = ko.observableArray([]);
+    client.connectedProviders = ko.observableArray([]);
     client.types = ko.observableArray([]);
+    client.availableProviders = ko.observableArray([]);
 
     client.filterByProvider = ko.observable(false);
     client.filterByType = ko.observable(false);
 
     // Return providers filtered isActive
     client.filteredProviders = ko.computed(function() {
-        var activeProviders = client.providers().filter(function(provider) {
+        var activeProviders = client.connectedProviders().filter(function(provider) {
             return provider.isActive();
         });
 
         //update client.filterByProvider
         client.filterByProvider(activeProviders.length !== 0);
 
-        return client.filterByProvider() ? activeProviders : client.providers();
+        return client.filterByProvider() ? activeProviders : client.connectedProviders();
     });
 
     // Return types filtered isActive
@@ -108,7 +134,9 @@ function SalesfetchViewModel() {
     var searchTab = new TabModel('Search', 'fa-search', true);
     searchTab.documents = ko.computed(function() {
         return client.filteredDocuments().filter(function(document) {
-            return (document.name.search('c') !== -1);
+            // return (document.name.search('c') !== -1);
+            // TODO search
+            return true;
         });
     });
 
@@ -118,13 +146,6 @@ function SalesfetchViewModel() {
     // Add ProviderTab if desktop
     if (client.isDesktop) {
         client.providerTab = new TabModel('Providers', 'fa-link', false);
-        client.providerTab.availableProviders = ko.computed(function() {
-            return client.providers();
-        });
-        client.providerTab.connectedProviders = ko.computed(function() {
-            return client.providers();
-        });
-
         client.tabs.push(client.providerTab);
     }
 
@@ -142,16 +163,32 @@ function SalesfetchViewModel() {
     };
 
     client.DocumentWithJson = function(json) {
-        var document = new Document(json.name, json.starred);
-        document.provider = client.ProviderWithName(json.provider);
-        document.type = client.TypeWithName(json.type);
+        var document = new Document(json);
+        document.provider = client.ProviderWithJson(json.provider);
+        document.type = client.TypeWithJson(json.document_type);
         return document;
     };
 
-    client.ProviderWithName = function(providerName) {
+    client.setAvailableProviders = function(json) {
+        var availableProviders = [];
+        json.forEach(function(providerInfo) {
+            availableProviders.push(new Provider(providerInfo));
+        });
+        client.availableProviders(availableProviders);
+    };
+
+    client.setConnectedProvider = function(json) {
+        var connectedProviders = [];
+        json.forEach(function(providerInfo) {
+            connectedProviders.push(new Provider(providerInfo));
+        });
+        client.connectedProviders(connectedProviders);
+    };
+
+    client.ProviderWithJson = function(json) {
         var provider = null;
-        client.providers().some(function(providerIte) {
-            if (providerIte.name === providerName) {
+        client.connectedProviders().some(function(providerIte) {
+            if (providerIte.client === json.client) {
                 provider = providerIte;
                 return true;
             }
@@ -159,17 +196,17 @@ function SalesfetchViewModel() {
         });
 
         if (!provider) {
-            provider = new Provider(providerName);
-            client.providers.push(provider);
+            provider = new Provider(json);
+            client.connectedProviders.push(provider);
         }
 
         return provider;
     };
 
-    client.TypeWithName = function(typeName) {
+    client.TypeWithJson = function(json) {
         var type = null;
         client.types().some(function(typeIte) {
-            if (typeIte.name === typeName) {
+            if (typeIte.name === json.name) {
                 type = typeIte;
                 return true;
             }
@@ -177,7 +214,7 @@ function SalesfetchViewModel() {
         });
 
         if (!type) {
-            type = new Type(typeName);
+            type = new Type(json);
             client.types.push(type);
         }
 
@@ -194,6 +231,8 @@ function SalesfetchViewModel() {
     };
 
     client.goToDocument = function(document) {
+        client.fetchFullDocument(document);
+
         if (client.isMobile) {
             client.activeDocument(document);
         } else if (client.isTablet) {
@@ -206,20 +245,21 @@ function SalesfetchViewModel() {
     client.openDocumentInOtherWindow = function(document) {
 
         var w = window.open();
-        var html = document.name;
+        var html = document.snippet;
 
         $(w.document.body).html(html);
 
     };
 
     client.goBack = function() {
+        scrollToTop();
         client.activeDocument(null);
     };
 
     // Conditional view
     // Do no use ko.computed when not needed
     client.shouldDisplayDocumentList = ko.computed(function() {
-        return (!client.activeDocument()) || client.isTablet;
+        return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
     });
 
     client.shouldDisplayFilterToolbar = ko.computed(function() {
@@ -237,27 +277,60 @@ function SalesfetchViewModel() {
     // Show Timeline by default
     client.goToTab(timelineTab);
 
-    // Demo
-    client.addDocuments([
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false},
+    if (client.isDesktop) {
+        client.fetchAvailableProviders = function() {
+            var url = '/app/providers';
+            var data = 'data=' + getURLParameter('data');
 
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false},
-        {name: 'Contrat 12', type: 'document', provider: 'Dropbox', starred: false},
-        {name: 'Oublie pas !', type: 'contact', provider: 'Evernote', starred: true},
-        {name: 'Vacance 117.jpg', type: 'image', provider: 'Dropbox', starred: false},
-        {name: 'Facture', type: 'salesforce', provider: 'Drive', starred: true},
-        {name: 'FWD: #laMamanDeRicard', type: 'email', provider: 'Gmail', starred: false}
-    ]);
+            $.ajax({
+                dataType: 'json',
+                url: url,
+                data: data,
+                success: function(data) {
+                    client.setAvailableProviders(data.providers);
+                },
+                error: function() {
+                    console.log('Could not retrieve providers');
+                }
+            });
+        };
+        client.fetchAvailableProviders();
+    }
 
+    client.fetchDocuments = function() {
+        var url = '/app/documents';
+        var data = 'data=' + getURLParameter('data');
 
+        $.ajax({
+            dataType: 'json',
+            url: url,
+            data: data,
+            success: function(data) {
+                client.addDocuments(data.documents.data);
+            },
+            error: function() {
+                console.log('Could not retrieve providers');
+            }
+        });
+    };
+    client.fetchDocuments();
+
+    client.fetchFullDocument = function(document) {
+        var url = '/app' + document.url;
+        var data = 'data=' + getURLParameter('data');
+
+        $.ajax({
+            dataType: 'json',
+            url: url,
+            data: data,
+            success: function(data) {
+                document.full(data.rendered.full);
+            },
+            error: function() {
+                console.log('Could not retrieve full document');
+            }
+        });
+    };
 }
 
 ko.applyBindings(new SalesfetchViewModel());

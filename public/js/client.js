@@ -1,7 +1,20 @@
 'use strict';
 
+var GetURLParameter = function(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i+=1)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
 var docTotalNumber = 0;
-function Document(snippetRendered, isStarred) {
+function Document(title, snippet, isStarred) {
     var self = this;
     self.title = "TODO: titles";
     self.isStarred = ko.observable(isStarred);
@@ -9,7 +22,8 @@ function Document(snippetRendered, isStarred) {
     docTotalNumber += 1;
     self.type = null;
     self.provider = null;
-    self.snippetRendered = snippetRendered;
+    self.snippet = snippet;
+    self.title = title;
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
@@ -149,7 +163,7 @@ function SalesfetchViewModel() {
     };
 
     client.DocumentWithJson = function(json) {
-        var document = new Document(json.snippet_rendered, json.pinned);
+        var document = new Document(json.rendered.title, json.rendered.snippet, json.pinned);
         document.provider = client.ProviderWithJson(json.provider);
         document.type = client.TypeWithJson(json.document_type);
         return document;
@@ -229,7 +243,7 @@ function SalesfetchViewModel() {
     client.openDocumentInOtherWindow = function(document) {
 
         var w = window.open();
-        var html = document.snippetRendered;
+        var html = document.snippet;
 
         $(w.document.body).html(html);
 
@@ -263,7 +277,7 @@ function SalesfetchViewModel() {
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
             var url = "/app/providers";
-            var data = "data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
+            var data = "data=" + GetURLParameter('data');
 
             $.ajax({
                 dataType: "json",
@@ -282,7 +296,7 @@ function SalesfetchViewModel() {
 
     client.fetchDocuments = function() {
         var url = "/app/documents";
-        var data = "data=%7B%22sessionId%22%3A%22fake_session_id%22%2C%22salesFetchURL%22%3A%22https%3A%2F%2Fstaging-salesfetch.herokuapp.com%22%2C%22instanceURL%22%3A%22https%3A%2F%2Feu0.salesforce.com%22%2C%22context%22%3A%7B%22templatedDisplay%22%3A%22Matthieu%20Bacconnier%22%2C%22templatedQuery%22%3A%22Matthieu%20Bacconnier%22%2C%22recordId%22%3A%220032000001DoV22AAF%22%2C%22recordType%22%3A%22Contact%22%7D%2C%22user%22%3A%7B%22id%22%3A%2200520000003RnlGAAS%22%2C%22name%22%3A%22mehdi%40anyfetch.com%22%2C%22email%22%3A%22tanguy.helesbeux%40insa-lyon.fr%22%7D%2C%22organization%22%3A%7B%22id%22%3A%2200D20000000lJVPEA2%22%2C%22name%22%3A%22AnyFetch%22%7D%2C%22hash%22%3A%22gyLaoDYnXvI96n0TWU6t%2BXQl64Q%3D%22%7D";
+        var data = "data=" + GetURLParameter('data');
 
         $.ajax({
             dataType: "json",

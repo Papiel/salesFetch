@@ -315,6 +315,82 @@
 	border-radius: @providerBorderRadius;
 	margin: @providerMargin;
 	padding: @providerPadding;
+
+	&:hover {
+		background-color: white;
+		box-shadow: @providerBoxShadow;
+	}
+
+	.author {
+		font-style: italic;
+		color: @providerLegendColor;
+
+		.developer {
+			font-style: normal;
+			color: @providerDeveloperNameColor;
+		}
+	}
+
+	.description {
+		font-size: @providerDescriptionFontSize;
+	}
+
+	.passive {
+		color: @providerPassiveColor;
+	}
+}
+
+.ProvidersView {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: @providerTabMargin;
+
+	.provider-panel {
+		height: 100%;
+
+		.provider-list {
+			margin: 0px;
+			position: absolute;
+			top: @providerContainerMarginTop;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			overflow-y: auto;
+		}
+	}
+
+
+
+	.provider-table {
+		width: 100%;
+
+		th, td {
+			padding: 5px 10px;
+
+			.passive {
+				color: @providerPassiveColor;
+			}
+		}
+
+		td:last-child {
+			text-align: right;
+		}
+
+		tbody tr:nth-child(odd) {
+			background-color: #F1F1F1;
+		}
+
+		tr:hover {
+			background-color: white !important;
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
 }
 
 // Tablet

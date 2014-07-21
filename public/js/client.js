@@ -40,6 +40,8 @@ function Provider(json) {
         self.redirect_uri = json.redirect_uri;
         self.trusted = json.trusted;
         self.featured = json.featured;
+        self.description = json.description;
+        self.developer = json.developer ? json.developer.name : 'unknown';
     }
 
     self.toggleActive = function() {

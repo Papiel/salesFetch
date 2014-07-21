@@ -164,12 +164,12 @@ function SalesfetchViewModel() {
     };
 
     client.setConnectedProvider = function(json) {
-        connectedProviders = [];
+        var connectedProviders = [];
         json.forEach(function(providerInfo) {
             connectedProviders.push(new Provider(providerInfo));
         });
         client.connectedProviders(connectedProviders);
-    }
+    };
 
     client.ProviderWithJson = function(json) {
         var provider = null;
@@ -269,7 +269,7 @@ function SalesfetchViewModel() {
                 dataType: "json",
                 url: url,
                 data: data,
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     client.setAvailableProviders(data.providers);
                 },
                 error: function() {
@@ -288,7 +288,7 @@ function SalesfetchViewModel() {
             dataType: "json",
             url: url,
             data: data,
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 client.addDocuments(data.documents.data);
             },
             error: function() {

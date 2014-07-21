@@ -52,7 +52,7 @@ module.exports = function(req, res) {
       Organization.findOne({ _id: user.organization }, cb);
     }
   ], function writeResults(err, org) {
-    var prefix = '/app/documents';
+    var prefix = '/index.html';
     var url = prefix;
 
     if(err) {

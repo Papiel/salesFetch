@@ -40,7 +40,12 @@ module.exports.requiresLogin = function(req, res, next) {
   if (!req.query.data) {
     return next(new restify.InvalidCredentialsError('Bad Request: missing `data` query parameter'));
   }
-  var data = JSON.parse(req.query.data);
+  var data;
+  try {
+    data = JSON.parse(req.query.data);
+  } catch(e) {
+    return next(new restify.UnprocessableEntityError('Bad Request: malformed JSON in `data` query parameter'));
+  }
 
   async.waterfall([
     function retrieveCompany(cb) {

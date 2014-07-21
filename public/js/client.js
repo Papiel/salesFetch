@@ -278,11 +278,11 @@ function SalesfetchViewModel() {
 
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
-            var url = "/app/providers";
-            var data = "data=" + getURLParameter('data');
+            var url = '/app/providers';
+            var data = 'data=' + getURLParameter('data');
 
             $.ajax({
-                dataType: "json",
+                dataType: 'json',
                 url: url,
                 data: data,
                 success: function(data) {
@@ -297,11 +297,11 @@ function SalesfetchViewModel() {
     }
 
     client.fetchDocuments = function() {
-        var url = "/app/documents";
-        var data = "data=" + getURLParameter('data');
+        var url = '/app/documents';
+        var data = 'data=' + getURLParameter('data');
 
         $.ajax({
-            dataType: "json",
+            dataType: 'json',
             url: url,
             data: data,
             success: function(data) {
@@ -315,15 +315,15 @@ function SalesfetchViewModel() {
     client.fetchDocuments();
 
     client.fetchFullDocument = function(document) {
-        var url = document.url;
-        var data = "data=" + getURLParameter('data');
+        var url = '/app' + document.url;
+        var data = 'data=' + getURLParameter('data');
 
         $.ajax({
-            dataType: "json",
+            dataType: 'json',
             url: url,
             data: data,
             success: function(data) {
-                document.full(data);
+                document.full(data.rendered.full);
             },
             error: function() {
                 console.log('Could not retrieve full document');

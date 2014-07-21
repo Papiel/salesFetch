@@ -6,7 +6,7 @@
 
  var scrollToTop = function () {
  	$('#view-body').scrollTop(0);
- }
+ };
 
 /*
  * Override Bootstrap actions

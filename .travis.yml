@@ -3,11 +3,6 @@ node_js:
   - '0.10'
 services:
   - mongodb
-deploy:
-  provider: heroku
-  app: staging-salesfetch
-  api_key:
-    secure: F6jibhWR6a9LsGoMdGD0ohakqe4+OWK3CsqVKCOR7T/9yyY9ylVuOY1Z2tu/dhTK4NtFtlCunVb+lnEUYBkSwEPQ8Hjn8YoTDqloKKX8Q0HDFYxZEa8rL99utvtCamM8XIEwhTaEVg2t1Tz+oC92Cf6RcjrThJ3EnISoWcByfSM=
 env:
   global:
   - secure: Xq+5HACB2SJDxtsXkGuOeu/uOLlFyKnIZcapa3d5yjlK81LWFwXTOJf7FylqmOsETB4YkXxGPjIHWtkugYJNBgiPU7zX89nlFGQwJAHIFUOyB3A9GG4S1e+3i84Q7mDPZmbYvkoxHDUWjyEMuMU3WrAETa0XyyQErqtab+W8p/U=

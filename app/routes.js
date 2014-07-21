@@ -44,7 +44,7 @@ module.exports = function(server) {
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.get);
 
-  server.post('/app/providers',
+  server.post('/app/providers/:id',
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.post);
 

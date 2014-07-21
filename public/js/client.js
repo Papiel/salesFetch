@@ -1,4 +1,5 @@
 'use strict';
+require('misc.js');
 
 var getURLParameter = function(sParam) {
     var sPageURL = window.location.search.substring(1);
@@ -259,7 +260,7 @@ function SalesfetchViewModel() {
     // Conditional view
     // Do no use ko.computed when not needed
     client.shouldDisplayDocumentList = ko.computed(function() {
-        return (!client.activeDocument() && client.activeTab() != client.providerTab) || client.isTablet;
+        return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
     });
 
     client.shouldDisplayFilterToolbar = ko.computed(function() {

@@ -29,15 +29,10 @@ var call = function(url, options, success, error) {
     };
 
     // `options` and `errorMessage` can be omitted
-    if(!error && success) {
-        error = success;
+    error = error || defaultError;
+    if(!success) {
         success = options;
         options = {};
-    }
-    else if(!error && !success) {
-        success = options;
-        options = {};
-        error = defaultError;
     }
 
     url += '?data=' + getURLParameter('data');

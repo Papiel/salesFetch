@@ -199,7 +199,7 @@
 	left: 0px;
 	right: 0px;
 	bottom: @toolbarHeight;
-	overflow: scroll;
+	overflow: auto;
 	background: @bodyBackground;
 }
 
@@ -217,7 +217,7 @@
 
 .DocumentView {
 	padding: @documentViewPadding;
-	overflow: scroll;
+	overflow: auto;
 
 	.type, .provider {
 		font-weight: 600;
@@ -243,7 +243,7 @@
 	top: 0;
 	bottom: 0;
 	width: @desktopNavbarWidth;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-bottom: @navbarItemSpacing;
 
 	li a {
@@ -278,7 +278,7 @@
 	bottom: 0;
 	left: 0;
 	right: @filterColumnWidth;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .DesktopFilterMenu { .FilterCell;
@@ -368,7 +368,7 @@
 		width: 100%;
 
 		th, td {
-			padding: 5px 10px;
+			padding: @providerTableCellPadding;
 
 			.passive {
 				color: @providerPassiveColor;
@@ -379,12 +379,18 @@
 			text-align: right;
 		}
 
-		tbody tr:nth-child(odd) {
-			background-color: #F1F1F1;
-		}
+		tbody {
+			tr:nth-child(odd) {
+				background-color: @providerTableCellBackgroundColorOdd;
+			}
 
-		tr:hover {
-			background-color: white !important;
+			tr:nth-child(even) {
+				background-color: @providerTableCellBackgroundColorEven;
+			}
+
+			tr:hover {
+				background-color: @providerTableCellBackgroundColorHover !important;
+			}
 		}
 	}
 

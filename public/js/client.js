@@ -105,6 +105,17 @@ function Provider(json) {
     self.toggleActive = function() {
         this.isActive(!this.isActive());
     };
+
+    self.connect = function () {
+        var url = '/app/providers/' + self.id + '?data=' + getURLParameter('data');
+        var options = {
+            type: 'post'
+        };
+
+        call(url, options, function success(data) {
+            window.open(data.url);
+        });
+    };
 }
 
 function Type(json) {

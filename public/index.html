@@ -153,7 +153,9 @@
 										<span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>
 										<span class="fa fa-star" data-bind="css: {passive: !trusted}"></span>
 									</td>
-									<td><a href="" class="fa fa-share"></a></td>
+									<td>
+										<a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -163,7 +165,7 @@
 					<h2>Available providers</h2>
 					<div class="row provider-list" data-bind="foreach: availableProviders">
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-							<a data-bind="attr: {href: redirect_uri}" target="_blank">
+							<a data-bind="click: connect">
 								<div class="provider">
 									<h4>
 										<span data-bind="text: name"></span>

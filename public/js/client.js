@@ -23,7 +23,7 @@ function Document(json) {
 
     self.type = null;
     self.provider = null;
-    self.full = null;
+    self.full = ko.observable();
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
@@ -188,7 +188,7 @@ function SalesfetchViewModel() {
     client.ProviderWithJson = function(json) {
         var provider = null;
         client.connectedProviders().some(function(providerIte) {
-            if (providerIte.name === json.name) {
+            if (providerIte.client === json.client) {
                 provider = providerIte;
                 return true;
             }
@@ -231,6 +231,8 @@ function SalesfetchViewModel() {
     };
 
     client.goToDocument = function(document) {
+        client.fetchFullDocument(document);
+
         if (client.isMobile) {
             client.activeDocument(document);
         } else if (client.isTablet) {
@@ -311,6 +313,23 @@ function SalesfetchViewModel() {
         });
     };
     client.fetchDocuments();
+
+    client.fetchFullDocument = function(document) {
+        var url = document.url;
+        var data = "data=" + getURLParameter('data');
+
+        $.ajax({
+            dataType: "json",
+            url: url,
+            data: data,
+            success: function(data) {
+                document.full(data);
+            },
+            error: function() {
+                console.log('Could not retrieve full document');
+            }
+        });
+    };
 }
 
 ko.applyBindings(new SalesfetchViewModel());

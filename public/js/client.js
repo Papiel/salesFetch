@@ -1,5 +1,4 @@
 'use strict';
-require('misc.js');
 
 var getURLParameter = function(sParam) {
     var sPageURL = window.location.search.substring(1);

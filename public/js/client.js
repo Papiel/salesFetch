@@ -1,6 +1,6 @@
 'use strict';
 
-var GetURLParameter = function(sParam) {
+var getURLParameter = function(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i+=1)
@@ -11,19 +11,19 @@ var GetURLParameter = function(sParam) {
             return sParameterName[1];
         }
     }
-}
+};
 
-var docTotalNumber = 0;
-function Document(title, snippet, isStarred) {
+function Document(json) {
     var self = this;
-    self.title = "TODO: titles";
-    self.isStarred = ko.observable(isStarred);
-    self.id = docTotalNumber;
-    docTotalNumber += 1;
+    self.isStarred = ko.observable(json.pinned);
+    self.id = json.id;
+    self.snippet = json.rendered.snippet;
+    self.title = json.rendered.title;
+    self.url = json.document_url;
+
     self.type = null;
     self.provider = null;
-    self.snippet = snippet;
-    self.title = title;
+    self.full = null;
 
     self.toggleStarred = function() {
         this.isStarred(!this.isStarred());
@@ -163,7 +163,7 @@ function SalesfetchViewModel() {
     };
 
     client.DocumentWithJson = function(json) {
-        var document = new Document(json.rendered.title, json.rendered.snippet, json.pinned);
+        var document = new Document(json);
         document.provider = client.ProviderWithJson(json.provider);
         document.type = client.TypeWithJson(json.document_type);
         return document;
@@ -277,7 +277,7 @@ function SalesfetchViewModel() {
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
             var url = "/app/providers";
-            var data = "data=" + GetURLParameter('data');
+            var data = "data=" + getURLParameter('data');
 
             $.ajax({
                 dataType: "json",
@@ -296,7 +296,7 @@ function SalesfetchViewModel() {
 
     client.fetchDocuments = function() {
         var url = "/app/documents";
-        var data = "data=" + GetURLParameter('data');
+        var data = "data=" + getURLParameter('data');
 
         $.ajax({
             dataType: "json",

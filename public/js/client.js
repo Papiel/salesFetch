@@ -69,13 +69,14 @@ function Document(json) {
             dataType: 'text',
             type: (this.isStarred() ? 'delete' : 'post')
         };
+        var noop = function() {};
 
         // We do not wait on request to display the new status
         // But we will reverse on error (i.e. ask forgiveness)
         var successState = !self.isStarred();
         self.isStarred(successState);
 
-        call(url, options, null, function error(res) {
+        call(url, options, noop, function error(res) {
             self.isStarred(!successState);
             console.log('Could not star/unstar document ' + self.id);
             console.log(res.responseText);

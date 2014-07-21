@@ -24,7 +24,27 @@ function Document(json) {
     self.full = ko.observable();
 
     self.toggleStarred = function() {
-        this.isStarred(!this.isStarred());
+        var url = '/app/pins/' + self.id;
+        url += '?data=' + getURLParameter('data');
+        var method = (this.isStarred() ? 'delete' : 'post');
+
+        // We do not wait on request to display the new status
+        // But we will reverse on error (i.e. ask forgiveness)
+        var successState = !self.isStarred();
+        self.isStarred(successState);
+
+        $.ajax({
+            url: url,
+            type: method,
+            // We can't use 'json', otherwise empty responses (desired)
+            // get treated as an error
+            dataType: 'text',
+            error: function(err) {
+                self.isStarred(!successState);
+                console.log('Could not star/unstar document ' + self.id);
+                console.log(err);
+            }
+        });
     };
 }
 

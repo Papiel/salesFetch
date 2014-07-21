@@ -60,16 +60,17 @@ module.exports = function(server) {
   /**
    * Allow cross-origin OPTION requests
    */
-  server.opts(/\.*/, function(req, res, next) {
+  server.opts(/.*/i, function(req, res, next) {
     res.send(204);
     next();
   });
 
   /**
    * Allow HTML to be served directly
-   * TODO: serve all static content
+   * We assume that static files have an extension
+   * (presence of a `.`), but backend routes don't
    */
-  server.get(/.*\.(css|html|js|woff|ttf|svg|png|jpg|jpeg|gif)/i, restify.serveStatic({
+  server.get(/\./i, restify.serveStatic({
     directory: 'public',
     default: 'index.hml'
   }));

@@ -11,6 +11,62 @@ var getURLParameter = function(name) {
     }
 };
 
+var sliceInTime = function(documents) {
+  var timeSlices = [{
+    label: 'Today',
+    maxDate: moment().startOf('day'),
+    documents: []
+  }, {
+    label: 'Yesterday',
+    maxDate: moment().startOf('day').subtract('day', 1),
+    documents: []
+  }, {
+    label: 'Earlier this Week',
+    maxDate: moment().startOf('week'),
+    documents: []
+  }, {
+    label: 'Lasts Week',
+    maxDate: moment().startOf('week').subtract('week', 1),
+    documents: []
+  }, {
+    label: 'Earlier this Month',
+    maxDate: moment().startOf('month'),
+    documents: []
+  }, {
+    label: 'Last Month',
+    maxDate: moment().startOf('month').subtract('month', 1),
+    documents: []
+  }, {
+    label: 'Earlier this Year',
+    maxDate: moment().startOf('year'),
+    documents: []
+  }, {
+    label: 'Last Year',
+    maxDate: moment().startOf('year').subtract('year', 1),
+    documents: []
+  }, {
+    label: 'Older',
+    documents: []
+  }];
+
+  documents.forEach(function(doc) {
+    var creationDate = moment(doc.creation_date);
+    var found = false;
+    for (var i = 0; i < timeSlices.length && !found; i+=1) {
+      if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+        found = true;
+        timeSlices[i].documents.push(doc);
+      }
+
+      if(!found && (!timeSlices[i].maxDate || creationDate.isAfter(timeSlices[i].maxDate))) {
+        found = true;
+        timeSlices[i].documents.push(doc);
+      }
+    }
+  });
+  return timeSlices;
+};
+
 /**
  * @param {String} url
  * @param {String} [options] Additional options for the AJAX call
@@ -55,6 +111,7 @@ function Document(json) {
     self.snippet = json.rendered.snippet;
     self.title = json.rendered.title;
     self.url = json.document_url;
+    self.creation_date = json.creation_date;
 
     self.type = null;
     self.provider = null;
@@ -128,13 +185,19 @@ function Type(json) {
 }
 
 var tabTotalNumer = 0;
-function TabModel(name, display, pullRight) {
+function TabModel(name, display, pullRight, client) {
     var self = this;
     self.name = name;
     self.display = display;
     self.id = tabTotalNumer;
     tabTotalNumer += 1;
     self.pullRight = pullRight;
+    self.filter = null;
+
+    self.timeSlices = ko.computed(function() {
+        var docs = self.filter ? client.documents().filter(self.filter) : client.documents();
+        return sliceInTime(docs);
+    });
 }
 
 function SalesfetchViewModel() {
@@ -179,41 +242,31 @@ function SalesfetchViewModel() {
     });
 
     // Return documents filtered by providers and types
-    client.filteredDocuments = ko.computed(function() {
-        return client.documents().filter(function(document) {
-            var providerFilter = document.provider.isActive() || !client.filterByProvider();
-            var typeFilter = document.type.isActive() || !client.filterByType();
-            return providerFilter && typeFilter;
-        });
-    });
+    var providerAndTypeFilter = function(document) {
+        var providerFilter = document.provider.isActive() || !client.filterByProvider();
+        var typeFilter = document.type.isActive() || !client.filterByType();
+        return providerFilter && typeFilter;
+    };
+
+    var starredFilter = function(document) {
+        return (document.isStarred() === true) && providerAndTypeFilter(document);
+    };
 
     // Tabs
-    var timelineTab = new TabModel('Timeline', 'fa-list', false);
-    timelineTab.documents = client.filteredDocuments;
+    var timelineTab = new TabModel('Timeline', 'fa-list', false, client);
+    timelineTab.filter = providerAndTypeFilter;
 
-    var starredTab = new TabModel('Starred', 'fa-star-o', false);
-    starredTab.documents = ko.computed(function() {
-        return client.filteredDocuments().filter(function(document) {
-            return (document.isStarred() === true);
-        });
-    });
+    var starredTab = new TabModel('Starred', 'fa-star-o', false, client);
+    starredTab.filter = starredFilter;
 
-    var searchTab = new TabModel('Search', 'fa-search', true);
-    searchTab.documents = ko.computed(function() {
-        // TODO: search with fuzzy matching
-        return client.filteredDocuments();
-        // return client.filteredDocuments().filter(function(document) {
-        //     // return (document.name.search('c') !== -1);
-        //     return true;
-        // });
-    });
+    var searchTab = new TabModel('Search', 'fa-search', true, client);
 
     // Set default tabs
     client.tabs = [timelineTab, starredTab, searchTab];
 
     // Desktop has an additional `Providers` tab
     if (client.isDesktop) {
-        client.providerTab = new TabModel('Providers', 'fa-link', false);
+        client.providerTab = new TabModel('Providers', 'fa-link', false, client);
         client.tabs.push(client.providerTab);
     }
 

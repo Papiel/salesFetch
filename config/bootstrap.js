@@ -10,9 +10,6 @@ var logger = require('../app/middlewares/logger.js');
 var logError = require('./services.js').logError;
 var addRoutes = require(__dirname + '/../app/routes.js');
 
-// TODO: reinstate less compile middleware?
-// TODO: reinstate some sort of basic static folder to serve the app's client?
-
 module.exports = function(server) {
   // Check if fetchApi token is set before continuing!
   if (config.env !== 'test' && !config.fetchApiCreds) {

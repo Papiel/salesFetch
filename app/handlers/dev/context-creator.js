@@ -20,7 +20,7 @@ module.exports = function(req, res) {
   // Basic dummy data
   var data = {
     sessionId: 'fake_session_id',
-    salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
+    salesFetchURL: 'https://salesfetch-staging.herokuapp.com',
     instanceURL: 'https://eu0.salesforce.com',
     context: {
       templatedDisplay: 'Matthieu Bacconnier',
@@ -52,7 +52,7 @@ module.exports = function(req, res) {
       Organization.findOne({ _id: user.organization }, cb);
     }
   ], function writeResults(err, org) {
-    var prefix = '/app/documents';
+    var prefix = '/index.html';
     var url = prefix;
 
     if(err) {

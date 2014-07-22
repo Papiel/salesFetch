@@ -76,9 +76,6 @@ describe('/app/providers page', function() {
             .expect(/url/i)
             .expect(/bearer=anyFetchToken/i)
             .expect(/return_to/i)
-            .expect(function(res) {
-              console.log(res.body.url);
-            })
             .end(cb);
         }
       ], done);

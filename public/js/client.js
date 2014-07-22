@@ -109,7 +109,7 @@ function Provider(json) {
         };
 
         call(url, options, function success(data) {
-            var w = window.open(data.url, '','width=700, height=700');
+            var w = window.open('oauth-callback.html', '','width=700, height=700');
         });
     };
 }
@@ -352,6 +352,10 @@ function SalesfetchViewModel() {
             });
         };
         client.fetchAvailableProviders();
+
+        window.refreshProviders = function() {
+            client.fetchAvailableProviders();
+        };
     }
 
     client.fetchDocuments = function() {

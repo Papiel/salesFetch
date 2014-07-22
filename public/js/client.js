@@ -326,12 +326,8 @@ function SalesfetchViewModel() {
             var iframe = $('#full-iframe')[0];
             iframe.contentDocument.close();
             iframe.contentDocument.write(client.activeDocument().full());
-        };
+        }
     });
-
-    client.openDocumentInIframe = function(document) {
-
-    };
 
     client.goBack = function() {
         scrollToTop();

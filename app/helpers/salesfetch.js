@@ -18,8 +18,8 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     function searchMongo(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
-    // Fetch all snippets in one call
-    function fetchDocumentsAndDocumentTypes(pins, cb) {
+    // Fetch all snippets
+    function fetchDocuments(pins, cb) {
       // If no pin was found, abort
       // We use waterfall's err mechanism rather than calling `finalCb` directly
       // in order to avoid a memory leak
@@ -33,9 +33,11 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         return pin.anyFetchId;
       });
       var query = { id: ids, sort: '-creationDate' };
-      anyfetch.getDocumentsWithInfo(query, cb);
+      anyfetch.getDocuments(query, cb);
     },
-    function applyTemplates(docs, cb) {
+    function applyTemplates(res, cb) {
+      var docs = res.body;
+
       docs = docs.data.map(function(doc) {
         doc.pinned = true;
         doc.snippet_rendered = templates.render(doc, 'snippet');

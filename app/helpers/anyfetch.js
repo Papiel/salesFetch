@@ -18,9 +18,11 @@ module.exports.findDocuments = function(params, user, cb) {
   async.waterfall([
     function executeBatchRequest(cb) {
       var anyfetch = new AnyFetch(user.anyFetchToken);
-      anyfetch.getDocumentsWithInfo(params, cb);
+      anyfetch.getDocuments(params, cb);
     },
-    function templateResults(docs, cb) {
+    function templateResults(res, cb) {
+      var docs = res.body;
+
       if (!docs.data) {
         return cb(null, docs);
       }
@@ -67,9 +69,12 @@ module.exports.findDocument = function(id, user, context, finalCb) {
     function sendBatchRequest(cb) {
       var anyfetch = new AnyFetch(user.anyFetchToken);
       var query = { search: context.templatedQuery };
-      anyfetch.getDocumentWithInfo(id, query, cb);
+
+      anyfetch.getDocumentById(id, query, cb);
     },
-    function applyTemplate(doc, cb) {
+    function applyTemplate(res, cb) {
+      var doc = res.body;
+
       if(!doc || !doc.data) {
         return cb(new restify.NotFoundError('Document not found'));
       }

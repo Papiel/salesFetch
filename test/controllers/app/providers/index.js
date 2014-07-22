@@ -44,7 +44,7 @@ describe('/app/providers page', function() {
     });
   });
 
-  describe('POST /app/providers', function() {
+  describe('POST /app/providers/:id', function() {
     var dropboxConnectEndpoint = endpoint + '/52bff114c8318c29e9000005';
     checkUnauthenticated(app, 'post', dropboxConnectEndpoint);
 
@@ -63,7 +63,7 @@ describe('/app/providers page', function() {
       ], done);
     });
 
-    it("should respond with the redirect URL", function(done) {
+    it("should respond with the redirect URL containing return_to", function(done) {
 
       async.waterfall([
         function buildRequest(cb) {
@@ -75,6 +75,10 @@ describe('/app/providers page', function() {
             .expect(200)
             .expect(/url/i)
             .expect(/bearer=anyFetchToken/i)
+            .expect(/return_to/i)
+            .expect(function(res) {
+              console.log(res.body.url);
+            })
             .end(cb);
         }
       ], done);

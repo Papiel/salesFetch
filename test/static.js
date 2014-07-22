@@ -9,7 +9,7 @@ var cleaner = require('./hooks/cleaner');
 describe('<Static content>', function() {
   beforeEach(cleaner);
 
-  it('Should serve HTML', function(done) {
+  it('should serve HTML', function(done) {
     request(app)
       .get('/')
       .expect(200)
@@ -18,7 +18,7 @@ describe('<Static content>', function() {
       .end(done);
   });
 
-  it('Should serve JS', function(done) {
+  it('should serve JS', function(done) {
     request(app)
       .get('/js/client.js')
       .expect(200)

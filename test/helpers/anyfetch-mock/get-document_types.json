@@ -1,5 +1,5 @@
-{
-  "5252ce4ce4cfcd16f55cfa3c": {
+[
+  {
     "_type": "DocumentType",
     "id": "5252ce4ce4cfcd16f55cfa3c",
     "name": "document",
@@ -8,10 +8,11 @@
       "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
       "title": "{{ title }}"
     },
+    "description": "A document from which we were able to extract a clean HTML representation: text, doc, xls, epub...",
     "updated": "2014-03-28T13:53:35.513Z",
-    "documents": 7
+    "document_count": 7
   },
-  "5252ce4ce4cfcd16f55cfa3d": {
+  {
     "_type": "DocumentType",
     "id": "5252ce4ce4cfcd16f55cfa3d",
     "name": "image",
@@ -20,10 +21,11 @@
       "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
       "title": "{{ title }}"
     },
+    "description": "Display thumbnail and preview data encoded in base64.",
     "updated": null,
-    "documents": 7
+    "document_count": 7
   },
-  "5252ce4ce4cfcd16f55cfa41": {
+  {
     "_type": "DocumentType",
     "id": "5252ce4ce4cfcd16f55cfa41",
     "name": "task",
@@ -32,10 +34,11 @@
       "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
       "title": "{{ title }}"
     },
+    "description": "",
     "updated": "2014-03-14T18:15:37.603Z",
-    "documents": 2
+    "document_count": 2
   },
-  "5252ce4ce4cfcd16f55cfa3b": {
+  {
     "_type": "DocumentType",
     "id": "5252ce4ce4cfcd16f55cfa3b",
     "name": "file",
@@ -44,10 +47,11 @@
       "full": "<article>\n  <section>\n    <h1>{{{ title }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
       "title": "{{ title }}"
     },
+    "description": "Most basic document type for any kind of binary content. When a provider sends data without any additional information, it will use this document_type.",
     "updated": "2014-03-21T16:48:16.486Z",
-    "documents": 1
+    "document_count": 1
   },
-  "5252ce4ce4cfcd16f55cfa3f": {
+  {
     "_type": "DocumentType",
     "id": "5252ce4ce4cfcd16f55cfa3f",
     "name": "email",
@@ -56,7 +60,8 @@
       "full": "<article>\n  <section>\n    <h1>{{{ title.subject }}}</h1>\n    <code>{{ path }}</code>\n  </section>\n\n  <section>\n    {{{ html }}}\n  </section>\n</article>\n",
       "title": "{{ title }}"
     },
+    "description": "An email",
     "updated": "2014-03-28T13:53:24.454Z",
-    "documents": 27
+    "document_count": 27
   }
-}
+]

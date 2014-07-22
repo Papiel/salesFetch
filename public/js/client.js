@@ -299,7 +299,9 @@ function SalesfetchViewModel() {
     };
 
     client.goToDocument = function(document) {
-        client.fetchFullDocument(document);
+        if (!document.full()) {
+            client.fetchFullDocument(document);
+        }
 
         if (client.isMobile) {
             client.activeDocument(document);
@@ -316,6 +318,18 @@ function SalesfetchViewModel() {
         var html = document.snippet;
 
         $(w.document.body).html(html);
+
+    };
+
+    client.setIframeContent = ko.computed(function() {
+        if (client.activeDocument()) {
+            var iframe = $('#full-iframe')[0];
+            iframe.contentDocument.close();
+            iframe.contentDocument.write(client.activeDocument().full());
+        };
+    });
+
+    client.openDocumentInIframe = function(document) {
 
     };
 

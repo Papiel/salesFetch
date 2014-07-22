@@ -105,15 +105,9 @@
 
 		<!-- DOCUMENT VIEW -->
 		<!-- ko if: isMobile -->
-		<div class="document-view" data-bind="with: activeDocument">
-			<p class="full" data-bind="html: full" /></p>
-			<hr>
-			<p>
-				<span class="type" data-bind="text: type.name"></span>
-				 from
-				 <span class="provider" data-bind="text: provider.name"></span>
-			</p>
-		</div>
+		<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
+
+		</iframe>
 		<!-- /ko -->
 		<!-- END DOCUMENT VIEW -->
 
@@ -277,15 +271,9 @@
 	<!-- END DOCUMENT NAVBAR -->
 
 	<!-- DOCUMENT VIEW -->
-	<div class="document-view" data-bind="with: activeDocument">
-		<p class="full" data-bind="html: full" /></p>
-		<hr>
-		<p>
-			<span class="type" data-bind="text: type.name"></span>
-			 from
-			 <span class="provider" data-bind="text: provider.name"></span>
-		</p>
-	</div>
+	<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
+
+	</iframe>
 	<!-- END DOCUMENT VIEW -->
 
 </div>

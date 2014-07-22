@@ -16,6 +16,24 @@ $('#filter-tabs .dropdown-menu a').click(function(e) {
     e.stopPropagation();
 });
 
+/*
+ * Replace bootstrap.js for opening dropdown buttons
+ */
+var activeDropdown = null;
+$(document).click(function() {
+	activeDropdown.removeClass('open');
+});
+$('li.dropdown').click(function(e) {
+	e.stopPropagation();
+	var isOpen = $(this).hasClass('open');
+	$('li.dropdown').removeClass('open');
+
+	if (!isOpen) {
+		activeDropdown = $(this);
+		activeDropdown.addClass('open');
+	};
+});
+
 /*===============
   TABLET
  ================*/

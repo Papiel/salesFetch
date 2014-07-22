@@ -1,7 +1,8 @@
 "use strict";
 
-var async = require("async");
-var restify = require("restify");
+var async = require('async');
+var restify = require('restify');
+var qs = require('querystring');
 
 var config = require('../../../../config/configuration.js');
 var anyfetchHelpers = require('../../../helpers/anyfetch.js');
@@ -40,8 +41,14 @@ module.exports.post = function(req, res, next) {
     return next(new restify.MissingParameterError('Missing provider id'));
   }
 
+  var returnTo = config.salesFetchUrl + '/oauth-callback.html';
+  var query = {
+    bearer: req.user.anyFetchToken,
+    return_to: returnTo
+  };
+
   var id = req.params.id;
-  var connectUrl = config.managerUrl + '/connect/' + id + '?bearer=' + req.user.anyFetchToken;
+  var connectUrl = config.managerUrl + '/connect/' + id + '?' + qs.stringify(query);
   res.send({ url: connectUrl });
   next();
 };

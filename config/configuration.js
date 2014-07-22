@@ -28,7 +28,7 @@ var baseConfig = {
 
   root: rootPath,
   port: process.env.PORT || 3000,
-  hostname: process.env.HOST || process.env.HOSTNAME,
+  salesFetchUrl: process.env.SALESFETCH_URL,
 
   // List of the available error files
   errorsPath: errorsPath,

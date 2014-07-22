@@ -49,11 +49,6 @@ module.exports = function(server) {
     handlers.app.providers.index.post);
 
   if(config.env === 'development' || config.env === 'test') {
-    server.get('/', function(req, res, next) {
-      res.header('Location', '/context-creator');
-      res.send(302);
-      next();
-    });
     server.get('/context-creator', handlers.dev.contextCreator);
   }
 
@@ -70,8 +65,8 @@ module.exports = function(server) {
    * We assume that static files have an extension
    * (presence of a `.`), but backend routes don't
    */
-  server.get(/\./i, restify.serveStatic({
+  server.get(/^\/$|\./i, restify.serveStatic({
     directory: 'public',
-    default: 'index.hml'
+    default: 'index.html'
   }));
 };

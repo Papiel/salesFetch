@@ -20,7 +20,7 @@ module.exports = function(req, res) {
   // Basic dummy data
   var data = {
     sessionId: 'fake_session_id',
-    salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
+    salesFetchURL: 'https://salesfetch-staging.herokuapp.com',
     instanceURL: 'https://eu0.salesforce.com',
     context: {
       templatedDisplay: 'Matthieu Bacconnier',

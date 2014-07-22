@@ -9,20 +9,7 @@ var cleaner = require('../../hooks/cleaner');
 var requestBuilder = require('../../helpers/login').requestBuilder;
 
 describe('/context-creator (dev only)', function() {
-
   beforeEach(cleaner);
-
-  describe('GET /', function() {
-    var endpoint = '/';
-
-    it('should redirect to /context-creator', function(done) {
-      request(app)
-        .get(endpoint)
-        .expect(302)
-        .expect('Location', '/context-creator')
-        .end(done);
-    });
-  });
 
   describe('GET /context-creator', function() {
     var endpoint = '/context-creator';

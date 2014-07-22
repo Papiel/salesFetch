@@ -52,7 +52,7 @@
 	<div id="view-body">
 
 		<!-- SPINNER -->
-		<div id="docs-spinner" data-bind="visible: shouldDisplayDocumentsSpinner">
+		<div id="spinner" data-bind="visible: shouldDisplayDocumentsSpinner">
 			<img src="img/ajax-loader.gif" />
 		</div>
 		<!-- END SPINNER -->
@@ -111,6 +111,13 @@
 
 		<!-- DOCUMENT VIEW -->
 		<!-- ko if: isMobile -->
+
+		<!-- SPINNER -->
+		<div id="spinner" data-bind="visible: shouldDisplayViewerSpinner">
+			<img src="img/ajax-loader.gif" />
+		</div>
+		<!-- END SPINNER -->
+
 		<div class="document-view" data-bind="with: activeDocument">
 			<p class="full" data-bind="html: full" /></p>
 			<hr>
@@ -281,6 +288,12 @@
 
 		</nav>
 	<!-- END DOCUMENT NAVBAR -->
+
+	<!-- SPINNER -->
+	<div id="spinner" data-bind="visible: shouldDisplayViewerSpinner">
+		<img src="img/ajax-loader.gif" />
+	</div>
+	<!-- END SPINNER -->
 
 	<!-- DOCUMENT VIEW -->
 	<div class="document-view" data-bind="with: activeDocument">

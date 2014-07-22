@@ -343,6 +343,7 @@ function SalesfetchViewModel() {
     };
 
     client.shouldDisplayDocumentsSpinner = ko.observable(true);
+    client.shouldDisplayViewerSpinner = ko.observable(false);
 
     // Show Timeline by default
     client.goToTab(timelineTab);
@@ -369,8 +370,12 @@ function SalesfetchViewModel() {
     client.fetchDocuments();
 
     client.fetchFullDocument = function(document) {
+        client.shouldDisplayViewerSpinner(true);
         call('/app' + document.url, function success(data) {
             document.full(data.rendered.full);
+            client.shouldDisplayViewerSpinner(false);
+        }, function error() {
+            client.shouldDisplayViewerSpinner(false);
         });
     };
 }

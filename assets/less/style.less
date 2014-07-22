@@ -28,7 +28,7 @@ html.desktop {
 
 	#view-body { .DesktopBody }
 
-	#docs-spinner { .Spinner }
+	#spinner { .Spinner }
 
 	.snippet-list { .DesktopSnippetList }
 	.filter-column { .DestkopFilterColumn }
@@ -39,12 +39,12 @@ html.desktop {
 // Tablet
 html.tablet {
 
+	#spinner { .Spinner }
+
 
 	#mainview { .TabletLeftPanel;
 
 		#view-body { .MainViewBody }
-
-		#docs-spinner { .Spinner }
 
 		.snippet.active { .ActiveSnippet;
 			z-index: @tabletActiveSnippetZIndex;
@@ -114,7 +114,7 @@ html.tablet.portrait {
 // Mobile
 html.mobile {
 
-	#docs-spinner { .Spinner }
+	#spinner { .Spinner }
 
 	#view-body { .MainViewBody }
 

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "52bff114c8318c29e9000005",
+    "created_at": "2013-12-29T09:53:24.803Z",
+    "name": "Dropbox",
+    "developer": {
+        "name": "AnyFetch"
+    },
+    "redirect_uri": "http://dropbox.provider.anyfetch.com/init/connect",
+    "updated_at": "2014-01-29T17:19:58.010Z"
+  }
+]

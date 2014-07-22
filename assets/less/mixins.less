@@ -1,0 +1,474 @@
+@import "variables.less";
+
+/**********************
+        MIXINS
+***********************/
+
+// Global
+
+.StarButton {
+	color: @starButtonColor;
+	font-size: @starButtonFontSize;
+}
+
+.StarBarButton { .StarButton;
+	padding: @navbarVerticalPadding;
+	line-height: @navbarLineHeight;
+}
+
+.Snippet {
+	margin: @snippetMargin;
+	border: @snippetBorderColor @snippetBorderWidth solid;
+	height: @snippetHeight;
+	padding: @snippetPadding;
+	padding-left: @snippetPadding + @snippetIconDivWidth;
+	background-color: @snippetBackgroundColor;
+	position: relative; // needed for icon to stay in
+	overflow: hidden;
+
+	.icon {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: @snippetIconDivWidth;
+		background: #ccc;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+
+		&.email {
+			background-color: #CA1400;
+			background-image: url('/img/document_types-icons/email.png');
+		}
+
+		&.image {
+			background-color: #F7931D;
+			background-image: url('/img/document_types-icons/image.png');
+		}
+
+		&.contact {
+			background-color: #8829BF;
+			background-image: url('/img/document_types-icons/contact.png');
+		}
+
+		&.salesforce {
+			background-color: #CDEEFA;
+			background-image: url('/img/document_types-icons/salesforce.png');
+		}
+
+		&.document {
+			background-color: #0084EE;
+			background-image: url('/img/document_types-icons/document.png');
+		}
+
+
+	}
+
+	.star-btn { .StarButton;
+		float: right;
+		margin-top: (@snippetHeight - 2*@snippetPadding - @starButtonFontSize)/2 ;
+	}
+}
+
+.Snippet(tablet-landscape) { .Snippet;
+	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+}
+
+.SnippetList {
+	padding: 5px 0px;
+}
+
+.DocumentList {
+}
+
+.Navbar(@z-index: @defaultNavbarZIndex) {
+	position: absolute;
+	z-index: @z-index;
+	border: 0px;
+	margin-bottom: 0px;
+	min-height: 0px;
+	border-radius: 0px;
+	background-color: @navbarBackgroundColor;
+
+	.no-frame {
+		background-color: transparent !important;
+		max-width: @navbarNoFrameMaxWidth;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	li a {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+		border-radius: @navbarItemsBorderRadius;
+		background-color: @navbarItemBackgroundColor;
+		color: @navbarItemColor;
+	}
+
+	li.active a {
+		background-color: @navbarItemActiveBackgroundColor;
+		color: @navbarBackgroundColor;
+	}
+
+	.tab-left {
+		float: left;
+		margin: @navbarTabLeftMargin;
+	}
+
+	.tab-right {
+		float: right;
+		margin: @navbarTabRightMargin;
+	}
+}
+
+.NavigationBar { .Navbar;
+	right: 0;
+	left: 0;
+	top: 0;
+
+	li a {
+		padding: @navbarVerticalPadding @navbarHorizontalPadding;
+		font-size: @navbarItemFontSize;
+	}
+}
+
+.Toolbar { .Navbar;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: @toolbarBackground;
+	border-top: @defaultBorder;
+}
+
+.FilterToolBar {
+	li { .FilterToolbarButton }
+
+	li.drop-left {
+		.filter-menu { .FilterDropdownMenuLeft }
+	}
+	li.drop-right {
+		.filter-menu { .FilterDropdownMenuRight }
+	}
+}
+
+.FilterToolbarButton {
+	width: 50%;
+	margin: 0px;
+	text-align: center;
+}
+
+.FilterCell {
+	width: 100%;
+
+	a {
+		padding: @filterCellPadding;
+		font-size: @filterCellFontSize;
+
+		.icon-column {
+			float: left;
+			min-width: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+			min-height: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+		}
+	}
+}
+
+.FilterDropdownMenu {
+	border-radius: 0px;
+	border: 0px;
+	border-top: @defaultBorder;
+	text-transform: capitalize;
+
+	li { .FilterCell }
+}
+
+.FilterDropdownMenuLeft { .FilterDropdownMenu;
+	left: 0px;
+	right: -100%;
+}
+
+.FilterDropdownMenuRight { .FilterDropdownMenu;
+	left: -100%;
+	right: 0px;
+}
+
+.MainViewBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @toolbarHeight;
+	overflow: auto;
+	background: @bodyBackground;
+}
+
+.TogglePanelButton {
+	position: absolute;
+	right: -@tabletTogglePanelButtonWidth;
+	width: @tabletTogglePanelButtonWidth;
+	top: 0;
+	height: @navbarHeight;
+	background-color: @navbarBackgroundColor;
+	color: @navbarItemColor;
+	font-size: @tabletTogglePanelButtonFontSize;
+	padding: @tabletTogglePanelButtonPadding;
+}
+
+.DocumentView {
+	padding: @documentViewPadding;
+	width: 100%;
+	height: 100%;
+	border: 0;
+
+	.type, .provider {
+		font-weight: 600;
+		text-transform: capitalize;
+	}
+}
+
+.DocumentView(tablet) { .DocumentView;
+	height: 108%;
+}
+
+.DocumentView(mobile) { .DocumentView;
+}
+
+// Desktop
+
+.DesktopNavbar { .Navbar;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: @desktopNavbarWidth;
+	overflow-y: auto;
+	padding-bottom: @navbarItemSpacing;
+
+	li a {
+		padding: @desktopNavbarItemPadding;
+		font-size: @desktopNavbarFontSize;
+	}
+
+	.tab-left {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
+
+	.tab-right {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
+}
+
+.DesktopBody {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	left: @desktopNavbarWidth;
+	padding: @desktopBodyPadding;
+	background: @bodyBackground;
+}
+
+.DesktopSnippetList { .SnippetList;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: @filterColumnWidth;
+	overflow-y: auto;
+}
+
+.DesktopFilterMenu { .FilterCell;
+	list-style-type: none;
+	padding: @filterColumnListPadding;
+
+	li a {
+		cursor: pointer;
+		color: @filterColumnColor;
+
+		.passive {
+			color: @filterColumnPassiveColor;
+		}
+
+		div {
+			display: inline-block;
+		}
+	}
+}
+
+.DestkopFilterColumn {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: @filterColumnWidth;
+	padding: @filterColumnPadding;
+
+	ul { .DesktopFilterMenu }
+}
+
+.Provider {
+	border: @defaultBorder;
+	border-radius: @providerBorderRadius;
+	margin: @providerMargin;
+	padding: @providerPadding;
+	cursor: pointer;
+
+	&:hover {
+		background-color: white;
+		box-shadow: @providerBoxShadow;
+	}
+
+	.author {
+		font-style: italic;
+		color: @providerLegendColor;
+
+		.developer {
+			font-style: normal;
+			color: @providerDeveloperNameColor;
+		}
+	}
+
+	.description {
+		font-size: @providerDescriptionFontSize;
+	}
+
+	.passive {
+		color: @providerPassiveColor;
+	}
+}
+
+.ProvidersView {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: @providerTabMargin;
+
+	.provider-panel {
+		height: 100%;
+
+		.provider-list {
+			margin: 0px;
+			position: absolute;
+			top: @providerContainerMarginTop;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			overflow-y: auto;
+		}
+	}
+
+
+
+	.provider-table {
+		width: 100%;
+
+		th, td {
+			padding: @providerTableCellPadding;
+
+			.passive {
+				color: @providerPassiveColor;
+			}
+		}
+
+		td:last-child {
+			text-align: right;
+		}
+
+		tbody {
+			tr:nth-child(odd) {
+				background-color: @providerTableCellBackgroundColorOdd;
+			}
+
+			tr:nth-child(even) {
+				background-color: @providerTableCellBackgroundColorEven;
+			}
+
+			tr:hover {
+				background-color: @providerTableCellBackgroundColorHover !important;
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
+}
+
+// Tablet
+
+.TabletPanel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+
+.TabletLeftPanel { .TabletPanel;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: @tabletLeftPanelWidth;
+	z-index: @tabletMainViewZIndex;
+
+	-webkit-transition: left 0s ease-in-out;
+	transition: left 0s ease-in-out;
+
+	@media (orientation: portrait) {
+
+		left: -@tabletLeftPanelWidth;
+		-webkit-transition: left .5s ease-in-out;
+		transition: left .5s ease-in-out;
+		border-right: @defaultBorder;
+
+		&.active {
+			left: 0px;
+		}
+	}
+}
+
+.TabletRightPanel { .TabletPanel;
+	right: 0;
+	padding-top: @navbarHeight;
+
+	nav.navbar { .RightNavbar(@tabletSubViewNavbarZIndex) }
+}
+
+.TabletRightPanel(portrait) {
+	.TabletRightPanel;
+	left: 0px;
+}
+
+.TabletRightPanel(landscape) {
+	.TabletRightPanel;
+	left: @tabletLeftPanelWidth;
+}
+
+.RightNavbar(@z-index: @defaultNavbarZIndex) { .Navbar(@z-index);
+
+	@media (orientation: portrait) {
+		ul {
+			margin-left: @tabletTogglePanelButtonWidth;
+		}
+	}
+
+	li span {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+		position: relative;
+		display: inline-block;
+		color: @navbarItemColor;
+	}
+}
+
+.ActiveSnippet { .Snippet;
+	margin-right: @snippetMarginRight;
+	border-right: 0px;
+	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
+	background-color: @snippetActiveBackgroundColor;
+}
+
+// Mobile

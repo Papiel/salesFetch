@@ -1,0 +1,37 @@
+{
+  "facets": {
+    "document_types": {
+      "5252ce4ce4cfcd16f55cfa3c": 1
+    },
+    "providers": {
+      "5320a682c8318cba94000040": 1
+    },
+    "creation_dates": {
+      "1393632000000": 1
+    }
+  },
+  "data": [
+    {
+      "_type": "Document",
+      "id": "5320a773bc2e51d7135f0c8f",
+      "creation_date": "2014-03-12T18:29:07.150Z",
+      "provider": "5320a682c8318cba94000040",
+      "company": "52fb7b90c8318c4dc800006b",
+      "document_type": "5252ce4ce4cfcd16f55cfa3c",
+      "actions": {
+        "show": "https://www.dropbox.com/home%2Fall%2FSecuringtheRetailStore-SecuringtheData.docx.docx"
+      },
+      "document_url": "/documents/5320a773bc2e51d7135f0c8f",
+      "data": {
+        "title": "SecuringtheRetailStore SecuringtheData.docx",
+        "path": "/all/SecuringtheRetailStore-SecuringtheData.docx.docx",
+        "snippet": "Microsoft®U.S. National Security Team <span class=\"hlt\">White</span> Paper\nMicrosoft U.K-PL. National Security Team Marin Pawlowski HQmicoTecNet\nSecuring the Retail Store:\nSecuring the Data\nProduced by John Smith, CTO"
+      },
+      "related": 0,
+      "score": null
+    }
+  ],
+  "max_score": null,
+  "next_page_url": "coming",
+  "previous_page_url": "coming"
+}

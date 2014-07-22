@@ -51,6 +51,12 @@
 	<!-- VIEW BODY -->
 	<div id="view-body">
 
+		<!-- SPINNER -->
+		<div id="docs-spinner" data-bind="visible: shouldDisplayDocumentsSpinner">
+			<img src="img/ajax-loader.gif" />
+		</div>
+		<!-- END SPINNER -->
+
 		<!-- DOCUMENT LIST TAB -->
 		<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
 			<div class="snippet-list" data-bind="foreach: $data.documents">

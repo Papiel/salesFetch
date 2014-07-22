@@ -342,6 +342,8 @@ function SalesfetchViewModel() {
         return client.activeDocument && !client.isDesktop;
     };
 
+    client.shouldDisplayDocumentsSpinner = ko.observable(true);
+
     // Show Timeline by default
     client.goToTab(timelineTab);
 
@@ -361,6 +363,7 @@ function SalesfetchViewModel() {
     client.fetchDocuments = function() {
         call('/app/documents', function success(data) {
             client.addDocuments(data.documents.data);
+            client.shouldDisplayDocumentsSpinner(false);
         });
     };
     client.fetchDocuments();

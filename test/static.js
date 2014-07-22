@@ -18,14 +18,6 @@ describe('<Static content>', function() {
       .end(done);
   });
 
-  it('Should serve CSS', function(done) {
-    request(app)
-      .get('/stylesheets/style.css')
-      .expect(200)
-      .expect('Content-type', 'text/css')
-      .end(done);
-  });
-
   it('Should serve JS', function(done) {
     request(app)
       .get('/js/client.js')

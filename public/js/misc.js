@@ -21,7 +21,9 @@ $('#filter-tabs .dropdown-menu a').click(function(e) {
  */
 var activeDropdown = null;
 $(document).click(function() {
-	activeDropdown.removeClass('open');
+	if (activeDropdown) {
+		activeDropdown.removeClass('open');
+	}
 });
 $('li.dropdown').click(function(e) {
 	e.stopPropagation();

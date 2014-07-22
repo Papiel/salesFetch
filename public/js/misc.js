@@ -31,7 +31,7 @@ $('li.dropdown').click(function(e) {
 	if (!isOpen) {
 		activeDropdown = $(this);
 		activeDropdown.addClass('open');
-	};
+	}
 });
 
 /*===============

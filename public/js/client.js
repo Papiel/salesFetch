@@ -109,7 +109,7 @@ function Provider(json) {
         };
 
         call(url, options, function success(data) {
-            var w = window.open('oauth-callback.html', '','width=700, height=700');
+            window.open(data.url, '','width=700, height=700');
         });
     };
 }

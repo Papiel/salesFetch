@@ -102,13 +102,13 @@ function Provider(json) {
     };
 
     self.connect = function () {
-        var url = '/app/providers/' + self.id + '?data=' + getURLParameter('data');
+        var url = '/app/providers/' + self.id ;
         var options = {
             type: 'post'
         };
 
         call(url, options, function success(data) {
-            window.open(data.url);
+            var w = window.open(data.url, '','width=700, height=700');
         });
     };
 }

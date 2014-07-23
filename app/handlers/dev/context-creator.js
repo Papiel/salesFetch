@@ -5,45 +5,78 @@
  * Useful when developping on localhost.
  */
 // TODO: if no user or company is available, create one from AnyFetch credentials
-// TODO: how to update hash after user has changed values?
 
+var restify = require('restify');
 var async = require('async');
 var qs = require('querystring');
+var _ = require('lodash');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
+var config = require('../../../config/configuration.js');
 var getSecureHash = require('../../helpers/get-secure-hash.js');
+var isString = require('../../helpers/is-string.js');
 
-module.exports = function(req, res) {
-  // Basic dummy data
-  var data = {
-    sessionId: 'fake_session_id',
-    salesFetchURL: 'https://salesfetch-staging.herokuapp.com',
-    instanceURL: 'https://eu0.salesforce.com',
-    context: {
-      templatedDisplay: 'Matthieu Bacconnier',
-      templatedQuery: 'Matthieu Bacconnier',
-      recordId: '0032000001DoV22AAF',
-      recordType: 'Contact'
-    },
-    user: {
-      id: '',
-      name: '',
-      email: ''
-    },
-    organization: {
-      id: '',
-      name: ''
-    }
+// Basic dummy data
+var defaultDummyContext = {
+  sessionId: 'fake_session_id',
+  salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
+  instanceURL: 'https://eu0.salesforce.com',
+  context: {
+    templatedDisplay: 'Matthieu Bacconnier',
+    templatedQuery: 'Matthieu Bacconnier',
+    recordId: '0032000001DoV22AAF',
+    recordType: 'Contact'
+  },
+  user: {
+    id: '',
+    name: '',
+    email: ''
+  },
+  organization: {
+    id: '',
+    name: ''
+  }
+};
+var defaultPrefix = '/';
+
+var sendRes = function(res, data, org, prefix) {
+  data.organization = {
+    id: org.SFDCId,
+    name: org.name
   };
+
+  // Compute secure hash
+  data.hash = getSecureHash(data, org.masterKey);
+
+  var params = {
+    data: JSON.stringify(data)
+  };
+  var url = 'https://' + config.salesFetchUrl + prefix + '?' + qs.stringify(params);
+  res.send({
+    prefix: prefix,
+    url: url,
+    json: data
+  });
+};
+
+/**
+ * Obtain an initial dummy context
+ */
+module.exports.get = function getDummyContext(req, res, next) {
+  var data = _.merge({}, defaultDummyContext);
 
   async.waterfall([
     function findUser(cb) {
       User.findOne({}, cb);
     },
     function findOrg(user, cb) {
+      if(!user) {
+        return cb('No user found');
+      }
+
       data.user = {
         id: user.SFDCId,
         name: user.name,
@@ -52,32 +85,53 @@ module.exports = function(req, res) {
       Organization.findOne({ _id: user.organization }, cb);
     }
   ], function writeResults(err, org) {
-    var prefix = '/index.html';
-    var url = prefix;
-
     if(err) {
-      var error = 'Error trying to generate context: ' + err + '. ';
-      error += 'Make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.';
-      return res.send({
-        error: error,
-        json: data
-      });
+      res.send(new restify.NotFoundError(err + ', make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.'));
+      return next();
     }
 
-    data.organization = {
-      id: org.SFDCId,
-      name: org.name
-    };
+    sendRes(res, data, org, defaultPrefix);
+    next();
+  });
+};
 
-    // Compute secure hash
-    data.hash = getSecureHash(data, org.masterKey);
+/**
+ * Sign a dummy context by client request
+ */
+module.exports.post = function computeHash(req, res, next) {
+  if(!req.params || !req.params.data) {
+    res.send(new restify.MissingParameterError('Missing `data` key'));
+    return next();
+  }
+  var data = req.params.data;
+  if(isString(data)) {
+    try {
+      data = JSON.parse(data);
+    } catch(e) {
+      res.send(new restify.UnprocessableEntityError('Invalid JSON'));
+      return next();
+    }
+  }
 
-    // TODO: move that nice view client-side
-    // app/context-creator.html
-    var params = {
-      data: JSON.stringify(data)
-    };
-    data.url = 'https://' + req.headers.host + url + '?' + qs.stringify(params);
-    return res.send(data);
+  if(!data.organization || !data.organization.id) {
+    res.send(new restify.MissingParameterError('Missing `data.organization` key'));
+    return next();
+  }
+
+  var prefix = req.params.prefix;
+  var organization = data.organization;
+
+  async.waterfall([
+    function findOrg(cb) {
+      Organization.findOne({ SFDCId: organization.id }, cb);
+    },
+  ], function writeResponse(err, org) {
+    if(err || !org) {
+      res.send(new restify.NotFoundError('No org with SFDCId ' + organization.id + ' was found'));
+      return next();
+    }
+
+    sendRes(res, data, org, prefix);
+    next();
   });
 };

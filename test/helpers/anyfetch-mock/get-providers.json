@@ -1,20 +1,41 @@
-{
-  "53234698c8318cc5d100004f": {
-      "application": "53232d1dc8318cba94000042",
+[
+  {
+    "_type": "AccessToken",
+    "id": "53234698c8318cc5d100004f",
+    "is_basic_token": false,
+    "name": "test@anyfetch.com",
+    "client": {
+      "_type": "Client",
       "name": "Evernote",
-      "updated": "2014-03-14T18:15:37.603Z",
-      "document_count": 2
+      "id": "53232d1dc8318cba94000042"
+    },
+    "document_count": 2,
+    "updated": "2014-03-14T18:15:37.603Z"
   },
-  "5320a682c8318cba94000040": {
-      "application": "52bff114c8318c29e9000005",
+  {
+    "_type": "AccessToken",
+    "id": "5320a682c8318cba94000040",
+    "is_basic_token": false,
+    "name": "test@anyfetch.com",
+    "client": {
+      "_type": "Client",
       "name": "Dropbox",
-      "updated": "2014-03-21T16:48:16.486Z",
-      "document_count": 14
+      "id": "52bff114c8318c29e9000005"
+    },
+    "document_count": 14,
+    "updated": "2014-03-21T16:48:16.486Z"
   },
-  "5320a6abc8318cc5d1000049": {
-      "application": "53047faac8318c2d65000096",
+  {
+    "_type": "AccessToken",
+    "id": "5320a6abc8318cc5d1000049",
+    "is_basic_token": false,
+    "name": "test@anyfetch.com",
+    "client": {
+      "_type": "Client",
       "name": "GMail",
-      "updated": "2014-03-28T13:53:35.513Z",
-      "document_count": 28
+      "id": "53047faac8318c2d65000096"
+    },
+    "document_count": 28,
+    "updated": "2014-03-28T13:53:35.513Z"
   }
-}
+]

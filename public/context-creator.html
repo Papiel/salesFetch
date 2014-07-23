@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SalesFetch | Dummy context Generator</title>
+
+    <!-- CSS -->
+    <style>
+      body {
+        width: 80%;
+        margin: 0 auto;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 350px;
+        margin: 10px auto;
+      }
+      button {
+        display: block;
+        margin: 10px auto;
+      }
+      a {
+        display: block;
+        width: 80%;
+      }
+      h2 {
+        cursor: pointer;
+      }
+
+      #error {
+        color: red;
+      }
+    </style>
+
+    <!-- JS -->
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+      (function(e){e.d=function(t,n){var r=e("body").css("font-family","Comic Sans MS, Comic Sans, Chalkboard, cursive");n=e.extend(["node.js","SaleFetch","Salesforce","js","JSON","context"],n);var i=function(e){if(!e)e=n;return e[Math.floor(Math.random()*e.length)]};var s=["wow","such "+i(),"very "+i(),"much "+i(),"wow","such "+i(),"very "+i(),"much "+i(),"so "+i(),"many "+i(),"want "+i(),"wow","wow"];var o=r.append('<div class="such overlay" />').children(".such.overlay").css({position:"fixed",left:0,right:0,top:0,bottom:0,pointerEvents:"none"});e("img").each(function(){e(this).attr("src","https://images.encyclopediadramatica.es/3/3e/Doge_full_image.jpg")});setInterval(function(){e(".such.overlay").append('<span style="position: absolute; left: '+Math.random()*100+"%;top: "+Math.random()*100+"%;font-size: "+Math.max(24,Math.random()*50+50)+"px; color: rgb("+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+", "+Math.round(Math.random()*255)+');">'+i(s)+"</span>")},t)}})(jQuery)
+
+      $(document).on('click', 'h2', function d() {
+        $($.d(1500));
+      });
+    </script>
+    <script type="text/javascript">
+      var contextCreatorUrl = '/dev/context-creator';
+
+      function show(res) {
+        $('#error').empty();
+
+        var url = res.url;
+        var content = JSON.stringify(res.json, null, 2);
+
+        $('#prefix').attr('value', res.prefix);
+        $('#data').val(content);
+        $('#link').attr('href', url).text(url).show();
+      }
+
+      function loadFakeContext() {
+        $.ajax({
+          url: contextCreatorUrl,
+          success: show,
+          error: function(res) {
+            var message = (res.responseJSON ? res.responseJSON.message : '');
+            $('#error').html('Error<br/>' + message);
+          }
+        });
+      }
+
+      function update(form) {
+        $.post(contextCreatorUrl, form.serialize())
+          .done(show)
+          .fail(function error(res) {
+            var message = (res.responseJSON ? res.responseJSON.message : '');
+            $('#error').html('Error<br/>' + message);
+          });
+      }
+
+      $(document).ready(function() {
+        $('#link').hide();
+        loadFakeContext();
+
+        $('#contextForm').on('submit', function() {
+          update($(this));
+          return false;
+        })
+      });
+    </script>
+
+  </head>
+
+  <body>
+    <h1>Generating a valid context</h1>
+
+    <p id="error"></p>
+
+    <form id="contextForm" action="" method="post">
+      <textarea id="data" name="data">Requesting dummy context...</textarea>
+      <input type="text" id="prefix" name="prefix" value="/"/>
+      <input type="submit" id="send" value="Update"/>
+    </form>
+
+    <p>
+      <a id="link" href="#"></a>
+    </p>
+
+    <h2>Good to know</h2>
+    <ul>
+      <li>`context.templatedQuery`: this parameter is used to search into your AnyFetch documents</li>
+      <li>`user.id` and `organization.id` are SalesForce ids</li>
+      <li>`hash` is computed server-side and uniquely identifies a request</li>
+    </ul>
+
+  </body>
+</html>

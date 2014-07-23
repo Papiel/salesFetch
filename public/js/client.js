@@ -381,7 +381,7 @@ function SalesfetchViewModel() {
 
     client.fetchFullDocument = function(document) {
         client.shouldDisplayViewerSpinner(true);
-        call('/app' + document.url, function success(data) {
+        call('/app' + document.url, {}, function success(data) {
             document.full(data.rendered.full);
             client.shouldDisplayViewerSpinner(false);
         }, function error() {

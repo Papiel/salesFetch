@@ -16,7 +16,6 @@ var checkUnauthenticated = require('../../../../helpers/access.js').checkUnauthe
 describe('/app/documents/:id page', function() {
   var sampleUserId = '0000c57d9ba7bbbb265ffdc9';
   var sampleDocumentId = '5309c57d9ba7daaa265ffdc9';
-  var nonexistantId = '1234c57d9ba7daaa265f1234';
   var sampleContext = {
     "templatedDisplay": "Chuck Norris",
     "templatedQuery": "Chuck Norris",
@@ -36,21 +35,6 @@ describe('/app/documents/:id page', function() {
 
   describe('GET /app/documents/:id', function() {
     checkUnauthenticated(app, 'get', endpoint);
-
-    it('should err on nonexistant document', function(done) {
-      async.waterfall([
-        function buildRequest(cb) {
-          requestBuilder('/app/documents/' + nonexistantId, sampleContext, cb);
-        },
-        function sendRequest(url, cb) {
-          request(app)
-            .get(url)
-            .expect(/document not found/i)
-            .expect(404)
-            .end(cb);
-        }
-      ], done);
-    });
 
     it('should render the full template', function(done) {
       async.waterfall([

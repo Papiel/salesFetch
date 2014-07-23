@@ -148,7 +148,8 @@ describe('/app/documents page', function() {
           docs.should.not.be.empty;
           docs.forEach(function(doc) {
             doc.should.have.property('provider');
-            doc.provider.should.have.properties({
+            doc.provider.should.have.properties('client');
+            doc.provider.client.should.have.properties({
               name: 'Dropbox'
             });
           });

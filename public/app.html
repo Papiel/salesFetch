@@ -142,7 +142,6 @@
 		<!-- END SPINNER -->
 
 		<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
-
 		</iframe>
 		<!-- /ko -->
 		<!-- END DOCUMENT VIEW -->
@@ -313,9 +312,10 @@
 	<!-- END SPINNER -->
 
 	<!-- DOCUMENT VIEW -->
-	<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
-
-	</iframe>
+	<div id="iframe-container">
+		<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
+		</iframe>
+	</div>
 	<!-- END DOCUMENT VIEW -->
 
 </div>

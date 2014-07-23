@@ -51,6 +51,12 @@
 	<!-- VIEW BODY -->
 	<div id="view-body">
 
+		<!-- SPINNER -->
+		<div class="spinner" data-bind="visible: shouldDisplayDocumentsSpinner">
+			<img src="img/ajax-loader.gif" />
+		</div>
+		<!-- END SPINNER -->
+
 		<!-- DOCUMENT LIST TAB -->
 		<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
 			<div class="snippet-list" data-bind="foreach: $data.documents">
@@ -68,7 +74,7 @@
 		<!-- FILTERS COLUMN -->
 		<!-- ko if: isDesktop -->
 		<div class="filter-column" data-bind="visible: shouldDisplayDocumentList">
-			<div class="filter-providers">
+			<div class="filter-providers" data-bind="visible: connectedProviders().length > 0">
 				<h4>Providers</h4>
 				<ul class="filter-menu" data-bind="foreach: connectedProviders">
 					<li>
@@ -84,7 +90,7 @@
 				</ul>
 			</div>
 
-			<div class="filter-types">
+			<div class="filter-types" data-bind="visible: types().length > 0">
 				<h4>Types</h4>
 				<ul class="filter-menu" role="menu" data-bind="foreach: types">
 					<li>
@@ -105,6 +111,13 @@
 
 		<!-- DOCUMENT VIEW -->
 		<!-- ko if: isMobile -->
+
+		<!-- SPINNER -->
+		<div class="spinner" data-bind="visible: shouldDisplayViewerSpinner">
+			<img src="img/ajax-loader.gif" />
+		</div>
+		<!-- END SPINNER -->
+
 		<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">
 
 		</iframe>
@@ -269,6 +282,12 @@
 
 		</nav>
 	<!-- END DOCUMENT NAVBAR -->
+
+	<!-- SPINNER -->
+	<div class="spinner" data-bind="visible: shouldDisplayViewerSpinner">
+		<img src="img/ajax-loader.gif" />
+	</div>
+	<!-- END SPINNER -->
 
 	<!-- DOCUMENT VIEW -->
 	<iframe id="full-iframe" class="document-view" data-bind="visible: activeDocument">

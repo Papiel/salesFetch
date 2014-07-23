@@ -322,7 +322,7 @@ function SalesfetchViewModel() {
     };
 
     client.setIframeContent = ko.computed(function() {
-        if (client.activeDocument()) {
+        if (client.activeDocument() && client.activeDocument().full()) {
             var iframe = $('#full-iframe')[0];
             iframe.contentDocument.close();
             iframe.contentDocument.write(client.activeDocument().full());
@@ -352,6 +352,9 @@ function SalesfetchViewModel() {
         return client.activeDocument && !client.isDesktop;
     };
 
+    client.shouldDisplayDocumentsSpinner = ko.observable(true);
+    client.shouldDisplayViewerSpinner = ko.observable(false);
+
     // Show Timeline by default
     client.goToTab(timelineTab);
 
@@ -371,13 +374,18 @@ function SalesfetchViewModel() {
     client.fetchDocuments = function() {
         call('/app/documents', function success(data) {
             client.addDocuments(data.documents.data);
+            client.shouldDisplayDocumentsSpinner(false);
         });
     };
     client.fetchDocuments();
 
     client.fetchFullDocument = function(document) {
-        call('/app' + document.url, function success(data) {
+        client.shouldDisplayViewerSpinner(true);
+        call('/app' + document.url, {}, function success(data) {
             document.full(data.rendered.full);
+            client.shouldDisplayViewerSpinner(false);
+        }, function error() {
+            client.shouldDisplayViewerSpinner(false);
         });
     };
 }

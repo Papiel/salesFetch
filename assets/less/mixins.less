@@ -158,6 +158,7 @@
 	li.active a {
 		background-color: @navbarItemActiveBackgroundColor;
 		color: @navbarBackgroundColor;
+		box-shadow: 0px 0px;
 	}
 
 	.tab-left {
@@ -175,10 +176,12 @@
 	right: 0;
 	left: 0;
 	top: 0;
+	box-shadow: @navbarInnerShadow;
 
 	li a {
 		padding: @navbarVerticalPadding @navbarHorizontalPadding;
 		font-size: @navbarItemFontSize;
+		box-shadow: @navbarInnerShadow;
 	}
 }
 
@@ -291,10 +294,12 @@
 	width: @desktopNavbarWidth;
 	overflow-y: auto;
 	padding-bottom: @navbarItemSpacing;
+	box-shadow: @desktopNavbarInnerShadow;
 
 	li a {
 		padding: @desktopNavbarItemPadding;
 		font-size: @desktopNavbarFontSize;
+		box-shadow: @desktopNavbarInnerShadow;
 	}
 
 	.tab-left {
@@ -362,6 +367,7 @@
 	margin: @providerMargin;
 	padding: @providerPadding;
 	cursor: pointer;
+	background-color: @providerBackgroundColor;
 
 	&:hover {
 		background-color: white;

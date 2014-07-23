@@ -9,6 +9,7 @@ describe('Logger', function() {
     route: {
       path: '/'
     },
+    url: '/?data={"test":"true"}',
     method: 'post',
     _startTime: new Date()
   };

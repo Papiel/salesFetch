@@ -322,7 +322,7 @@ function SalesfetchViewModel() {
     };
 
     client.setIframeContent = ko.computed(function() {
-        if (client.activeDocument()) {
+        if (client.activeDocument() && client.activeDocument().full()) {
             var iframe = $('#full-iframe')[0];
             iframe.contentDocument.close();
             iframe.contentDocument.write(client.activeDocument().full());

@@ -64,6 +64,15 @@
 	position: relative; // needed for icon to stay in
 	overflow: hidden;
 
+	font-size: @snippetFontSize;
+
+	h4 {
+		margin: @snippetTitleMargin;
+		font-size: @snippetTitleFontSize;
+		color: @snippetTitleColor;
+		font-weight: @snippetTitleFontWeight;
+	}
+
 	.icon {
 		position: absolute;
 		top: 0;
@@ -111,6 +120,7 @@
 
 .Snippet(tablet-landscape) { .Snippet;
 	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+	box-shadow: @tabletSnippetListShadow;
 }
 
 .SnippetList {
@@ -507,6 +517,7 @@
 	border-right: 0px;
 	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
+	box-shadow: 0px 0px;
 }
 
 // Mobile

@@ -2,8 +2,10 @@
        CONSTANTS
 ***********************/
 
-@defaultFontFamily: 					'Open Sans', sans-serif;
+@defaultFontFamily: 					'Helvetica Neue';
 @defaultFontWeight: 					300;
+@defaultColor: 							#646464;
+@bodyBackground: 						#F0F0F0;
 
 @anyFetchBlue: 							#14A8E1;
 @anyFetchLightColor:					#fff;
@@ -22,18 +24,20 @@
 @navbarBackgroundColor: 				#474747;
 @navbarItemBackgroundColor: 			#656565;
 @navbarItemColor: 						#fff;
-@navbarItemActiveBackgroundColor: 		#F8F8F8;
+@navbarItemActiveBackgroundColor: 		@bodyBackground;
 @navbarItemsBorderRadius: 				0px;
 @navbarItemSpacing: 					10px;
 @navbarItemFontSize: 					20px;
 @navbarNoFrameMaxWidth: 				230px;
+@navbarInnerShadow:						inset 0 -20px 30px -25px #000;
+@navbarImageMaxHeight:					48px;
 
 @toolbarLineHeight: 					20px;
 @toolbarVerticalPadding: 				15px;
 @toolbarHorizontalPadding: 				20px;
 @toolbarBackground: 					#F1F1F1;
 
-@snippetBackgroundColor: 				transparent;
+@snippetBackgroundColor: 				#FAFAFA;
 @snippetActiveBackgroundColor: 			#fff;
 @snippetIconDivWidth: 					20px;
 @snippetPadding: 						5px;
@@ -42,6 +46,14 @@
 @snippetBorderWidth: 					1px;
 @snippetBorderColor: 					#ddd;
 @snippetHeight: 						80px;
+@snippetFontSize:						12px;
+@snippetTitleMargin:					5px 0px 10px 0px;
+@snippetTitleFontSize:					15px;
+@snippetTitleColor:						#333333;
+@snippetTitleFontWeight:				400;
+@snippetImageMaxHeight:					100%;
+@snippetImageMaxWidth:					30%;
+@snippetImageMargin:					0px 10px;
 
 @snippetSectionHeaderPadding:			0px 10px;
 @snippetSectionFieldsetMargin:			20px 0px -20px 0px;
@@ -50,14 +62,12 @@
 
 @documentViewPadding: 					0px 0px;
 
-@bodyBackground: 						#F8F8F8;
-
 @starButtonFontSize: 					20px;
 @starButtonColor: 						#C4C4C4;
 
 @filterCellFontSize: 					14px;
 @filterCellPadding: 					5px 20px;
-@filterColumnWidth: 					200px;
+@filterColumnWidth: 					300px;
 @filterColumnPadding: 					20px;
 @filterColumnColor: 					#3E8ACC;
 @filterColumnPassiveColor: 				#D6D6D6;
@@ -76,8 +86,9 @@
 @providerContainerMarginTop: 			60px;
 @providerTableCellPadding: 				5px 10px;
 @providerTableCellBackgroundColorEven: 	@bodyBackground;
-@providerTableCellBackgroundColorOdd: 	#F1F1F1;
+@providerTableCellBackgroundColorOdd: 	@snippetBackgroundColor;
 @providerTableCellBackgroundColorHover: #fff;
+@providerBackgroundColor:				@snippetBackgroundColor;
 
 @defaultBorder: 						1px solid #ddd;
 
@@ -90,6 +101,7 @@
 @desktopNavbarWidth: 					100px;
 @desktopNavbarItemPadding: 				25px;
 @desktopNavbarFontSize: 				25px;
+@desktopNavbarInnerShadow:				inset -20px 0px 30px -25px #000;
 
 @desktopBodyPadding: 					20px;
 

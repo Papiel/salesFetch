@@ -64,6 +64,32 @@
 	position: relative; // needed for icon to stay in
 	overflow: hidden;
 
+	font-size: @snippetFontSize;
+
+	h4 {
+		margin: @snippetTitleMargin;
+		font-size: @snippetTitleFontSize;
+		color: @snippetTitleColor;
+		font-weight: @snippetTitleFontWeight;
+		word-wrap: break-word;
+		white-space: nowrap;
+		overflow-x: hidden;
+	}
+
+	img {
+		max-width: @snippetImageMaxWidth;
+		max-height: @snippetImageMaxHeight;
+		margin: @snippetImageMargin;
+	}
+
+	.content {
+		height: 100%;
+		overflow: hidden;
+		white-space: normal;
+		text-overflow: ellipsis;
+		margin-bottom: 0px;
+	}
+
 	.icon {
 		position: absolute;
 		top: 0;
@@ -109,8 +135,9 @@
 	}
 }
 
-.Snippet(tablet-landscape) { .Snippet;
+.Snippet(tablet-landscape) {
 	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+	box-shadow: @tabletSnippetListShadow;
 }
 
 .SnippetList {
@@ -137,6 +164,10 @@
 		white-space: nowrap;
 	}
 
+	img {
+		max-height: @navbarImageMaxHeight;
+	}
+
 	li a {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
@@ -148,6 +179,7 @@
 	li.active a {
 		background-color: @navbarItemActiveBackgroundColor;
 		color: @navbarBackgroundColor;
+		box-shadow: 0px 0px;
 	}
 
 	.tab-left {
@@ -165,10 +197,12 @@
 	right: 0;
 	left: 0;
 	top: 0;
+	box-shadow: @navbarInnerShadow;
 
 	li a {
 		padding: @navbarVerticalPadding @navbarHorizontalPadding;
 		font-size: @navbarItemFontSize;
+		box-shadow: @navbarInnerShadow;
 	}
 }
 
@@ -281,10 +315,12 @@
 	width: @desktopNavbarWidth;
 	overflow-y: auto;
 	padding-bottom: @navbarItemSpacing;
+	box-shadow: @desktopNavbarInnerShadow;
 
 	li a {
 		padding: @desktopNavbarItemPadding;
 		font-size: @desktopNavbarFontSize;
+		box-shadow: @desktopNavbarInnerShadow;
 	}
 
 	.tab-left {
@@ -352,6 +388,7 @@
 	margin: @providerMargin;
 	padding: @providerPadding;
 	cursor: pointer;
+	background-color: @providerBackgroundColor;
 
 	&:hover {
 		background-color: white;
@@ -507,6 +544,7 @@
 	border-right: 0px;
 	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
+	box-shadow: 0px 0px;
 }
 
 // Mobile

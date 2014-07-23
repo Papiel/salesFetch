@@ -71,7 +71,7 @@
 		font-size: @snippetTitleFontSize;
 		color: @snippetTitleColor;
 		font-weight: @snippetTitleFontWeight;
-		word-wrap: break-word;
+		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow-x: hidden;
 	}
@@ -88,6 +88,7 @@
 		white-space: normal;
 		text-overflow: ellipsis;
 		margin-bottom: 0px;
+		margin-right: @snippetContentRightMargin + @starButtonFontSize;
 	}
 
 	.icon {
@@ -542,7 +543,7 @@
 .ActiveSnippet { .Snippet;
 	margin-right: @snippetMarginRight;
 	border-right: 0px;
-	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
+	padding-right: @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
 	box-shadow: 0px 0px;
 }

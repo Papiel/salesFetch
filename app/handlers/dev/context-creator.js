@@ -106,7 +106,7 @@ module.exports.post = function computeHash(req, res, next) {
   try {
     data = JSON.parse(req.params.data);
   } catch(e) {
-    res.send(new restify.MissingParameterError('Missing `data` key'));
+    res.send(new restify.MissingParameterError('Invalid JSON'));
     return next();
   }
 

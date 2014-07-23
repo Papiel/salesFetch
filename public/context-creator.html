@@ -46,6 +46,8 @@
       var contextCreatorUrl = '/context-creator';
 
       function show(res) {
+        $('#error').empty();
+
         var url = res.url;
         var content = JSON.stringify(res.json, null, 2);
         $('#prefix').attr('value', res.prefix);

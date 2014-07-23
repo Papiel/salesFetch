@@ -182,6 +182,10 @@ function Type(json) {
     self.toggleActive = function() {
         this.isActive(!this.isActive());
     };
+
+    self.imageURL = function() {
+        return 'img/document_types-icons/' + self.name + '.png';
+    };
 }
 
 var tabTotalNumer = 0;

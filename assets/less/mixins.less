@@ -71,6 +71,23 @@
 		font-size: @snippetTitleFontSize;
 		color: @snippetTitleColor;
 		font-weight: @snippetTitleFontWeight;
+		word-wrap: break-word;
+		white-space: nowrap;
+		overflow-x: hidden;
+	}
+
+	img {
+		max-width: @snippetImageMaxWidth;
+		max-height: @snippetImageMaxHeight;
+		margin: @snippetImageMargin;
+	}
+
+	.content {
+		height: 100%;
+		overflow: hidden;
+		white-space: normal;
+		text-overflow: ellipsis;
+		margin-bottom: 0px;
 	}
 
 	.icon {
@@ -118,7 +135,7 @@
 	}
 }
 
-.Snippet(tablet-landscape) { .Snippet;
+.Snippet(tablet-landscape) {
 	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
 	box-shadow: @tabletSnippetListShadow;
 }
@@ -145,6 +162,10 @@
 		overflow-x: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	img {
+		max-height: @navbarImageMaxHeight;
 	}
 
 	li a {

@@ -50,12 +50,12 @@ module.exports = function(server) {
 
   if(config.env === 'development' || config.env === 'test') {
     server.get('/', function(req, res, next) {
-      res.header('Location', '/context-creator');
+      res.header('Location', '/dev/context-creator');
       res.send(302);
       next();
     });
-    server.get('/context-creator', handlers.dev.contextCreator.get);
-    server.post('/context-creator', handlers.dev.contextCreator.post);
+    server.get('/dev/context-creator', handlers.dev.contextCreator.get);
+    server.post('/dev/context-creator', handlers.dev.contextCreator.post);
   }
 
   /**

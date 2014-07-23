@@ -9,21 +9,21 @@ var cleaner = require('../../hooks/cleaner');
 var requestBuilder = require('../../helpers/login').requestBuilder;
 var _ = require('lodash');
 
-describe('/context-creator (dev only)', function() {
+describe('/dev/context-creator (dev only)', function() {
   describe('GET /', function() {
     var endpoint = '/';
 
-    it('should redirect to /context-creator', function(done) {
+    it('should redirect to /dev/context-creator', function(done) {
       request(app)
         .get(endpoint)
         .expect(302)
-        .expect('Location', '/context-creator')
+        .expect('Location', '/dev/context-creator')
         .end(done);
     });
   });
 
-  describe('GET /context-creator', function() {
-    var endpoint = '/context-creator';
+  describe('GET /dev/context-creator', function() {
+    var endpoint = '/dev/context-creator';
 
     before(cleaner);
     after(cleaner);
@@ -51,8 +51,8 @@ describe('/context-creator (dev only)', function() {
     });
   });
 
-  describe('POST /context-creator', function() {
-    var endpoint = '/context-creator';
+  describe('POST /dev/context-creator', function() {
+    var endpoint = '/dev/context-creator';
     var dummyContext;
     var prefix = '/';
 

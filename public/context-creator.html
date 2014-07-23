@@ -50,20 +50,16 @@
 
         var url = res.url;
         var content = JSON.stringify(res.json, null, 2);
+
         $('#prefix').attr('value', res.prefix);
-        $('#data').text(content);
+        $('#data').val(content);
         $('#link').attr('href', url).text(url).show();
       }
 
       function loadFakeContext() {
         $.ajax({
           url: contextCreatorUrl,
-          success: function(res) {
-            if(res.error) {
-              return $('#error').html(res.error);
-            }
-            show(res);
-          },
+          success: show,
           error: function(res) {
             var message = (res.responseJSON ? res.responseJSON.message : '');
             $('#error').html('Error<br/>' + message);
@@ -73,12 +69,7 @@
 
       function update(form) {
         $.post(contextCreatorUrl, form.serialize())
-          .done(function success(res) {
-            if(res.error) {
-              return $('#error').html(res.error);
-            }
-            show(res);
-          })
+          .done(show)
           .fail(function error(res) {
             var message = (res.responseJSON ? res.responseJSON.message : '');
             $('#error').html('Error<br/>' + message);

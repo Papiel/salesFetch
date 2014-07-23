@@ -9,6 +9,7 @@
 var restify = require('restify');
 var async = require('async');
 var qs = require('querystring');
+var _ = require('lodash');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
@@ -16,7 +17,7 @@ var Organization = mongoose.model('Organization');
 
 var config = require('../../../config/configuration.js');
 var getSecureHash = require('../../helpers/get-secure-hash.js');
-var extend = require('../../helpers/extend-defaults.js');
+var isString = require('../../helpers/is-string.js');
 
 // Basic dummy data
 var defaultDummyContext = {
@@ -65,13 +66,17 @@ var sendRes = function(res, data, org, prefix) {
  * Obtain an initial dummy context
  */
 module.exports.get = function getDummyContext(req, res, next) {
-  var data = extend({}, defaultDummyContext);
+  var data = _.merge({}, defaultDummyContext);
 
   async.waterfall([
     function findUser(cb) {
       User.findOne({}, cb);
     },
     function findOrg(user, cb) {
+      if(!user) {
+        return cb('No user found');
+      }
+
       data.user = {
         id: user.SFDCId,
         name: user.name,
@@ -81,12 +86,8 @@ module.exports.get = function getDummyContext(req, res, next) {
     }
   ], function writeResults(err, org) {
     if(err) {
-      var error = 'Error trying to generate context: ' + err + '. ';
-      error += 'Make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.';
-      return res.send({
-        error: error,
-        json: data
-      });
+      res.send(new restify.NotFoundError(err + ', make sure to create a valid user and organization in your local MongoDB `salesfetch-dev` database.'));
+      return next();
     }
 
     sendRes(res, data, org, defaultPrefix);
@@ -102,12 +103,14 @@ module.exports.post = function computeHash(req, res, next) {
     res.send(new restify.MissingParameterError('Missing `data` key'));
     return next();
   }
-  var data;
-  try {
-    data = JSON.parse(req.params.data);
-  } catch(e) {
-    res.send(new restify.MissingParameterError('Invalid JSON'));
-    return next();
+  var data = req.params.data;
+  if(isString(data)) {
+    try {
+      data = JSON.parse(data);
+    } catch(e) {
+      res.send(new restify.UnprocessableEntityError('Invalid JSON'));
+      return next();
+    }
   }
 
   if(!data.organization || !data.organization.id) {
@@ -121,15 +124,11 @@ module.exports.post = function computeHash(req, res, next) {
   async.waterfall([
     function findOrg(cb) {
       Organization.findOne({ SFDCId: organization.id }, cb);
-    }
+    },
   ], function writeResponse(err, org) {
-    if(err) {
-      var error = 'Error authenticating your context: ' + err + '. ';
-      error += 'It seems that no org with id ' + organization.id + ' exists';
-      return res.send({
-        error: error,
-        json: data
-      });
+    if(err || !org) {
+      res.send(new restify.NotFoundError('No org with SFDCId ' + organization.id + ' was found'));
+      return next();
     }
 
     sendRes(res, data, org, prefix);

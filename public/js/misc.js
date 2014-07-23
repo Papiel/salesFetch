@@ -51,7 +51,7 @@ $('#toggle-panel-btn').click(function() {
 /**
  * Hide left bar on click snippet
  */
-$('html.tablet.portrait .snippet').click(function() {
+$('html.tablet .snippet-list').click(function() {
   $("#mainview").removeClass('active');
   $("#toggle-panel-btn span").removeClass('fa-toggle-left');
 });

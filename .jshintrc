@@ -70,9 +70,10 @@
     "afterEach",
     "$",
     "device",
-    "ko"
+    "ko",
+    "moment"
   ],
   "indent"        : 2,
-  "maxstatements" : 40,
+  "maxstatements" : 50,
   "maxcomplexity" : 15
 }

@@ -32,7 +32,9 @@ module.exports.findDocuments = function(params, user, cb) {
       docs.document_types = {};
       docs.providers = {};
       docs.data.forEach(function(doc) {
-        doc.snippet_rendered = templates.render(doc, 'snippet');
+        doc.rendered = {};
+        doc.rendered.title = templates.render(doc, 'title');
+        doc.rendered.snippet = templates.render(doc, 'snippet');
 
         // We encounter a new document_type
         var id = doc.document_type.id;
@@ -78,9 +80,9 @@ module.exports.findDocument = function(id, user, context, finalCb) {
       if(!doc || !doc.data) {
         return cb(new restify.NotFoundError('Document not found'));
       }
-
-      doc.full_rendered = templates.render(doc, 'full');
-      doc.title_rendered = templates.render(doc, 'title');
+      doc.rendered = {};
+      doc.rendered.full = templates.render(doc, 'full');
+      doc.rendered.title = templates.render(doc, 'title');
       doc.provider = doc.provider.name;
       doc.document_type = doc.document_type.name;
 

@@ -40,7 +40,9 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
 
       docs = docs.data.map(function(doc) {
         doc.pinned = true;
-        doc.snippet_rendered = templates.render(doc, 'snippet');
+        doc.rendered = {};
+        doc.rendered.title = templates.render(doc, 'title');
+        doc.rendered.snippet = templates.render(doc, 'snippet');
         return doc;
       });
       cb(null, docs);

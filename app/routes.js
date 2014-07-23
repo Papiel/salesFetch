@@ -44,33 +44,30 @@ module.exports = function(server) {
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.get);
 
-  server.post('/app/providers',
+  server.post('/app/providers/:id',
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.post);
 
   if(config.env === 'development' || config.env === 'test') {
-    server.get('/', function(req, res, next) {
-      res.header('Location', '/context-creator');
-      res.send(302);
-      next();
-    });
-    server.get('/context-creator', handlers.dev.contextCreator);
+    server.get('/dev/context-creator', handlers.dev.contextCreator.get);
+    server.post('/dev/context-creator', handlers.dev.contextCreator.post);
   }
 
   /**
    * Allow cross-origin OPTION requests
    */
-  server.opts(/\.*/, function(req, res, next) {
+  server.opts(/.*/i, function(req, res, next) {
     res.send(204);
     next();
   });
 
   /**
-   * Allow HTML to be served directly
-   * TODO: serve all static content
+   * Allow static resources to be served directly
+   * We assume that static files have an extension
+   * (presence of a `.`), but backend routes don't
    */
-  server.get(/.*\.(css|html|js|woff|ttf|svg|png|jpg|jpeg|gif)/i, restify.serveStatic({
+  server.get(/^\/$|\./i, restify.serveStatic({
     directory: 'public',
-    default: 'index.hml'
+    default: 'index.html'
   }));
 };

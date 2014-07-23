@@ -44,26 +44,26 @@ describe('/app/providers page', function() {
     });
   });
 
-  describe('POST /app/providers', function() {
-    checkUnauthenticated(app, 'post', endpoint);
+  describe('POST /app/providers/:id', function() {
+    var dropboxConnectEndpoint = endpoint + '/52bff114c8318c29e9000005';
+    checkUnauthenticated(app, 'post', dropboxConnectEndpoint);
 
-    it("should check for the presence of app_id", function(done) {
+    it("should err on invalid provider id", function(done) {
       async.waterfall([
         function buildRequest(cb) {
-          requestBuilder(endpoint, null, cb);
+          requestBuilder(endpoint + '/not_a_mongo_id', null, cb);
         },
         function sendRequest(url, cb) {
           request(app)
             .post(url)
             .expect(409)
-            .expect(/app_id/)
+            .expect(/provider id/i)
             .end(cb);
         }
       ], done);
     });
 
-    it("should redirect the user to the connection page", function(done) {
-      var dropboxConnectEndpoint = endpoint + '?app_id=52bff114c8318c29e9000005';
+    it("should respond with the redirect URL containing return_to", function(done) {
 
       async.waterfall([
         function buildRequest(cb) {
@@ -72,8 +72,10 @@ describe('/app/providers page', function() {
         function sendRequest(url, cb) {
           request(app)
             .post(url)
-            .expect(302)
-            .expect('Location', /bearer=anyFetchToken/i)
+            .expect(200)
+            .expect(/url/i)
+            .expect(/bearer=anyFetchToken/i)
+            .expect(/return_to/i)
             .end(cb);
         }
       ], done);

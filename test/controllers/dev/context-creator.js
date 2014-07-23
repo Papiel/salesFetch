@@ -10,18 +10,6 @@ var requestBuilder = require('../../helpers/login').requestBuilder;
 var _ = require('lodash');
 
 describe('/dev/context-creator (dev only)', function() {
-  describe('GET /', function() {
-    var endpoint = '/';
-
-    it('should redirect to /dev/context-creator', function(done) {
-      request(app)
-        .get(endpoint)
-        .expect(302)
-        .expect('Location', '/dev/context-creator')
-        .end(done);
-    });
-  });
-
   describe('GET /dev/context-creator', function() {
     var endpoint = '/dev/context-creator';
 

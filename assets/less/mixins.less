@@ -16,6 +16,44 @@
 	line-height: @navbarLineHeight;
 }
 
+.Spinner {
+	width: 100%;
+	height: 100%;
+
+	img {
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		height: @spinnerImageSize;
+		width: @spinnerImageSize;
+	}
+}
+
+.SnippetSection {
+
+	.section-header {
+
+		padding: @snippetSectionHeaderPadding;
+
+		fieldset {
+			border-top: @defaultBorder;
+			text-align: center;
+			margin: @snippetSectionFieldsetMargin;
+
+			legend {
+				width: auto;
+				border: 0px;
+				color: @snippetSectionHeaderColor;
+				padding: @snippetSectionHeaderPadding;
+				font-size: @snippetSectionHeaderFontSize;
+			}
+		}
+	}
+}
+
 .Snippet {
 	margin: @snippetMargin;
 	border: @snippetBorderColor @snippetBorderWidth solid;
@@ -24,6 +62,33 @@
 	padding-left: @snippetPadding + @snippetIconDivWidth;
 	background-color: @snippetBackgroundColor;
 	position: relative; // needed for icon to stay in
+	overflow: hidden;
+
+	font-size: @snippetFontSize;
+
+	h4 {
+		margin: @snippetTitleMargin;
+		font-size: @snippetTitleFontSize;
+		color: @snippetTitleColor;
+		font-weight: @snippetTitleFontWeight;
+		word-wrap: break-word;
+		white-space: nowrap;
+		overflow-x: hidden;
+	}
+
+	img {
+		max-width: @snippetImageMaxWidth;
+		max-height: @snippetImageMaxHeight;
+		margin: @snippetImageMargin;
+	}
+
+	.content {
+		height: 100%;
+		overflow: hidden;
+		white-space: normal;
+		text-overflow: ellipsis;
+		margin-bottom: 0px;
+	}
 
 	.icon {
 		position: absolute;
@@ -70,8 +135,9 @@
 	}
 }
 
-.Snippet(tablet-landscape) { .Snippet;
+.Snippet(tablet-landscape) {
 	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+	box-shadow: @tabletSnippetListShadow;
 }
 
 .SnippetList {
@@ -98,6 +164,10 @@
 		white-space: nowrap;
 	}
 
+	img {
+		max-height: @navbarImageMaxHeight;
+	}
+
 	li a {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
@@ -109,6 +179,7 @@
 	li.active a {
 		background-color: @navbarItemActiveBackgroundColor;
 		color: @navbarBackgroundColor;
+		box-shadow: 0px 0px;
 	}
 
 	.tab-left {
@@ -126,10 +197,12 @@
 	right: 0;
 	left: 0;
 	top: 0;
+	box-shadow: @navbarInnerShadow;
 
 	li a {
 		padding: @navbarVerticalPadding @navbarHorizontalPadding;
 		font-size: @navbarItemFontSize;
+		box-shadow: @navbarInnerShadow;
 	}
 }
 
@@ -198,7 +271,7 @@
 	left: 0px;
 	right: 0px;
 	bottom: @toolbarHeight;
-	overflow: scroll;
+	overflow: auto;
 	background: @bodyBackground;
 }
 
@@ -216,7 +289,9 @@
 
 .DocumentView {
 	padding: @documentViewPadding;
-	overflow: scroll;
+	width: 100%;
+	height: 100%;
+	border: 0;
 
 	.type, .provider {
 		font-weight: 600;
@@ -225,6 +300,7 @@
 }
 
 .DocumentView(tablet) { .DocumentView;
+	height: 108%;
 }
 
 .DocumentView(mobile) { .DocumentView;
@@ -237,12 +313,14 @@
 	top: 0;
 	bottom: 0;
 	width: @desktopNavbarWidth;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-bottom: @navbarItemSpacing;
+	box-shadow: @desktopNavbarInnerShadow;
 
 	li a {
 		padding: @desktopNavbarItemPadding;
 		font-size: @desktopNavbarFontSize;
+		box-shadow: @desktopNavbarInnerShadow;
 	}
 
 	.tab-left {
@@ -263,7 +341,6 @@
 	bottom: 0;
 	left: @desktopNavbarWidth;
 	padding: @desktopBodyPadding;
-	overflow: scroll;
 	background: @bodyBackground;
 }
 
@@ -273,7 +350,7 @@
 	bottom: 0;
 	left: 0;
 	right: @filterColumnWidth;
-	overflow: scroll;
+	overflow-y: auto;
 }
 
 .DesktopFilterMenu { .FilterCell;
@@ -303,6 +380,97 @@
 	padding: @filterColumnPadding;
 
 	ul { .DesktopFilterMenu }
+}
+
+.Provider {
+	border: @defaultBorder;
+	border-radius: @providerBorderRadius;
+	margin: @providerMargin;
+	padding: @providerPadding;
+	cursor: pointer;
+	background-color: @providerBackgroundColor;
+
+	&:hover {
+		background-color: white;
+		box-shadow: @providerBoxShadow;
+	}
+
+	.author {
+		font-style: italic;
+		color: @providerLegendColor;
+
+		.developer {
+			font-style: normal;
+			color: @providerDeveloperNameColor;
+		}
+	}
+
+	.description {
+		font-size: @providerDescriptionFontSize;
+	}
+
+	.passive {
+		color: @providerPassiveColor;
+	}
+}
+
+.ProvidersView {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: @providerTabMargin;
+
+	.provider-panel {
+		height: 100%;
+
+		.provider-list {
+			margin: 0px;
+			position: absolute;
+			top: @providerContainerMarginTop;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			overflow-y: auto;
+		}
+	}
+
+
+
+	.provider-table {
+		width: 100%;
+
+		th, td {
+			padding: @providerTableCellPadding;
+
+			.passive {
+				color: @providerPassiveColor;
+			}
+		}
+
+		td:last-child {
+			text-align: right;
+		}
+
+		tbody {
+			tr:nth-child(odd) {
+				background-color: @providerTableCellBackgroundColorOdd;
+			}
+
+			tr:nth-child(even) {
+				background-color: @providerTableCellBackgroundColorEven;
+			}
+
+			tr:hover {
+				background-color: @providerTableCellBackgroundColorHover !important;
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
 }
 
 // Tablet
@@ -376,6 +544,7 @@
 	border-right: 0px;
 	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
+	box-shadow: 0px 0px;
 }
 
 // Mobile

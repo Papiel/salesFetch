@@ -6,18 +6,31 @@
 
 
 // Global
-.toolbar { .Toolbar }
 
-.document-list { .DocumentList;
+body {
+	font-family: @defaultFontFamily;
+	font-weight: @defaultFontWeight;
+	color: @defaultColor;
 
-	.snippet-list {
-		.SnippetList;
+	.toolbar { .Toolbar }
 
-		.snippet { .Snippet }
+	.document-list { .DocumentList;
+
+		.snippet-list {
+			.SnippetList;
+
+			.snippet { .Snippet }
+		}
 	}
-}
 
-nav .star-btn { .StarBarButton }
+	.snippet-section { .SnippetSection }
+
+	.spinner { .Spinner }
+
+	.provider { .Provider }
+
+	nav .star-btn { .StarBarButton }
+}
 
 // Desktop
 html.desktop {
@@ -28,6 +41,7 @@ html.desktop {
 
 	.snippet-list { .DesktopSnippetList }
 	.filter-column { .DestkopFilterColumn }
+	.providers-view { .ProvidersView }
 
 }
 

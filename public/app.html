@@ -68,10 +68,8 @@
 					<div class="section-body" data-bind="foreach: documents">
 
 						<!-- SNIPPET -->
-						<div class="snippet" data-bind="click: $root.goToDocument,
-															css: {active: $data == $root.activeDocument()}">
-							<div class="icon" data-bind="css: type.name">
-							</div>
+						<div class="snippet" data-bind="click: $root.goToDocument, css: {active: $data == $root.activeDocument()}">
+							<div class="icon" data-bind="css: type.name"></div>
 							<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
 							<p data-bind="html: snippet"></p>
 						</div>

@@ -54,7 +54,8 @@ module.exports = function(server) {
       res.send(302);
       next();
     });
-    server.get('/context-creator', handlers.dev.contextCreator);
+    server.get('/context-creator', handlers.dev.contextCreator.get);
+    server.post('/context-creator', handlers.dev.contextCreator.post);
   }
 
   /**

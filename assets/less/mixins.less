@@ -191,7 +191,6 @@
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
 		border-radius: @navbarItemsBorderRadius;
-		background-color: @navbarItemBackgroundColor;
 		color: @navbarItemColor;
 	}
 
@@ -248,7 +247,7 @@
 }
 
 .FilterToolBar {
-	li { .FilterToolbarButton }
+	li.dropup { .FilterToolbarButton }
 
 	li.drop-left {
 		.filter-menu { .FilterDropdownMenuLeft }
@@ -262,19 +261,25 @@
 	width: 50%;
 	margin: 0px;
 	text-align: center;
+
+	&.open {
+		background-color: @anyFetchGray;
+	}
+
+	a:hover {
+		background-color: transparent;
+	}
 }
 
 .FilterCell {
-	width: 100%;
+	margin: @filterCellMargin;
 
 	a {
 		padding: @filterCellPadding;
 		font-size: @filterCellFontSize;
 
-		.icon-column {
-			float: left;
-			min-width: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
-			min-height: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+		.passive {
+			color: gray;
 		}
 	}
 }
@@ -284,8 +289,14 @@
 	border: 0px;
 	border-top: @defaultBorder;
 	text-transform: capitalize;
+	background-color: @toolbarBackground;
 
-	li { .FilterCell }
+	ul {
+		text-align: left;
+
+		li.filter-li { .FilterCell }
+	}
+
 }
 
 .FilterDropdownMenuLeft { .FilterDropdownMenu;

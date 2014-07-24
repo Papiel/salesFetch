@@ -14,6 +14,7 @@
 @anyFetchBlack: 						#777;
 @anyfetchSoftOrange: 					@anyFetchOrange + #111;
 @anyFetchLightGray: 					#F8F8F8;
+@anyFetchGray: 							#D6D6D6;
 
 @bootstrapGray: 						#ADADAD;
 @bootstrapLightGray: 					#EBEBEB;
@@ -35,7 +36,7 @@
 @toolbarLineHeight: 					20px;
 @toolbarVerticalPadding: 				15px;
 @toolbarHorizontalPadding: 				20px;
-@toolbarBackground: 					#F1F1F1;
+@toolbarBackground: 					@navbarBackgroundColor;
 
 @snippetBackgroundColor: 				#FAFAFA;
 @snippetActiveBackgroundColor: 			#fff;
@@ -67,17 +68,18 @@
 @starButtonColor: 						#C4C4C4;
 
 @filterCellFontSize: 					14px;
-@filterCellPadding: 					5px 20px;
+@filterCellPadding: 					0px 5px;
+@filterCellMargin:						10px;
 @filterColumnWidth: 					300px;
 @filterColumnPadding: 					20px;
 @filterColumnColor: 					#3E8ACC;
-@filterColumnPassiveColor: 				#D6D6D6;
+@filterColumnPassiveColor: 				@anyFetchGray;
 @filterColumnListPadding: 				0px 0px 0px 10px;
 
 @providerBorderRadius: 					3px;
 @providerMargin: 						10px 0px;
 @providerPadding: 						15px 10px;
-@providerPassiveColor: 					#D6D6D6;
+@providerPassiveColor: 					@anyFetchGray;
 @providerDeveloperNameColor: 			#000;
 @providerLegendColor: 					#555;
 @providerBoxShadow: 					0px 0px 20px -10px;

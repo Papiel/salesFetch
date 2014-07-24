@@ -210,18 +210,16 @@
 						 Provider<span data-bind="visible: filteredProviders().length > 1">s</span>
 						 <span class="caret"></span>
 					</a>
-					<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: connectedProviders">
-						<li>
-							<a data-bind="click: toggleActive">
-								<div class="icon-column">
-									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
-								</div>
-								<div class="text-column">
+					<div class="dropdown-menu filter-menu" role="menu" >
+						<ul class="fa-ul" data-bind="foreach: connectedProviders">
+							<li class="filter-li">
+								<a data-bind="click: toggleActive">
+									<i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
 									<span data-bind="text: name"></span>
-								</div>
-							</a>
-						</li>
-					</ul>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</li>
 				<!-- END FILTER PROVIDERS -->
 
@@ -232,18 +230,16 @@
 						 Type<span data-bind="visible: filteredTypes().length > 1">s</span>
 						 <span class="caret"></span>
 					</a>
-					<ul class="dropdown-menu filter-menu" role="menu" data-bind="foreach: types">
-						<li>
-							<a data-bind="click: toggleActive">
-								<div class="icon-column">
-									<span class="fa" data-bind="css: {'fa-check': isActive}"></span>
-								</div>
-								<div class="text-column">
+					<div class="dropdown-menu filter-menu" role="menu" >
+						<ul class="fa-ul" data-bind="foreach: types">
+							<li class="filter-li">
+								<a data-bind="click: toggleActive">
+									<i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
 									<span data-bind="text: name"></span>
-								</div>
-							</a>
-						</li>
-					</ul>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</li>
 				<!-- END FILTER TYPES -->
 

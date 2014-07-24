@@ -166,7 +166,6 @@ function Provider(json) {
         };
 
         call(url, options, function success(data) {
-            console.log(data);
             window.open(data.url, '','width=700, height=700');
         });
     };

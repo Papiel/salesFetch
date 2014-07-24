@@ -157,17 +157,15 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th>Developer</th>
+								<th>Account</th>
+								<th>Count</th>
 							</tr>
 						</thead>
 						<tbody data-bind="foreach: connectedProviders">
 							<tr>
 								<td data-bind="text: name"></td>
-								<td data-bind="text: developer"></td>
-								<td>
-									<span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>
-									<span class="fa fa-star" data-bind="css: {passive: !trusted}"></span>
-								</td>
+								<td data-bind="text: accountName"></td>
+								<td data-bind="text: count"></td>
 								<td><a href="" class="fa fa-share"></a></td>
 							</tr>
 						</tbody>

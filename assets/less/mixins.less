@@ -20,15 +20,32 @@
 	width: 100%;
 	height: 100%;
 
-	img {
+	* {
 		margin: auto;
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		left: 0;
+	}
+
+	i {
 		height: @spinnerSize;
 		width: @spinnerSize;
+	}
+
+	.error {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
+	}
+
+	.default-message {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
 	}
 }
 

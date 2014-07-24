@@ -52,8 +52,9 @@
 	<div id="view-body">
 
 		<!-- SPINNER -->
-		<div class="spinner" data-bind="visible: shouldDisplayDocumentsSpinner">
-			<i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+		<div class="spinner">
+			<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayDocumentsSpinner"></i>
+			<p class="error" data-bind="text: documentListError"></p>
 		</div>
 		<!-- END SPINNER -->
 
@@ -136,8 +137,9 @@
 		<!-- ko if: isMobile -->
 
 		<!-- SPINNER -->
-		<div class="spinner" data-bind="visible: shouldDisplayViewerSpinner">
-			<i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+		<div class="spinner">
+			<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+			<p class="error" data-bind="text: documentViewerError"></p>
 		</div>
 		<!-- END SPINNER -->
 
@@ -165,7 +167,9 @@
 								<td data-bind="text: name"></td>
 								<td data-bind="text: accountName"></td>
 								<td data-bind="text: count"></td>
-								<td><a href="" class="fa fa-share"></a></td>
+								<td>
+									<a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -175,7 +179,7 @@
 				<h2>Available providers</h2>
 				<div class="row provider-list" data-bind="foreach: availableProviders">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-						<a data-bind="attr: {href: redirect_uri}" target="_blank">
+						<a data-bind="click: connect">
 							<div class="provider">
 								<h4>
 									<span data-bind="text: name"></span>
@@ -268,9 +272,9 @@
 </div>
 	<!--END MAIN VIEW -->
 
-	<!-- SUBVIEW -->
-	<!-- ko if: isTablet -->
-	<div id="subview">
+<!-- SUBVIEW -->
+<!-- ko if: isTablet -->
+<div id="subview">
 
 	<!-- DOCUMENT NAVBAR -->
 	<nav class="navbar navbar-default navbar-tab">
@@ -304,8 +308,10 @@
 	<!-- END DOCUMENT NAVBAR -->
 
 	<!-- SPINNER -->
-	<div class="spinner" data-bind="visible: shouldDisplayViewerSpinner">
-		<i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+	<div class="spinner">
+		<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+		<p class="error" data-bind="text: documentViewerError"></p>
+		<p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
 	</div>
 	<!-- END SPINNER -->
 

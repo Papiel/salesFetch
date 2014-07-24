@@ -223,6 +223,13 @@ function SalesfetchViewModel() {
     client.filterByProvider = ko.observable(false);
     client.filterByType = ko.observable(false);
 
+    client.documentListError = ko.observable();
+    client.documentViewerError = ko.observable();
+
+    if (client.isTablet) {
+        client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
+    }
+
     // Return providers filtered by isActive
     client.filteredProviders = ko.computed(function() {
         var activeProviders = client.connectedProviders().filter(function(provider) {
@@ -365,6 +372,10 @@ function SalesfetchViewModel() {
             client.fetchFullDocument(document);
         }
 
+        if (client.shouldDisplayDocumentViewerDefaultMessage) {
+            client.shouldDisplayDocumentViewerDefaultMessage(false);
+        }
+
         if (client.isMobile) {
             client.activeDocument(document);
         } else if (client.isTablet) {
@@ -416,7 +427,7 @@ function SalesfetchViewModel() {
         return client.activeDocument && !client.isDesktop;
     };
 
-    client.shouldDisplayDocumentsSpinner = ko.observable(true);
+    client.shouldDisplayDocumentsSpinner = ko.observable(false);
     client.shouldDisplayViewerSpinner = ko.observable(false);
 
     // Show Timeline by default
@@ -437,9 +448,13 @@ function SalesfetchViewModel() {
     }
 
     client.fetchDocuments = function() {
-        call('/app/documents', function success(data) {
+        client.shouldDisplayDocumentsSpinner(true);
+        call('/app/documents', {}, function success(data) {
             client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
+        }, function error() {
+            client.shouldDisplayDocumentsSpinner(false);
+            client.documentListError('Failed to reach the server');
         });
     };
     client.fetchDocuments();
@@ -451,6 +466,7 @@ function SalesfetchViewModel() {
             client.shouldDisplayViewerSpinner(false);
         }, function error() {
             client.shouldDisplayViewerSpinner(false);
+            client.documentViewerError('Failed to reach the server');
         });
     };
 }

@@ -224,6 +224,10 @@ function SalesfetchViewModel() {
     client.documentListError = ko.observable();
     client.documentViewerError = ko.observable();
 
+    if (client.isTablet) {
+        client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
+    }
+
     // Return providers filtered by isActive
     client.filteredProviders = ko.computed(function() {
         var activeProviders = client.connectedProviders().filter(function(provider) {
@@ -361,6 +365,10 @@ function SalesfetchViewModel() {
     client.goToDocument = function(document) {
         if (!document.full()) {
             client.fetchFullDocument(document);
+        }
+
+        if (client.shouldDisplayDocumentViewerDefaultMessage) {
+            client.shouldDisplayDocumentViewerDefaultMessage(false);
         }
 
         if (client.isMobile) {

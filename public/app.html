@@ -34,10 +34,10 @@
 		<!-- ko if: isMobile -->
 		<div data-bind="with: activeDocument">
 			<ul class="nav navbar-pills">
-				<li class="tab-left">
+				<li class="pull-left back-button">
 					<a data-bind="click: $root.goBack" class="fa fa-chevron-left no-frame"></a>
 				</li>
-				<li class="tab-right">
+				<li class="pull-right document-title">
 					<a data-bind="text: title" class="no-frame"></a>
 				</li>
 			</ul>
@@ -280,10 +280,10 @@
 		<!-- WHEN DOC SELECTED -->
 		<div data-bind="with: activeDocument">
 			<ul class="nav navbar-pills">
-				<li class="tab-right">
+				<li class="pull-right">
 					<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 				</li>
-				<li class="tab-left">
+				<li class="pull-left">
 					<img data-bind="attr: {src: type.imageURL()}" />
 					<img class="separator-arrow" src="img/arrow.png" />
 					<span data-bind="html: title"></span>
@@ -295,7 +295,7 @@
 		<!-- WHEN NO DOC -->
 		<div data-bind="visible: !activeDocument()">
 			<ul class="nav navbar-pills">
-				<li class="tab-right">
+				<li class="pull-right">
 					<span>Select a document</span>
 				</li>
 			</ul>

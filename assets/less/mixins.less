@@ -159,6 +159,7 @@
 
 	.no-frame {
 		background-color: transparent !important;
+		box-shadow: 0px 0px;
 		max-width: @navbarNoFrameMaxWidth;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
@@ -191,6 +192,20 @@
 	.tab-right {
 		float: right;
 		margin: @navbarTabRightMargin;
+	}
+
+	.pull-left {
+		margin: @navbarPullLeftMargin;
+	}
+
+	.pull-right {
+		margin: @navbarPullRightMargin;
+	}
+
+	.back-button,
+	.document-title {
+		margin-right: 0px;
+		margin-left: 0px;
 	}
 }
 
@@ -539,14 +554,6 @@
 		position: relative;
 		display: inline-block;
 		color: @navbarItemColor;
-	}
-
-	.tab-left {
-		margin: @tabletRightNavbarTabLeftMargin;
-	}
-
-	.tab-right {
-		margin: @tabletRightNavbarTabRightMargin;
 	}
 }
 

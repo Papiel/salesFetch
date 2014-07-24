@@ -52,8 +52,10 @@
 	<div id="view-body">
 
 		<!-- SPINNER -->
-		<div class="spinner">
-			<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayDocumentsSpinner"></i>
+		<div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
+			<i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+		</div>
+		<div class="placeholder-container" data-bind="visible: documentListError() != null">
 			<p class="error" data-bind="text: documentListError"></p>
 		</div>
 		<!-- END SPINNER -->
@@ -137,8 +139,10 @@
 		<!-- ko if: isMobile -->
 
 		<!-- SPINNER -->
-		<div class="spinner">
-			<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+		<div class="placeholder-container" data-bind="visible: shouldDisplayViewerSpinner">
+			<i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+		</div>
+		<div class="placeholder-container" data-bind="visible: documentViewerError() != null">
 			<p class="error" data-bind="text: documentViewerError"></p>
 		</div>
 		<!-- END SPINNER -->
@@ -308,10 +312,16 @@
 	<!-- END DOCUMENT NAVBAR -->
 
 	<!-- SPINNER -->
-	<div class="spinner">
+	<div class="placeholder-container">
 		<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+	</div>
+
+	<div class="placeholder-container" data-bind="visible: documentViewerError() != null">
 		<p class="error" data-bind="text: documentViewerError"></p>
-		<p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
+	</div>
+
+	<div class="placeholder-container" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">
+		<p class="default-message">No document selected</p>
 	</div>
 	<!-- END SPINNER -->
 

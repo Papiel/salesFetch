@@ -146,13 +146,15 @@ function Provider(json) {
     self.isActive = ko.observable(false);
 
     if (json) {
-        self.name = json.name;
+        self.name = json.name ? json.name : json.client.name;
         self.id = json.id;
         self.redirect_uri = json.redirect_uri;
         self.trusted = json.trusted;
         self.featured = json.featured;
         self.description = json.description;
         self.developer = json.developer ? json.developer.name : 'unknown';
+        self.accountName = json.account_name ? json.account_name : 'unknown';
+        self.count = json.document_count;
     }
 
     self.toggleActive = function() {
@@ -305,7 +307,10 @@ function SalesfetchViewModel() {
     client.setConnectedProvider = function(json) {
         var connectedProviders = [];
         json.forEach(function(providerInfo) {
-            connectedProviders.push(new Provider(providerInfo));
+            // This IF prevents fetching the anonymous token
+            if (!providerInfo._type === "AccessToken" || providerInfo.client) {
+                connectedProviders.push(new Provider(providerInfo));
+            }
         });
         client.connectedProviders(connectedProviders);
     };
@@ -313,7 +318,7 @@ function SalesfetchViewModel() {
     client.ProviderWithJson = function(json) {
         var provider = null;
         client.connectedProviders().some(function(providerIte) {
-            if (providerIte.client === json.client) {
+            if (providerIte.id === json.id) {
                 provider = providerIte;
                 return true;
             }
@@ -421,6 +426,7 @@ function SalesfetchViewModel() {
         client.fetchAvailableProviders = function() {
             call('/app/providers', function success(data) {
                 client.setAvailableProviders(data.providers);
+                client.setConnectedProvider(data.connectedProviders);
             });
         };
         client.fetchAvailableProviders();

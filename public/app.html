@@ -156,17 +156,15 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th>Developer</th>
+								<th>Account</th>
+								<th>Count</th>
 							</tr>
 						</thead>
 						<tbody data-bind="foreach: connectedProviders">
 							<tr>
 								<td data-bind="text: name"></td>
-								<td data-bind="text: developer"></td>
-								<td>
-									<span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>
-									<span class="fa fa-star" data-bind="css: {passive: !trusted}"></span>
-								</td>
+								<td data-bind="text: accountName"></td>
+								<td data-bind="text: count"></td>
 								<td><a href="" class="fa fa-share"></a></td>
 							</tr>
 						</tbody>
@@ -286,7 +284,7 @@
 				<li class="pull-left">
 					<img data-bind="attr: {src: type.imageURL()}" />
 					<img class="separator-arrow" src="img/arrow.png" />
-					<span data-bind="html: title"></span>
+					<span class="html-title" data-bind="html: title"></span>
 				</li>
 			</ul>
 		</div>
@@ -296,7 +294,7 @@
 		<div data-bind="visible: !activeDocument()">
 			<ul class="nav navbar-pills">
 				<li class="pull-right">
-					<span>Select a document</span>
+					<span class="place-holder">Select a document</span>
 				</li>
 			</ul>
 		</div>

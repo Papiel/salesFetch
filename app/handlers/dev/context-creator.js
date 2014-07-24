@@ -54,7 +54,7 @@ var sendRes = function(res, data, org, prefix) {
   var params = {
     data: JSON.stringify(data)
   };
-  var url = 'https://' + config.salesFetchUrl + prefix + '?' + qs.stringify(params);
+  var url = config.salesFetchUrl + prefix + '?' + qs.stringify(params);
   res.send({
     prefix: prefix,
     url: url,

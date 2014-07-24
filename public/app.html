@@ -254,8 +254,11 @@
 		<!-- DOCUMENT FULL NAV -->
 		<!-- ko if: isMobile -->
 		<ul class="nav nav-pills" data-bind="with: activeDocument">
-			<li>
+			<li class="pull-left">
 				<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+			</li>
+			<li class="pull-right">
+				<span class="star-btn fa fa-arrows-alt" data-bind="click: openOriginal, clickBubble: false" />
 			</li>
 		</ul>
 		<!-- /ko -->
@@ -278,6 +281,9 @@
 		<!-- WHEN DOC SELECTED -->
 		<div data-bind="with: activeDocument">
 			<ul class="nav navbar-pills">
+				<li class="pull-right">
+					<span class="star-btn fa fa-arrows-alt" data-bind="click: openOriginal, clickBubble: false" />
+				</li>
 				<li class="pull-right">
 					<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 				</li>

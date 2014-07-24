@@ -139,6 +139,10 @@ function Document(json) {
             console.log(res.responseText);
         });
     };
+
+    self.openOriginal = function() {
+        alert('Coming soon babe');
+    };
 }
 
 function Provider(json) {

@@ -24,7 +24,9 @@
 		<div data-bind="visible: shouldDisplayTabsNavbar()">
 			<ul class="nav nav-pills" data-bind="foreach: tabs">
 				<li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
-					<a data-bind="click: $root.goToTab, css: display" class="fa"></a>
+					<a data-bind="click: $root.goToTab">
+						<i data-bind="css: display" class="fa fa-fw fa-lg"></i>
+					</a>
 				</li>
 			</ul>
 		</div>
@@ -35,7 +37,9 @@
 		<div data-bind="with: activeDocument">
 			<ul class="nav navbar-pills">
 				<li class="pull-left back-button">
-					<a data-bind="click: $root.goBack" class="fa fa-chevron-left no-frame"></a>
+					<a data-bind="click: $root.goBack" class="no-frame">
+						<i class="fa fa-lg fa-chevron-left"></i>
+					</a>
 				</li>
 				<li class="pull-right document-title">
 					<a data-bind="text: title" class="no-frame"></a>

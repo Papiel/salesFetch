@@ -4,6 +4,6 @@
     "templates": {
         "snippet": "<h4 class='title title-single'>{{{ title }}}</h4>",
         "full": "<article>\n  <h1>{{{ title }}}</h1>\n\n  <img src=\"{{ display }}\" />\n</article>\n",
-        "title": "{{ title }}"
+        "title": "{{{ title }}}"
     }
 }

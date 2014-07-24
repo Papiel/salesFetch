@@ -326,8 +326,7 @@ function SalesfetchViewModel() {
         });
 
         if (!provider) {
-            // provider = new Provider(json);
-            // client.connectedProviders.push(provider);
+            console.log ('could not find provider : '+ json);
         }
 
         return provider;

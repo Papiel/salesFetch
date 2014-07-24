@@ -53,7 +53,7 @@
 
 		<!-- SPINNER -->
 		<div class="spinner">
-			<img src="img/ajax-loader.gif"  data-bind="visible: shouldDisplayDocumentsSpinner || (isMobile && shouldDisplayViewerSpinner)"/>
+			<img src="img/ajax-loader.gif"  data-bind="visible: shouldDisplayDocumentsSpinner" />
 			<p class="error" data-bind="text: documentListError"></p>
 		</div>
 		<!-- END SPINNER -->
@@ -139,6 +139,7 @@
 		<!-- SPINNER -->
 		<div class="spinner" data-bind="visible: shouldDisplayViewerSpinner">
 			<img src="img/ajax-loader.gif" />
+			<p class="error" data-bind="text: documentViewerError"></p>
 		</div>
 		<!-- END SPINNER -->
 

@@ -381,43 +381,39 @@ function SalesfetchViewModel() {
             client.shouldDisplayDocumentViewerDefaultMessage(false);
         }
 
-        if (client.isMobile) {
-            client.activeDocument(document);
-        } else if (client.isTablet) {
-            client.activeDocument(document);
-        } else if (client.isDesktop) {
-            client.openDocumentInOtherWindow(document);
-        }
+        client.activeDocument(document);
     };
 
-    client.openDocumentInOtherWindow = function(document) {
 
-        var success = function(data) {
-            document.full(data.rendered.full);
-            client.shouldDisplayViewerSpinner(false);
-            var w = window.open();
-            var html = document.full();
+    var defaultCSS = 'body{padding: 20px} header{color: blue; font-size: 25px; margin-bottom: 30px;}'
+    if (!client.isDesktop) {
+        client.setIframeContent = ko.computed(function() {
+            var iframe = $('#full-iframe')[0];
+            iframe.contentDocument.close();
+            iframe.contentDocument.write('');
 
-            $(w.document.body).html(html);
-        };
+            if (client.activeDocument() && client.activeDocument().full()) {
 
-        if (document.full()) {
-            success();
-        } else {
-            client.fetchFullDocument(document, success);
-        }
+                var cssLink = document.createElement("style");
+                cssLink.type = "text/css";
+                cssLink.innerHTML = defaultCSS;
 
-    };
+                iframe.contentDocument.write(client.activeDocument().full());
+                frames['full-iframe'].document.head.appendChild(cssLink);
+            }
+        });
+    } else {
+        client.openFullDocument = ko.computed(function() {
+            if (client.activeDocument() && client.activeDocument().full()) {
+                var document = client.activeDocument();
+                var w = window.open();
+                var html = document.full();
 
-    client.setIframeContent = ko.computed(function() {
-        var iframe = $('#full-iframe')[0];
-        iframe.contentDocument.close();
-        iframe.contentDocument.write('');
-
-        if (client.activeDocument() && client.activeDocument().full()) {
-            iframe.contentDocument.write(client.activeDocument().full());
-        }
-    });
+                $(w.document.body).html(html);
+                $(w.document.head).append('<style>'+ defaultCSS +'</style>');
+            }
+        });
+    }
 
     client.goBack = function() {
         scrollToTop();
@@ -427,7 +423,7 @@ function SalesfetchViewModel() {
     // Conditional view
     // Do no use ko.computed when not needed for performance reasons
     client.shouldDisplayDocumentList = ko.computed(function() {
-        return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
+        return (!client.activeDocument() && client.activeTab() !== client.providerTab) || !client.isMobile;
     });
 
     client.shouldDisplayFilterToolbar = ko.computed(function() {
@@ -474,19 +470,15 @@ function SalesfetchViewModel() {
     };
     client.fetchDocuments();
 
-    client.fetchFullDocument = function(document, success) {
+    client.fetchFullDocument = function(document) {
         client.shouldDisplayViewerSpinner(true);
 
-        if (!success) {
-            var defaultSuccess = function(data) {
-                document.full(data.rendered.full);
+        call('/app' + document.url, {}, function success(data) {
                 client.shouldDisplayViewerSpinner(false);
-            }
-        }
-
-        call('/app' + document.url, {}, success, function error() {
-            client.shouldDisplayViewerSpinner(false);
-            client.documentViewerError('Failed to reach the server');
+                document.full(data.rendered.full);
+            }, function error() {
+                client.shouldDisplayViewerSpinner(false);
+                client.documentViewerError('Failed to reach the server');
         });
     };
 }

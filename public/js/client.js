@@ -385,7 +385,10 @@ function SalesfetchViewModel() {
     };
 
 
-    var defaultCSS = 'body{padding: 20px} header{color: blue; font-size: 25px; margin-bottom: 30px;}'
+    var cssBlock = document.createElement("style");
+    cssBlock.type = "text/css";
+    cssBlock.innerHTML = 'body{padding: 20px} header{color: green; font-size: 25px; margin-bottom: 30px;}';
+
     if (!client.isDesktop) {
         client.setIframeContent = ko.computed(function() {
             var iframe = $('#full-iframe')[0];
@@ -393,13 +396,8 @@ function SalesfetchViewModel() {
             iframe.contentDocument.write('');
 
             if (client.activeDocument() && client.activeDocument().full()) {
-
-                var cssLink = document.createElement("style");
-                cssLink.type = "text/css";
-                cssLink.innerHTML = defaultCSS;
-
                 iframe.contentDocument.write(client.activeDocument().full());
-                frames['full-iframe'].document.head.appendChild(cssLink);
+                frames['full-iframe'].document.head.appendChild(cssBlock);
             }
         });
     } else {
@@ -410,7 +408,7 @@ function SalesfetchViewModel() {
                 var html = document.full();
 
                 $(w.document.body).html(html);
-                $(w.document.head).append('<style>'+ defaultCSS +'</style>');
+                $(w.document.head).appendChild(cssBlock);
             }
         });
     }

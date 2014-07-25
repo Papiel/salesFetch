@@ -66,6 +66,8 @@ module.exports.render = function render(doc, name, documentType) {
       doc: doc,
       templateName: name
     });
+
+    template = overrided.default[name] || overrided.default.default;
   }
 
   return mustache.render(template, doc.data);

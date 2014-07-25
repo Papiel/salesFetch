@@ -114,7 +114,7 @@ module.exports.initAccount = function(data, done) {
   var anyfetch = new AnyFetch(config.fetchApiCreds);
 
   async.waterfall([
-    function checkIfCompanyAlreadyExist(cb) {
+    function checkIfCompanyAlreadyExists(cb) {
       Organization.findOne({'SFDCId': org.id}, function(err, existingOrg) {
         if (existingOrg) {
           return done(null, existingOrg);
@@ -132,7 +132,7 @@ module.exports.initAccount = function(data, done) {
     },
     function createAccountAndSubcompany(cb) {
       // Avoid collision with production
-      if (config.env === 'development') {
+      if(config.env === 'development') {
         user.name = 'dev-' + user.name;
       }
 

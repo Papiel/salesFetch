@@ -22,7 +22,7 @@ var isString = require('../../helpers/is-string.js');
 // Basic dummy data
 var defaultDummyContext = {
   sessionId: 'fake_session_id',
-  salesFetchURL: 'https://staging-salesfetch.herokuapp.com',
+  salesFetchURL: config.salesFetchUrl,
   instanceURL: 'https://eu0.salesforce.com',
   context: {
     templatedDisplay: 'Matthieu Bacconnier',

@@ -13,7 +13,7 @@ var config = require('../../config/configuration.js');
  */
 module.exports = function getSecureHash(data, masterKey) {
   var usefulData = _.merge({}, data);
-  delete usefulData.hash;
+  usefulData.hash = null;
 
   var hash = JSON.stringify(usefulData) + masterKey + config.secretKey;
   return crypto.createHash('sha1').update(hash).digest("base64");

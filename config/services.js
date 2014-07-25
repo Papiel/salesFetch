@@ -1,7 +1,7 @@
 'use strict';
 
 var opbeatClient = require('./vendors').opbeat;
-
+var config = require('./configuration.js');
 /**
  * Called when an error occurs in the app.
  * Will be logged on the console and sent a third-party logging service.
@@ -10,7 +10,9 @@ var opbeatClient = require('./vendors').opbeat;
 module.exports.logError = function logError(err, extra, cb) {
   delete err.domain;
   delete err.domainThrown;
-  console.warn(err, extra);
+  if(config.env !== 'test') {
+    console.warn(err, extra);
+  }
 
   opbeatClient.captureError(err, {extra: extra}, cb);
 };

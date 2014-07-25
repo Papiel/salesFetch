@@ -50,7 +50,7 @@ var sliceInTime = function(documents) {
   }];
 
   documents.forEach(function(doc) {
-    var creationDate = moment(doc.creation_date);
+    var creationDate = moment(doc.creationDate);
     var found = false;
     for (var i = 0; i < timeSlices.length && !found; i+=1) {
       if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
@@ -111,7 +111,7 @@ function Document(json) {
     self.snippet = json.rendered.snippet;
     self.title = json.rendered.title;
     self.url = json.document_url;
-    self.creation_date = json.creation_date;
+    self.creationDate = json.creation_date;
 
     self.type = null;
     self.provider = null;

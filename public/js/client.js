@@ -112,6 +112,7 @@ function Document(json) {
     self.title = json.rendered.title;
     self.url = json.document_url;
     self.creationDate = json.creation_date;
+    self.actions = json.actions;
 
     self.type = null;
     self.provider = null;
@@ -141,7 +142,7 @@ function Document(json) {
     };
 
     self.openOriginal = function() {
-        alert('Coming soon babe');
+        window.open(self.actions.show);
     };
 }
 

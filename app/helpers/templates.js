@@ -61,7 +61,6 @@ module.exports.render = function render(doc, name, documentType) {
   if(!template) {
     var err = new Error('No template `' + name + '` is available for document type ' + documentTypeId);
     logError(err, {
-      uncaughtRestifyException: false,
       statusCode: 200,
       doc: doc,
       templateName: name

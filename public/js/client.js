@@ -320,7 +320,7 @@ function SalesfetchViewModel() {
         var connectedProviders = [];
         json.forEach(function(providerInfo) {
             // This IF prevents fetching the anonymous token
-            if (!providerInfo._type === "AccessToken" || providerInfo.client) {
+            if (providerInfo._type !== "AccessToken" || providerInfo.client) {
                 connectedProviders.push(new Provider(providerInfo));
             }
         });

@@ -392,10 +392,20 @@ function SalesfetchViewModel() {
 
     client.openDocumentInOtherWindow = function(document) {
 
-        var w = window.open();
-        var html = document.snippet;
+        var success = function(data) {
+            document.full(data.rendered.full);
+            client.shouldDisplayViewerSpinner(false);
+            var w = window.open();
+            var html = document.full();
 
-        $(w.document.body).html(html);
+            $(w.document.body).html(html);
+        };
+
+        if (document.full()) {
+            success();
+        } else {
+            client.fetchFullDocument(document, success);
+        }
 
     };
 
@@ -464,12 +474,17 @@ function SalesfetchViewModel() {
     };
     client.fetchDocuments();
 
-    client.fetchFullDocument = function(document) {
+    client.fetchFullDocument = function(document, success) {
         client.shouldDisplayViewerSpinner(true);
-        call('/app' + document.url, {}, function success(data) {
-            document.full(data.rendered.full);
-            client.shouldDisplayViewerSpinner(false);
-        }, function error() {
+
+        if (!success) {
+            var defaultSuccess = function(data) {
+                document.full(data.rendered.full);
+                client.shouldDisplayViewerSpinner(false);
+            }
+        }
+
+        call('/app' + document.url, {}, success, function error() {
             client.shouldDisplayViewerSpinner(false);
             client.documentViewerError('Failed to reach the server');
         });

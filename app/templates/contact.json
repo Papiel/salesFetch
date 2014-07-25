@@ -1,9 +1,9 @@
 {
-    "id": "5252ce4ce4cfcd16f55cfa3a",
-    "name": "contact",
-    "templates": {
-        "snippet": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h1>{{{ name }}}</h1> <span>{{{ job }}}</span> </section> </article>",
-        "full": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h1>{{{ name }}}</h1> <span>{{{ job }}}</span> </section> </article>",
-        "title": "{{{ name }}}"
-    }
+  "id": "5252ce4ce4cfcd16f55cfa3a",
+  "name": "contact",
+  "templates": {
+    "snippet": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h1>{{{ name }}}</h1> <span>{{{ job }}}</span> </section> </article>",
+    "full": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h1>{{{ name }}}</h1> <span>{{{ job }}}</span> </section> </article>",
+    "title": "{{{ name }}}"
+  }
 }

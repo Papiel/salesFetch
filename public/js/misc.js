@@ -12,7 +12,8 @@
  * Override Bootstrap actions
  * Do not close filters menu when click inside
  */
-$('#filter-tabs .dropdown-menu a').click(function(e) {
+$('#filter-tabs .dropdown .filter-menu').on('click', function(e) {
+	console.log('ok');
     e.stopPropagation();
 });
 
@@ -25,13 +26,13 @@ $(document).click(function() {
 		activeDropdown.removeClass('open');
 	}
 });
-$('li.dropdown').click(function(e) {
+$('.dropdown-toggle').click(function(e) {
 	e.stopPropagation();
-	var isOpen = $(this).hasClass('open');
+	var isOpen = $(this).parent().hasClass('open');
 	$('li.dropdown').removeClass('open');
 
 	if (!isOpen) {
-		activeDropdown = $(this);
+		activeDropdown = $(this).parent();
 		activeDropdown.addClass('open');
 	}
 });
@@ -51,7 +52,7 @@ $('#toggle-panel-btn').click(function() {
 /**
  * Hide left bar on click snippet
  */
-$('html.tablet.portrait .snippet').click(function() {
+$('html.tablet .snippet-list').click(function() {
   $("#mainview").removeClass('active');
   $("#toggle-panel-btn span").removeClass('fa-toggle-left');
 });

@@ -14,9 +14,12 @@
 @anyFetchBlack: 						#777;
 @anyfetchSoftOrange: 					@anyFetchOrange + #111;
 @anyFetchLightGray: 					#F8F8F8;
+@anyFetchGray: 							#D6D6D6;
 
 @bootstrapGray: 						#ADADAD;
 @bootstrapLightGray: 					#EBEBEB;
+
+@highLightFontWeight:					900;
 
 @navbarVerticalPadding: 				15px;
 @navbarHorizontalPadding: 				20px;
@@ -27,15 +30,15 @@
 @navbarItemActiveBackgroundColor: 		@bodyBackground;
 @navbarItemsBorderRadius: 				0px;
 @navbarItemSpacing: 					10px;
-@navbarItemFontSize: 					20px;
-@navbarNoFrameMaxWidth: 				230px;
+@navbarItemFontSize: 					14px;
+@navbarNoFrameMaxWidth: 				265px;
 @navbarInnerShadow:						inset 0 -20px 30px -25px #000;
 @navbarImageMaxHeight:					48px;
 
 @toolbarLineHeight: 					20px;
 @toolbarVerticalPadding: 				15px;
 @toolbarHorizontalPadding: 				20px;
-@toolbarBackground: 					#F1F1F1;
+@toolbarBackground: 					@navbarBackgroundColor;
 
 @snippetBackgroundColor: 				#FAFAFA;
 @snippetActiveBackgroundColor: 			#fff;
@@ -54,6 +57,7 @@
 @snippetImageMaxHeight:					100%;
 @snippetImageMaxWidth:					30%;
 @snippetImageMargin:					0px 10px;
+@snippetContentRightMargin:				10px;
 
 @snippetSectionHeaderPadding:			0px 10px;
 @snippetSectionFieldsetMargin:			20px 0px -20px 0px;
@@ -66,17 +70,18 @@
 @starButtonColor: 						#C4C4C4;
 
 @filterCellFontSize: 					14px;
-@filterCellPadding: 					5px 20px;
+@filterCellPadding: 					0px 5px;
+@filterCellMargin:						10px;
 @filterColumnWidth: 					300px;
 @filterColumnPadding: 					20px;
 @filterColumnColor: 					#3E8ACC;
-@filterColumnPassiveColor: 				#D6D6D6;
+@filterColumnPassiveColor: 				@anyFetchGray;
 @filterColumnListPadding: 				0px 0px 0px 10px;
 
 @providerBorderRadius: 					3px;
 @providerMargin: 						10px 0px;
 @providerPadding: 						15px 10px;
-@providerPassiveColor: 					#D6D6D6;
+@providerPassiveColor: 					@anyFetchGray;
 @providerDeveloperNameColor: 			#000;
 @providerLegendColor: 					#555;
 @providerBoxShadow: 					0px 0px 20px -10px;
@@ -94,13 +99,18 @@
 
 @defaultNavbarZIndex: 					1030;
 
-@spinnerImageSize:						20px;
+@iframeMarginBottomFix:					-5px;
+
+@spinnerSize:							39px;
+@spinnerErrorMessageWidth:				500px;
+@spinnerErrorMessageMaxWidth:			80%;
+@spinnerErrorMessageHeight:				50px;
 
 // desktop
 
 @desktopNavbarWidth: 					100px;
-@desktopNavbarItemPadding: 				25px;
-@desktopNavbarFontSize: 				25px;
+@desktopNavbarItemPadding: 				25px 20px;
+@desktopNavbarFontSize: 				20px;
 @desktopNavbarInnerShadow:				inset -20px 0px 30px -25px #000;
 
 @desktopBodyPadding: 					20px;
@@ -129,3 +139,6 @@
 @navbarTabLeftMargin: @navbarItemSpacing 0px 0px @navbarItemSpacing;
 @navbarTabRightMargin: @navbarItemSpacing @navbarItemSpacing 0px 0px;
 @navbarTabDesktopMargin: @navbarTabLeftMargin;
+
+@navbarPullLeftMargin: @navbarItemSpacing/2 0px @navbarItemSpacing/2 @navbarItemSpacing;
+@navbarPullRightMargin: @navbarItemSpacing/2 @navbarItemSpacing @navbarItemSpacing/2 0px;

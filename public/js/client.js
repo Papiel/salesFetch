@@ -139,6 +139,10 @@ function Document(json) {
             console.log(res.responseText);
         });
     };
+
+    self.openOriginal = function() {
+        alert('Coming soon babe');
+    };
 }
 
 function Provider(json) {
@@ -222,6 +226,13 @@ function SalesfetchViewModel() {
 
     client.filterByProvider = ko.observable(false);
     client.filterByType = ko.observable(false);
+
+    client.documentListError = ko.observable();
+    client.documentViewerError = ko.observable();
+
+    if (client.isTablet) {
+        client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
+    }
 
     // Return providers filtered by isActive
     client.filteredProviders = ko.computed(function() {
@@ -308,7 +319,7 @@ function SalesfetchViewModel() {
         var connectedProviders = [];
         json.forEach(function(providerInfo) {
             // This IF prevents fetching the anonymous token
-            if (!providerInfo._type === "AccessToken" || providerInfo.client) {
+            if (providerInfo._type !== "AccessToken" || providerInfo.client) {
                 connectedProviders.push(new Provider(providerInfo));
             }
         });
@@ -365,6 +376,10 @@ function SalesfetchViewModel() {
             client.fetchFullDocument(document);
         }
 
+        if (client.shouldDisplayDocumentViewerDefaultMessage) {
+            client.shouldDisplayDocumentViewerDefaultMessage(false);
+        }
+
         if (client.isMobile) {
             client.activeDocument(document);
         } else if (client.isTablet) {
@@ -384,9 +399,11 @@ function SalesfetchViewModel() {
     };
 
     client.setIframeContent = ko.computed(function() {
+        var iframe = $('#full-iframe')[0];
+        iframe.contentDocument.close();
+        iframe.contentDocument.write('');
+
         if (client.activeDocument() && client.activeDocument().full()) {
-            var iframe = $('#full-iframe')[0];
-            iframe.contentDocument.close();
             iframe.contentDocument.write(client.activeDocument().full());
         }
     });
@@ -414,7 +431,7 @@ function SalesfetchViewModel() {
         return client.activeDocument && !client.isDesktop;
     };
 
-    client.shouldDisplayDocumentsSpinner = ko.observable(true);
+    client.shouldDisplayDocumentsSpinner = ko.observable(false);
     client.shouldDisplayViewerSpinner = ko.observable(false);
 
     // Show Timeline by default
@@ -435,9 +452,13 @@ function SalesfetchViewModel() {
     }
 
     client.fetchDocuments = function() {
-        call('/app/documents', function success(data) {
+        client.shouldDisplayDocumentsSpinner(true);
+        call('/app/documents', {}, function success(data) {
             client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
+        }, function error() {
+            client.shouldDisplayDocumentsSpinner(false);
+            client.documentListError('Failed to reach the server');
         });
     };
     client.fetchDocuments();
@@ -449,6 +470,7 @@ function SalesfetchViewModel() {
             client.shouldDisplayViewerSpinner(false);
         }, function error() {
             client.shouldDisplayViewerSpinner(false);
+            client.documentViewerError('Failed to reach the server');
         });
     };
 }

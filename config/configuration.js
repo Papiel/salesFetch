@@ -42,7 +42,7 @@ var baseConfig = {
   managerUrl: process.env.MANAGER_URL || "https://manager.anyfetch.com",
   fetchApiCreds: process.env.FETCHAPI_CREDS,
 
-  secureKey: process.env.SALESFETCH_SECURE_KEY || "SalesFetch4TheWin",
+  secretKey: process.env.SALESFETCH_SECRET_KEY || "SalesFetch4TheWin",
 
   services: services
 };

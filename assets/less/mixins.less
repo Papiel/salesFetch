@@ -6,6 +6,10 @@
 
 // Global
 
+.hlt {
+	font-weight: @highLightFontWeight;
+}
+
 .StarButton {
 	color: @starButtonColor;
 	font-size: @starButtonFontSize;
@@ -16,19 +20,36 @@
 	line-height: @navbarLineHeight;
 }
 
-.Spinner {
+.PlaceholderContainer {
 	width: 100%;
 	height: 100%;
 
-	img {
+	* {
 		margin: auto;
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		left: 0;
-		height: @spinnerImageSize;
-		width: @spinnerImageSize;
+	}
+
+	i {
+		height: @spinnerSize;
+		width: @spinnerSize;
+	}
+
+	.error {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
+	}
+
+	.default-message {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
 	}
 }
 
@@ -71,7 +92,7 @@
 		font-size: @snippetTitleFontSize;
 		color: @snippetTitleColor;
 		font-weight: @snippetTitleFontWeight;
-		word-wrap: break-word;
+		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow-x: hidden;
 	}
@@ -88,6 +109,7 @@
 		white-space: normal;
 		text-overflow: ellipsis;
 		margin-bottom: 0px;
+		margin-right: @snippetContentRightMargin + @starButtonFontSize;
 	}
 
 	.icon {
@@ -160,6 +182,7 @@
 
 	.no-frame {
 		background-color: transparent !important;
+		box-shadow: 0px 0px;
 		max-width: @navbarNoFrameMaxWidth;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
@@ -174,7 +197,6 @@
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
 		border-radius: @navbarItemsBorderRadius;
-		background-color: @navbarItemBackgroundColor;
 		color: @navbarItemColor;
 	}
 
@@ -193,6 +215,20 @@
 		float: right;
 		margin: @navbarTabRightMargin;
 	}
+
+	.pull-left {
+		margin: @navbarPullLeftMargin;
+	}
+
+	.pull-right {
+		margin: @navbarPullRightMargin;
+	}
+
+	.back-button,
+	.document-title {
+		margin-right: 0px;
+		margin-left: 0px;
+	}
 }
 
 .NavigationBar { .Navbar;
@@ -205,6 +241,7 @@
 		padding: @navbarVerticalPadding @navbarHorizontalPadding;
 		font-size: @navbarItemFontSize;
 		box-shadow: @navbarInnerShadow;
+		background-color: @navbarItemBackgroundColor;
 	}
 }
 
@@ -217,7 +254,7 @@
 }
 
 .FilterToolBar {
-	li { .FilterToolbarButton }
+	li.dropup { .FilterToolbarButton }
 
 	li.drop-left {
 		.filter-menu { .FilterDropdownMenuLeft }
@@ -231,19 +268,26 @@
 	width: 50%;
 	margin: 0px;
 	text-align: center;
+
+	&.open {
+		background-color: @anyFetchGray;
+	}
+
+	a:hover {
+		background-color: transparent;
+	}
 }
 
 .FilterCell {
-	width: 100%;
+	margin: @filterCellMargin;
 
 	a {
 		padding: @filterCellPadding;
 		font-size: @filterCellFontSize;
+		text-decoration: none;
 
-		.icon-column {
-			float: left;
-			min-width: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
-			min-height: @filterCellFontSize; // prevents layout changes when checkmarks appear/disappear
+		.passive {
+			color: gray;
 		}
 	}
 }
@@ -253,8 +297,14 @@
 	border: 0px;
 	border-top: @defaultBorder;
 	text-transform: capitalize;
+	background-color: @toolbarBackground;
 
-	li { .FilterCell }
+	ul {
+		text-align: left;
+
+		li.filter-li { .FilterCell }
+	}
+
 }
 
 .FilterDropdownMenuLeft { .FilterDropdownMenu;
@@ -284,9 +334,16 @@
 	top: 0;
 	height: @navbarHeight;
 	background-color: @navbarBackgroundColor;
+	box-shadow: @navbarInnerShadow;
 	color: @navbarItemColor;
 	font-size: @tabletTogglePanelButtonFontSize;
 	padding: @tabletTogglePanelButtonPadding;
+}
+
+.DocumentContainer {
+	position: absolute;
+	top: @navbarHeight;
+	bottom: 0; left: 0; right: 0;
 }
 
 .DocumentView {
@@ -294,15 +351,10 @@
 	width: 100%;
 	height: 100%;
 	border: 0;
-
-	.type, .provider {
-		font-weight: 600;
-		text-transform: capitalize;
-	}
+	margin-bottom: @iframeMarginBottomFix;
 }
 
 .DocumentView(tablet) { .DocumentView;
-	height: 108%;
 }
 
 .DocumentView(mobile) { .DocumentView;
@@ -323,6 +375,7 @@
 		padding: @desktopNavbarItemPadding;
 		font-size: @desktopNavbarFontSize;
 		box-shadow: @desktopNavbarInnerShadow;
+		background-color: @navbarItemBackgroundColor;
 	}
 
 	.tab-left {
@@ -358,6 +411,7 @@
 .DesktopFilterMenu { .FilterCell;
 	list-style-type: none;
 	padding: @filterColumnListPadding;
+	text-transform: capitalize;
 
 	li a {
 		cursor: pointer;
@@ -546,7 +600,7 @@
 .ActiveSnippet { .Snippet;
 	margin-right: @snippetMarginRight;
 	border-right: 0px;
-	padding-right: @snippetMargin + @snippetPadding + @snippetBorderWidth;
+	padding-right: @snippetPadding + @snippetBorderWidth;
 	background-color: @snippetActiveBackgroundColor;
 	box-shadow: 0px 0px;
 }

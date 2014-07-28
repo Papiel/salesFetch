@@ -115,7 +115,7 @@ function Document(json) {
 
     self.type = null;
     self.provider = null;
-    self.title = null;
+    self.title = ko.observable();
     self.full = ko.observable();
 
     self.toggleStarred = function() {
@@ -402,8 +402,8 @@ function SalesfetchViewModel() {
         });
     } else {
         client.openFullDocument = ko.computed(function() {
-            if (client.activeDocument() && client.activeDocument().full()) {
-                var document = client.activeDocument();
+            var document = client.activeDocument();
+            if (document && document.full()) {
                 var w = window.open();
                 var html = document.full();
 
@@ -473,7 +473,7 @@ function SalesfetchViewModel() {
 
         call('/app' + document.url, {}, function success(data) {
                 client.shouldDisplayViewerSpinner(false);
-                document.title = data.rendered.title;
+                document.title(data.rendered.title);
                 document.full(data.rendered.full);
             }, function error() {
                 client.shouldDisplayViewerSpinner(false);

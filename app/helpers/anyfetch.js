@@ -33,7 +33,6 @@ module.exports.findDocuments = function(params, user, cb) {
       docs.providers = {};
       docs.data.forEach(function(doc) {
         doc.rendered = {};
-        doc.rendered.title = templates.render(doc, 'title');
         doc.rendered.snippet = templates.render(doc, 'snippet');
 
         // We encounter a new document_type
@@ -81,8 +80,8 @@ module.exports.findDocument = function(id, user, context, finalCb) {
         return cb(new restify.NotFoundError('Document not found'));
       }
       doc.rendered = {};
-      doc.rendered.full = templates.render(doc, 'full');
       doc.rendered.title = templates.render(doc, 'title');
+      doc.rendered.full = templates.render(doc, 'full');
       doc.provider = doc.provider.name;
       doc.document_type = doc.document_type.name;
 
@@ -114,7 +113,7 @@ module.exports.initAccount = function(data, done) {
   var anyfetch = new AnyFetch(config.fetchApiCreds);
 
   async.waterfall([
-    function checkIfCompanyAlreadyExist(cb) {
+    function checkIfCompanyAlreadyExists(cb) {
       Organization.findOne({'SFDCId': org.id}, function(err, existingOrg) {
         if (existingOrg) {
           return done(null, existingOrg);
@@ -132,7 +131,7 @@ module.exports.initAccount = function(data, done) {
     },
     function createAccountAndSubcompany(cb) {
       // Avoid collision with production
-      if (config.env === 'development') {
+      if(config.env === 'development') {
         user.name = 'dev-' + user.name;
       }
 

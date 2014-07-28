@@ -1,7 +1,6 @@
 'use strict';
 
 var should = require('should');
-var _ = require('lodash');
 
 var templates = require('../../app/helpers/templates.js');
 
@@ -46,25 +45,10 @@ describe('<Helper functions>', function() {
       rendered2.should.equal(rendered1);
     });
 
-    it('should err on missing template for document type', function() {
-      var invalidDoc = _.merge({}, doc);
-      delete invalidDoc.document_type;
-
-      try {
-        templates.render(invalidDoc, 'unicorn', documentType);
-      } catch(e) {
-        should(e).be.ok;
-        e.message.should.match(/no template/i);
-      }
-    });
-
-    it('should err on nonexistant template name', function() {
-      try {
-        templates.render(doc, 'unicorn');
-      } catch(e) {
-        should(e).be.ok;
-        e.message.should.match(/no template/i);
-      }
+    it('should fallback to default template on last resort', function() {
+      var rendered = templates.render(doc, 'unicorn');
+      should(rendered).be.ok;
+      rendered.should.containDeep(doc.data.title);
     });
   });
 

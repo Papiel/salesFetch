@@ -1,9 +1,10 @@
 {
-  "id": "5252ce4ce4cfcd16f55cfa3c",
-  "name": "document",
+  "id": "default",
+  "name": "default",
   "templates": {
     "snippet": "<h4 class='title'>{{{ title }}}</h4>\n  <p>\n  \t{{{ snippet }}}\n  </p>",
     "full": "<article>\n  <section>\n    {{{ content }}}\n  </section>\n</article>\n",
-    "title": "{{{ title }}}"
+    "title": "{{{ title }}}{{{ name }}}",
+    "default": "{{{ title }}}{{{ name }}}"
   }
 }

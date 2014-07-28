@@ -109,13 +109,13 @@ function Document(json) {
     self.isStarred = ko.observable(json.pinned);
     self.id = json.id;
     self.snippet = json.rendered.snippet;
-    self.title = json.rendered.title;
     self.url = json.document_url;
     self.creationDate = json.creation_date;
     self.actions = json.actions;
 
     self.type = null;
     self.provider = null;
+    self.title = null;
     self.full = ko.observable();
 
     self.toggleStarred = function() {
@@ -473,11 +473,13 @@ function SalesfetchViewModel() {
 
         call('/app' + document.url, {}, function success(data) {
                 client.shouldDisplayViewerSpinner(false);
+                document.title = data.rendered.title;
                 document.full(data.rendered.full);
             }, function error() {
                 client.shouldDisplayViewerSpinner(false);
                 client.documentViewerError('Failed to reach the server');
-        });
+            }
+        );
     };
 }
 

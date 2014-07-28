@@ -13,6 +13,7 @@ var fs = require('fs');
 var mustache = require('mustache');
 
 var config = require('../../config/configuration.js');
+var logError = require('../../config/services.js').logError;
 
 /**
  * Document type id => template
@@ -58,7 +59,14 @@ module.exports.render = function render(doc, name, documentType) {
   }
 
   if(!template) {
-    throw new Error('No template `' + name + '` is available for document type ' + documentTypeId);
+    var err = new Error('No template `' + name + '` is available for document type ' + documentTypeId);
+    logError(err, {
+      statusCode: 200,
+      doc: doc,
+      templateName: name
+    });
+
+    template = overrided.default.templates[name] || overrided.default.templates.default;
   }
 
   return mustache.render(template, doc.data);

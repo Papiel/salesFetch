@@ -109,12 +109,12 @@ function Document(json) {
     self.isStarred = ko.observable(json.pinned);
     self.id = json.id;
     self.snippet = json.rendered.snippet;
-    self.title = json.rendered.title;
     self.url = json.document_url;
     self.creation_date = json.creation_date;
 
     self.type = null;
     self.provider = null;
+    self.title = null;
     self.full = ko.observable();
 
     self.toggleStarred = function() {
@@ -466,6 +466,7 @@ function SalesfetchViewModel() {
     client.fetchFullDocument = function(document) {
         client.shouldDisplayViewerSpinner(true);
         call('/app' + document.url, {}, function success(data) {
+            document.title = data.rendered.title;
             document.full(data.rendered.full);
             client.shouldDisplayViewerSpinner(false);
         }, function error() {

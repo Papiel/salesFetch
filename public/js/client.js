@@ -372,44 +372,64 @@ function SalesfetchViewModel() {
         }
     };
 
-    client.goToDocument = function(document) {
-        if (!document.full()) {
-            client.fetchFullDocument(document);
-        }
+    client.goToDocument = function(doc) {
+        if(client.activeDocument() !== doc) {
+            if(client.shouldDisplayDocumentViewerDefaultMessage) {
+                client.shouldDisplayDocumentViewerDefaultMessage(false);
+            }
+            client.activeDocument(doc);
 
-        if(client.shouldDisplayDocumentViewerDefaultMessage) {
-            client.shouldDisplayDocumentViewerDefaultMessage(false);
-        }
+            var cssBlock = document.createElement('style');
+            cssBlock.type = 'text/css';
+            cssBlock.innerHTML = 'body { padding: 20px } header { font-size: 25px; margin-bottom: 30px; }';
+            var target;
+            if(!client.isDesktop) {
+                // TODO: check for browser compatibility
+                var iframe = $('#full-iframe')[0];
+                target = iframe.contentDocument;
+            }
+            else {
+                // We need to open the popup window right now (i.e. during event handling)
+                // otherwise we'll get blocked
+                var w = window.open(null, '_blank');
+                target = w.document;
+            }
 
-        client.activeDocument(document);
+            var writeFullView = function(html) {
+                if(!client.isDesktop) {
+                    frames['full-iframe'].document.head.appendChild(cssBlock);
+                    $(target.body).html(html);
+                }
+                else {
+                    target.head.appendChild(cssBlock);
+                    $(target.body).html(html);
+                }
+            };
+
+            // Load document full document content (AJAX) if needed
+            // and write the result in the viewer
+            if(!doc.full()) {
+                client.fetchFullDocument(doc, writeFullView);
+            }
+            else {
+                writeFullView(doc.full());
+            }
+        }
     };
 
+    // Each time the content of the curerent document's full view changes
+    // reset the content of the viewer
+    if(!client.isDesktop) {
+        client.resetFullDocumentView = ko.computed(function() {
+            // The following is only useful to let Knockout know
+            // that we're dependent on the value of `activeDocument` and `activeDocument().full`
+            if(client.activeDocument()) {
+                client.activeDocument().full();
+            }
 
-    var cssBlock = document.createElement("style");
-    cssBlock.type = "text/css";
-    cssBlock.innerHTML = 'body{padding: 20px} header{color: green; font-size: 25px; margin-bottom: 30px;}';
-
-    if (!client.isDesktop) {
-        client.setIframeContent = ko.computed(function() {
             var iframe = $('#full-iframe')[0];
             iframe.contentDocument.close();
-            iframe.contentDocument.write('');
-
-            if (client.activeDocument() && client.activeDocument().full()) {
-                iframe.contentDocument.write(client.activeDocument().full());
-                frames['full-iframe'].document.head.appendChild(cssBlock);
-            }
-        });
-    } else {
-        client.openFullDocument = ko.computed(function() {
-            var document = client.activeDocument();
-            if (document && document.full()) {
-                var w = window.open();
-                var html = document.full();
-
-                $(w.document.body).html(html);
-                $(w.document.head).appendChild(cssBlock);
-            }
+            iframe.contentDocument.write('<html><head></head><body></body></html>');
         });
     }
 
@@ -468,13 +488,14 @@ function SalesfetchViewModel() {
     };
     client.fetchDocuments();
 
-    client.fetchFullDocument = function(document) {
+    client.fetchFullDocument = function(document, cb) {
         client.shouldDisplayViewerSpinner(true);
 
         call('/app' + document.url, {}, function success(data) {
                 client.shouldDisplayViewerSpinner(false);
                 document.title(data.rendered.title);
                 document.full(data.rendered.full);
+                cb(data.rendered.full);
             }, function error() {
                 client.shouldDisplayViewerSpinner(false);
                 client.documentViewerError('Failed to reach the server');

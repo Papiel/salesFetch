@@ -173,6 +173,7 @@ function Provider(json) {
         };
 
         call(url, options, function success(data) {
+            // TODO: open this popup synchronously as well
             window.open(data.url, '','width=700, height=700');
         });
     };
@@ -212,7 +213,6 @@ function TabModel(name, display, pullRight, client) {
 }
 
 function SalesfetchViewModel() {
-
     var client = this;
 
     client.isMobile = device.mobile();
@@ -282,7 +282,7 @@ function SalesfetchViewModel() {
     // Set default tabs
     client.tabs = [timelineTab, starredTab, searchTab];
 
-    // Desktop has an additional `Providers` tab
+    // Desktop has an additional 'Providers' tab
     if (client.isDesktop) {
         client.providerTab = new TabModel('Providers', 'fa-link', false, client);
         client.tabs.push(client.providerTab);
@@ -377,7 +377,7 @@ function SalesfetchViewModel() {
             client.fetchFullDocument(document);
         }
 
-        if (client.shouldDisplayDocumentViewerDefaultMessage) {
+        if(client.shouldDisplayDocumentViewerDefaultMessage) {
             client.shouldDisplayDocumentViewerDefaultMessage(false);
         }
 

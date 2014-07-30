@@ -142,9 +142,10 @@
 			<p class="error" data-bind="text: documentViewerError"></p>
 		</div>
 		<!-- END SPINNER -->
-
-		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: activeDocument()">
-		</iframe>
+		<div class="iframe-container" data-bind="visible: activeDocument()">
+			<iframe name="full-iframe" id="full-iframe" class="document-view">
+			</iframe>
+		</div>
 		<!-- /ko -->
 		<!-- END MOBILE DOCUMENT VIEW -->
 
@@ -319,8 +320,8 @@
 	<!-- END SPINNER -->
 
 	<!-- DOCUMENT VIEW -->
-	<div id="iframe-container">
-		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: activeDocument()">
+	<div class="iframe-container" data-bind="visible: activeDocument()">
+		<iframe name="full-iframe" id="full-iframe" class="document-view">
 		</iframe>
 	</div>
 	<!-- END DOCUMENT VIEW -->

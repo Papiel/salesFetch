@@ -31,7 +31,7 @@ body {
 
 	nav .star-btn { .StarBarButton }
 
-	#iframe-container { .DocumentContainer }
+	.iframe-container { .DocumentContainer }
 }
 
 // Desktop
@@ -68,6 +68,9 @@ html.tablet {
 
 	}
 
+	.iframe-container {
+		top: @navbarHeight;
+	}
 	.document-view { .DocumentView(tablet) }
 }
 

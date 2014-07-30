@@ -40,6 +40,13 @@ var getOverridedTemplates = function() {
   return cachedTemplates;
 };
 
+var formatDate = function() {
+  return function(isoDate, render) {
+    var d = new Date(render(isoDate));
+    return d.toLocaleDateString() + d.toLocaleTimeString();
+  };
+};
+
 /**
  * Render a document through a Mustache template.
  * @param {Object} data The document to render (as returned by the AnyFetch API)
@@ -68,6 +75,9 @@ module.exports.render = function render(doc, name, documentType) {
 
     template = overrided.default.templates[name] || overrided.default.templates.default;
   }
+
+  // Add formatting functions
+  doc.data.formatDate = formatDate;
 
   return mustache.render(template, doc.data);
 };

@@ -1,4 +1,3 @@
-'use strict';
 
 var getURLParameter = function(name) {
     var querystring = window.location.search.substring(1);
@@ -211,7 +210,6 @@ function TabModel(name, display, pullRight, client) {
 }
 
 function SalesfetchViewModel() {
-
     var client = this;
 
     // ----- Client device detection

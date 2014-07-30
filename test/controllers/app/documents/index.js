@@ -173,7 +173,7 @@ describe('/app/documents page', function() {
           request(app)
             .get(url)
             .expect(409)
-            .expect(/a template is missing/i)
+            .expect(/a template parameter is missing/i)
             .end(cb);
         }
       ], done);

@@ -12,7 +12,7 @@ var salesfetchHelpers = require('../../../helpers/salesfetch.js');
  */
 module.exports.get = function(req, res, next) {
   if(!req.data.context || !req.data.context.templatedQuery || !req.data.context.templatedDisplay) {
-    return next(new restify.MissingParameterError('Check your context profiler configuration, a template is missing.'));
+    return next(new restify.MissingParameterError('Check your VisualForce page configuration, a template parameter is missing (`templatedQuery` or `templatedDisplay`).'));
   }
 
   var params = {

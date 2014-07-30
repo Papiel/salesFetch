@@ -1,4 +1,3 @@
-'use strict';
 
 var getURLParameter = function(name) {
     var querystring = window.location.search.substring(1);
@@ -25,7 +24,7 @@ var sliceInTime = function(documents) {
     maxDate: moment().startOf('week'),
     documents: []
   }, {
-    label: 'Lasts Week',
+    label: 'Last Week',
     maxDate: moment().startOf('week').subtract('week', 1),
     documents: []
   }, {
@@ -109,12 +108,12 @@ function Document(json) {
     self.isStarred = ko.observable(json.pinned);
     self.id = json.id;
     self.snippet = json.rendered.snippet;
-    self.title = json.rendered.title;
     self.url = json.document_url;
     self.creation_date = json.creation_date;
 
     self.type = null;
     self.provider = null;
+    self.title = null;
     self.full = ko.observable();
 
     self.toggleStarred = function() {
@@ -211,14 +210,14 @@ function TabModel(name, display, pullRight, client) {
 }
 
 function SalesfetchViewModel() {
-
     var client = this;
 
+    // ----- Client device detection
     client.isMobile = device.mobile();
     client.isTablet = device.tablet();
     client.isDesktop = device.desktop();
 
-    // Editable data
+    // ----- Editable data
     client.documents = ko.observableArray([]);
     client.connectedProviders = ko.observableArray([]);
     client.types = ko.observableArray([]);
@@ -269,17 +268,18 @@ function SalesfetchViewModel() {
         return (document.isStarred() === true) && providerAndTypeFilter(document);
     };
 
-    // Tabs
+    // ----- Tabs
     var timelineTab = new TabModel('Timeline', 'fa-list', false, client);
     timelineTab.filter = providerAndTypeFilter;
 
     var starredTab = new TabModel('Starred', 'fa-star-o', false, client);
     starredTab.filter = starredFilter;
 
-    var searchTab = new TabModel('Search', 'fa-search', true, client);
+    // TODO: re-enable when feature exists
+    //var searchTab = new TabModel('Search', 'fa-search', true, client);
 
     // Set default tabs
-    client.tabs = [timelineTab, starredTab, searchTab];
+    client.tabs = [timelineTab, starredTab]; // searchTab
 
     // Desktop has an additional `Providers` tab
     if (client.isDesktop) {
@@ -289,6 +289,8 @@ function SalesfetchViewModel() {
 
     client.activeTab = ko.observable();
     client.activeDocument = ko.observable();
+
+    // ----- Model management
 
     client.addDocument = function(json) {
         client.documents.push(client.DocumentWithJson(json));
@@ -362,7 +364,7 @@ function SalesfetchViewModel() {
         return type;
     };
 
-    // Behaviours
+    // ----- Navigation
     client.goToTab = function(tab) {
         client.activeTab(tab);
 
@@ -413,7 +415,7 @@ function SalesfetchViewModel() {
         client.activeDocument(null);
     };
 
-    // Conditional view
+    // ----- Conditional views
     // Do no use ko.computed when not needed for performance reasons
     client.shouldDisplayDocumentList = ko.computed(function() {
         return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
@@ -437,6 +439,7 @@ function SalesfetchViewModel() {
     // Show Timeline by default
     client.goToTab(timelineTab);
 
+    // ----- Requests to the backend
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
             call('/app/providers', function success(data) {
@@ -456,9 +459,9 @@ function SalesfetchViewModel() {
         call('/app/documents', {}, function success(data) {
             client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
-        }, function error() {
+        }, function error(res) {
             client.shouldDisplayDocumentsSpinner(false);
-            client.documentListError('Failed to reach the server');
+            client.documentListError(getErrorMessage(res));
         });
     };
     client.fetchDocuments();
@@ -466,12 +469,36 @@ function SalesfetchViewModel() {
     client.fetchFullDocument = function(document) {
         client.shouldDisplayViewerSpinner(true);
         call('/app' + document.url, {}, function success(data) {
+            document.title = data.rendered.title;
             document.full(data.rendered.full);
             client.shouldDisplayViewerSpinner(false);
-        }, function error() {
+        }, function error(res) {
             client.shouldDisplayViewerSpinner(false);
-            client.documentViewerError('Failed to reach the server');
+            client.documentViewerError(getErrorMessage(res));
         });
+    };
+
+    // ----- Error messages
+    /**
+      * Regexp => Error string
+      * Regexp should be ordered from most precise to more generic
+      */
+    // TODO: internationalize
+    var errorMessages = {
+        'unprocessable entity': 'Missing aunthentication information',
+        'template parameter is missing': 'Missing parameters: check your VisualForce page configuration (`templatedQuery` or `templatedDisplay`)',
+        'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key'
+    };
+    var getErrorMessage = function(res) {
+        var err = (res.responseJSON ? res.responseJSON.code + ': ' + res.responseJSON.message : res.responseText);
+
+        for(var expression in errorMessages) {
+            if(err.match(new RegExp(expression, 'gi'))) {
+                return errorMessages[expression];
+            }
+        }
+
+        return err || 'Failed to reach the server';
     };
 }
 

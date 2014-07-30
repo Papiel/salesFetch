@@ -168,6 +168,7 @@
 								<td data-bind="text: accountName"></td>
 								<td data-bind="text: count"></td>
 								<td>
+									<!-- TODO: do not hardcode this URL -->
 									<a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
 								</td>
 							</tr>
@@ -312,14 +313,8 @@
 	<!-- SPINNER -->
 	<div class="placeholder-container">
 		<i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
-	</div>
-
-	<div class="placeholder-container" data-bind="visible: documentViewerError() != null">
-		<p class="error" data-bind="text: documentViewerError"></p>
-	</div>
-
-	<div class="placeholder-container" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">
-		<p class="default-message">No document selected</p>
+		<p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
+		<p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
 	</div>
 	<!-- END SPINNER -->
 

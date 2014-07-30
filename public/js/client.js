@@ -214,11 +214,12 @@ function SalesfetchViewModel() {
 
     var client = this;
 
+    // ----- Client device detection
     client.isMobile = device.mobile();
     client.isTablet = device.tablet();
     client.isDesktop = device.desktop();
 
-    // Editable data
+    // ----- Editable data
     client.documents = ko.observableArray([]);
     client.connectedProviders = ko.observableArray([]);
     client.types = ko.observableArray([]);
@@ -269,17 +270,18 @@ function SalesfetchViewModel() {
         return (document.isStarred() === true) && providerAndTypeFilter(document);
     };
 
-    // Tabs
+    // ----- Tabs
     var timelineTab = new TabModel('Timeline', 'fa-list', false, client);
     timelineTab.filter = providerAndTypeFilter;
 
     var starredTab = new TabModel('Starred', 'fa-star-o', false, client);
     starredTab.filter = starredFilter;
 
-    var searchTab = new TabModel('Search', 'fa-search', true, client);
+    // TODO: re-enable when feature exists
+    //var searchTab = new TabModel('Search', 'fa-search', true, client);
 
     // Set default tabs
-    client.tabs = [timelineTab, starredTab, searchTab];
+    client.tabs = [timelineTab, starredTab]; // searchTab
 
     // Desktop has an additional `Providers` tab
     if (client.isDesktop) {
@@ -289,6 +291,8 @@ function SalesfetchViewModel() {
 
     client.activeTab = ko.observable();
     client.activeDocument = ko.observable();
+
+    // ----- Model management
 
     client.addDocument = function(json) {
         client.documents.push(client.DocumentWithJson(json));
@@ -362,7 +366,7 @@ function SalesfetchViewModel() {
         return type;
     };
 
-    // Behaviours
+    // ----- Navigation
     client.goToTab = function(tab) {
         client.activeTab(tab);
 
@@ -413,7 +417,7 @@ function SalesfetchViewModel() {
         client.activeDocument(null);
     };
 
-    // Conditional view
+    // ----- Conditional views
     // Do no use ko.computed when not needed for performance reasons
     client.shouldDisplayDocumentList = ko.computed(function() {
         return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
@@ -437,6 +441,7 @@ function SalesfetchViewModel() {
     // Show Timeline by default
     client.goToTab(timelineTab);
 
+    // ----- Requests to the backend
     if (client.isDesktop) {
         client.fetchAvailableProviders = function() {
             call('/app/providers', function success(data) {

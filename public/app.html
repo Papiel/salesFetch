@@ -131,7 +131,7 @@
 		<!-- /ko -->
 		<!-- END FILTERS COLUMN -->
 
-		<!-- DOCUMENT VIEW -->
+		<!-- MOBILE DOCUMENT VIEW -->
 		<!-- ko if: isMobile -->
 
 		<!-- SPINNER -->
@@ -143,10 +143,10 @@
 		</div>
 		<!-- END SPINNER -->
 
-		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: true">
+		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: activeDocument()">
 		</iframe>
 		<!-- /ko -->
-		<!-- END DOCUMENT VIEW -->
+		<!-- END MOBILE DOCUMENT VIEW -->
 
 		<!-- PROVIDERS TAB DISPLAY -->
 		<!-- ko if: isDesktop -->
@@ -325,7 +325,7 @@
 
 	<!-- DOCUMENT VIEW -->
 	<div id="iframe-container">
-		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: true">
+		<iframe name="full-iframe" id="full-iframe" class="document-view" data-bind="visible: activeDocument()">
 		</iframe>
 	</div>
 	<!-- END DOCUMENT VIEW -->

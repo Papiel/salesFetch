@@ -1,20 +1,17 @@
-'use strict';
-
 /*===============
   GLOBAL
  ================*/
 
- var scrollToTop = function () {
- 	$('#view-body').scrollTop(0);
- };
+function scrollToTop() {
+	$('#view-body').scrollTop(0);
+}
 
 /*
  * Override Bootstrap actions
  * Do not close filters menu when click inside
  */
 $('#filter-tabs .dropdown .filter-menu').on('click', function(e) {
-	console.log('ok');
-    e.stopPropagation();
+  e.stopPropagation();
 });
 
 /*

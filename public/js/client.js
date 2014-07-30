@@ -25,7 +25,7 @@ var sliceInTime = function(documents) {
     maxDate: moment().startOf('week'),
     documents: []
   }, {
-    label: 'Lasts Week',
+    label: 'Last Week',
     maxDate: moment().startOf('week').subtract('week', 1),
     documents: []
   }, {
@@ -461,9 +461,9 @@ function SalesfetchViewModel() {
         call('/app/documents', {}, function success(data) {
             client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
-        }, function error() {
+        }, function error(res) {
             client.shouldDisplayDocumentsSpinner(false);
-            client.documentListError('Failed to reach the server');
+            client.documentListError(getErrorMessage(res));
         });
     };
     client.fetchDocuments();
@@ -474,10 +474,33 @@ function SalesfetchViewModel() {
             document.title = data.rendered.title;
             document.full(data.rendered.full);
             client.shouldDisplayViewerSpinner(false);
-        }, function error() {
+        }, function error(res) {
             client.shouldDisplayViewerSpinner(false);
-            client.documentViewerError('Failed to reach the server');
+            client.documentViewerError(getErrorMessage(res));
         });
+    };
+
+    // ----- Error messages
+    /**
+      * Regexp => Error string
+      * Regexp should be ordered from most precise to more generic
+      */
+    // TODO: internationalize
+    var errorMessages = {
+        'unprocessable entity': 'Missing aunthentication information',
+        'template parameter is missing': 'Missing parameters: check your VisualForce page configuration (`templatedQuery` or `templatedDisplay`)',
+        'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key'
+    };
+    var getErrorMessage = function(res) {
+        var err = (res.responseJSON ? res.responseJSON.code + ': ' + res.responseJSON.message : res.responseText);
+
+        for(var expression in errorMessages) {
+            if(err.match(new RegExp(expression, 'gi'))) {
+                return errorMessages[expression];
+            }
+        }
+
+        return err || 'Failed to reach the server';
     };
 }
 

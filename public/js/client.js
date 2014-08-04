@@ -171,7 +171,7 @@ function Provider(json) {
             type: 'post'
         };
 
-        var w = window.open('', '', 'width=700, height=700');
+        var w = window.open(null, '_blank');
 
         call(url, options, function success(data) {
             w.location = data.url;

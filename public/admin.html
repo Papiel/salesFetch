@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SalesFetch</title>
+    <title>SalesFetch | Admin panel</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
@@ -20,7 +20,24 @@
   <body>
 
     <div id="app-container">
-      <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+      <h1>SalesFetch admin page</h1>
+
+      <h2>First run</h2>
+      <ul>
+        <li>TODO: create organization (master key) and AnyFetch account</li>
+        <li>TODO: setup pages (or teach how to do so)</li>
+      </ul>
+
+      <h2>Out-of-context app usage</h2>
+      <ul>
+        <li>TODO: allow to use the app as a normal AnyFetch client, i.e. arbitrary searches (not an admin task)</li>
+      </ul>
+
+      <h2>Admin tools</h2>
+      <ul>
+        <li>TODO: visualize users</li>
+        <li>TODO: allow to update user tokens (at least for devs)</li>
+      </ul>
     </div>
 
     <!-- jQuery -->
@@ -30,27 +47,9 @@
     <script type="text/javascript" src="/lib/devicejs/lib/device.min.js"></script>
     <script type="text/javascript" src="/lib/moment/min/moment.min.js"></script>
 
-    <!-- Livereload -->
-    <!-- <script type="text/javascript" src="/lib/livereload/livereload.js?https=true"></script> -->
-
     <!-- Load app -->
     <script type="text/javascript">
-      var appUrl = '/app.html';
-      // Forward querystring
-      appUrl += window.location.search;
-
-      var container = $('#app-container');
-
-      $.ajax({
-        url: appUrl,
-        contentType: 'html',
-        success: function(html) {
-          container.html(html);
-        },
-        error: function(res, status, err) {
-          container.html(err);
-       }
-     });
+      // TODO
     </script>
 
   </body>

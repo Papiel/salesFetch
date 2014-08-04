@@ -49,7 +49,7 @@ var sliceInTime = function(documents) {
   }];
 
   documents.forEach(function(doc) {
-    var creationDate = moment(doc.creation_date);
+    var creationDate = moment(doc.creationDate);
     var found = false;
     for (var i = 0; i < timeSlices.length && !found; i+=1) {
       if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
@@ -109,11 +109,12 @@ function Document(json) {
     self.id = json.id;
     self.snippet = json.rendered.snippet;
     self.url = json.document_url;
-    self.creation_date = json.creation_date;
+    self.creationDate = json.creation_date;
+    self.actions = json.actions;
 
     self.type = null;
     self.provider = null;
-    self.title = null;
+    self.title = ko.observable();
     self.full = ko.observable();
 
     self.toggleStarred = function() {
@@ -140,7 +141,7 @@ function Document(json) {
     };
 
     self.openOriginal = function() {
-        alert('Coming soon babe');
+        window.open(self.actions.show);
     };
 }
 
@@ -171,6 +172,7 @@ function Provider(json) {
         };
 
         call(url, options, function success(data) {
+            // TODO: open this popup synchronously as well
             window.open(data.url, '','width=700, height=700');
         });
     };
@@ -281,7 +283,7 @@ function SalesfetchViewModel() {
     // Set default tabs
     client.tabs = [timelineTab, starredTab]; // searchTab
 
-    // Desktop has an additional `Providers` tab
+    // Desktop has an additional 'Providers' tab
     if (client.isDesktop) {
         client.providerTab = new TabModel('Providers', 'fa-link', false, client);
         client.tabs.push(client.providerTab);
@@ -373,42 +375,66 @@ function SalesfetchViewModel() {
         }
     };
 
-    client.goToDocument = function(document) {
-        if (!document.full()) {
-            client.fetchFullDocument(document);
-        }
+    client.goToDocument = function(doc) {
+        if(client.activeDocument() !== doc) {
+            if(client.shouldDisplayDocumentViewerDefaultMessage) {
+                client.shouldDisplayDocumentViewerDefaultMessage(false);
+            }
+            client.activeDocument(doc);
 
-        if (client.shouldDisplayDocumentViewerDefaultMessage) {
-            client.shouldDisplayDocumentViewerDefaultMessage(false);
-        }
+            var cssBlock = document.createElement('style');
+            cssBlock.type = 'text/css';
+            cssBlock.innerHTML = 'body { padding: 20px } header { font-size: 25px; margin-bottom: 30px; }';
+            var target;
+            if(!client.isDesktop) {
+                // TODO: check for browser compatibility
+                var iframe = $('#full-iframe')[0];
+                target = iframe.contentDocument;
+            }
+            else {
+                // We need to open the popup window right now (i.e. during event handling)
+                // otherwise we'll get blocked
+                var w = window.open(null, '_blank');
+                target = w.document;
+            }
 
-        if (client.isMobile) {
-            client.activeDocument(document);
-        } else if (client.isTablet) {
-            client.activeDocument(document);
-        } else if (client.isDesktop) {
-            client.openDocumentInOtherWindow(document);
+            var writeFullView = function(html) {
+                if(!client.isDesktop) {
+                    frames['full-iframe'].document.head.appendChild(cssBlock);
+                    $(target.body).html(html);
+                }
+                else {
+                    target.head.appendChild(cssBlock);
+                    $(target.body).html(html);
+                }
+            };
+
+            // Load document full document content (AJAX) if needed
+            // and write the result in the viewer
+            if(!doc.full()) {
+                client.fetchFullDocument(doc, writeFullView);
+            }
+            else {
+                writeFullView(doc.full());
+            }
         }
     };
 
-    client.openDocumentInOtherWindow = function(document) {
+    // Each time the content of the curerent document's full view changes
+    // reset the content of the viewer
+    if(!client.isDesktop) {
+        client.resetFullDocumentView = ko.computed(function() {
+            // The following is only useful to let Knockout know
+            // that we're dependent on the value of `activeDocument` and `activeDocument().full`
+            if(client.activeDocument()) {
+                client.activeDocument().full();
+            }
 
-        var w = window.open();
-        var html = document.snippet;
-
-        $(w.document.body).html(html);
-
-    };
-
-    client.setIframeContent = ko.computed(function() {
-        var iframe = $('#full-iframe')[0];
-        iframe.contentDocument.close();
-        iframe.contentDocument.write('');
-
-        if (client.activeDocument() && client.activeDocument().full()) {
-            iframe.contentDocument.write(client.activeDocument().full());
-        }
-    });
+            var iframe = $('#full-iframe')[0];
+            iframe.contentDocument.close();
+            iframe.contentDocument.write('<html><head></head><body></body></html>');
+        });
+    }
 
     client.goBack = function() {
         scrollToTop();
@@ -418,7 +444,7 @@ function SalesfetchViewModel() {
     // ----- Conditional views
     // Do no use ko.computed when not needed for performance reasons
     client.shouldDisplayDocumentList = ko.computed(function() {
-        return (!client.activeDocument() && client.activeTab() !== client.providerTab) || client.isTablet;
+        return (client.activeTab() !== client.providerTab) && (!client.activeDocument() || !client.isMobile);
     });
 
     client.shouldDisplayFilterToolbar = ko.computed(function() {
@@ -466,16 +492,19 @@ function SalesfetchViewModel() {
     };
     client.fetchDocuments();
 
-    client.fetchFullDocument = function(document) {
+    client.fetchFullDocument = function(document, cb) {
         client.shouldDisplayViewerSpinner(true);
+
         call('/app' + document.url, {}, function success(data) {
-            document.title = data.rendered.title;
-            document.full(data.rendered.full);
-            client.shouldDisplayViewerSpinner(false);
-        }, function error(res) {
-            client.shouldDisplayViewerSpinner(false);
-            client.documentViewerError(getErrorMessage(res));
-        });
+                client.shouldDisplayViewerSpinner(false);
+                document.title(data.rendered.title);
+                document.full(data.rendered.full);
+                cb(data.rendered.full);
+            }, function error(res) {
+                client.shouldDisplayViewerSpinner(false);
+                client.documentViewerError(getErrorMessage(res));
+            }
+        );
     };
 
     // ----- Error messages

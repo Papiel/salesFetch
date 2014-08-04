@@ -31,7 +31,7 @@ body {
 
 	nav .star-btn { .StarBarButton }
 
-	#iframe-container { .DocumentContainer }
+	.iframe-container { .DocumentContainer }
 }
 
 // Desktop
@@ -41,7 +41,11 @@ html.desktop {
 
 	#view-body { .DesktopBody }
 
-	.snippet-list { .DesktopSnippetList }
+	.snippet-list { .DesktopSnippetList;
+		.snippet {
+			cursor: pointer;
+		}
+	}
 	.filter-column { .DestkopFilterColumn }
 	.providers-view { .ProvidersView }
 
@@ -64,6 +68,9 @@ html.tablet {
 
 	}
 
+	.iframe-container {
+		top: @navbarHeight;
+	}
 	.document-view { .DocumentView(tablet) }
 }
 

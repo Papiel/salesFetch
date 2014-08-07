@@ -2,9 +2,17 @@
 
 var gulp = require('gulp');
 var less = require('gulp-less');
+var browserify = require('gulp-browserify');
+var minifyJs = require('gulp-uglify');
+
+var isProduction = (process.env.NODE_ENV === 'production');
 
 var paths = {
-  js: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
+  js: {
+    all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
+    public: ['public/js/**'],
+    publicEntryPoint: 'public/js/main.js'
+  },
   less: {
     watch: 'assets/less/**/*.less',
     source: 'assets/less/style.less',
@@ -25,13 +33,23 @@ gulp.task('less', function() {
     .pipe(gulp.dest(paths.less.target));
 });
 
+// JS compiling
+gulp.task('browserify', function() {
+  return gulp.src(paths.js.publicEntryPoint)
+    .pipe(browserify({
+      debug: !isProduction,
+      // No need for `__dirname`, `process`, etc in client JS
+      insertGlobals: false
+    }))
+    .pipe(minifyJs())
+    .pipe(gulp.dest(paths.minify.target));
+});
+
 // ----- Development only
-if(process.env.NODE_ENV !== 'production') {
+if(!isProduction) {
   var nodemon = require('gulp-nodemon');
   var jshint = require('gulp-jshint');
-  var concat = require('gulp-concat');
   var minifyCss = require('gulp-minify-css');
-  var minifyJs = require('gulp-uglify');
 
   var nodemonOptions = {
     script: 'bin/server',
@@ -48,19 +66,15 @@ if(process.env.NODE_ENV !== 'production') {
 
   // JS linting
   gulp.task('lint', function() {
-    return gulp.src(paths.js)
+    return gulp.src(paths.js.all)
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'));
   });
 
+  // TODO: move to production workflow
   gulp.task('minify', function() {
     gulp.src(paths.minify.css)
       .pipe(minifyCss())
-      .pipe(gulp.dest(paths.minify.target));
-
-    gulp.src(paths.minify.js)
-      .pipe(concat('all.js'))
-      .pipe(minifyJs())
       .pipe(gulp.dest(paths.minify.target));
   });
 
@@ -71,11 +85,12 @@ if(process.env.NODE_ENV !== 'production') {
 
   // Auto-run tasks on file changes
   gulp.task('watch', function() {
-    gulp.watch(paths.js, ['lint']);
+    gulp.watch(paths.js.all, ['lint']);
+    gulp.watch(paths.js.public, ['lint', 'browserify']);
     gulp.watch(paths.less.watch, ['less']);
   });
 
   // Run main tasks on launch
-  gulp.task('default', ['lint', 'less', 'watch', 'nodemon'], function() {
+  gulp.task('default', ['lint', 'less', 'browserify', 'watch', 'nodemon'], function() {
   });
 }

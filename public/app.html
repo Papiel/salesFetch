@@ -287,6 +287,12 @@
 					<span class="star-btn fa fa-external-link" data-bind="click: openOriginal, clickBubble: false, visible: actions.show" />
 				</li>
 				<li class="pull-right">
+					<span class="star-btn fa fa-cloud-download" data-bind="click: download, clickBubble: false, visible: actions.download" />
+				</li>
+				<li class="pull-right">
+					<span class="star-btn fa fa-mail-reply" data-bind="click: reply, clickBubble: false, visible: actions.reply" />
+				</li>
+				<li class="pull-right">
 					<span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
 				</li>
 				<li class="pull-left">

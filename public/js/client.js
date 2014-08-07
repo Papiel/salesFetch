@@ -141,8 +141,22 @@ function Document(json) {
     };
 
     self.openOriginal = function() {
-        window.open(self.actions.show);
+        if (self.actions.show) {
+            window.open(self.actions.show);
+        }
     };
+
+    self.download = function() {
+        if (self.actions.download) {
+            window.open(self.actions.download);
+        }
+    };
+
+    self.reply = function() {
+        if (self.actions.reply) {
+            window.open(self.actions.reply);
+        }
+    }
 }
 
 function Provider(json) {

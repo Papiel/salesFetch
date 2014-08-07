@@ -165,6 +165,10 @@ function Provider(json) {
         this.isActive(!this.isActive());
     };
 
+    self.extendedName = function() {
+        return this.name + ' (' + this.count + ')';
+    }
+
     self.connect = function () {
         var url = '/app/providers/' + self.id ;
         var options = {

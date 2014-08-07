@@ -1,0 +1,21 @@
+{
+  "sessionId": "fake_session_id",
+  "salesFetchURL": "https://192.168.3.101:3000",
+  "instanceURL": "https://eu0.salesforce.com",
+  "context": {
+    "templatedDisplay": "12345",
+    "templatedQuery": "12345",
+    "recordId": "0032000001DoV22AAF",
+    "recordType": "Contact"
+  },
+  "user": {
+    "id": "005o0000000OZ7SAAW",
+    "name": "SalesFetch demo account",
+    "email": "demo@salesfetch.org"
+  },
+  "organization": {
+    "id": "00D20000000lnAcEAI",
+    "name": "SalesForce dev company"
+  },
+  "hash": "8SeWP3YCAzvGpi2q/EC176JMMGE="
+}

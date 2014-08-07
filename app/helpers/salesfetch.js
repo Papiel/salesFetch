@@ -1,25 +1,25 @@
 'use strict';
 
-var express = require('express');
-var Mustache = require('mustache');
+var restify = require('restify');
 var async = require('async');
 var AnyFetch = require('anyfetch');
 
 var mongoose =require('mongoose');
 var Pin = mongoose.model('Pin');
-var anyfetchHelpers = require('../helpers/anyfetch.js');
+
+var templates = require('./templates.js');
 
 module.exports.findPins = function(sfdcId, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
-  var noPinError = new express.errors.NotFound('No pin was found for this context');
+  var noPinError = new restify.NotFoundError('No pin was found for this context');
 
   // Retrieve documents pinned to that context
   async.waterfall([
     function searchMongo(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
-    // Fetch all snippets in one call
-    function fetchDocumentsAndDocumentTypes(pins, cb) {
+    // Fetch all snippets
+    function fetchDocuments(pins, cb) {
       // If no pin was found, abort
       // We use waterfall's err mechanism rather than calling `finalCb` directly
       // in order to avoid a memory leak
@@ -33,21 +33,16 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
         return pin.anyFetchId;
       });
       var query = { id: ids, sort: '-creationDate' };
-      anyfetch.getDocumentsWithInfo(query, cb);
+      anyfetch.getDocuments(query, cb);
     },
-    function applyTemplates(docs, cb) {
-      docs = docs.data.map(function(doc) {
-        // TODO: refactor (also used in `findDocuments`)
-        var template;
-        var overridedTemplates = anyfetchHelpers.getOverridedTemplates();
-        if (overridedTemplates[doc.document_type.id]) {
-          template = overridedTemplates[doc.document_type.id].templates.snippet;
-        } else {
-          template = doc.document_type.templates.snippet;
-        }
+    function applyTemplates(res, cb) {
+      var docs = res.body;
 
+      docs = docs.data.map(function(doc) {
         doc.pinned = true;
-        doc.snippet_rendered = Mustache.render(template, doc.data);
+        doc.rendered = {};
+        doc.rendered.title = templates.render(doc, 'title');
+        doc.rendered.snippet = templates.render(doc, 'snippet');
         return doc;
       });
       cb(null, docs);
@@ -87,11 +82,9 @@ module.exports.getPin = function(sfdcId, anyFetchId, cb) {
  */
 module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
   async.waterfall([
-
     function getPinsForThisContext(cb) {
       Pin.find({ SFDCId: sfdcId }, cb);
     },
-
     function traversePins(pins, cb) {
       if(pins) {
         var hash = {};
@@ -109,7 +102,6 @@ module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
         cb(null, documents);
       }
     }
-
   ], finalCb);
 };
 
@@ -143,10 +135,10 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
     },
     function checkPin(pin, cb) {
       if(!pin) {
-        return cb(new express.errors.NotFound('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
+        return cb(new restify.NotFoundError('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
       }
       if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
-        return cb(new express.errors.Forbidden('You cannot delete a pin from another organization'));
+        return cb(new restify.ForbiddenError('You cannot delete a pin from another organization'));
       }
 
       cb(null, pin);

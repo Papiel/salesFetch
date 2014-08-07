@@ -1,8 +1,0 @@
-{
-  "path" : "/token",
-  "verb" : "GET",
-  "code": 200,
-  "reply": {
-    "token": "mockedToken"
-  }
-}

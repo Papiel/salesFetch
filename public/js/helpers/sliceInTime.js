@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function sliceInTime(documents) {
   var timeSlices = [{
     label: 'Today',

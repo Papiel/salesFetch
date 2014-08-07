@@ -41,7 +41,8 @@ gulp.task('browserify', function() {
       // No need for `__dirname`, `process`, etc in client JS
       insertGlobals: false
     }))
-    .pipe(minifyJs())
+    // TODO: add sourcemaps after minifying
+    //.pipe(minifyJs())
     .pipe(gulp.dest(paths.minify.target));
 });
 

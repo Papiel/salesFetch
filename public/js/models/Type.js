@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function Type(json) {
     var self = this;
     self.isActive = ko.observable(false);

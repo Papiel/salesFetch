@@ -1,3 +1,5 @@
+'use strict';
+
 var call = require('./helpers/call.js');
 var scrollToTop = require('./misc.js').scrollToTop;
 

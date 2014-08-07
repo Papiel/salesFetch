@@ -1,3 +1,5 @@
+'use strict';
+
 var call = require('../helpers/call.js');
 
 module.exports = function Provider(json) {

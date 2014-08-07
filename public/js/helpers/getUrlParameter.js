@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Extract the parameter `name` from the current URL location
  */

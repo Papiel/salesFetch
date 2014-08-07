@@ -1,3 +1,5 @@
+'use strict';
+
 var sliceInTime = require('../helpers/sliceInTime.js');
 
 var tabTotalNumer = 0;

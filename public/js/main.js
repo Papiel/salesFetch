@@ -12,12 +12,10 @@ $(document).ready(function() {
   ko.applyBindings(client);
   client.fetchDocuments();
   if(client.isDesktop) {
+    client.fetchAvailableProviders();
+
+    window.refreshProviders = function() {
       client.fetchAvailableProviders();
-
-      window.refreshProviders = function() {
-          client.fetchAvailableProviders();
-      };
+    };
   }
-
-  console.log(client);
 });

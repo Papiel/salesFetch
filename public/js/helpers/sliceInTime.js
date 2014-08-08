@@ -53,5 +53,6 @@ module.exports = function sliceInTime(documents) {
       }
     }
   });
+
   return timeSlices;
 };

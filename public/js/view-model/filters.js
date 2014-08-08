@@ -8,35 +8,35 @@
  * @return {Array} List filtered by `isActive`
  */
 var isActive = function(o) {
-    return o.isActive();
+  return o.isActive();
 };
 
 /**
 * @return {Array} providers which are active
 */
 module.exports.activeProviders = function(client) {
-    return function() {
-        var activeProviders = client.connectedProviders().filter(isActive);
+  return function() {
+    var activeProviders = client.connectedProviders().filter(isActive);
 
-        // Update client.filterByProvider
-        client.filterByProvider(activeProviders.length !== 0);
+    // Update client.filterByProvider
+    client.filterByProvider(activeProviders.length !== 0);
 
-        return client.filterByProvider() ? activeProviders : client.connectedProviders();
-    };
+    return client.filterByProvider() ? activeProviders : client.connectedProviders();
+  };
 };
 
 /**
  * @eturn {Array} types which are active
  */
 module.exports.activeTypes = function(client) {
-    return function() {
-        var activeTypes = client.types().filter(isActive);
+  return function() {
+    var activeTypes = client.types().filter(isActive);
 
-        // Update client.filterByType
-        client.filterByType(activeTypes.length !== 0);
+    // Update client.filterByType
+    client.filterByType(activeTypes.length !== 0);
 
-        return client.filterByType() ? activeTypes : client.types();
-    };
+    return client.filterByType() ? activeTypes : client.types();
+  };
 };
 
 /**
@@ -45,9 +45,9 @@ module.exports.activeTypes = function(client) {
  */
 module.exports.providerAndType = function(client) {
   return function(document) {
-      var providerFilter = document.provider.isActive() || !client.filterByProvider();
-      var typeFilter = document.type.isActive() || !client.filterByType();
-      return providerFilter && typeFilter;
+    var providerFilter = document.provider.isActive() || !client.filterByProvider();
+    var typeFilter = document.type.isActive() || !client.filterByType();
+    return providerFilter && typeFilter;
   };
 };
 
@@ -56,7 +56,7 @@ module.exports.providerAndType = function(client) {
  * @return {Array} Only the `documents` which are filtered
  */
 module.exports.starredFilter = function() {
-    return function(document) {
-        return (document.isStarred() === true) && module.exports.providerAndType(document);
-    };
+  return function(document) {
+    return (document.isStarred() === true) && module.exports.providerAndType(document);
+  };
 };

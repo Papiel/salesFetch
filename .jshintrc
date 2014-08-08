@@ -57,7 +57,7 @@
   "nomen"         : false,
   "onevar"        : false,
   "passfail"      : false,
-  "white"         : false,
+  "white"         : true,
 
   "maxerr"        : 100,
   "predef"        : [

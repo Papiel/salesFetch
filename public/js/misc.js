@@ -1,8 +1,12 @@
 'use strict';
 
-/*===============
-  GLOBAL
- ================*/
+/*
+  ____ _       _           _
+ / ___| | ___ | |__   __ _| |
+| |  _| |/ _ \| '_ \ / _` | |
+| |_| | | (_) | |_) | (_| | |
+ \____|_|\___/|_.__/ \__,_|_|
+*/
 
 /*
  * Replace bootstrap.js for opening dropdown buttons
@@ -34,9 +38,14 @@ module.exports.addDropdownButtons = function() {
   });
 };
 
-/*===============
-  TABLET
- ================*/
+/*
+ _____     _     _      _
+|_   _|_ _| |__ | | ___| |_
+  | |/ _` | '_ \| |/ _ \ __|
+  | | (_| | |_) | |  __/ |_
+  |_|\__,_|_.__/|_|\___|\__|
+
+*/
 module.exports.addTabletBehaviors = function() {
   /**
    * Toogle left panel

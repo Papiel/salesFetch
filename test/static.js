@@ -20,7 +20,7 @@ describe('<Static content>', function() {
 
   it('should serve JS', function(done) {
     request(app)
-      .get('/js/client.js')
+      .get('/dist/main.js')
       .expect(200)
       .expect('Content-type', 'application/javascript')
       .end(done);

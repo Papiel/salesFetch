@@ -14,10 +14,10 @@
   ],
   "scripts": {
     "start": "node bin/server",
-    "less": "node node_modules/gulp/bin/gulp.js less",
+    "make": "node node_modules/gulp/bin/gulp.js less browserify",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
     "coverage": "NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha -- --recursive -R spec test/ -t 5000",
-    "postinstall": "node node_modules/bower/bin/bower install; npm run-script less"
+    "postinstall": "node node_modules/bower/bin/bower install; npm run-script compile"
   },
   "repository": {
     "type": "git",

@@ -66,6 +66,8 @@ module.exports = function SalesfetchViewModel() {
     }
 
     // ----- Navigation
+    // TODO: remove this dirty hack!
+    navigation.setClient(client);
     client.goToTab = navigation.goToTab;
     client.goToDocument = navigation.goToDocument;
     client.goBack = navigation.goBack;

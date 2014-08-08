@@ -400,6 +400,7 @@ function SalesfetchViewModel() {
                 target = w.document;
                 target.head.appendChild(cssBlock);
 
+                // TODO: do not hardcode!
                 var domainPath = 'https://localhost:3000';
                 var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="'+domainPath+'/lib/fontawesome/css/font-awesome.min.css">';
                 var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';

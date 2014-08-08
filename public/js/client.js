@@ -483,8 +483,13 @@ function SalesfetchViewModel() {
     client.fetchDocuments = function() {
         client.shouldDisplayDocumentsSpinner(true);
         call('/app/documents', {}, function success(data) {
-            client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
+            var docs = data.documents.data;
+            if (docs && docs.length > 0) {
+                client.addDocuments(data.documents.data);
+            } else {
+                client.documentListError('No documents found for this query');
+            }
         }, function error(res) {
             client.shouldDisplayDocumentsSpinner(false);
             client.documentListError(getErrorMessage(res));

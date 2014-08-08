@@ -4,10 +4,6 @@
   GLOBAL
  ================*/
 
-module.exports.scrollToTop = function() {
-	$('#view-body').scrollTop(0);
-};
-
 /*
  * Replace bootstrap.js for opening dropdown buttons
  */

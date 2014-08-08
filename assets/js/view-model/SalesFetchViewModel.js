@@ -26,6 +26,7 @@ module.exports = function SalesfetchViewModel() {
 
   client.documentListError = ko.observable();
   client.documentViewerError = ko.observable();
+  client.loadMoreError = ko.observable();
 
   if (client.isTablet) {
     client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
@@ -51,6 +52,7 @@ module.exports = function SalesfetchViewModel() {
   // ----- Documents management
   client.addDocument = documents.addDocument;
   client.addDocuments = documents.addDocuments;
+  client.loadMoreDocuments = documents.loadMoreDocuments;
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer
@@ -102,4 +104,5 @@ module.exports = function SalesfetchViewModel() {
   // Spinners
   client.shouldDisplayDocumentsSpinner = ko.observable(false);
   client.shouldDisplayViewerSpinner = ko.observable(false);
+  client.shouldDisplayLoadMoreSpinner = ko.observable(false);
 };

@@ -4,6 +4,7 @@ var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
+var call = require('../helpers/call.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 module.exports.addDocument = function(json) {
@@ -50,6 +51,24 @@ module.exports.addDocuments = function(array) {
   }
   if(client.documents().length <= 0) {
     client.documentListError(getErrorMessage('no documents'));
+  }
+};
+
+module.exports.loadMoreDocuments = function() {
+  var client = this;
+
+  if (!client.shouldDisplayLoadMoreSpinner()) {
+    client.shouldDisplayLoadMoreSpinner(true);
+    var params = {
+      start: client.documents().length
+    };
+    call('/app/documents', params, function success(data) {
+      client.addDocuments(data.documents.data);
+      client.shouldDisplayLoadMoreSpinner(false);
+    }, function error(res) {
+      client.shouldDisplayLoadMoreSpinner(false);
+      client.loadMoreError(getErrorMessage(res));
+    });
   }
 };
 

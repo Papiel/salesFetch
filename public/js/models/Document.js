@@ -1,9 +1,13 @@
 'use strict';
 
+var Type = require('./Type.js');
+var Provider = require('./Provider.js');
+
 var call = require('../helpers/call.js');
 
 module.exports = function Document(json) {
     var self = this;
+
     self.isStarred = ko.observable(json.pinned);
     self.id = json.id;
     self.snippet = json.rendered.snippet;
@@ -11,8 +15,9 @@ module.exports = function Document(json) {
     self.creationDate = json.creation_date;
     self.actions = json.actions;
 
-    self.type = null;
-    self.provider = null;
+    // TODO: do not reinstanciate providers / type each type
+    self.type = new Type(json.document_type);
+    self.provider = new Provider(json.provider);
     self.title = ko.observable();
     self.full = ko.observable();
 

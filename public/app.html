@@ -64,8 +64,8 @@
 		<!-- END SPINNER -->
 
 		<!-- DOCUMENT LIST TAB -->
-		<div class="document-list" data-bind="with: activeTab, visible: shouldDisplayDocumentList">
-			<div class="snippet-list" data-bind="foreach: $data.timeSlices()">
+		<div class="document-list" data-bind="visible: shouldDisplayDocumentList">
+			<div class="snippet-list" data-bind="foreach: timeSlices">
 
 				<!-- SNIPPET SECTION -->
 				<div class="snippet-section" data-bind="visible: documents.length > 0">
@@ -150,7 +150,7 @@
 
 		<!-- PROVIDERS TAB DISPLAY -->
 		<!-- ko if: isDesktop -->
-		<div class="providers-view row" data-bind="visible: $root.activeTab() == providerTab">
+		<div class="providers-view row" data-bind="visible: $root.activeTab().name === 'Providers'">
 			<div class="connected-providers provider-panel col-md-6 col-sm-7">
 				<h2>Connected providers</h2>
 				<div class="provider-list">

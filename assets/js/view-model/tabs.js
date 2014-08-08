@@ -10,7 +10,7 @@ var filters = require('./filters.js');
 /**
  * @return {Array} The visible tabs. First tab of the list should be the default tab.
  */
- module.exports.getTabs = function(client) {
+module.exports.getTabs = function(client) {
   var timelineTab = new Tab('Timeline', 'fa-list', true, false, filters.providerAndType(client));
   var starredTab = new Tab('Starred', 'fa-star-o', true, false, filters.starredFilter(client));
   var providerTab = new Tab('Providers', 'fa-link');

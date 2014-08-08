@@ -9,9 +9,9 @@ var isProduction = (process.env.NODE_ENV === 'production');
 
 var paths = {
   js: {
-    all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js'],
-    public: ['public/js/**'],
-    publicEntryPoint: 'public/js/main.js'
+    all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'assets/js/**', 'test/**/*.js'],
+    client: ['assets/js/**'],
+    publicEntryPoint: 'assets/js/main.js'
   },
   less: {
     watch: 'assets/less/**/*.less',
@@ -20,7 +20,6 @@ var paths = {
   },
   minify: {
     css: 'public/stylesheets/style.css',
-    js: 'public/js/**/*.js',
     target: 'public/dist/'
   },
   ignores: ['/lib/**', 'public/**']
@@ -87,7 +86,7 @@ if(!isProduction) {
   // Auto-run tasks on file changes
   gulp.task('watch', function() {
     gulp.watch(paths.js.all, ['lint']);
-    gulp.watch(paths.js.public, ['lint', 'browserify']);
+    gulp.watch(paths.js.client, ['lint', 'browserify']);
     gulp.watch(paths.less.watch, ['less']);
   });
 

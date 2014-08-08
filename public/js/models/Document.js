@@ -1,8 +1,5 @@
 'use strict';
 
-var Type = require('./Type.js');
-var Provider = require('./Provider.js');
-
 var call = require('../helpers/call.js');
 
 module.exports = function Document(json) {
@@ -15,9 +12,9 @@ module.exports = function Document(json) {
     self.creationDate = json.creation_date;
     self.actions = json.actions;
 
-    // TODO: do not reinstanciate providers / type each type
-    self.type = new Type(json.document_type);
-    self.provider = new Provider(json.provider);
+    // Will be bound to the corresponding model instance
+    self.type;
+    self.provider;
     self.title = ko.observable();
     self.full = ko.observable();
 

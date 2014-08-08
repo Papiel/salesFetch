@@ -299,9 +299,14 @@ function SalesfetchViewModel() {
     };
 
     client.addDocuments = function(array) {
-        array.forEach(function(json) {
-            client.addDocument(json);
-        });
+        if (array && array.length > 0) {
+            array.forEach(function(json) {
+                client.addDocument(json);
+            });
+        }
+        if (client.documents().length <= 0) {
+            client.documentListError('No documents found for this query');
+        }
     };
 
     client.DocumentWithJson = function(json) {
@@ -483,13 +488,8 @@ function SalesfetchViewModel() {
     client.fetchDocuments = function() {
         client.shouldDisplayDocumentsSpinner(true);
         call('/app/documents', {}, function success(data) {
+            client.addDocuments(data.documents.data);
             client.shouldDisplayDocumentsSpinner(false);
-            var docs = data.documents.data;
-            if (docs && docs.length > 0) {
-                client.addDocuments(data.documents.data);
-            } else {
-                client.documentListError('No documents found for this query');
-            }
         }, function error(res) {
             client.shouldDisplayDocumentsSpinner(false);
             client.documentListError(getErrorMessage(res));
@@ -521,7 +521,8 @@ function SalesfetchViewModel() {
     var errorMessages = {
         'unprocessable entity': 'Missing aunthentication information',
         'template parameter is missing': 'Missing parameters: check your VisualForce page configuration (`templatedQuery` or `templatedDisplay`)',
-        'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key'
+        'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key',
+        'no documents': 'No documents found for this query'
     };
     var getErrorMessage = function(res) {
         var err = (res.responseJSON ? res.responseJSON.code + ': ' + res.responseJSON.message : res.responseText);

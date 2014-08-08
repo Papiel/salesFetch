@@ -11,12 +11,15 @@ var noopFilter = function() {
  * @param {Boolean} pullRight
  * @param {Function} filter A function to use to filter the documents to be shown in this tab
  */
-module.exports = function Tab(name, display, pullRight, filter) {
+module.exports = function Tab(name, display, hasDocumentList, pullRight, filter) {
     var self = this;
-    self.name = name;
-    self.display = display;
+
     self.id = idCounter;
     idCounter += 1;
-    self.pullRight = pullRight;
+
+    self.name = name;
+    self.display = display;
+    self.hasDocumentList = hasDocumentList || false;
+    self.pullRight = pullRight || false;
     self.filter = filter || noopFilter;
 };

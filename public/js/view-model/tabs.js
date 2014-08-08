@@ -11,9 +11,9 @@ var filters = require('./filters.js');
  * @return {Array} The visible tabs. First tab of the list should be the default tab.
  */
 module.exports.getTabs = function(client) {
-    var timelineTab = new Tab('Timeline', 'fa-list', false, filters.providerAndType(client));
-    var starredTab = new Tab('Starred', 'fa-star-o', false, filters.starredFilter(client));
-    var providerTab = new Tab('Providers', 'fa-link', false);
+    var timelineTab = new Tab('Timeline', 'fa-list', true, false, filters.providerAndType(client));
+    var starredTab = new Tab('Starred', 'fa-star-o', true, false, filters.starredFilter(client));
+    var providerTab = new Tab('Providers', 'fa-link');
 
     // TODO: re-enable when feature exists
     //var searchTab = new Tab('Search', 'fa-search', true);

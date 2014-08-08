@@ -86,8 +86,7 @@ module.exports = function SalesfetchViewModel() {
     // ----- UI (conditional views)
     // Avoid using ko.computed when not needed (for better performance)
     client.shouldDisplayDocumentList = ko.computed(function() {
-        // TODO: check `client.providerTab`
-        return (client.activeTab() !== client.providerTab) && (!client.activeDocument() || !client.isMobile);
+        return (client.activeTab().hasDocumentList) && (!client.activeDocument() || !client.isMobile);
     });
 
     client.shouldDisplayFilterToolbar = ko.computed(function() {

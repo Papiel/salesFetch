@@ -19,7 +19,7 @@
 	<!-- NAVIGATION TOP -->
 	<nav class="navbar navbar-default navbar-tab">
 
-		<!-- MAIN VIEW NAV -->
+		<!-- MAIN VIEW TAB NAV -->
 		<div data-bind="visible: shouldDisplayTabsNavbar()">
 			<ul class="nav nav-pills" data-bind="foreach: tabs">
 				<li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
@@ -29,7 +29,7 @@
 				</li>
 			</ul>
 		</div>
-		<!-- END MAIN VIEW NAV -->
+		<!-- END MAIN VIEW TAB NAV -->
 
 		<!-- DOCUMENT FULL NAV -->
 		<!-- ko if: isMobile -->
@@ -97,7 +97,6 @@
 
  			</div>
  		</div>
-
 		<!-- END DOCUMENT LIST TAB -->
 
 		<!-- FILTERS COLUMN -->

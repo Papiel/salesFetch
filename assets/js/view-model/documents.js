@@ -4,6 +4,8 @@ var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
+var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
+
 module.exports.addDocument = function(json) {
   var client = this;
 
@@ -41,9 +43,14 @@ module.exports.addDocument = function(json) {
 module.exports.addDocuments = function(array) {
   var client = this;
 
-  array.forEach(function(json) {
-    client.addDocument(json);
-  });
+  if(array && array.length > 0) {
+    array.forEach(function(json) {
+      client.addDocument(json);
+    });
+  }
+  if(client.documents().length <= 0) {
+    client.documentListError(getErrorMessage('no documents'));
+  }
 };
 
 module.exports.resetDocumentFullView = function() {

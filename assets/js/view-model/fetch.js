@@ -2,7 +2,7 @@
 
 var call = require('../helpers/call.js');
 var providers = require('./providers.js');
-var getErrorMessage = require('./errors.js').getErrorMessage;
+var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
  * @file Handle communication with the server

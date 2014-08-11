@@ -17,7 +17,8 @@ module.exports.get = function(req, res, next) {
 
   var params = {
     sort: '-creationDate',
-    search: req.data.context.templatedQuery
+    search: req.data.context.templatedQuery,
+    strict: true
   };
 
   var filters = {};

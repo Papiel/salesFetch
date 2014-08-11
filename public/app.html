@@ -125,13 +125,14 @@ Including tab bar, document list, filters, etc.
         </div>
         <!-- END SNIPPET SECTION -->
       <!-- /ko -->
-      </div>
-      <!-- END SNIPPET SECTION LIST -->
 
       <!-- Spinner for infinite scroll -->
-      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner">
+      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner()">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
       </div>
+
+      </div>
+      <!-- END SNIPPET SECTION LIST -->
     </div>
     <!-- END DOCUMENT LIST -->
 

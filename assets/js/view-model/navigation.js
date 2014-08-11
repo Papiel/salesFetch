@@ -2,16 +2,12 @@
 
 var scrollToTop = require('../helpers/scrollToTop.js');
 
-// TODO: remove this dirty hack!
-var client;
-module.exports.setClient = function(c){
-  client = c;
-};
-
 /**
  * @file Navigation
  */
 module.exports.goToTab = function(tab) {
+  var client = this;
+
   client.activeTab(tab);
 
   if (client.isMobile) {
@@ -20,6 +16,8 @@ module.exports.goToTab = function(tab) {
 };
 
 module.exports.goToDocument = function(doc) {
+  var client = this;
+
   if(client.activeDocument() !== doc) {
     if(client.shouldDisplayDocumentViewerDefaultMessage) {
       client.shouldDisplayDocumentViewerDefaultMessage(false);
@@ -65,6 +63,8 @@ module.exports.goToDocument = function(doc) {
 };
 
 module.exports.goBack = function() {
+  var client = this;
+
   scrollToTop();
   client.activeDocument(null);
 };

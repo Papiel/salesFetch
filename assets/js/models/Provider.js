@@ -33,4 +33,8 @@ module.exports = function Provider(json) {
       window.open(data.url, '','width=700, height=700');
     });
   };
+
+  self.extendedName = function() {
+    return this.name + ' (' + this.count + ')';
+  };
 };

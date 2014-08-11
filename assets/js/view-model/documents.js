@@ -55,22 +55,19 @@ module.exports.addDocuments = function(array) {
 module.exports.loadMoreDocuments = function() {
   var client = this;
 
-  if(!client.shouldDisplayLoadMoreSpinner() && !client.allDocumentsLoaded) {
-    client.shouldDisplayLoadMoreSpinner(true);
+  if(!client.allDocumentsLoaded()) {
     var options = {
       data: { start: client.documents().length }
     };
     call('/app/documents', options, function success(data) {
-      client.shouldDisplayLoadMoreSpinner(false);
 
       if(data.documents.data && data.documents.data.length > 0) {
         client.addDocuments(data.documents.data);
       }
       else {
-        client.allDocumentsLoaded = true;
+        client.allDocumentsLoaded(true);
       }
     }, function error(res) {
-      client.shouldDisplayLoadMoreSpinner(false);
       client.loadMoreError(getErrorMessage(res));
     });
   }

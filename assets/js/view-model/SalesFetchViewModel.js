@@ -54,7 +54,7 @@ module.exports = function SalesfetchViewModel() {
   client.addDocuments = documents.addDocuments;
   client.loadMoreDocuments = documents.loadMoreDocuments;
   // Flag which indicates when all possible documents have been loaded
-  client.allDocumentsLoaded = false;
+  client.allDocumentsLoaded = ko.observable(false);
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer

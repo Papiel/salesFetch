@@ -28,9 +28,10 @@ module.exports = function Provider(json) {
       type: 'post'
     };
 
+    var w = window.open(null, '_blank');
+
     call(url, options, function success(data) {
-      // TODO: open this popup synchronously as well
-      window.open(data.url, '','width=700, height=700');
+      w.location = data.url;
     });
   };
 

@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var browserify = require('gulp-browserify');
 var minifyJs = require('gulp-uglify');
+var minifyCss = require('gulp-minify-css');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 
@@ -16,40 +17,44 @@ var paths = {
   less: {
     watch: 'assets/less/**/*.less',
     source: 'assets/less/style.less',
-    target: 'public/stylesheets'
   },
-  minify: {
-    css: 'public/stylesheets/style.css',
-    target: 'public/dist/'
-  },
+  target: 'public/dist/',
   ignores: ['/lib/**', 'public/**']
 };
 
 // LESS compiling
 gulp.task('less', function() {
-  return gulp.src(paths.less.source)
-    .pipe(less())
-    .pipe(gulp.dest(paths.less.target));
+  var p = gulp.src(paths.less.source)
+    .pipe(less());
+
+  if(isProduction) {
+    p = p.pipe(minifyCss());
+  }
+
+  return p.pipe(gulp.dest(paths.target));
 });
 
 // JS compiling
 gulp.task('browserify', function() {
-  return gulp.src(paths.js.publicEntryPoint)
+  var p = gulp.src(paths.js.publicEntryPoint)
     .pipe(browserify({
       debug: !isProduction,
       // No need for `__dirname`, `process`, etc in client JS
       insertGlobals: false
-    }))
-    // TODO: add sourcemaps after minifying
-    //.pipe(minifyJs())
-    .pipe(gulp.dest(paths.minify.target));
+    }));
+
+  if(isProduction) {
+    p = p.pipe(minifyJs());
+  }
+
+  return p.pipe(gulp.dest(paths.target));
 });
 
 // ----- Development only
 if(!isProduction) {
   var nodemon = require('gulp-nodemon');
   var jshint = require('gulp-jshint');
-  var minifyCss = require('gulp-minify-css');
+
 
   var nodemonOptions = {
     script: 'bin/server',
@@ -69,13 +74,6 @@ if(!isProduction) {
     return gulp.src(paths.js.all)
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'));
-  });
-
-  // TODO: move to production workflow
-  gulp.task('minify', function() {
-    gulp.src(paths.minify.css)
-      .pipe(minifyCss())
-      .pipe(gulp.dest(paths.minify.target));
   });
 
   // Nodemon (auto-restart node-apps)

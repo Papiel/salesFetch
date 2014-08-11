@@ -59,11 +59,12 @@ module.exports.loadMoreDocuments = function() {
 
   if (!client.shouldDisplayLoadMoreSpinner()) {
     client.shouldDisplayLoadMoreSpinner(true);
-    var params = {
-      start: client.documents().length
+    var options = {
+      data: { start: client.documents().length }
     };
     call('/app/documents', params, function success(data) {
       client.addDocuments(data.documents.data);
+    call('/app/documents', options, function success(data) {
       client.shouldDisplayLoadMoreSpinner(false);
     }, function error(res) {
       client.shouldDisplayLoadMoreSpinner(false);

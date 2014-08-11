@@ -44,12 +44,19 @@ module.exports.get = function(req, res, next) {
     function sendResponse(documents, cb) {
       // If load more results
       // TODO: make sure that format is adapted
-      if (req.query.start) {
-        res.send(documents);
+      var response = {
+        documents: documents,
+        filters: filters
+      };
+
+      // When loading documents for infinite scroll, a lot of info is useless
+      if(req.query.start) {
+        delete response.filters;
+        delete response.documents.document_types;
+        delete response.documents.providers;
       }
-      else {
-        res.send({ documents: documents, filters: filters });
-      }
+
+      res.send(response);
       cb();
     }
   ], next);

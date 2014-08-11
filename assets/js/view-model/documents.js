@@ -44,11 +44,9 @@ module.exports.addDocument = function(json) {
 module.exports.addDocuments = function(array) {
   var client = this;
 
-  if(array && array.length > 0) {
-    array.forEach(function(json) {
-      client.addDocument(json);
-    });
-  }
+  array.forEach(function(json) {
+    client.addDocument(json);
+  });
   if(client.documents().length <= 0) {
     client.documentListError(getErrorMessage('no documents'));
   }
@@ -57,15 +55,20 @@ module.exports.addDocuments = function(array) {
 module.exports.loadMoreDocuments = function() {
   var client = this;
 
-  if (!client.shouldDisplayLoadMoreSpinner()) {
+  if(!client.shouldDisplayLoadMoreSpinner() && !client.allDocumentsLoaded) {
     client.shouldDisplayLoadMoreSpinner(true);
     var options = {
       data: { start: client.documents().length }
     };
-    call('/app/documents', params, function success(data) {
-      client.addDocuments(data.documents.data);
     call('/app/documents', options, function success(data) {
       client.shouldDisplayLoadMoreSpinner(false);
+
+      if(data.documents.data && data.documents.data.length > 0) {
+        client.addDocuments(data.documents.data);
+      }
+      else {
+        client.allDocumentsLoaded = true;
+      }
     }, function error(res) {
       client.shouldDisplayLoadMoreSpinner(false);
       client.loadMoreError(getErrorMessage(res));

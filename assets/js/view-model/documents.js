@@ -41,14 +41,17 @@ module.exports.addDocument = function(json) {
   client.documents.push(doc);
 };
 
-module.exports.addDocuments = function(array) {
+module.exports.addDocuments = function(documentsJson) {
   var client = this;
 
-  array.forEach(function(json) {
+  documentsJson.data.forEach(function(json) {
     client.addDocument(json);
   });
   if(client.documents().length <= 0) {
     client.documentListError(getErrorMessage('no documents'));
+  }
+  else if (client.documents().length === documentsJson.count) {
+    client.allDocumentsLoaded(true);
   }
 };
 
@@ -62,7 +65,7 @@ module.exports.loadMoreDocuments = function() {
     call('/app/documents', options, function success(data) {
 
       if(data.documents.data && data.documents.data.length > 0) {
-        client.addDocuments(data.documents.data);
+        client.addDocuments(data.documents);
       }
       else {
         client.allDocumentsLoaded(true);

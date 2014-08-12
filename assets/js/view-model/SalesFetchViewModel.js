@@ -17,6 +17,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.documents = ko.observableArray([]);
+  client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
@@ -50,7 +51,7 @@ module.exports = function SalesfetchViewModel() {
   client.filteredTypes = ko.computed(filters.activeTypes(client));
 
   // ----- Documents management
-  client.addDocument = documents.addDocument;
+  client.documentWithJson = documents.documentWithJson;
   client.addDocuments = documents.addDocuments;
   client.loadMoreDocuments = documents.loadMoreDocuments;
   // Flag which indicates when all possible documents have been loaded

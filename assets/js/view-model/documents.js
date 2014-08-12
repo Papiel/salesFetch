@@ -7,7 +7,7 @@ var Provider = require('../models/Provider.js');
 var call = require('../helpers/call.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
-module.exports.addDocument = function(json) {
+module.exports.documentWithJson = function(json) {
   var client = this;
 
   var doc = new Document(json);
@@ -38,15 +38,18 @@ module.exports.addDocument = function(json) {
   }
   doc.type = type;
 
-  client.documents.push(doc);
+  return doc;
 };
 
 module.exports.addDocuments = function(documentsJson) {
   var client = this;
-
+  var docs = [];
   documentsJson.data.forEach(function(json) {
-    client.addDocument(json);
+    docs.push(client.documentWithJson(json));
   });
+
+  client.documents(client.documents().concat(docs));
+
   if(client.documents().length <= 0) {
     client.documentListError(getErrorMessage('no documents'));
   }

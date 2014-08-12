@@ -9,7 +9,7 @@ var Provider = require('../models/Provider.js');
 module.exports.setAvailableProviders = function(client, providers) {
   var availableProviders = [];
   providers.forEach(function(providerInfo) {
-    availableProviders.push(new Provider(providerInfo));
+    availableProviders.push(new Provider(providerInfo, client));
   });
   client.availableProviders(availableProviders);
 };
@@ -20,7 +20,7 @@ module.exports.setConnectedProviders = function(client, providers) {
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
     if (provider._type !== "AccessToken" || provider.client) {
-      connectedProviders.push(new Provider(provider));
+      connectedProviders.push(new Provider(provider, client));
     }
   });
   client.connectedProviders(connectedProviders);

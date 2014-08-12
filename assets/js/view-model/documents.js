@@ -19,8 +19,8 @@ module.exports.addDocument = function(json) {
     }
   });
   if(!provider) {
-    provider = new Provider(json.provider);
-    client.connectedProviders().push(provider);
+    provider = new Provider(json.provider, this);
+    client.connectedProviders.push(provider);
   }
   doc.provider = provider;
 
@@ -28,12 +28,12 @@ module.exports.addDocument = function(json) {
   var type;
   client.types().forEach(function(t) {
     if(t.id === json.document_type.id) {
-      provider = t;
+      type = t;
     }
   });
   if(!type) {
-    type = new Type(json.document_type);
-    client.types().push(type);
+    type = new Type(json.document_type, this);
+    client.types.push(type);
   }
   doc.type = type;
 

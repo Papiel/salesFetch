@@ -67,12 +67,12 @@ module.exports.starredFilter = function() {
  */
  module.exports.paramsForFilter = function(client) {
   var providerIDs = [];
-  client.activeProviders().forEach(function(provider) {
+  client.filteredProviders().forEach(function(provider) {
     providerIDs.push(provider.id);
   });
 
   var typeIDs = [];
-  client.activeTypes().forEach(function(type) {
+  client.filteredTypes().forEach(function(type) {
     typeIDs.push(type.id);
   });
 
@@ -84,6 +84,6 @@ module.exports.starredFilter = function() {
  **/
  module.exports.updateFilter = function() {
   if (this.filterByProvider() || this.filterByType()) {
-    console.log(paramsForFilter(this));
+    console.log(module.exports.paramsForFilter(this));
   }
  };

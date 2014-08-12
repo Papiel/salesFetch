@@ -42,8 +42,6 @@ module.exports.get = function(req, res, next) {
       salesfetchHelpers.markIfPinned(req.data.context.recordId, documents, cb);
     },
     function sendResponse(documents, cb) {
-      // If load more results
-      // TODO: make sure that format is adapted
       var response = {
         documents: documents,
         filters: filters

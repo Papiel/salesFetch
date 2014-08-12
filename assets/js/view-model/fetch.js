@@ -22,6 +22,24 @@ module.exports.fetchDocuments = function(params) {
   });
 };
 
+module.exports.fetchTempDocuments = function(filters) {
+  var client = this;
+  filters = filters || {};
+
+  var options = {
+    data: filters
+  };
+
+  client.shouldDisplayDocumentsSpinner(true);
+  call('/app/documents', options, function success(data) {
+    client.tempDocuments(data.documents.data);
+    client.shouldDisplayDocumentsSpinner(false);
+  }, function error(res) {
+    client.shouldDisplayDocumentsSpinner(false);
+    client.documentListError(getErrorMessage(res));
+  });
+};
+
 module.exports.fetchFullDocument = function(document, cb) {
   var client = this;
 

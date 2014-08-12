@@ -76,7 +76,8 @@ module.exports.starredFilter = function() {
     typeIDs.push(type.id);
   });
 
-  return { provider: providerIDs, document_type: typeIDs};
+  var params = { provider: providerIDs, document_type: typeIDs};
+  return params;
  };
 
 /**
@@ -84,6 +85,7 @@ module.exports.starredFilter = function() {
  **/
  module.exports.updateFilter = function() {
   if (this.filterByProvider() || this.filterByType()) {
-    console.log(module.exports.paramsForFilter(this));
+    var params = module.exports.paramsForFilter(this);
+    this.fetchTempDocuments(params);
   }
  };

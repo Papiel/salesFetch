@@ -89,6 +89,7 @@ module.exports = function SalesfetchViewModel() {
   client.fetchDocuments = fetch.fetchDocuments;
   client.fetchFullDocument = fetch.fetchFullDocument;
   client.fetchAvailableProviders = fetch.fetchAvailableProviders;
+  client.fetchTempDocuments = fetch.fetchTempDocuments;
 
   // ----- UI (conditional views)
   // Avoid using ko.computed when not needed (for better performance)

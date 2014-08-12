@@ -4,7 +4,8 @@ var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
-var Error = require('../helpers/errors.js');
+var StringHelper = require('../helpers/string.js');
+var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 module.exports.addDocument = function(json) {
   var client = this;
@@ -49,7 +50,7 @@ module.exports.addDocuments = function(array) {
     });
   }
   if(client.documents().length <= 0) {
-    var errorMessage = Error.getErrorMessage('no documents').format(client.searchQuery);
+    var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
     client.documentListError(errorMessage);
   }
 };

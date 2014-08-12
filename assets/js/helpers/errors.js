@@ -17,20 +17,6 @@ var errorMessages = {
 };
 
 /**
- * @param {Object} object
- * @return {String} string formatted with `object`
- */
-String.prototype.format = function() {
-  var s = this;
-  for (var i = 0; i < arguments.length; i++) {
-    var reg = new RegExp("\\{" + i + "\\}", "gm");
-    s = s.replace(reg, arguments[i]);
-  }
-
-  return s;
-}
-
-/**
  * @param {Request object | String} res from an AJAX call or an error name directly
  * @return {String} The most precise error message we can display
  */

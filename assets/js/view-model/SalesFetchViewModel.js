@@ -17,6 +17,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.documents = ko.observableArray([]);
+  client.tempDocuments = ko.observableArray([]);
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
@@ -40,7 +41,14 @@ module.exports = function SalesfetchViewModel() {
       return [];
     }
 
-    var docs = client.activeTab().filter ? client.documents().filter(client.activeTab().filter) : client.documents();
+    // By default use the timeline's documents
+    var source = client.documents();
+    // Use tempDocuments if they exist
+    if (client.tempDocuments() && client.tempDocuments().length) {
+      source = client.tempDocuments();
+    }
+
+    var docs = client.activeTab().filter ? source.filter(client.activeTab().filter) : source;
     return sliceInTime(docs);
   });
 

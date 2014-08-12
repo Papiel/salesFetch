@@ -50,7 +50,7 @@ module.exports.addDocuments = function(documentsJson) {
   if(client.documents().length <= 0) {
     client.documentListError(getErrorMessage('no documents'));
   }
-  else if (client.documents().length === documentsJson.count) {
+  else if (client.documents().length >= documentsJson.count) {
     client.allDocumentsLoaded(true);
   }
 };

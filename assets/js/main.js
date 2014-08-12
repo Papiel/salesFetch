@@ -18,4 +18,5 @@ if(client.isDesktop) {
 $(document).ready(function() {
   misc.addDropdownButtons();
   misc.addTabletBehaviors();
+  misc.bindInfiniteScroll(client);
 });

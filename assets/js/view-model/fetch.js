@@ -13,7 +13,7 @@ module.exports.fetchDocuments = function() {
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', {}, function success(data) {
-    client.addDocuments(data.documents.data);
+    client.addDocuments(data.documents);
     client.shouldDisplayDocumentsSpinner(false);
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);

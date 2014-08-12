@@ -19,6 +19,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.documents = ko.observableArray([]);
+  client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
@@ -28,6 +29,7 @@ module.exports = function SalesfetchViewModel() {
 
   client.documentListError = ko.observable();
   client.documentViewerError = ko.observable();
+  client.loadMoreError = ko.observable();
 
   if (client.isTablet) {
     client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
@@ -51,8 +53,11 @@ module.exports = function SalesfetchViewModel() {
   client.filteredTypes = ko.computed(filters.activeTypes(client));
 
   // ----- Documents management
-  client.addDocument = documents.addDocument;
+  client.documentWithJson = documents.documentWithJson;
   client.addDocuments = documents.addDocuments;
+  client.loadMoreDocuments = documents.loadMoreDocuments;
+  // Flag which indicates when all possible documents have been loaded
+  client.allDocumentsLoaded = ko.observable(false);
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer
@@ -116,4 +121,5 @@ module.exports = function SalesfetchViewModel() {
   // Spinners
   client.shouldDisplayDocumentsSpinner = ko.observable(false);
   client.shouldDisplayViewerSpinner = ko.observable(false);
+  client.shouldDisplayLoadMoreSpinner = ko.observable(false);
 };

@@ -93,7 +93,9 @@ Including tab bar, document list, filters, etc.
     |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
     -->
     <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
-      <div class="snippet-list" data-bind="foreach: timeSlices">
+      <!-- BEGIN SNIPPET SECTION LIST -->
+      <div class="snippet-list">
+      <!-- ko foreach: $data.timeSlices() -->
 
         <!-- SNIPPET SECTION -->
         <div class="snippet-section" data-bind="visible: documents.length > 0">
@@ -122,8 +124,15 @@ Including tab bar, document list, filters, etc.
 
         </div>
         <!-- END SNIPPET SECTION -->
+      <!-- /ko -->
+
+      <!-- Spinner for infinite scroll -->
+      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner()">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+      </div>
 
       </div>
+      <!-- END SNIPPET SECTION LIST -->
     </div>
     <!-- END DOCUMENT LIST -->
 

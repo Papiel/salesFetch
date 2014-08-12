@@ -68,7 +68,8 @@ describe('/app/documents page', function() {
             .expect(200)
             .expect(function(res) {
               should(res.body).be.ok;
-              res.body.should.have.properties('data');
+              res.body.should.have.properties('documents');
+              res.body.documents.should.have.properties('data');
               res.text.should.containDeep('National Security');
             })
             .end(cb);

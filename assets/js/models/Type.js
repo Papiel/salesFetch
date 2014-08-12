@@ -10,6 +10,7 @@ module.exports = function Type(json) {
 
   self.toggleActive = function() {
     this.isActive(!this.isActive());
+    client.updateFilter();
   };
 
   self.imageURL = function() {

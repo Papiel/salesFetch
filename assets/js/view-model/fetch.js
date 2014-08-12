@@ -8,12 +8,13 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  * @file Handle communication with the server
  */
 
-module.exports.fetchDocuments = function() {
+module.exports.fetchDocuments = function(params) {
   var client = this;
+  params = params || {};
 
   client.shouldDisplayDocumentsSpinner(true);
-  call('/app/documents', {}, function success(data) {
-    client.addDocuments(data.documents.data);
+  call('/app/documents', params, function success(data) {
+    client.addDocuments(data.documents);
     client.shouldDisplayDocumentsSpinner(false);
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);

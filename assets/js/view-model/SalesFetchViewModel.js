@@ -55,6 +55,7 @@ module.exports = function SalesfetchViewModel() {
   // ----- Filters
   client.filteredProviders = ko.computed(filters.activeProviders(client));
   client.filteredTypes = ko.computed(filters.activeTypes(client));
+  client.updateFilter = filters.updateFilter;
 
   // ----- Documents management
   client.addDocument = documents.addDocument;

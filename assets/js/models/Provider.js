@@ -2,7 +2,7 @@
 
 var call = require('../helpers/call.js');
 
-module.exports = function Provider(json) {
+module.exports = function Provider(json, client) {
   var self = this;
   self.isActive = ko.observable(false);
 
@@ -20,6 +20,7 @@ module.exports = function Provider(json) {
 
   self.toggleActive = function() {
     this.isActive(!this.isActive());
+    client.updateFilter();
   };
 
   self.connect = function () {

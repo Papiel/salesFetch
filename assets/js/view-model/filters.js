@@ -60,3 +60,30 @@ module.exports.starredFilter = function() {
     return (document.isStarred() === true) && module.exports.providerAndType(document);
   };
 };
+
+/*
+ * @param {SalesfetchViewModel} client
+ * @return {Dict} representing filters for api request
+ */
+ module.exports.paramsForFilter = function(client) {
+  var providerIDs = [];
+  client.activeProviders().forEach(function(provider) {
+    providerIDs.push(provider.id);
+  });
+
+  var typeIDs = [];
+  client.activeTypes().forEach(function(type) {
+    typeIDs.push(type.id);
+  });
+
+  return { provider: providerIDs, document_type: typeIDs};
+ };
+
+/**
+ *
+ **/
+ module.exports.updateFilter = function() {
+  if (this.filterByProvider() || this.filterByType()) {
+    console.log(paramsForFilter(this));
+  }
+ };

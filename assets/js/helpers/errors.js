@@ -13,7 +13,7 @@ var errorMessages = {
   'unprocessable entity': 'Missing aunthentication information',
   'template parameter is missing': 'Missing parameters: check your VisualForce page configuration (`templatedQuery` or `templatedDisplay`)',
   'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key',
-  'no documents': 'No documents found for {0}'
+  'no documents': 'No documents found for the context "{0}"'
 };
 
 /**

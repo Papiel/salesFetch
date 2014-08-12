@@ -60,7 +60,7 @@ Including tab bar, document list, filters, etc.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="pull-left back-button">
-            <a data-bind="click: $root.goBack" class="no-frame">
+            <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
               <i class="fa fa-lg fa-chevron-left"></i>
             </a>
           </li>

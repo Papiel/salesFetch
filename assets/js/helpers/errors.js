@@ -13,8 +13,22 @@ var errorMessages = {
   'unprocessable entity': 'Missing aunthentication information',
   'template parameter is missing': 'Missing parameters: check your VisualForce page configuration (`templatedQuery` or `templatedDisplay`)',
   'salesfetch master key': 'Unable to authenticate your request, please check your SalesFetch master key',
-  'no documents': 'No documents found for this query'
+  'no documents': 'No documents found for {0}'
 };
+
+/**
+ * @param {Object} object
+ * @return {String} string formatted with `object`
+ */
+String.prototype.format = function() {
+  var s = this;
+  for (var i = 0; i < arguments.length; i++) {
+    var reg = new RegExp("\\{" + i + "\\}", "gm");
+    s = s.replace(reg, arguments[i]);
+  }
+
+  return s;
+}
 
 /**
  * @param {Request object | String} res from an AJAX call or an error name directly

@@ -6,6 +6,7 @@ module.exports = function Type(json) {
 
   if (json) {
     self.name = json.name;
+    self.id = json.id;
   }
 
   self.toggleActive = function() {

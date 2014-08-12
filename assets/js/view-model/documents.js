@@ -4,6 +4,7 @@ var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
+require('../helpers/string.js');
 var call = require('../helpers/call.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
@@ -21,7 +22,7 @@ module.exports.documentWithJson = function(json) {
   });
   if(!provider) {
     provider = new Provider(json.provider);
-    client.connectedProviders().push(provider);
+    client.connectedProviders.push(provider);
   }
   doc.provider = provider;
 
@@ -29,12 +30,12 @@ module.exports.documentWithJson = function(json) {
   var type;
   client.types().forEach(function(t) {
     if(t.id === json.document_type.id) {
-      provider = t;
+      type = t;
     }
   });
   if(!type) {
     type = new Type(json.document_type);
-    client.types().push(type);
+    client.types.push(type);
   }
   doc.type = type;
 
@@ -51,7 +52,8 @@ module.exports.addDocuments = function(documentsJson) {
   client.documents(client.documents().concat(docs));
 
   if(client.documents().length <= 0) {
-    client.documentListError(getErrorMessage('no documents'));
+    var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
+    client.documentListError(errorMessage);
   }
   else if (client.documents().length >= documentsJson.count) {
     client.allDocumentsLoaded(true);

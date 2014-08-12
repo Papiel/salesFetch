@@ -12,6 +12,11 @@ var OrgModel = new Schema ({
     type: Date,
     default: Date.now
   },
+  lastUpdated: {
+    type: Date,
+    // This will trigger the initial update
+    default: 0
+  },
   anyFetchId: {
     type: String,
     unique: true

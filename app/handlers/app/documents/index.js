@@ -31,11 +31,7 @@ module.exports.get = function(req, res, next) {
   }
 
   async.waterfall([
-    // TODO: only send an update once per session?
-    function updateDocuments(cb) {
-      anyfetchHelpers.updateAccount(req.user, cb);
-    },
-    function retrieveDocuments(res, cb) {
+    function retrieveDocuments(cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
     },
     function markPinned(documents, cb) {

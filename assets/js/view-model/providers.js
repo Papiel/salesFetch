@@ -20,6 +20,10 @@ module.exports.setConnectedProviders = function(client, providers) {
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
     if (provider._type !== "AccessToken" || provider.client) {
+
+      // change value's name in order not to override the queryCount
+      provider.total_count = provider.document_count;
+      provider.document_count = null;
       connectedProviders.push(new Provider(provider));
     }
   });

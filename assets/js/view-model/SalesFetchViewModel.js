@@ -17,6 +17,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.documents = ko.observableArray([]);
+  client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);

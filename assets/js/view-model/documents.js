@@ -42,9 +42,9 @@ module.exports.addDocument = function(json) {
 
 module.exports.addDocuments = function(array) {
   var client = this;
-
-  if(array && array.length > 0) {
-    array.forEach(function(json) {
+  var docs = array.data;
+  if(docs && docs.length > 0) {
+    docs.forEach(function(json) {
       client.addDocument(json);
     });
   }

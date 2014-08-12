@@ -21,8 +21,6 @@ var errorMessages = {
  * @return {String} The most precise error message we can display
  */
 module.exports.getErrorMessage = function(res) {
-  console.log('args:', arguments);
-
   var err;
   if(res.responseJSON || res.responseText) {
     err = (res.responseJSON ? res.responseJSON.code + ': ' + res.responseJSON.message : res.responseText);

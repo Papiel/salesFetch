@@ -7,6 +7,8 @@ var navigation = require('./navigation.js');
 var fetch = require('./fetch.js');
 var documents = require('./documents.js');
 
+var getUrlParameter = require('../helpers/getUrlParameter.js');
+
 module.exports = function SalesfetchViewModel() {
   var client = this;
 
@@ -98,6 +100,18 @@ module.exports = function SalesfetchViewModel() {
   client.shouldDisplayDocumentNavbar = function() {
     return client.activeDocument && !client.isDesktop;
   };
+
+  // ----- Zero state
+  // Extract the search query from the GET parameters
+  var data = getUrlParameter('data');
+  if(data) {
+    try {
+      var json = JSON.parse(decodeURIComponent(data));
+      client.searchQuery = json.context.templatedQuery;
+    } catch(e) {
+      console.log('Unable to parse `data` JSON argument');
+    }
+  }
 
   // Spinners
   client.shouldDisplayDocumentsSpinner = ko.observable(false);

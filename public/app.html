@@ -60,7 +60,7 @@ Including tab bar, document list, filters, etc.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="pull-left back-button">
-            <a data-bind="click: $root.goBack" class="no-frame">
+            <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
               <i class="fa fa-lg fa-chevron-left"></i>
             </a>
           </li>
@@ -399,7 +399,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

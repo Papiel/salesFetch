@@ -44,7 +44,8 @@ var authenticateUser = function(context, org, done) {
 module.exports.requiresLogin = function(req, res, next) {
   var organization;
 
-  if (!req.query.data) {
+  // Weird, but it seems to be a string with value 'undefined'
+  if(!req.query.data || req.query.data === 'undefined') {
     return next(new restify.InvalidCredentialsError('Bad Request: missing `data` query parameter'));
   }
   var data;

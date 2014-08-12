@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports.scrollToTop = function() {
+module.exports = function scrollToTop() {
   $('#view-body').scrollTop(0);
 };

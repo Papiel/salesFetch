@@ -50,7 +50,7 @@ module.exports = function SalesfetchViewModel() {
   client.filteredTypes = ko.computed(filters.activeTypes(client));
 
   // ----- Documents management
-  client.addDocument = documents.addDocument;
+  client.documentWithJson = documents.documentWithJson;
   client.addDocuments = documents.addDocuments;
   client.loadMoreDocuments = documents.loadMoreDocuments;
   // Flag which indicates when all possible documents have been loaded

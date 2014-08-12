@@ -35,7 +35,7 @@ var authenticateUser = function(context, org, done) {
 /**
  * Generic require login routing middleware.
  * - Checks that the received `data` object contains every necessary key
- * - Retrive the user and its company
+ * - Retrieve the user and its company
  * - Authenticate the request using the secure hash
  * - Trigger a company update (i.e. fetch new documents on the
  *   various providers) on the AnyFetch API if

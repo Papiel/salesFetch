@@ -8,8 +8,6 @@ var client = new SalesfetchViewModel();
 ko.applyBindings(client);
 client.fetchDocuments();
 if(client.isDesktop) {
-  client.fetchAvailableProviders();
-
   window.refreshProviders = function() {
     client.fetchAvailableProviders();
   };

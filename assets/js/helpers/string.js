@@ -13,3 +13,10 @@ String.prototype.format = function() {
 
   return s;
 };
+
+/*
+ * @return {String} string with the first letter in upper case
+ */
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};

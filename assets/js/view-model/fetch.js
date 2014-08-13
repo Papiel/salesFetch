@@ -1,7 +1,6 @@
 'use strict';
 
 var call = require('../helpers/call.js');
-var providers = require('./providers.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
@@ -13,8 +12,14 @@ module.exports.fetchDocuments = function() {
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', {}, function success(data) {
+    client.setConnectedProviders(data.documents.facets.providers);
+    client.setTypes(data.documents.facets.document_types);
     client.addDocuments(data.documents);
     client.shouldDisplayDocumentsSpinner(false);
+
+    if (client.isDesktop) {
+      client.fetchAvailableProviders();
+    }
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);
     client.documentListError(getErrorMessage(res));
@@ -42,7 +47,7 @@ module.exports.fetchAvailableProviders = function() {
   var client = this;
 
   call('/app/providers', function success(data) {
-    providers.setAvailableProviders(client, data.providers);
-    providers.setConnectedProviders(client, data.connectedProviders);
+    client.setAvailableProviders(data.providers);
+    client.updateConnectedProviders(data.connectedProviders);
   });
 };

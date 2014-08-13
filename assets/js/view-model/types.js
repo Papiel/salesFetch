@@ -3,7 +3,7 @@
 var Type = require('../models/Type.js');
 
 /**
- * @file Handle providers
+ * @file Handle types
  */
 
 module.exports.setTypes = function(client, types) {

@@ -14,7 +14,12 @@ module.exports.fetchDocuments = function() {
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', {}, function success(data) {
     client.addDocuments(data.documents.data);
+    providers.setConnectedProviders(client, data.documents.facets.providers);
     client.shouldDisplayDocumentsSpinner(false);
+
+    if (client.isDesktop) {
+      client.fetchAvailableProviders();
+    }
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);
     client.documentListError(getErrorMessage(res));
@@ -43,6 +48,6 @@ module.exports.fetchAvailableProviders = function() {
 
   call('/app/providers', function success(data) {
     providers.setAvailableProviders(client, data.providers);
-    providers.setConnectedProviders(client, data.connectedProviders);
+    providers.updateConnectedProviders(client, data.connectedProviders);
   });
 };

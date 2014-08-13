@@ -6,6 +6,7 @@ var getTabs = require('./tabs.js').getTabs;
 var navigation = require('./navigation.js');
 var fetch = require('./fetch.js');
 var documents = require('./documents.js');
+var providers = require('./providers.js');
 
 module.exports = function SalesfetchViewModel() {
   var client = this;
@@ -47,6 +48,9 @@ module.exports = function SalesfetchViewModel() {
   // ----- Filters
   client.filteredProviders = ko.computed(filters.activeProviders(client));
   client.filteredTypes = ko.computed(filters.activeTypes(client));
+
+  // ----- Providers
+  client.connectedProviderWithID = providers.connectedProviderWithID;
 
   // ----- Documents management
   client.addDocument = documents.addDocument;

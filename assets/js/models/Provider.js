@@ -2,7 +2,7 @@
 
 var call = require('../helpers/call.js');
 
-module.exports = function Provider(json, total) {
+module.exports = function Provider(json) {
   var self = this;
   self.isActive = ko.observable(false);
 
@@ -15,13 +15,8 @@ module.exports = function Provider(json, total) {
     self.description = json.description;
     self.developer = json.developer ? json.developer.name : 'unknown';
     self.accountName = json.account_name ? json.account_name : 'unknown';
-
-    if (json.document_count) {
-      self.queryCount = json.document_count;
-    }
-    if (json.total_count) {
-      self.total_count = json.total_count;
-    }
+    self.queryCount = json.document_count;
+    self.totalCount = ko.observable('unknown');
   }
 
   self.toggleActive = function() {

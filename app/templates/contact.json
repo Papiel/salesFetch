@@ -3,7 +3,7 @@
   "name": "contact",
   "templates": {
     "snippet": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h4>{{{ name }}}</h4> <span>{{{ job }}}</span> </section> </article>",
-    "full": "<article class=\"two-columns\"> <aside> <img src=\"{{ image }}\" /> </aside> <section> <h4>{{{ name }}}</h4> <span>{{{ job }}}</span> </section> </article>",
+    "full": "<img src=\"{{ image }}\" /><h3>{{{ name }}}</h3><p><h4>Job</h4>{{{ job }}}</p><p><h4>Phone</h4>{{{ phone }}}</p><p><h4>Email</h4>{{ #email }}<p>{{ type }} - {{ email }}</p>{{ /email }}</p>",
     "title": "{{{ name }}}"
   }
 }

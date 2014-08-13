@@ -18,7 +18,7 @@ var errorMessages = {
 
 /**
  * @param {Request object | String} res from an AJAX call or an error name directly
- * @return {String} The most precise error message we can display
+ * @return {String} The most precise error message we can display
  */
 module.exports.getErrorMessage = function(res) {
   var err;

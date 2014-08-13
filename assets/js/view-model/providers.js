@@ -32,7 +32,6 @@ module.exports.updateConnectedProviders = function(client, providers) {
 
       var provider = client.connectedProviderWithID(p.id);
       provider.totalCount(p.document_count);
-      console.log(provider, p);
     }
   });
 

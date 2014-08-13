@@ -1,5 +1,6 @@
 'use strict';
 
+require('../helpers/string.js');
 var call = require('../helpers/call.js');
 
 module.exports = function Provider(json) {
@@ -37,6 +38,6 @@ module.exports = function Provider(json) {
   };
 
   self.extendedName = function() {
-    return this.name + ' (' + this.queryCount + ')';
+    return this.name.capitalize() + ' (' + this.queryCount + ')';
   };
 };

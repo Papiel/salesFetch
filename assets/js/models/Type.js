@@ -1,5 +1,7 @@
 'use strict';
 
+require('../helpers/string.js');
+
 module.exports = function Type(json) {
   var self = this;
   self.isActive = ko.observable(false);
@@ -19,6 +21,6 @@ module.exports = function Type(json) {
   };
 
   self.extendedName = function() {
-    return this.name + ' (' + this.queryCount + ')';
+    return this.name.capitalize() + ' (' + this.queryCount + ')';
   };
 };

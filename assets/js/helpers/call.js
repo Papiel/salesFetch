@@ -26,7 +26,7 @@ module.exports = function call(url, options, success, error) {
     options = {};
   }
 
-  url += '?data=' + getUrlParameter('data');
+  url = $.salesFetchUrl + url + '?data=' + getUrlParameter('data');
   var params = {
     dataType: 'json',
     type: 'get',

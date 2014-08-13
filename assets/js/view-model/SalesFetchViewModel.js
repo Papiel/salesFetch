@@ -7,6 +7,7 @@ var navigation = require('./navigation.js');
 var fetch = require('./fetch.js');
 var documents = require('./documents.js');
 var providers = require('./providers.js');
+var types = require('./types.js');
 
 var getUrlParameter = require('../helpers/getUrlParameter.js');
 
@@ -52,9 +53,13 @@ module.exports = function SalesfetchViewModel() {
   // ----- Filters
   client.filteredProviders = ko.computed(filters.activeProviders(client));
   client.filteredTypes = ko.computed(filters.activeTypes(client));
+  client.setTypes = types.setTypes;
 
   // ----- Providers
   client.connectedProviderWithID = providers.connectedProviderWithID;
+  client.setAvailableProviders = providers.setAvailableProviders;
+  client.setConnectedProviders = providers.setConnectedProviders;
+  client.updateConnectedProviders = providers.updateConnectedProviders;
 
   // ----- Documents management
   client.documentWithJson = documents.documentWithJson;

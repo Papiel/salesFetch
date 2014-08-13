@@ -1,8 +1,6 @@
 'use strict';
 
 var call = require('../helpers/call.js');
-var providers = require('./providers.js');
-var types = require('./types.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
@@ -14,8 +12,8 @@ module.exports.fetchDocuments = function() {
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', {}, function success(data) {
-    providers.setConnectedProviders(client, data.documents.facets.providers);
-    types.setTypes(client, data.documents.facets.document_types);
+    client.setConnectedProviders(data.documents.facets.providers);
+    client.setTypes(data.documents.facets.document_types);
     client.addDocuments(data.documents);
     client.shouldDisplayDocumentsSpinner(false);
 
@@ -49,7 +47,7 @@ module.exports.fetchAvailableProviders = function() {
   var client = this;
 
   call('/app/providers', function success(data) {
-    providers.setAvailableProviders(client, data.providers);
-    providers.updateConnectedProviders(client, data.connectedProviders);
+    client.setAvailableProviders(data.providers);
+    client.updateConnectedProviders(data.connectedProviders);
   });
 };

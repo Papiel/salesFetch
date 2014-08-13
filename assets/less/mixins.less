@@ -155,8 +155,16 @@
 		}
 	}
 
-	article.two-columns * {
-		display: inline;
+	article.two-columns {
+		max-height: 100%;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		word-wrap: break-word;
+		white-space: nowrap;
+
+		* {
+			display: inline;
+		}
 	}
 
 	.star-btn { .StarButton;

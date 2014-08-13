@@ -8,6 +8,8 @@ var fetch = require('./fetch.js');
 var documents = require('./documents.js');
 var providers = require('./providers.js');
 
+var getUrlParameter = require('../helpers/getUrlParameter.js');
+
 module.exports = function SalesfetchViewModel() {
   var client = this;
 
@@ -18,6 +20,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.documents = ko.observableArray([]);
+  client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
@@ -27,6 +30,7 @@ module.exports = function SalesfetchViewModel() {
 
   client.documentListError = ko.observable();
   client.documentViewerError = ko.observable();
+  client.loadMoreError = ko.observable();
 
   if (client.isTablet) {
     client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
@@ -53,8 +57,11 @@ module.exports = function SalesfetchViewModel() {
   client.connectedProviderWithID = providers.connectedProviderWithID;
 
   // ----- Documents management
-  client.addDocument = documents.addDocument;
+  client.documentWithJson = documents.documentWithJson;
   client.addDocuments = documents.addDocuments;
+  client.loadMoreDocuments = documents.loadMoreDocuments;
+  // Flag which indicates when all possible documents have been loaded
+  client.allDocumentsLoaded = ko.observable(false);
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer
@@ -103,7 +110,20 @@ module.exports = function SalesfetchViewModel() {
     return client.activeDocument && !client.isDesktop;
   };
 
+  // ----- Zero state
+  // Extract the search query from the GET parameters
+  var data = getUrlParameter('data');
+  if(data) {
+    try {
+      var json = JSON.parse(decodeURIComponent(data));
+      client.searchQuery = json.context.templatedQuery;
+    } catch(e) {
+      console.log('Unable to parse `data` JSON argument');
+    }
+  }
+
   // Spinners
   client.shouldDisplayDocumentsSpinner = ko.observable(false);
   client.shouldDisplayViewerSpinner = ko.observable(false);
+  client.shouldDisplayLoadMoreSpinner = ko.observable(false);
 };

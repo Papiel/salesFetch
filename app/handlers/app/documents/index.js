@@ -31,25 +31,26 @@ module.exports.get = function(req, res, next) {
   }
 
   async.waterfall([
-    // TODO: only send an update once per session?
-    function updateDocuments(cb) {
-      anyfetchHelpers.updateAccount(req.user, cb);
-    },
-    function retrieveDocuments(res, cb) {
+    function retrieveDocuments(cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);
     },
     function markPinned(documents, cb) {
       salesfetchHelpers.markIfPinned(req.data.context.recordId, documents, cb);
     },
     function sendResponse(documents, cb) {
-      // If load more results
-      // TODO: make sure that format is adapted
-      if (req.query.start) {
-        res.send(documents);
+      var response = {
+        documents: documents,
+        filters: filters
+      };
+
+      // When loading documents for infinite scroll, a lot of info is useless
+      if(req.query.start) {
+        delete response.filters;
+        delete response.documents.document_types;
+        delete response.documents.providers;
       }
-      else {
-        res.send({ documents: documents, filters: filters });
-      }
+
+      res.send(response);
       cb();
     }
   ], next);

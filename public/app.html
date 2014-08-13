@@ -60,7 +60,7 @@ Including tab bar, document list, filters, etc.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="pull-left back-button">
-            <a data-bind="click: $root.goBack" class="no-frame">
+            <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
               <i class="fa fa-lg fa-chevron-left"></i>
             </a>
           </li>
@@ -93,7 +93,9 @@ Including tab bar, document list, filters, etc.
     |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
     -->
     <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
-      <div class="snippet-list" data-bind="foreach: timeSlices">
+      <!-- BEGIN SNIPPET SECTION LIST -->
+      <div class="snippet-list">
+      <!-- ko foreach: $data.timeSlices() -->
 
         <!-- SNIPPET SECTION -->
         <div class="snippet-section" data-bind="visible: documents.length > 0">
@@ -122,8 +124,15 @@ Including tab bar, document list, filters, etc.
 
         </div>
         <!-- END SNIPPET SECTION -->
+      <!-- /ko -->
+
+      <!-- Spinner for infinite scroll -->
+      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner()">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+      </div>
 
       </div>
+      <!-- END SNIPPET SECTION LIST -->
     </div>
     <!-- END DOCUMENT LIST -->
 
@@ -333,9 +342,6 @@ Including tab bar, document list, filters, etc.
           <li class="pull-right">
             <span class="star-btn fa fa-mail-reply" data-bind="click: reply, clickBubble: false, visible: actions.reply" />
           </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
-          </li>
         </ul>
       <!-- /ko -->
       <!-- END DOCUMENT ACTIONS -->
@@ -398,7 +404,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

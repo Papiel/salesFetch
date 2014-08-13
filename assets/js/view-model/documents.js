@@ -4,9 +4,11 @@ var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
+require('../helpers/string.js');
+var call = require('../helpers/call.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
-module.exports.addDocument = function(json) {
+module.exports.documentWithJson = function(json) {
   var client = this;
 
   var doc = new Document(json);
@@ -20,7 +22,7 @@ module.exports.addDocument = function(json) {
   });
   if(!provider) {
     provider = new Provider(json.provider);
-    client.connectedProviders().push(provider);
+    client.connectedProviders.push(provider);
   }
   doc.provider = provider;
 
@@ -28,28 +30,54 @@ module.exports.addDocument = function(json) {
   var type;
   client.types().forEach(function(t) {
     if(t.id === json.document_type.id) {
-      provider = t;
+      type = t;
     }
   });
   if(!type) {
     type = new Type(json.document_type);
-    client.types().push(type);
+    client.types.push(type);
   }
   doc.type = type;
 
-  client.documents.push(doc);
+  return doc;
 };
 
-module.exports.addDocuments = function(array) {
+module.exports.addDocuments = function(documentsJson) {
+  var client = this;
+  var docs = [];
+  documentsJson.data.forEach(function(json) {
+    docs.push(client.documentWithJson(json));
+  });
+
+  client.documents(client.documents().concat(docs));
+
+  if(client.documents().length <= 0) {
+    var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
+    client.documentListError(errorMessage);
+  }
+  else if (client.documents().length >= documentsJson.count) {
+    client.allDocumentsLoaded(true);
+  }
+};
+
+module.exports.loadMoreDocuments = function() {
   var client = this;
 
-  if(array && array.length > 0) {
-    array.forEach(function(json) {
-      client.addDocument(json);
+  if(!client.allDocumentsLoaded()) {
+    var options = {
+      data: { start: client.documents().length }
+    };
+    call('/app/documents', options, function success(data) {
+
+      if(data.documents.data && data.documents.data.length > 0) {
+        client.addDocuments(data.documents);
+      }
+      else {
+        client.allDocumentsLoaded(true);
+      }
+    }, function error(res) {
+      client.loadMoreError(getErrorMessage(res));
     });
-  }
-  if(client.documents().length <= 0) {
-    client.documentListError(getErrorMessage('no documents'));
   }
 };
 

@@ -4,7 +4,7 @@ var getUrlParameter = require('./getUrlParameter');
 
 /**
  * @param {String} url
- * @param {String} [options] Additional options for the AJAX call
+ * @param {String} [options] Additional options to pass to jQuery's AJAX function
  * @param {Function} success
  * @param {Function} [error]
  */

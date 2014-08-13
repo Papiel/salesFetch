@@ -14,7 +14,6 @@ var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
 var authMiddleware  = require('../../app/middlewares/authorization').requiresLogin;
 
-
 describe('<Authentication middleware>', function() {
   beforeEach(cleaner);
   after(mock.restore);
@@ -128,7 +127,7 @@ describe('<Authentication middleware>', function() {
         cb();
       },
       function createCompany(cb) {
-         var org = new Organization({
+        var org = new Organization({
           name: "anyFetch",
           SFDCId: '1234'
         });
@@ -178,7 +177,7 @@ describe('<Authentication middleware>', function() {
   it("should err if there's no admin in the company", function(done) {
     async.waterfall([
       function createCompany(cb) {
-         var org = new Organization({
+        var org = new Organization({
           name: "anyFetch",
           SFDCId: '1234'
         });

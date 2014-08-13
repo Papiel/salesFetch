@@ -18,7 +18,7 @@ module.exports.goToTab = function(tab) {
 module.exports.goToDocument = function(doc) {
   var client = this;
 
-  if(client.activeDocument() !== doc) {
+  if(client.activeDocument() !== doc || client.isDesktop) {
     if(client.shouldDisplayDocumentViewerDefaultMessage) {
       client.shouldDisplayDocumentViewerDefaultMessage(false);
     }
@@ -43,7 +43,7 @@ module.exports.goToDocument = function(doc) {
 
       // TODO: do not hardcode!
       var domainPath = 'https://localhost:3000';
-      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="'+domainPath+'/lib/fontawesome/css/font-awesome.min.css">';
+      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="' + domainPath + '/lib/fontawesome/css/font-awesome.min.css">';
       var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';
 
       $(target.body).html(fontAwesomeLink + spinnerHTML);

@@ -406,7 +406,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage && !documentListError()">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() && !documentListError()">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

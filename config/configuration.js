@@ -46,7 +46,7 @@ var baseConfig = {
   // for a single company (in milliseconds)
   companyUpdateDelay: 30 * 60 * 1000,
 
-  secretKey: process.env.SALESFETCH_SECRET_KEY || "SalesFetch4TheWin",
+  secretKey: process.env.SALESFETCH_SECRET_KEY || "SalesFetch4TheWin",
 
   services: services
 };

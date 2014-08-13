@@ -208,7 +208,7 @@ Including tab bar, document list, filters, etc.
                 <tr>
                   <th>Name</th>
                   <th>Account</th>
-                  <th>Count</th>
+                  <th>Document count</th>
                 </tr>
               </thead>
               <tbody data-bind="foreach: connectedProviders">
@@ -216,10 +216,6 @@ Including tab bar, document list, filters, etc.
                   <td data-bind="text: name"></td>
                   <td data-bind="text: accountName"></td>
                   <td data-bind="text: totalCount"></td>
-                  <td>
-                    <!-- TODO: do not hardcode this URL -->
-                    <a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
-                  </td>
                 </tr>
               </tbody>
             </table>

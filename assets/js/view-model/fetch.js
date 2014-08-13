@@ -2,6 +2,7 @@
 
 var call = require('../helpers/call.js');
 var providers = require('./providers.js');
+var types = require('./types.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
@@ -13,8 +14,9 @@ module.exports.fetchDocuments = function() {
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', {}, function success(data) {
-    client.addDocuments(data.documents.data);
     providers.setConnectedProviders(client, data.documents.facets.providers);
+    types.setTypes(client, data.documents.facets.document_types);
+    client.addDocuments(data.documents);
     client.shouldDisplayDocumentsSpinner(false);
 
     if (client.isDesktop) {

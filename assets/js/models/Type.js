@@ -17,4 +17,8 @@ module.exports = function Type(json) {
   self.imageURL = function() {
     return 'img/document_types-icons/' + self.name + '.png';
   };
+
+  self.extendedName = function() {
+    return this.name + ' (' + this.queryCount + ')';
+  };
 };

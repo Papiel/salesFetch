@@ -151,7 +151,8 @@ Including tab bar, document list, filters, etc.
             <li>
               <a data-bind="click: toggleActive">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                <span data-bind="text: extendedName()"></span>
+                <span data-bind="text: extendedName()"></span><br />
+                <span class="account-name" data-bind="text: accountName"></span>
               </a>
             </li>
           </ul>
@@ -291,7 +292,8 @@ Including tab bar, document list, filters, etc.
                 <li class="filter-li">
                   <a data-bind="click: toggleActive">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                    <span data-bind="text: extendedName()"></span>
+                    <span data-bind="text: extendedName()"></span><br />
+                    <span class="account-name" data-bind="text: accountName"></span>
                   </a>
                 </li>
               </ul>

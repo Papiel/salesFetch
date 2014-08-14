@@ -10,7 +10,7 @@ module.exports.setAvailableProviders = function(providers) {
   var client = this;
   var availableProviders = [];
   providers.forEach(function(providerInfo) {
-    availableProviders.push(new Provider(providerInfo, client));
+    availableProviders.push(new Provider(providerInfo));
   });
   client.availableProviders(availableProviders);
 };

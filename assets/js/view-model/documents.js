@@ -5,7 +5,6 @@ var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
 require('../helpers/string.js');
-var call = require('../helpers/call.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 module.exports.documentWithJson = function(json) {
@@ -66,6 +65,8 @@ module.exports.setDocuments = function(docs) {
     var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
     client.documentListError(errorMessage);
   }
+
+  console.log(Object.keys(this.documents()).length);
 };
 
 module.exports.addDocuments = function(docs) {

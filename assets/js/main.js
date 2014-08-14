@@ -6,7 +6,7 @@ var misc = require('./misc.js');
 // ----- Knockout init
 var client = new SalesfetchViewModel();
 ko.applyBindings(client);
-client.fetchDocuments();
+client.fetchDocuments(true);
 if(client.isDesktop) {
   window.refreshProviders = function() {
     client.fetchAvailableProviders();

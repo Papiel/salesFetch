@@ -84,8 +84,5 @@ module.exports.starredFilter = function() {
  *
  **/
  module.exports.updateFilter = function() {
-  if (this.filterByProvider() || this.filterByType()) {
-    var params = module.exports.paramsForFilter(this);
-    this.fetchTempDocuments(params);
-  }
+  this.fetchDocuments(false);
  };

@@ -1,20 +1,31 @@
 'use strict';
 
 var call = require('../helpers/call.js');
+var filters = require('./filters.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
  * @file Handle communication with the server
  */
 
-module.exports.fetchDocuments = function(params) {
+module.exports.fetchDocuments = function(updateFacets) {
   var client = this;
-  params = params || {};
+  updateFacets = updateFacets || false;
+
+  var params = {};
+  if (client.filterByProvider() || client.filterByType()) {
+    params.data = filters.paramsForFilter(client);
+  }
+
+  console.log(params);
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', params, function success(data) {
-    client.setConnectedProviders(data.documents.facets.providers);
-    client.setTypes(data.documents.facets.document_types);
+    console.log(data);
+    if (updateFacets) {
+      client.setConnectedProviders(data.documents.facets.providers);
+      client.setTypes(data.documents.facets.document_types);
+    }
     var docs = client.documentsWithJson(data.documents);
     client.setDocuments(docs);
     client.shouldDisplayDocumentsSpinner(false);
@@ -49,29 +60,6 @@ module.exports.fetchMoreDocuments = function() {
       client.loadMoreError(getErrorMessage(res));
     });
   }
-};
-
-module.exports.fetchTempDocuments = function(filters) {
-  var client = this;
-  filters = filters || {};
-
-  var options = {
-    data: filters
-  };
-
-  client.shouldDisplayDocumentsSpinner(true);
-  call('/app/documents', options, function success(data) {
-    client.tempDocuments([]);
-    // client.tempDocuments(data.documents.data);
-    client.shouldDisplayDocumentsSpinner(false);
-
-    if (client.isDesktop) {
-      client.fetchAvailableProviders();
-    }
-  }, function error(res) {
-    client.shouldDisplayDocumentsSpinner(false);
-    client.documentListError(getErrorMessage(res));
-  });
 };
 
 module.exports.fetchFullDocument = function(document, cb) {

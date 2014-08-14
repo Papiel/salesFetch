@@ -71,28 +71,9 @@ module.exports.setDocuments = function(docs) {
 module.exports.addDocuments = function(docs) {
   var newDocList = {};
   $.extend(newDocList, docs, this.documents());
-  client.documents(newDocList);
-};
+  this.documents(newDocList);
 
-module.exports.loadMoreDocuments = function() {
-  var client = this;
-
-  if(!client.allDocumentsLoaded()) {
-    var options = {
-      data: { start: client.documents().length }
-    };
-    call('/app/documents', options, function success(data) {
-
-      if(data.documents.data && data.documents.data.length > 0) {
-        client.addDocuments(data.documents);
-      }
-      else {
-        client.allDocumentsLoaded(true);
-      }
-    }, function error(res) {
-      client.loadMoreError(getErrorMessage(res));
-    });
-  }
+  console.log(Object.keys(this.documents()).length);
 };
 
 module.exports.resetDocumentFullView = function() {

@@ -28,6 +28,29 @@ module.exports.fetchDocuments = function(params) {
   });
 };
 
+module.exports.fetchMoreDocuments = function() {
+  var client = this;
+
+  if(!client.allDocumentsLoaded()) {
+    var options = {
+      data: { start: Object.keys(client.documents()).length }
+    };
+    call('/app/documents', options, function success(data) {
+
+      if(data.documents.data && data.documents.data.length > 0) {
+        var docs = client.documentsWithJson(data.documents);
+        client.addDocuments(docs);
+        client.allDocumentsLoaded(false);
+      }
+      else {
+        client.allDocumentsLoaded(true);
+      }
+    }, function error(res) {
+      client.loadMoreError(getErrorMessage(res));
+    });
+  }
+};
+
 module.exports.fetchTempDocuments = function(filters) {
   var client = this;
   filters = filters || {};

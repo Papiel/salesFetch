@@ -82,7 +82,6 @@ module.exports = function SalesfetchViewModel() {
   client.documentWithJson = documents.documentWithJson;
   client.setDocuments = documents.setDocuments;
   client.addDocuments = documents.addDocuments;
-  client.loadMoreDocuments = documents.loadMoreDocuments;
   client.documentsWithJson = documents.documentsWithJson;
   // Flag which indicates when all possible documents have been loaded
   client.allDocumentsLoaded = ko.observable(false);
@@ -113,6 +112,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Requests to the backend
   client.fetchDocuments = fetch.fetchDocuments;
+  client.fetchMoreDocuments = fetch.fetchMoreDocuments;
   client.fetchFullDocument = fetch.fetchFullDocument;
   client.fetchAvailableProviders = fetch.fetchAvailableProviders;
   client.fetchTempDocuments = fetch.fetchTempDocuments;

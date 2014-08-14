@@ -3,9 +3,12 @@
 require('../helpers/string.js');
 var call = require('../helpers/call.js');
 
-module.exports = function Provider(json, client) {
+module.exports = function Provider(json) {
   var self = this;
-  self.isActive = ko.observable(false);
+
+  // Click binding with toggleActive will always run once on load,
+  // it means isActive is initialy false if we set it to true
+  self.isActive = ko.observable(true);
 
   if (json) {
     self.name = json.name ? json.name : json.client.name;
@@ -20,7 +23,8 @@ module.exports = function Provider(json, client) {
     self.totalCount = ko.observable('unknown');
   }
 
-  self.toggleActive = function() {
+  self.toggleActive = function(client) {
+    console.log(client, this);
     this.isActive(!this.isActive());
     client.updateFilter();
   };

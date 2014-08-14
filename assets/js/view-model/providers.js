@@ -21,7 +21,7 @@ module.exports.setConnectedProviders = function(providers) {
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
     if (provider._type !== "AccessToken" || provider.client) {
-      connectedProviders.push(new Provider(provider, client));
+      connectedProviders.push(new Provider(provider));
     }
   });
   client.connectedProviders(connectedProviders);

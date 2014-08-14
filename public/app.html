@@ -149,7 +149,7 @@ Including tab bar, document list, filters, etc.
           <h4>Providers</h4>
           <ul class="filter-menu fa-ul" data-bind="foreach: connectedProviders">
             <li>
-              <a data-bind="click: toggleActive">
+              <a data-bind="click: toggleActive($root)">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
                 <span data-bind="text: extendedName()"></span><br />
                 <span class="account-name" data-bind="text: accountName"></span>
@@ -162,7 +162,7 @@ Including tab bar, document list, filters, etc.
           <h4>Types</h4>
           <ul class="filter-menu fa-ul" role="menu" data-bind="foreach: types">
             <li>
-              <a data-bind="click: toggleActive">
+              <a data-bind="click: toggleActive($root)">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
                 <span data-bind="text: extendedName()"></span>
               </a>
@@ -290,7 +290,7 @@ Including tab bar, document list, filters, etc.
             <div class="dropdown-menu filter-menu" role="menu" >
               <ul class="fa-ul" data-bind="foreach: connectedProviders">
                 <li class="filter-li">
-                  <a data-bind="click: toggleActive">
+                  <a data-bind="click: toggleActive($root)">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
                     <span data-bind="text: extendedName()"></span><br />
                     <span class="account-name" data-bind="text: accountName"></span>
@@ -310,7 +310,7 @@ Including tab bar, document list, filters, etc.
             <div class="dropdown-menu filter-menu" role="menu" >
               <ul class="fa-ul" data-bind="foreach: types">
                 <li class="filter-li">
-                  <a data-bind="click: toggleActive">
+                  <a data-bind="click: toggleActive($root)">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
                     <span data-bind="text: extendedName()"></span>
                   </a>

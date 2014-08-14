@@ -24,7 +24,7 @@ module.exports.documentWithJson = function(json) {
   });
   if(!provider) {
     console.log('Provider not found:', json.provider);
-    provider = new Provider(json.provider, this);
+    provider = new Provider(json.provider);
     client.connectedProviders.push(provider);
   }
   doc.provider = provider;
@@ -38,7 +38,7 @@ module.exports.documentWithJson = function(json) {
   });
   if(!type) {
     console.log('Type not found:', json.type);
-    type = new Type(json.document_type, client);
+    type = new Type(json.document_type);
     client.types.push(type);
   }
   doc.type = type;

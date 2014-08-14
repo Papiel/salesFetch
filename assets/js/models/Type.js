@@ -2,9 +2,12 @@
 
 require('../helpers/string.js');
 
-module.exports = function Type(json, client) {
+module.exports = function Type(json) {
   var self = this;
-  self.isActive = ko.observable(false);
+
+  // Click binding with toggleActive will always run once on load,
+  // it means isActive is initialy false if we set it to true
+  self.isActive = ko.observable(true);
 
   if (json) {
     self.name = json.name;
@@ -12,7 +15,7 @@ module.exports = function Type(json, client) {
     self.queryCount = json.document_count;
   }
 
-  self.toggleActive = function() {
+  self.toggleActive = function(client) {
     this.isActive(!this.isActive());
     client.updateFilter();
   };

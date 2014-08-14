@@ -404,10 +404,10 @@ used to show the full document, its title and related actions.
           <li class="pull-right">
             <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
           </li>
-          <li class="pull-left">
-            <img data-bind="attr: {src: type.imageURL()}" />
-            <img class="separator-arrow" src="img/arrow.png" />
-            <span class="html-title" data-bind="html: title"></span>
+          <li class="pull-left document-description">
+            <div class="icon" data-bind="css: type.name"></div>
+            <div class="separator-arrow"></div>
+            <div class="html-title" data-bind="html: title"></div>
           </li>
         </ul>
       </div>

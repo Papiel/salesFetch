@@ -30,6 +30,42 @@
 	line-height: @navbarLineHeight;
 }
 
+.Icon {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+
+	&.email {
+		background-color: #CA1400;
+		background-image: url('/img/document_types-icons/email.png');
+	}
+
+	&.image {
+		background-color: #F7931D;
+		background-image: url('/img/document_types-icons/image.png');
+	}
+
+	&.contact {
+		background-color: #8829BF;
+		background-image: url('/img/document_types-icons/contact.png');
+	}
+
+	&.salesforce {
+		background-color: #CDEEFA;
+		background-image: url('/img/document_types-icons/salesforce.png');
+	}
+
+	&.document {
+		background-color: #0084EE;
+		background-image: url('/img/document_types-icons/document.png');
+	}
+
+	&.event {
+		background-color: #BE41A4;
+		background-image: url('/img/document_types-icons/event.png');
+	}
+}
+
 .PlaceholderContainer {
 	width: 100%;
 	height: 100%;
@@ -134,36 +170,6 @@
 		bottom: 0;
 		left: 0;
 		width: @snippetIconDivWidth;
-		background: #ccc;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: contain;
-
-		// TODO: include images in base64
-		&.email {
-			background-color: #CA1400;
-			background-image: url('/img/document_types-icons/email.png');
-		}
-
-		&.image {
-			background-color: #F7931D;
-			background-image: url('/img/document_types-icons/image.png');
-		}
-
-		&.contact {
-			background-color: #8829BF;
-			background-image: url('/img/document_types-icons/contact.png');
-		}
-
-		&.salesforce {
-			background-color: #CDEEFA;
-			background-image: url('/img/document_types-icons/salesforce.png');
-		}
-
-		&.document {
-			background-color: #0084EE;
-			background-image: url('/img/document_types-icons/document.png');
-		}
 	}
 
 	article.two-columns * {
@@ -629,6 +635,28 @@
 		display: inline-block;
 		color: @navbarItemColor;
 	}
+
+	.document-description {
+		* {
+			display: inline-block;
+			float: left;
+			height: @documentDescriptionHeight;
+			margin-top: @documentDescriptionMarginTop;
+		}
+
+		.separator-arrow {
+			width: @documentDescriptionSeparatorWidth;
+			background-image: url(@documentDescriptionSeparatorImage);
+			background-size: 100%;
+		}
+
+		.icon {
+			width: @documentDescriptionIconWidth;
+			margin-left: @documentDescriptionIconMargin;
+			background-color: transparent;
+		}
+	}
+
 }
 
 .ActiveSnippet { .Snippet;

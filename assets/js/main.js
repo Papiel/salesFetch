@@ -7,6 +7,7 @@ var misc = require('./misc.js');
 var client = new SalesfetchViewModel();
 ko.applyBindings(client);
 client.fetchDocuments(true);
+client.fetchAvailableProviders();
 if(client.isDesktop) {
   window.refreshProviders = function() {
     client.fetchAvailableProviders();

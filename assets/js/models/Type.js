@@ -4,10 +4,7 @@ require('../helpers/string.js');
 
 module.exports = function Type(json) {
   var self = this;
-
-  // Click binding with toggleActive will always run once on load,
-  // it means isActive is initialy false if we set it to true
-  self.isActive = ko.observable(true);
+  self.isActive = ko.observable(false);
 
   if (json) {
     self.name = json.name;
@@ -15,6 +12,8 @@ module.exports = function Type(json) {
     self.queryCount = json.document_count;
   }
 
+  // Knock out will run every binding once on load.
+  // It is important to encapsulate toggleActive in an anonymous function in data-bindings
   self.toggleActive = function(client) {
     this.isActive(!this.isActive());
     client.updateFilter();

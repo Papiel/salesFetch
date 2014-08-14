@@ -6,7 +6,8 @@ var Provider = require('../models/Provider.js');
  * @file Handle providers
  */
 
-module.exports.setAvailableProviders = function(client, providers) {
+module.exports.setAvailableProviders = function(providers) {
+  var client = this;
   var availableProviders = [];
   providers.forEach(function(providerInfo) {
     availableProviders.push(new Provider(providerInfo));
@@ -14,8 +15,8 @@ module.exports.setAvailableProviders = function(client, providers) {
   client.availableProviders(availableProviders);
 };
 
-
-module.exports.setConnectedProviders = function(client, providers) {
+module.exports.setConnectedProviders = function(providers) {
+  var client = this;
   var connectedProviders = [];
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
@@ -24,4 +25,29 @@ module.exports.setConnectedProviders = function(client, providers) {
     }
   });
   client.connectedProviders(connectedProviders);
+};
+
+module.exports.updateConnectedProviders = function(providers) {
+  var client = this;
+  providers.forEach(function(p) {
+    // Prevents fetching the anonymous token
+    if (p._type !== "AccessToken" || p.client) {
+
+      var provider = client.connectedProviderWithID(p.id);
+      provider.totalCount(p.document_count);
+    }
+  });
+};
+
+module.exports.connectedProviderWithID = function(providerID) {
+  var provider = null;
+  this.connectedProviders().every(function(p) {
+    if (p.id === providerID) {
+      provider = p;
+      return false; // stop loop
+    } else {
+      return true; // continue loop
+    }
+  });
+  return provider;
 };

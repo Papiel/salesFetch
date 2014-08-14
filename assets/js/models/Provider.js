@@ -1,5 +1,6 @@
 'use strict';
 
+require('../helpers/string.js');
 var call = require('../helpers/call.js');
 
 module.exports = function Provider(json) {
@@ -15,7 +16,8 @@ module.exports = function Provider(json) {
     self.description = json.description;
     self.developer = json.developer ? json.developer.name : 'unknown';
     self.accountName = json.account_name ? json.account_name : 'unknown';
-    self.count = json.document_count;
+    self.queryCount = json.document_count;
+    self.totalCount = ko.observable('unknown');
   }
 
   self.toggleActive = function() {
@@ -36,6 +38,6 @@ module.exports = function Provider(json) {
   };
 
   self.extendedName = function() {
-    return this.name + ' (' + this.count + ')';
+    return this.name.capitalize() + ' (' + this.queryCount + ')';
   };
 };

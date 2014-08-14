@@ -313,15 +313,19 @@
 	border-radius: 0px;
 	border: 0px;
 	border-top: @defaultBorder;
-	text-transform: capitalize;
 	background-color: @toolbarBackground;
 
 	ul {
 		text-align: left;
 
-		li.filter-li { .FilterCell }
-	}
+		li.filter-li { .FilterCell;
 
+			.account-name {
+				font-size: @filterAccountNameFontSize;
+				margin-left: @filterAccountNameMarginLeft;
+			}
+	 	}
+	}
 }
 
 .FilterDropdownMenuLeft { .FilterDropdownMenu;
@@ -433,7 +437,6 @@
 .DesktopFilterMenu { .FilterCell;
 	list-style-type: none;
 	padding: @filterColumnListPadding;
-	text-transform: capitalize;
 
 	li a {
 		cursor: pointer;
@@ -445,6 +448,11 @@
 
 		div {
 			display: inline-block;
+		}
+
+		.account-name {
+			font-size: @filterAccountNameFontSize;
+			margin-left: @filterAccountNameMarginLeft;
 		}
 	}
 }

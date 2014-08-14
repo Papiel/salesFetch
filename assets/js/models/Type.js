@@ -1,5 +1,7 @@
 'use strict';
 
+require('../helpers/string.js');
+
 module.exports = function Type(json) {
   var self = this;
   self.isActive = ko.observable(false);
@@ -7,6 +9,7 @@ module.exports = function Type(json) {
   if (json) {
     self.name = json.name;
     self.id = json.id;
+    self.queryCount = json.document_count;
   }
 
   self.toggleActive = function() {
@@ -15,5 +18,9 @@ module.exports = function Type(json) {
 
   self.imageURL = function() {
     return 'img/document_types-icons/' + self.name + '.png';
+  };
+
+  self.extendedName = function() {
+    return this.name.capitalize() + ' (' + this.queryCount + ')';
   };
 };

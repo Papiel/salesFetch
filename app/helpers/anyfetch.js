@@ -54,8 +54,6 @@ module.exports.findDocuments = function(params, user, cb) {
           };
         }
       });
-      // Reduce footprint by deleting unneeded data
-      delete docs.facets;
 
       cb(null, docs);
     }

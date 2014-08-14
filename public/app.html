@@ -163,7 +163,8 @@ Including tab bar, document list, filters, etc.
             <li>
               <a data-bind="click: toggleActive">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                <span data-bind="text: extendedName()"></span>
+                <span data-bind="text: extendedName()"></span><br />
+                <span class="account-name" data-bind="text: accountName"></span>
               </a>
             </li>
           </ul>
@@ -175,7 +176,7 @@ Including tab bar, document list, filters, etc.
             <li>
               <a data-bind="click: toggleActive">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
-                <span data-bind="text: name"></span>
+                <span data-bind="text: extendedName()"></span>
               </a>
             </li>
           </ul>
@@ -229,18 +230,14 @@ Including tab bar, document list, filters, etc.
                 <tr>
                   <th>Name</th>
                   <th>Account</th>
-                  <th>Count</th>
+                  <th>Document count</th>
                 </tr>
               </thead>
               <tbody data-bind="foreach: connectedProviders">
                 <tr>
                   <td data-bind="text: name"></td>
                   <td data-bind="text: accountName"></td>
-                  <td data-bind="text: count"></td>
-                  <td>
-                    <!-- TODO: do not hardcode this URL -->
-                    <a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
-                  </td>
+                  <td data-bind="text: totalCount"></td>
                 </tr>
               </tbody>
             </table>
@@ -307,7 +304,8 @@ Including tab bar, document list, filters, etc.
                 <li class="filter-li">
                   <a data-bind="click: toggleActive">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                    <span data-bind="text: extendedName()"></span>
+                    <span data-bind="text: extendedName()"></span><br />
+                    <span class="account-name" data-bind="text: accountName"></span>
                   </a>
                 </li>
               </ul>
@@ -326,7 +324,7 @@ Including tab bar, document list, filters, etc.
                 <li class="filter-li">
                   <a data-bind="click: toggleActive">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
-                    <span data-bind="text: name"></span>
+                    <span data-bind="text: extendedName()"></span>
                   </a>
                 </li>
               </ul>

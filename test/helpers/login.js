@@ -21,16 +21,18 @@ var userInfo = {
   isAdmin: true
 };
 
+var orgInfo = {
+  name: 'Breaking Bad',
+  anyFetchId: 'anyFetchId',
+  SFDCId: 'SFDCId',
+};
+
 module.exports.requestBuilder = function(endpoint, context, cb) {
   var createdOrg;
 
   async.waterfall([
     function createCompany(cb) {
-      var org = new Organization({
-        name: 'Breaking Bad',
-        anyFetchId: 'anyFetchId',
-        SFDCId: 'SFDCId',
-      });
+      var org = new Organization(orgInfo);
 
       org.save(cb);
     }, function createUser(org, _, cb) {
@@ -43,7 +45,6 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
     if (err) {
       return cb(err);
     }
-
 
     var data = {
       organization: {id: createdOrg.SFDCId},
@@ -62,5 +63,9 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
 };
 
 module.exports.getUser = function(cb) {
-  User.findOne( { email: userInfo.email }, cb);
+  User.findOne({ email: userInfo.email }, cb);
+};
+
+module.exports.getOrganization = function(cb) {
+  Organization.findOne(orgInfo, cb);
 };

@@ -60,7 +60,7 @@ Including tab bar, document list, filters, etc.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="pull-left back-button">
-            <a data-bind="click: $root.goBack" class="no-frame">
+            <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
               <i class="fa fa-lg fa-chevron-left"></i>
             </a>
           </li>
@@ -93,7 +93,9 @@ Including tab bar, document list, filters, etc.
     |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
     -->
     <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
-      <div class="snippet-list" data-bind="foreach: timeSlices">
+      <!-- BEGIN SNIPPET SECTION LIST -->
+      <div class="snippet-list">
+      <!-- ko foreach: $data.timeSlices() -->
 
         <!-- SNIPPET SECTION -->
         <div class="snippet-section" data-bind="visible: documents.length > 0">
@@ -122,8 +124,15 @@ Including tab bar, document list, filters, etc.
 
         </div>
         <!-- END SNIPPET SECTION -->
+      <!-- /ko -->
+
+      <!-- Spinner for infinite scroll -->
+      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner()">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+      </div>
 
       </div>
+      <!-- END SNIPPET SECTION LIST -->
     </div>
     <!-- END DOCUMENT LIST -->
 
@@ -142,7 +151,8 @@ Including tab bar, document list, filters, etc.
             <li>
               <a data-bind="click: toggleActive">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                <span data-bind="text: extendedName()"></span>
+                <span data-bind="text: extendedName()"></span><br />
+                <span class="account-name" data-bind="text: accountName"></span>
               </a>
             </li>
           </ul>
@@ -154,7 +164,7 @@ Including tab bar, document list, filters, etc.
             <li>
               <a data-bind="click: toggleActive">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
-                <span data-bind="text: name"></span>
+                <span data-bind="text: extendedName()"></span>
               </a>
             </li>
           </ul>
@@ -208,18 +218,14 @@ Including tab bar, document list, filters, etc.
                 <tr>
                   <th>Name</th>
                   <th>Account</th>
-                  <th>Count</th>
+                  <th>Document count</th>
                 </tr>
               </thead>
               <tbody data-bind="foreach: connectedProviders">
                 <tr>
                   <td data-bind="text: name"></td>
                   <td data-bind="text: accountName"></td>
-                  <td data-bind="text: count"></td>
-                  <td>
-                    <!-- TODO: do not hardcode this URL -->
-                    <a href="http://manager.anyfetch.com/providers" target="_blank" class="fa fa-share"></a>
-                  </td>
+                  <td data-bind="text: totalCount"></td>
                 </tr>
               </tbody>
             </table>
@@ -286,7 +292,8 @@ Including tab bar, document list, filters, etc.
                 <li class="filter-li">
                   <a data-bind="click: toggleActive">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                    <span data-bind="text: extendedName()"></span>
+                    <span data-bind="text: extendedName()"></span><br />
+                    <span class="account-name" data-bind="text: accountName"></span>
                   </a>
                 </li>
               </ul>
@@ -305,7 +312,7 @@ Including tab bar, document list, filters, etc.
                 <li class="filter-li">
                   <a data-bind="click: toggleActive">
                     <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
-                    <span data-bind="text: name"></span>
+                    <span data-bind="text: extendedName()"></span>
                   </a>
                 </li>
               </ul>
@@ -336,9 +343,6 @@ Including tab bar, document list, filters, etc.
           </li>
           <li class="pull-right">
             <span class="star-btn fa fa-mail-reply" data-bind="click: reply, clickBubble: false, visible: actions.reply" />
-          </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
           </li>
         </ul>
       <!-- /ko -->
@@ -402,7 +406,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">No document selected</p>
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

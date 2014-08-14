@@ -8,8 +8,6 @@ var client = new SalesfetchViewModel();
 ko.applyBindings(client);
 client.fetchDocuments();
 if(client.isDesktop) {
-  client.fetchAvailableProviders();
-
   window.refreshProviders = function() {
     client.fetchAvailableProviders();
   };
@@ -18,4 +16,5 @@ if(client.isDesktop) {
 $(document).ready(function() {
   misc.addDropdownButtons();
   misc.addTabletBehaviors();
+  misc.bindInfiniteScroll(client);
 });

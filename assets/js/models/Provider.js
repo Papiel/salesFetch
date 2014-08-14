@@ -24,7 +24,6 @@ module.exports = function Provider(json) {
   }
 
   self.toggleActive = function(client) {
-    console.log(client, this);
     this.isActive(!this.isActive());
     client.updateFilter();
   };

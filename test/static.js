@@ -11,10 +11,10 @@ describe('<Static content>', function() {
 
   it('should serve HTML', function(done) {
     request(app)
-      .get('/')
+      .get('/app.html')
       .expect(200)
-      .expect(/<head>/i)
-      .expect(/<body>/i)
+      .expect(/<\/script>/i)
+      .expect(/<\/div>/i)
       .end(done);
   });
 

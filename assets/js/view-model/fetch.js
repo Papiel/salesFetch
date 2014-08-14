@@ -15,8 +15,13 @@ module.exports.fetchDocuments = function(params) {
   call('/app/documents', params, function success(data) {
     client.setConnectedProviders(data.documents.facets.providers);
     client.setTypes(data.documents.facets.document_types);
-    client.addDocuments(data.documents);
+    var docs = client.documentsWithJson(data.documents);
+    client.setDocuments(docs);
     client.shouldDisplayDocumentsSpinner(false);
+
+    if (client.documents().length >= data.documents.count) {
+      client.allDocumentsLoaded(true);
+    }
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);
     client.documentListError(getErrorMessage(res));
@@ -33,7 +38,8 @@ module.exports.fetchTempDocuments = function(filters) {
 
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', options, function success(data) {
-    client.tempDocuments(data.documents.data);
+    client.tempDocuments([]);
+    // client.tempDocuments(data.documents.data);
     client.shouldDisplayDocumentsSpinner(false);
 
     if (client.isDesktop) {

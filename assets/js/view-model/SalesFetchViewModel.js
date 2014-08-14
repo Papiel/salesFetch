@@ -20,7 +20,7 @@ module.exports = function SalesfetchViewModel() {
   client.isDesktop = device.desktop();
 
   // ----- Editable data
-  client.documents = ko.observableArray([]);
+  client.documents = ko.observable({});
   client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.tempDocuments = ko.observableArray([]);
   client.connectedProviders = ko.observableArray([]);
@@ -48,11 +48,17 @@ module.exports = function SalesfetchViewModel() {
     }
 
     // By default use the timeline's documents
-    var source = client.documents();
-    // Use tempDocuments if they exist
-    if (client.tempDocuments() && client.tempDocuments().length) {
-      source = client.tempDocuments();
+    var source = [];
+    for (var id in client.documents()) {
+      source.push(client.documents()[id]);
     }
+
+    // console.log(source);
+    // console.log(client.documents());
+    // Use tempDocuments if they exist
+    // if (client.tempDocuments() && client.tempDocuments().length) {
+    //   source = client.tempDocuments();
+    // }
 
     var docs = client.activeTab().filter ? source.filter(client.activeTab().filter) : source;
     return sliceInTime(docs);
@@ -74,8 +80,10 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Documents management
   client.documentWithJson = documents.documentWithJson;
+  client.setDocuments = documents.setDocuments;
   client.addDocuments = documents.addDocuments;
   client.loadMoreDocuments = documents.loadMoreDocuments;
+  client.documentsWithJson = documents.documentsWithJson;
   // Flag which indicates when all possible documents have been loaded
   client.allDocumentsLoaded = ko.observable(false);
 

@@ -10,8 +10,14 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 module.exports.documentWithJson = function(json) {
   var client = this;
-
-  var doc = new Document(json);
+  // console.log('json:', json);
+  // console.log('client.documents()', client.documents());
+  var doc = client.documents()[json.id];
+  // console.log('document before:', doc);
+  if (!doc) {
+     doc = new Document(json);
+  }
+  // console.log('document after:', doc);
 
   // Instantiate a new Provider model only when needed
   var provider;
@@ -42,22 +48,30 @@ module.exports.documentWithJson = function(json) {
   return doc;
 };
 
-module.exports.addDocuments = function(documentsJson) {
+module.exports.documentsWithJson = function(documentsJson) {
   var client = this;
-  var docs = [];
+  var docs = {};
   documentsJson.data.forEach(function(json) {
-    docs.push(client.documentWithJson(json));
+    docs[json.id] = client.documentWithJson(json);
   });
 
-  client.documents(client.documents().concat(docs));
+  // console.log(docs);
+  return docs;
+};
 
+module.exports.setDocuments = function(docs) {
+  var client = this;
+  client.documents(docs);
   if(client.documents().length <= 0) {
     var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
     client.documentListError(errorMessage);
   }
-  else if (client.documents().length >= documentsJson.count) {
-    client.allDocumentsLoaded(true);
-  }
+};
+
+module.exports.addDocuments = function(docs) {
+  var newDocList = {};
+  $.extend(newDocList, docs, this.documents());
+  client.documents(newDocList);
 };
 
 module.exports.loadMoreDocuments = function() {

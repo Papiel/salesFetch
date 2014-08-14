@@ -65,9 +65,10 @@ module.exports.setDocuments = function(docs) {
 };
 
 module.exports.addDocuments = function(docs) {
+  var client = this;
   var newDocList = {};
-  $.extend(newDocList, docs, this.documents());
-  this.documents(newDocList);
+  $.extend(newDocList, docs, client.documents());
+  client.documents(newDocList);
 };
 
 module.exports.resetDocumentFullView = function() {

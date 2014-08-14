@@ -46,7 +46,6 @@ module.exports = function SalesfetchViewModel() {
       return [];
     }
 
-    // By default use the timeline's documents
     var docList = [];
     for (var id in client.documents()) {
       docList.push(client.documents()[id]);

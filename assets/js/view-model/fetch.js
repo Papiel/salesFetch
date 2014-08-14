@@ -8,17 +8,25 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  * @file Handle communication with the server
  */
 
+module.exports.checkAllDocumentsLoaded = function(client, response) {
+  var querycount = response.documents.count;
+  var frontCount = Object.keys(client.documents()).length;
+
+  client.allDocumentsLoaded(frontCount >= querycount);
+};
+
 module.exports.fetchDocuments = function(updateFacets) {
   var client = this;
   updateFacets = updateFacets || false;
 
-  var params = {};
+  var options = {};
   if (client.filterByProvider() || client.filterByType()) {
-    params.data = filters.paramsForFilter(client);
+    options.data = filters.paramsForFilter(client);
   }
 
-  client.shouldDisplayDocumentsSpinner(true);
-  call('/app/documents', params, function success(data) {
+  // Show big spinner only if we reload the facets
+  client.shouldDisplayDocumentsSpinner(updateFacets);
+  call('/app/documents', options, function success(data) {
 
     if (updateFacets) {
       client.setConnectedProviders(data.documents.facets.providers);
@@ -28,9 +36,9 @@ module.exports.fetchDocuments = function(updateFacets) {
     client.setDocuments(docs);
     client.shouldDisplayDocumentsSpinner(false);
 
-    if (client.documents().length >= data.documents.count) {
-      client.allDocumentsLoaded(true);
-    }
+    // update loadMore spinner
+    module.exports.checkAllDocumentsLoaded(client, data);
+
   }, function error(res) {
     client.shouldDisplayDocumentsSpinner(false);
     client.documentListError(getErrorMessage(res));
@@ -41,19 +49,29 @@ module.exports.fetchMoreDocuments = function() {
   var client = this;
 
   if(!client.allDocumentsLoaded()) {
+
+    // prepare request params
+    // start
     var options = {
-      data: { start: Object.keys(client.documents()).length }
+      data: {
+        start: Object.keys(client.documents()).length
+      }
     };
+    // filters
+    if (client.filterByProvider() || client.filterByType()) {
+      $.extend(options.data, options.data, filters.paramsForFilter(client));
+    }
+
     call('/app/documents', options, function success(data) {
 
       if(data.documents.data && data.documents.data.length > 0) {
         var docs = client.documentsWithJson(data.documents);
         client.addDocuments(docs);
-        client.allDocumentsLoaded(false);
       }
-      else {
-        client.allDocumentsLoaded(true);
-      }
+
+      // update loadMore spinner
+      module.exports.checkAllDocumentsLoaded(client, data);
+
     }, function error(res) {
       client.loadMoreError(getErrorMessage(res));
     });

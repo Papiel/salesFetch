@@ -65,7 +65,7 @@ module.exports.starredFilter = function() {
  * @param {SalesfetchViewModel} client
  * @return {Dict} representing filters for api request
  */
- module.exports.paramsForFilter = function(client) {
+module.exports.paramsForFilter = function(client) {
   var providerIDs = [];
   client.filteredProviders().forEach(function(provider) {
     providerIDs.push(provider.id);
@@ -78,11 +78,11 @@ module.exports.starredFilter = function() {
 
   var params = { provider: providerIDs, document_type: typeIDs};
   return params;
- };
+};
 
 /**
  *
  **/
- module.exports.updateFilter = function() {
+module.exports.updateFilter = function() {
   this.fetchDocuments(false);
- };
+};

@@ -12,7 +12,7 @@ module.exports.documentWithJson = function(json) {
 
   var doc = client.documents()[json.id];
   if (!doc) {
-     doc = new Document(json);
+    doc = new Document(json);
   }
 
   // Instantiate a new Provider model only when needed

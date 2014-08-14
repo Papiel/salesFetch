@@ -47,12 +47,12 @@ module.exports = function SalesfetchViewModel() {
     }
 
     // By default use the timeline's documents
-    var source = [];
+    var docList = [];
     for (var id in client.documents()) {
-      source.push(client.documents()[id]);
+      docList.push(client.documents()[id]);
     }
 
-    var docs = client.activeTab().filter ? source.filter(client.activeTab().filter) : source;
+    var docs = client.activeTab().filter ? docList.filter(client.activeTab().filter) : docList;
     return sliceInTime(docs);
   });
 

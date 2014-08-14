@@ -9,14 +9,11 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 module.exports.documentWithJson = function(json) {
   var client = this;
-  // console.log('json:', json);
-  // console.log('client.documents()', client.documents());
+
   var doc = client.documents()[json.id];
-  // console.log('document before:', doc);
   if (!doc) {
      doc = new Document(json);
   }
-  // console.log('document after:', doc);
 
   // Instantiate a new Provider model only when needed
   var provider;
@@ -53,8 +50,6 @@ module.exports.documentsWithJson = function(documentsJson) {
   documentsJson.data.forEach(function(json) {
     docs[json.id] = client.documentWithJson(json);
   });
-
-  // console.log(docs);
   return docs;
 };
 
@@ -65,16 +60,12 @@ module.exports.setDocuments = function(docs) {
     var errorMessage = getErrorMessage('no documents').format(client.searchQuery);
     client.documentListError(errorMessage);
   }
-
-  console.log(Object.keys(this.documents()).length);
 };
 
 module.exports.addDocuments = function(docs) {
   var newDocList = {};
   $.extend(newDocList, docs, this.documents());
   this.documents(newDocList);
-
-  console.log(Object.keys(this.documents()).length);
 };
 
 module.exports.resetDocumentFullView = function() {

@@ -53,13 +53,6 @@ module.exports = function SalesfetchViewModel() {
       source.push(client.documents()[id]);
     }
 
-    // console.log(source);
-    // console.log(client.documents());
-    // Use tempDocuments if they exist
-    // if (client.tempDocuments() && client.tempDocuments().length) {
-    //   source = client.tempDocuments();
-    // }
-
     var docs = client.activeTab().filter ? source.filter(client.activeTab().filter) : source;
     return sliceInTime(docs);
   });

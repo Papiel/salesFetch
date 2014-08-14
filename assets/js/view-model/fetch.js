@@ -17,11 +17,9 @@ module.exports.fetchDocuments = function(updateFacets) {
     params.data = filters.paramsForFilter(client);
   }
 
-  console.log(params);
-
   client.shouldDisplayDocumentsSpinner(true);
   call('/app/documents', params, function success(data) {
-    console.log(data);
+
     if (updateFacets) {
       client.setConnectedProviders(data.documents.facets.providers);
       client.setTypes(data.documents.facets.document_types);

@@ -114,13 +114,12 @@ module.exports = function SalesfetchViewModel() {
   };
 
   // ----- Zero state
-  // Extract the search query from the GET parameters
-  if($.data) {
+  // Extract the search (context) from client data
+  if($.clientData) {
     try {
-      var json = JSON.parse(decodeURIComponent($.data));
-      client.searchQuery = json.context.templatedQuery;
+      client.searchQuery = $.clientData.context.templatedQuery;
     } catch(e) {
-      console.log('Unable to parse `data` JSON argument');
+      console.log('Unable to retrieve context from `data` argument');
     }
   }
 

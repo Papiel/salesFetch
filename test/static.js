@@ -18,6 +18,13 @@ describe('<Static content>', function() {
       .end(done);
   });
 
+  it('should serve dev-only HTML', function(done) {
+    request(app)
+      .get('/dev/index.html')
+      .expect(200)
+      .end(done);
+  });
+
   it('should serve JS', function(done) {
     request(app)
       .get('/dist/main.js')

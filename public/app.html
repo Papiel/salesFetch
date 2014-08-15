@@ -345,16 +345,16 @@ Including tab bar, document list, filters, etc.
       <!-- ko if: isMobile -->
         <ul class="nav nav-pills" data-bind="with: activeDocument">
           <li class="pull-left">
-            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
           </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal, clickBubble: false, visible: actions.show" />
+          <li class="pull-right" data-bind="visible: actions.show">
+            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal" />
           </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-cloud-download" data-bind="click: download, clickBubble: false, visible: actions.download" />
+          <li class="pull-right" data-bind="visible: actions.download">
+            <span class="star-btn fa fa-cloud-download" data-bind="click: download" />
           </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-mail-reply" data-bind="click: reply, clickBubble: false, visible: actions.reply" />
+          <li class="pull-right" data-bind="visible: actions.reply">
+            <span class="star-btn fa fa-mail-reply" data-bind="click: reply" />
           </li>
         </ul>
       <!-- /ko -->
@@ -392,17 +392,17 @@ used to show the full document, its title and related actions.
       <!-- When a document is selected -->
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
-          <li class="pull-right">
-            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal, clickBubble: false, visible: actions.show" />
+          <li class="pull-right" data-bind="visible: actions.show">
+            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.download">
+            <span class="star-btn fa fa-cloud-download" data-bind="click: download" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.reply">
+            <span class="star-btn fa fa-mail-reply" data-bind="click: reply" />
           </li>
           <li class="pull-right">
-            <span class="star-btn fa fa-cloud-download" data-bind="click: download, clickBubble: false, visible: actions.download" />
-          </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-mail-reply" data-bind="click: reply, clickBubble: false, visible: actions.reply" />
-          </li>
-          <li class="pull-right">
-            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}" />
+            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
           </li>
           <li class="pull-left document-description">
             <div class="icon" data-bind="css: type.name"></div>
@@ -418,7 +418,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage">Documents found for '<!-- ko text: searchQuery --><!-- /ko -->'
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() && !documentListError()">Documents for context '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

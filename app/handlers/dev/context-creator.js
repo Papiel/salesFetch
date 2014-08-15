@@ -40,7 +40,7 @@ var defaultDummyContext = {
     name: ''
   }
 };
-var defaultPrefix = '/';
+var defaultPrefix = '/dev/index.html';
 
 var sendRes = function(res, data, org, prefix) {
   data.organization = {

@@ -28,5 +28,4 @@ if (config.env === 'development') {
 var server = restify.createServer(serverOptions);
 // Bootstrap Models, Dependencies, Routes, Middlewares
 server = bootstrap(server);
-
 module.exports = server;

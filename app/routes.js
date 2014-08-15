@@ -48,9 +48,15 @@ module.exports = function(server) {
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.post);
 
+  // Dev-only routes
   if(config.env === 'development' || config.env === 'test') {
     server.get('/dev/context-creator', handlers.dev.contextCreator.get);
     server.post('/dev/context-creator', handlers.dev.contextCreator.post);
+  }
+  else {
+    server.get(/\/dev\/.*/i, function(req, res, next) {
+      return next(new restify.NotFoundError('Not found'));
+    });
   }
 
   /**
@@ -68,6 +74,6 @@ module.exports = function(server) {
    */
   server.get(/^\/$|\./i, restify.serveStatic({
     directory: 'public',
-    default: 'index.html'
+    default: 'app.html'
   }));
 };

@@ -41,9 +41,8 @@ module.exports.goToDocument = function(doc) {
       target = w.document;
       target.head.appendChild(cssBlock);
 
-      // TODO: do not hardcode!
-      var domainPath = 'https://localhost:3000';
-      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="' + domainPath + '/lib/fontawesome/css/font-awesome.min.css">';
+      // TODO: do not include FontAwesome just for this
+      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">';
       var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';
 
       $(target.body).html(fontAwesomeLink + spinnerHTML);

@@ -1,7 +1,5 @@
 'use strict';
 
-var getUrlParameter = require('./getUrlParameter');
-
 /**
  * @param {String} url
  * @param {String} [options] Additional options to pass to jQuery's AJAX function
@@ -26,7 +24,7 @@ module.exports = function call(url, options, success, error) {
     options = {};
   }
 
-  url += '?data=' + getUrlParameter('data');
+  url = $.salesFetchUrl + url + '?data=' + encodeURIComponent(JSON.stringify($.clientData));
   var params = {
     dataType: 'json',
     type: 'get',

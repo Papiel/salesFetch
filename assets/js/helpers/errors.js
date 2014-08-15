@@ -25,15 +25,23 @@ module.exports.getErrorMessage = function(res) {
   if(res.responseJSON || res.responseText) {
     err = (res.responseJSON ? res.responseJSON.code + ': ' + res.responseJSON.message : res.responseText);
   }
+  else if(res.status >= 300) {
+    err = res.status + ' error';
+  }
   else {
     err = res;
   }
 
+  if(!err) {
+    return 'Failed to reach the server';
+  }
+
+  // Allow to override server-sent error messages by human-friendly error messages
   for(var expression in errorMessages) {
     if(err.match(new RegExp(expression, 'gi'))) {
       return errorMessages[expression];
     }
   }
 
-  return err || 'Failed to reach the server';
+  return err;
 };

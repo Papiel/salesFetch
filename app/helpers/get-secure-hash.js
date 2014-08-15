@@ -8,7 +8,7 @@ var config = require('../../config/configuration.js');
 /**
  * SalesForce's URI encoding function strictly adheres to RFC 3986
  */
-var strictUriEncode = function(str) {
+var strictUriEncode = function(str) {
   // Note that `replace` can be called with a function (similar to `map`)
   return encodeURIComponent(str).replace(/[!\'()\*]/g, escape);
 };
@@ -17,7 +17,7 @@ var strictUriEncode = function(str) {
  * The hash is computed from params taken from the request and a secret key.
  * @param {Object} data The GET param describing the request (with `user`, `organization`, ...)
  * @param {String} masterKey The user's organization's master key
- * @return {String} The hashed string which uniquely identifies a request.
+ * @return {String} The hashed string which uniquely identifies a request.
  */
 module.exports = function getSecureHash(data, masterKey) {
   var usefulData = _.merge({}, data);

@@ -9,8 +9,6 @@ var documents = require('./documents.js');
 var providers = require('./providers.js');
 var types = require('./types.js');
 
-var getUrlParameter = require('../helpers/getUrlParameter.js');
-
 module.exports = function SalesfetchViewModel() {
   var client = this;
 
@@ -126,14 +124,12 @@ module.exports = function SalesfetchViewModel() {
   };
 
   // ----- Zero state
-  // Extract the search query from the GET parameters
-  var data = getUrlParameter('data');
-  if(data) {
-    try {
-      var json = JSON.parse(decodeURIComponent(data));
-      client.searchQuery = json.context.templatedQuery;
+  // Extract the search (context) from client data
+  if($.clientData) {
+    try {
+      client.searchQuery = $.clientData.context.templatedQuery;
     } catch(e) {
-      console.log('Unable to parse `data` JSON argument');
+      console.log('Unable to retrieve context from `data` argument');
     }
   }
 

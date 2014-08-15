@@ -6,7 +6,6 @@ apex/apex-scripts
 
 # Fronted
 .bower-*/
-public/lib
 public/dist
 .sass-cache/
 *.css

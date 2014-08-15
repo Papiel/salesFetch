@@ -62,7 +62,7 @@ module.exports = function SalesfetchViewModel() {
   client.setTypes = types.setTypes;
 
   // ----- Providers
-  client.connectedProviderWithID = providers.connectedProviderWithID;
+  client.getConnectedProviderById = providers.getConnectedProviderById;
   client.setAvailableProviders = providers.setAvailableProviders;
   client.setConnectedProviders = providers.setConnectedProviders;
   client.updateConnectedProviders = providers.updateConnectedProviders;

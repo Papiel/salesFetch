@@ -66,17 +66,17 @@ module.exports.starredFilter = function() {
  * @return {Dict} representing filters for api request
  */
 module.exports.paramsForFilter = function(client) {
-  var providerIDs = [];
+  var providerIds = [];
   client.filteredProviders().forEach(function(provider) {
-    providerIDs.push(provider.id);
+    providerIds.push(provider.id);
   });
 
-  var typeIDs = [];
+  var typeIds = [];
   client.filteredTypes().forEach(function(type) {
-    typeIDs.push(type.id);
+    typeIds.push(type.id);
   });
 
-  var params = { provider: providerIDs, document_type: typeIDs};
+  var params = { provider: providerIds, document_type: typeIds};
   return params;
 };
 

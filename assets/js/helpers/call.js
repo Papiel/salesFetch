@@ -1,7 +1,5 @@
 'use strict';
 
-var getUrlParameter = require('./getUrlParameter');
-
 /**
  * @param {String} url
  * @param {String} [options] Additional options to pass to jQuery's AJAX function

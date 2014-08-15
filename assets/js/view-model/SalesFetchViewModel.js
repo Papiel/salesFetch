@@ -9,8 +9,6 @@ var documents = require('./documents.js');
 var providers = require('./providers.js');
 var types = require('./types.js');
 
-var getUrlParameter = require('../helpers/getUrlParameter.js');
-
 module.exports = function SalesfetchViewModel() {
   var client = this;
 

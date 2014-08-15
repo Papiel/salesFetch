@@ -33,7 +33,9 @@ module.exports.updateConnectedProviders = function(providers) {
     // Prevents fetching the anonymous token
     if(p._type !== "AccessToken" || p.client) {
       var provider = client.getConnectedProviderById(p.id);
+      if(provider) {
         provider.totalCount(p.document_count);
+      }
     }
   });
 };

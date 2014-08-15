@@ -119,9 +119,9 @@ module.exports = function SalesfetchViewModel() {
   // Extract the search query from the GET parameters
   var data = getUrlParameter('data');
   if(data) {
-    try {
+    try {
       var json = JSON.parse(decodeURIComponent(data));
-      client.searchQuery = json.context.templatedQuery;
+      client.searchQuery = json.context.templatedDisplay;
     } catch(e) {
       console.log('Unable to parse `data` JSON argument');
     }

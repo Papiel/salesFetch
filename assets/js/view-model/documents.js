@@ -11,7 +11,13 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 module.exports.documentWithJson = function(json) {
   var tab = this;
 
-  var doc = tab.documents()[json.id];
+  // find a document
+  var doc = null;
+  tab.client.tabs.every(function(t) {
+    doc = t.documents()[json.id];
+    return (doc != null); // break if doc found
+  });
+  // or create it
   if (!doc) {
     doc = new Document(json);
   }

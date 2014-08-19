@@ -19,6 +19,7 @@ module.exports.getTabs = function(client) {
                                     'Timeline',
                                     'fa-list',
                                     false,
+                                    false,
                                     filters.providerAndType(client));
 
   // ----- Documents management
@@ -37,6 +38,7 @@ module.exports.getTabs = function(client) {
                                   'Starred',
                                   'fa-star-o',
                                   false,
+                                  true,
                                   filters.starredFilter(client));
 
   // ----- Documents management

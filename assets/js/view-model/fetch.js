@@ -26,14 +26,16 @@ module.exports.fetchDocuments = function(updateFacets) {
 
   // Show big spinner only if we reload the facets
   tab.shouldDisplayDocumentsSpinner(updateFacets);
-  call('/app/documents', options, function success(data) {
+  var url = tab.starred ? '/app/pins' : '/app/documents';
+  call(url, options, function success(data) {
 
-    if (updateFacets) {
+    if (updateFacets && !tab.starred) {
       tab.client.setConnectedProviders(data.documents.facets.providers);
       tab.client.setTypes(data.documents.facets.document_types);
     }
 
-    var docs = tab.documentsWithJson(data.documents);
+    var docsInfo = data.documents ? data.documents : {data: data};
+    var docs = tab.documentsWithJson(docsInfo);
     tab.setDocuments(docs);
     tab.shouldDisplayDocumentsSpinner(false);
 
@@ -63,7 +65,8 @@ module.exports.fetchMoreDocuments = function() {
       $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
     }
 
-    call('/app/documents', options, function success(data) {
+    var url = tab.starred ? '/app/pins' : '/app/documents';
+    call(url, options, function success(data) {
 
       if(data.documents.data && data.documents.data.length > 0) {
         var docs = tab.documentsWithJson(data.documents);

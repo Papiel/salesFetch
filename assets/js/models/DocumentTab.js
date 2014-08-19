@@ -12,7 +12,7 @@ var noopFilter = function() {
  * @param {Boolean} pullRight
  * @param {Function} filter A function to use to filter the documents to be shown in this tab
  */
-module.exports = function DocumentTab(client, name, display, pullRight, filter) {
+module.exports = function DocumentTab(client, name, display, pullRight, starred, filter) {
   var self = this;
 
   self.client = client;
@@ -21,6 +21,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter) 
   self.display = display;
   self.pullRight = pullRight || false;
   self.filter = filter || noopFilter;
+  self.starred = starred || false;
 
   self.shouldDisplayDocumentsSpinner = ko.observable(true);
   self.shouldDisplayLoadMoreSpinner = ko.observable(true);

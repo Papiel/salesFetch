@@ -38,7 +38,7 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
     function applyTemplates(res, cb) {
       var docs = res.body;
 
-      docs.data = docs.data.map(function(doc) {
+      docs.data.documents = docs.data.map(function(doc) {
         doc.pinned = true;
         doc.rendered = {};
         doc.rendered.title = templates.render(doc, 'title');

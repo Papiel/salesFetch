@@ -17,12 +17,11 @@ module.exports.checkAllDocumentsLoaded = function(tab, response) {
 
 module.exports.fetchDocuments = function(updateFacets) {
   var tab = this;
-  console.log(tab);
   updateFacets = updateFacets || false;
 
   var options = {};
   if (tab.client.filterByProvider() || tab.client.filterByType()) {
-    options.data = filters.paramsForFilter(tab);
+    options.data = filters.paramsForFilter(tab.client);
   }
 
   // Show big spinner only if we reload the facets
@@ -33,6 +32,7 @@ module.exports.fetchDocuments = function(updateFacets) {
       tab.client.setConnectedProviders(data.documents.facets.providers);
       tab.client.setTypes(data.documents.facets.document_types);
     }
+
     var docs = tab.documentsWithJson(data.documents);
     tab.setDocuments(docs);
     tab.shouldDisplayDocumentsSpinner(false);

@@ -17,6 +17,7 @@ module.exports.setAvailableProviders = function(providers) {
 
 module.exports.setConnectedProviders = function(providers) {
   var client = this;
+
   var connectedProviders = [];
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token

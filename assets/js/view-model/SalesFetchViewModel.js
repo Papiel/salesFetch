@@ -75,10 +75,10 @@ module.exports = function SalesfetchViewModel() {
   client.fetchFullDocument = fetch.fetchFullDocument;
   client.fetchAvailableProviders = fetch.fetchAvailableProviders;
 
-  client.fetchDocuments = function() {
+  client.fetchDocuments = function(updateFacets) {
     client.tabs.forEach(function(tab) {
       if (tab.fetchDocuments) {
-        tab.fetchDocuments();
+        tab.fetchDocuments(updateFacets);
       }
     });
   };

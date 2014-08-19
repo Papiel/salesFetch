@@ -58,7 +58,6 @@ module.exports.getTabs = function(client) {
   //var searchTab = new Tab('Search', 'fa-search', true);
 
   var tabs = [timelineTab, starredTab]; // and `searchTab`
-  console.log(tabs);
 
   // Desktop has an additional 'Providers' tab
   if(client.isDesktop) {

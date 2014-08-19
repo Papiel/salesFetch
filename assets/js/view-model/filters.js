@@ -67,6 +67,7 @@ module.exports.starredFilter = function() {
  */
 module.exports.paramsForFilter = function(client) {
   var providerIds = [];
+
   client.filteredProviders().forEach(function(provider) {
     providerIds.push(provider.id);
   });

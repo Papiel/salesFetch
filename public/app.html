@@ -86,7 +86,7 @@ Including tab bar, document list, filters, etc.
   <!-- END NAVIGATION -->
 
   <!-- VIEW BODY -->
-  <div id="view-body">
+  <div id="view-body" data-bind="with: activeTab()">
 
     <!-- Spinners & errors -->
     <!-- TODO: merge into a single div? -->
@@ -107,7 +107,7 @@ Including tab bar, document list, filters, etc.
     <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
       <!-- BEGIN SNIPPET SECTION LIST -->
       <div class="snippet-list">
-      <!-- ko foreach: $data.timeSlices() -->
+      <!-- ko foreach: timeSlices() -->
 
         <!-- SNIPPET SECTION -->
         <div class="snippet-section" data-bind="visible: documents.length > 0">
@@ -139,7 +139,7 @@ Including tab bar, document list, filters, etc.
       <!-- /ko -->
 
       <!-- Spinner for infinite scroll -->
-      <div class="load-more" data-bind="visible: !$root.allDocumentsLoaded() && !$root.shouldDisplayDocumentsSpinner()">
+      <div class="load-more" data-bind="visible: !allDocumentsLoaded() && !shouldDisplayDocumentsSpinner()">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
       </div>
 
@@ -155,11 +155,11 @@ Including tab bar, document list, filters, etc.
     |  _| | | | ||  __/ |  \__ \ | (_| (_) | | |_| | | | | | | | | |
     |_|   |_|_|\__\___|_|  |___/  \___\___/|_|\__,_|_| |_| |_|_| |_|
     -->
-    <!-- ko if: isDesktop -->
+    <!-- ko if: $root.isDesktop -->
       <div class="filter-column" data-bind="visible: shouldDisplayDocumentList">
-        <div class="filter-providers" data-bind="visible: connectedProviders().length > 0">
+        <div class="filter-providers" data-bind="visible: $root.connectedProviders().length > 0">
           <h4>Providers</h4>
-          <ul class="filter-menu fa-ul" data-bind="foreach: connectedProviders">
+          <ul class="filter-menu fa-ul" data-bind="foreach: $root.connectedProviders">
             <li>
               <a data-bind="click: function () {toggleActive($root)}">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
@@ -170,9 +170,9 @@ Including tab bar, document list, filters, etc.
           </ul>
         </div>
 
-        <div class="filter-types" data-bind="visible: types().length > 0">
+        <div class="filter-types" data-bind="visible: $root.types().length > 0">
           <h4>Types</h4>
-          <ul class="filter-menu fa-ul" role="menu" data-bind="foreach: types">
+          <ul class="filter-menu fa-ul" role="menu" data-bind="foreach: $root.types">
             <li>
               <a data-bind="click: function () {toggleActive($root)}">
                 <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
@@ -194,17 +194,17 @@ Including tab bar, document list, filters, etc.
 
     Mobile only: a pane for showing the full document
     -->
-    <!-- ko if: isMobile -->
+    <!-- ko if: $root.isMobile -->
       <!-- Spinner -->
-      <div class="placeholder-container" data-bind="visible: shouldDisplayViewerSpinner">
+      <div class="placeholder-container" data-bind="visible: $root.shouldDisplayViewerSpinner">
         <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
       </div>
-      <div class="placeholder-container" data-bind="visible: documentViewerError() != null">
-        <p class="error" data-bind="text: documentViewerError"></p>
+      <div class="placeholder-container" data-bind="visible: $root.documentViewerError() != null">
+        <p class="error" data-bind="text: $root.documentViewerError"></p>
       </div>
 
       <!-- Full-view holder -->
-      <div class="iframe-container" data-bind="visible: activeDocument()">
+      <div class="iframe-container" data-bind="visible: $root.activeDocument()">
         <iframe name="full-iframe" id="full-iframe" class="document-view">
         </iframe>
       </div>
@@ -220,7 +220,7 @@ Including tab bar, document list, filters, etc.
 
     Desktop only: list current providers and connect new providers.
     -->
-    <!-- ko if: isDesktop -->
+    <!-- ko if: $root.isDesktop -->
       <div class="providers-view row" data-bind="visible: $root.activeTab().name === 'Providers'">
         <div class="connected-providers provider-panel col-md-6 col-sm-7">
           <h2>Connected providers</h2>
@@ -233,7 +233,7 @@ Including tab bar, document list, filters, etc.
                   <th>Document count</th>
                 </tr>
               </thead>
-              <tbody data-bind="foreach: connectedProviders">
+              <tbody data-bind="foreach: $root.connectedProviders">
                 <tr>
                   <td data-bind="text: name"></td>
                   <td data-bind="text: accountName"></td>
@@ -245,7 +245,7 @@ Including tab bar, document list, filters, etc.
         </div>
         <div class="available-providers provider-panel col-md-6 col-sm-5">
           <h2>Available providers</h2>
-          <div class="row provider-list" data-bind="foreach: availableProviders">
+          <div class="row provider-list" data-bind="foreach: $root.availableProviders">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
               <a data-bind="click: connect">
                 <div class="provider">

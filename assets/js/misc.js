@@ -41,7 +41,7 @@ module.exports.addDropdownButtons = function() {
 module.exports.bindInfiniteScroll = function(client) {
   $('#view-body, .desktop .snippet-list').bind('scroll', function() {
     if($(this).scrollTop() === this.scrollHeight - $(this).innerHeight()) {
-      client.fetchMoreDocuments();
+      client.activeTab().fetchMoreDocuments();
     }
   });
 };

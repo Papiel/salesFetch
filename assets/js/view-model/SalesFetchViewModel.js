@@ -1,7 +1,6 @@
 'use strict';
 
 var filters = require('./filters.js');
-var sliceInTime = require('../helpers/sliceInTime.js');
 var getTabs = require('./tabs.js').getTabs;
 var navigation = require('./navigation.js');
 var fetch = require('./fetch.js');
@@ -18,8 +17,6 @@ module.exports = function SalesfetchViewModel() {
   client.isDesktop = device.desktop();
 
   // ----- Editable data
-  client.documents = ko.observable({});
-  client.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
   client.connectedProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
@@ -27,9 +24,7 @@ module.exports = function SalesfetchViewModel() {
   client.filterByProvider = ko.observable(false);
   client.filterByType = ko.observable(false);
 
-  client.documentListError = ko.observable();
   client.documentViewerError = ko.observable();
-  client.loadMoreError = ko.observable();
 
   if (client.isTablet) {
     client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
@@ -37,21 +32,6 @@ module.exports = function SalesfetchViewModel() {
 
   client.activeTab = ko.observable();
   client.activeDocument = ko.observable();
-
-  // ----- Documents
-  client.timeSlices = ko.computed(function() {
-    if(!client.activeTab()) {
-      return [];
-    }
-
-    var docList = [];
-    for (var id in client.documents()) {
-      docList.push(client.documents()[id]);
-    }
-
-    var docs = client.activeTab().filter ? docList.filter(client.activeTab().filter) : docList;
-    return sliceInTime(docs);
-  });
 
   // ----- Filters
   client.filteredProviders = ko.computed(filters.activeProviders(client));
@@ -66,14 +46,6 @@ module.exports = function SalesfetchViewModel() {
   client.setAvailableProviders = providers.setAvailableProviders;
   client.setConnectedProviders = providers.setConnectedProviders;
   client.updateConnectedProviders = providers.updateConnectedProviders;
-
-  // ----- Documents management
-  client.documentWithJson = documents.documentWithJson;
-  client.setDocuments = documents.setDocuments;
-  client.addDocuments = documents.addDocuments;
-  client.documentsWithJson = documents.documentsWithJson;
-  // Flag which indicates when all possible documents have been loaded
-  client.allDocumentsLoaded = ko.observable(false);
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer
@@ -100,16 +72,19 @@ module.exports = function SalesfetchViewModel() {
   client.goToTab(client.tabs[0]);
 
   // ----- Requests to the backend
-  client.fetchDocuments = fetch.fetchDocuments;
-  client.fetchMoreDocuments = fetch.fetchMoreDocuments;
   client.fetchFullDocument = fetch.fetchFullDocument;
   client.fetchAvailableProviders = fetch.fetchAvailableProviders;
 
+  client.fetchDocuments = function() {
+    client.tabs.forEach(function(tab) {
+      if (tab.fetchDocuments) {
+        tab.fetchDocuments();
+      }
+    });
+  };
+
   // ----- UI (conditional views)
   // Avoid using ko.computed when not needed (for better performance)
-  client.shouldDisplayDocumentList = ko.computed(function() {
-    return (client.activeTab().hasDocumentList) && (!client.activeDocument() || !client.isMobile);
-  });
 
   client.shouldDisplayFilterToolbar = ko.computed(function() {
     return (!client.activeDocument()) || client.isTablet;
@@ -134,7 +109,5 @@ module.exports = function SalesfetchViewModel() {
   }
 
   // Spinners
-  client.shouldDisplayDocumentsSpinner = ko.observable(false);
   client.shouldDisplayViewerSpinner = ko.observable(false);
-  client.shouldDisplayLoadMoreSpinner = ko.observable(false);
 };

@@ -9,7 +9,7 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  */
 
 module.exports.checkAllDocumentsLoaded = function(tab, response) {
-  var querycount = response.documents.count;
+  var querycount = response.documents ? response.documents.count : response.count;
   var frontCount = Object.keys(tab.documents()).length;
 
   tab.allDocumentsLoaded(frontCount >= querycount);
@@ -34,7 +34,7 @@ module.exports.fetchDocuments = function(updateFacets) {
       tab.client.setTypes(data.documents.facets.document_types);
     }
 
-    var docsInfo = data.documents ? data.documents : {data: data};
+    var docsInfo = data.documents ? data.documents : data;
     var docs = tab.documentsWithJson(docsInfo);
     tab.setDocuments(docs);
     tab.shouldDisplayDocumentsSpinner(false);

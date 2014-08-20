@@ -14,8 +14,10 @@ module.exports.documentWithJson = function(json) {
   // find a document
   var doc = null;
   tab.client.tabs.every(function(t) {
-    doc = t.documents()[json.id];
-    return (doc != null); // break if doc found
+    if (t.documents) {
+      doc = t.documents()[json.id];
+    }
+    return (doc !== null); // break if doc found
   });
   // or create it
   if (!doc) {

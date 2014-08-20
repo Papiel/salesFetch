@@ -12,7 +12,7 @@ var noopFilter = function() {
  * @param {Boolean} pullRight If true the tab will align right in horizontal menu
  * @param {Function} filter A function to use to filter the documents to be shown in this tab
  */
-module.exports = function DocumentTab(client, name, display, pullRight, starred, filter) {
+module.exports = function DocumentTab(client, name, display, pullRight, filter, endpoint) {
   var self = this;
 
   self.client = client;
@@ -21,7 +21,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, starred,
   self.display = display;
   self.pullRight = pullRight || false;
   self.filter = filter || noopFilter;
-  self.starred = starred || false;
+  self.endpoint = endpoint || '/app/documents';
 
   self.shouldDisplayDocumentsSpinner = ko.observable(true);
   self.shouldDisplayLoadMoreSpinner = ko.observable(true);

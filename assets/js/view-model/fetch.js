@@ -26,8 +26,7 @@ module.exports.fetchDocuments = function(updateFacets) {
 
   // Show big spinner only if we reload the facets
   tab.shouldDisplayDocumentsSpinner(updateFacets);
-  var url = tab.starred ? '/app/pins' : '/app/documents';
-  call(url, options, function success(response) {
+  call(tab.endpoint, options, function success(response) {
     response = response.documents ? response.documents : response;
 
     if (updateFacets && !tab.starred) {
@@ -64,8 +63,7 @@ module.exports.fetchMoreDocuments = function() {
       $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
     }
 
-    var url = tab.starred ? '/app/pins' : '/app/documents';
-    call(url, options, function success(response) {
+    call(tab.endpoint, options, function success(response) {
     response = response.documents ? response.documents : response;
 
       if(response.data && response.data.length > 0) {

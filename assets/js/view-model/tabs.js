@@ -19,8 +19,8 @@ module.exports.setTabs = function(client) {
                                     'Timeline',
                                     'fa-list',
                                     false,
-                                    false,
-                                    filters.providerAndType(client));
+                                    filters.providerAndType(client),
+                                    '/app/documents');
 
   // ----- Documents management
   client.timelineTab.documentWithJson = documents.documentWithJson;
@@ -38,8 +38,8 @@ module.exports.setTabs = function(client) {
                                   'Starred',
                                   'fa-star-o',
                                   false,
-                                  true,
-                                  filters.starredFilter(client));
+                                  filters.starredFilter(client),
+                                  '/app/pins');
 
   // ----- Documents management
   client.starredTab.documentWithJson = documents.documentWithJson;

@@ -15,61 +15,53 @@ var fetch = require('./fetch.js');
  * @return {Array} The visible tabs. First tab of the list should be the default tab.
  */
 module.exports.setTabs = function(client) {
-  client.timelineTab = new DocumentTab(client,
-                                    'Timeline',
-                                    'fa-list',
-                                    false,
-                                    filters.providerAndType(client),
-                                    '/app/documents');
+  var timelineTab = new DocumentTab(client, 'Timeline', 'fa-list', false,
+                                    filters.providerAndType(client), '/app/documents');
 
   // ----- Documents management
-  client.timelineTab.documentWithJson = documents.documentWithJson;
-  client.timelineTab.setDocuments = documents.setDocuments;
-  client.timelineTab.addDocuments = documents.addDocuments;
-  client.timelineTab.documentsWithJson = documents.documentsWithJson;
+  timelineTab.documentWithJson = documents.documentWithJson;
+  timelineTab.setDocuments = documents.setDocuments;
+  timelineTab.addDocuments = documents.addDocuments;
+  timelineTab.documentsWithJson = documents.documentsWithJson;
   // Flag which indicates when all possible documents have been loaded
-  client.timelineTab.allDocumentsLoaded = ko.observable(false);
+  timelineTab.allDocumentsLoaded = ko.observable(false);
 
   // ----- Requests to the backend
-  client.timelineTab.fetchDocuments = fetch.fetchDocuments;
-  client.timelineTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
+  timelineTab.fetchDocuments = fetch.fetchDocuments;
+  timelineTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
 
-  client.starredTab = new DocumentTab(client,
-                                  'Starred',
-                                  'fa-star-o',
-                                  false,
-                                  filters.starredFilter(client),
-                                  '/app/pins');
+  var starredTab = new DocumentTab(client, 'Starred', 'fa-star-o', false,
+                                  filters.starredFilter(client), '/app/pins');
 
   // ----- Documents management
-  client.starredTab.documentWithJson = documents.documentWithJson;
-  client.starredTab.setDocuments = documents.setDocuments;
-  client.starredTab.addDocuments = documents.addDocuments;
-  client.starredTab.documentsWithJson = documents.documentsWithJson;
+  starredTab.documentWithJson = documents.documentWithJson;
+  starredTab.setDocuments = documents.setDocuments;
+  starredTab.addDocuments = documents.addDocuments;
+  starredTab.documentsWithJson = documents.documentsWithJson;
   // Flag which indicates when all possible documents have been loaded
-  client.starredTab.allDocumentsLoaded = ko.observable(false);
+  starredTab.allDocumentsLoaded = ko.observable(false);
 
   // ----- Starred management
-  client.starredTab.starredUpdate = function(document) {
+  starredTab.starredUpdate = function(document) {
     if (document.isStarred()) {
-      client.starredTab.documents()[document.id] = document;
+      starredTab.documents()[document.id] = document;
     } else {
-      delete client.starredTab.documents()[document.id];
+      delete starredTab.documents()[document.id];
     }
   };
 
-  client.starredTab.starredUpdateFailed = function(document) {
+  starredTab.starredUpdateFailed = function(document) {
     document.isStarred(!document.isStarred());
     if (document.isStarred()) {
-      client.starredTab.documents()[document.id] = document;
+      starredTab.documents()[document.id] = document;
     } else {
-      delete client.starredTab.documents()[document.id];
+      delete starredTab.documents()[document.id];
     }
   };
 
   // ----- Requests to the backend
-  client.starredTab.fetchDocuments = fetch.fetchDocuments;
-  client.starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
+  starredTab.fetchDocuments = fetch.fetchDocuments;
+  starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
 
 
   var providerTab = new Tab('Providers', 'fa-link');
@@ -77,7 +69,8 @@ module.exports.setTabs = function(client) {
   // TODO: re-enable when feature exists
   //var searchTab = new Tab('Search', 'fa-search', true);
 
-  client.tabs = [client.timelineTab, client.starredTab]; // and `searchTab`
+  client.tabs = [timelineTab, starredTab]; // and `searchTab`
+  client.starredTab = starredTab;
 
   // Desktop has an additional 'Providers' tab
   if(client.isDesktop) {

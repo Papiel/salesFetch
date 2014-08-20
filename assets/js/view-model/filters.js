@@ -53,7 +53,7 @@ module.exports.providerAndType = function(client) {
 
 /**
  * @param {Object} document
- * @return {Array} Only the `documents` which are filtered
+ * @return {Array} Only the `documents` which are starred
  */
 module.exports.starredFilter = function() {
   return function(document) {
@@ -63,7 +63,7 @@ module.exports.starredFilter = function() {
 
 /*
  * @param {SalesfetchViewModel} client
- * @return {Dict} representing filters for api request
+ * @return {Object} The AnyFetch API request parameters corresponding to the currently applied filters
  */
 module.exports.paramsForFilter = function(client) {
   var providerIds = [];

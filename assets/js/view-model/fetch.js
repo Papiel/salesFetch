@@ -9,7 +9,7 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  */
 
 module.exports.checkAllDocumentsLoaded = function(tab, response) {
-  var querycount = response.documents ? response.documents.count : response.count;
+  var querycount = response.count;
   var frontCount = Object.keys(tab.documents()).length;
 
   tab.allDocumentsLoaded(frontCount >= querycount);
@@ -27,20 +27,20 @@ module.exports.fetchDocuments = function(updateFacets) {
   // Show big spinner only if we reload the facets
   tab.shouldDisplayDocumentsSpinner(updateFacets);
   var url = tab.starred ? '/app/pins' : '/app/documents';
-  call(url, options, function success(data) {
+  call(url, options, function success(response) {
+    response = response.documents ? response.documents : response;
 
     if (updateFacets && !tab.starred) {
-      tab.client.setConnectedProviders(data.documents.facets.providers);
-      tab.client.setTypes(data.documents.facets.document_types);
+      tab.client.setConnectedProviders(response.facets.providers);
+      tab.client.setTypes(response.facets.document_types);
     }
 
-    var docsInfo = data.documents ? data.documents : data;
-    var docs = tab.documentsWithJson(docsInfo);
+    var docs = tab.documentsWithJson(response);
     tab.setDocuments(docs);
     tab.shouldDisplayDocumentsSpinner(false);
 
     // update loadMore spinner
-    module.exports.checkAllDocumentsLoaded(tab, data);
+    module.exports.checkAllDocumentsLoaded(tab, response);
 
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
@@ -50,7 +50,6 @@ module.exports.fetchDocuments = function(updateFacets) {
 
 module.exports.fetchMoreDocuments = function() {
   var tab = this;
-
   if(!tab.allDocumentsLoaded()) {
 
     // prepare request params
@@ -66,15 +65,16 @@ module.exports.fetchMoreDocuments = function() {
     }
 
     var url = tab.starred ? '/app/pins' : '/app/documents';
-    call(url, options, function success(data) {
+    call(url, options, function success(response) {
+    response = response.documents ? response.documents : response;
 
-      if(data.documents.data && data.documents.data.length > 0) {
-        var docs = tab.documentsWithJson(data.documents);
+      if(response.data && response.data.length > 0) {
+        var docs = tab.documentsWithJson(response);
         tab.addDocuments(docs);
       }
 
       // update loadMore spinner
-      module.exports.checkAllDocumentsLoaded(tab, data);
+      module.exports.checkAllDocumentsLoaded(tab, response);
 
     }, function error(res) {
       tab.loadMoreError(getErrorMessage(res));

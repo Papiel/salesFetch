@@ -38,7 +38,7 @@ module.exports.fetchDocuments = function(updateFacets) {
     tab.setDocuments(docs);
     tab.shouldDisplayDocumentsSpinner(false);
 
-    // update loadMore spinner
+    // Update loadMore spinner
     module.exports.checkAllDocumentsLoaded(tab, response);
 
   }, function error(res) {
@@ -51,14 +51,14 @@ module.exports.fetchMoreDocuments = function() {
   var tab = this;
   if(!tab.allDocumentsLoaded()) {
 
-    // prepare request params
-    // start
+    // Prepare request params:
+    // Start offset
     var options = {
       data: {
         start: Object.keys(tab.documents()).length
       }
     };
-    // filters
+    // Filters
     if (tab.client.filterByProvider() || tab.client.filterByType()) {
       $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
     }

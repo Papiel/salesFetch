@@ -9,7 +9,7 @@ var noopFilter = function() {
 /**
  * @param {String} name
  * @param {String} display The font-awesome CSS class corresponding to the icon of this tab
- * @param {Boolean} pullRight
+ * @param {Boolean} pullRight If true the tab will align right in horizontal menu
  * @param {Function} filter A function to use to filter the documents to be shown in this tab
  */
 module.exports = function DocumentTab(client, name, display, pullRight, starred, filter) {

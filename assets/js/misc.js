@@ -39,7 +39,8 @@ module.exports.addDropdownButtons = function() {
 };
 
 module.exports.bindInfiniteScroll = function(client) {
-  $('#view-body, .desktop .snippet-list').bind('scroll', function() {
+  var selector = client.isDesktop ? '.snippet-list' : '#view-body';
+  $(selector).on("scroll", function() {
     if($(this).scrollTop() === this.scrollHeight - $(this).innerHeight()) {
       client.activeTab().fetchMoreDocuments();
     }

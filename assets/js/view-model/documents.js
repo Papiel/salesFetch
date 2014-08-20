@@ -11,7 +11,8 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 module.exports.documentWithJson = function(json) {
   var tab = this;
 
-  // find a document
+  // Find a document
+  // This is aimed to keep every documents unique.
   var doc = null;
   tab.client.tabs.every(function(t) {
     if (t.documents) {
@@ -19,7 +20,7 @@ module.exports.documentWithJson = function(json) {
     }
     return (doc !== null); // break if doc found
   });
-  // or create it
+  // Or create it if it does not exist yet
   if (!doc) {
     doc = new Document(json, tab.client.starredTab);
   }

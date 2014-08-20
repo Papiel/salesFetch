@@ -58,7 +58,7 @@ module.exports.setTabs = function(client) {
     }
   };
 
-  client.starredTab.starredUpdateFailled = function(document) {
+  client.starredTab.starredUpdateFailed = function(document) {
     document.isStarred(!document.isStarred());
     if (document.isStarred()) {
       client.starredTab.documents()[document.id] = document;

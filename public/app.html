@@ -86,7 +86,7 @@ Including tab bar, document list, filters, etc.
   <!-- END NAVIGATION -->
 
   <!-- VIEW BODY -->
-  <div id="view-body" data-bind="with: activeTab()">
+  <div id="view-body" data-bind="with: activeTab">
 
     <!-- Spinners & errors -->
     <!-- TODO: merge into a single div? -->
@@ -418,7 +418,7 @@ used to show the full document, its title and related actions.
     <div class="placeholder-container">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
-      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() && !documentListError()">Documents for context '<!-- ko text: searchQuery --><!-- /ko -->'
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() && !activeTab().documentListError()">Documents for context '<!-- ko text: searchQuery --><!-- /ko -->'
     </div>
 
     <!-- Document full view container -->

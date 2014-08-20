@@ -34,7 +34,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, starred,
   self.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
 
   self.shouldDisplayDocumentList = ko.computed(function() {
-    return true;
+    return (!self.client.isMobile || !client.activeDocument());
   });
 
     // ----- Documents

@@ -9,7 +9,7 @@ Fetch API integration in Salesforce.
 * 2 ways : timeline views and search views
 * Dynamic request management
 
-Check out the [wiki](https://github.com/Papiel/salesFetch/wiki/Installation-guide) to understand how to integrate salesFetch into you salesforce organization.
+Check out the [wiki](https://github.com/Papiel/salesFetch/wiki/Installation-guide) to install salesFetch into you salesforce organization.
 
 
 ## Before...
@@ -43,7 +43,7 @@ The server in now available on `https://localhost:3000`. The `https` is importan
 All the apex code is in the repo [salesFetch-Apex](https://github.com/Papiel/salesFetch-Apex).
 
 ### With Eclipse (preferred)
-You can use [Force.com IDE](https://wiki.developerforce.com/page/Force.com_IDE) directecly integrated into Eclipse IDE. This allow to manage the code, sync it with the dist Salesforce server, and return test into the IDE. More informations in the [introduction](https://wiki.developerforce.com/page/An_Introduction_to_Force_IDE).
+You can use [Force.com IDE](https://wiki.developerforce.com/page/Force.com_IDE) directcly integrated into Eclipse IDE. This allows to manage the code, sync it with the dist Salesforce server, and return test into the IDE. More informations in the [introduction](https://wiki.developerforce.com/page/An_Introduction_to_Force_IDE).
 
 ### With Sublime Text 3
 You can use [MavensMate](http://mavensmate.com/) and the integration into the SublimText3 text editor to manage the Apex code. To connect an existing project to the plugin [use this link](http://mavensmate.com/Plugins/Sublime_Text/Existing_Projects).

@@ -1,7 +1,7 @@
 'use strict';
 
 var filters = require('./filters.js');
-var getTabs = require('./tabs.js').getTabs;
+var setTabs = require('./tabs.js').setTabs;
 var navigation = require('./navigation.js');
 var fetch = require('./fetch.js');
 var documents = require('./documents.js');
@@ -67,9 +67,9 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Tabs
   // Set visible tabs
-  client.tabs = getTabs(client);
-  // The first tab is shown by default
-  client.goToTab(client.tabs[0]);
+  setTabs(client);
+  // The timelineTab tab is shown by default
+  client.goToTab(client.timelineTab);
 
   // ----- Requests to the backend
   client.fetchFullDocument = fetch.fetchFullDocument;

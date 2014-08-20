@@ -21,7 +21,7 @@ module.exports.documentWithJson = function(json) {
   });
   // or create it
   if (!doc) {
-    doc = new Document(json);
+    doc = new Document(json, tab.client.starredTab);
   }
 
   // Instantiate a new Provider model only when needed

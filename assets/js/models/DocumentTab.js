@@ -37,7 +37,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, starred,
     return (!self.client.isMobile || !client.activeDocument());
   });
 
-    // ----- Documents
+  // ----- Documents
   self.timeSlices = ko.computed(function() {
     if(!self.client.activeTab()) {
       return [];

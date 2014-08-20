@@ -2,6 +2,13 @@
 
 var call = require('../helpers/call.js');
 
+
+/**
+ * @param json
+ * @param delegate
+ *    Will be notified when isStarred changes.
+ *    Must respond to `starredUpdate` and `starredUpdateFailed`.
+ */
 module.exports = function Document(json, delegate) {
   var self = this;
 

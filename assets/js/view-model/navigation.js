@@ -8,7 +8,7 @@ var scrollToTop = require('../helpers/scrollToTop.js');
 module.exports.goToTab = function(tab) {
   var client = this;
 
-  if (client.activeTab() != tab) {
+  if (client.activeTab() !== tab) {
     client.activeTab(tab);
 
     if (client.bindInfiniteScroll) {

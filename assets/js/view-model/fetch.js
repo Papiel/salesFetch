@@ -17,7 +17,7 @@ module.exports.checkAllDocumentsLoaded = function(tab, response) {
 
 
 /**
- * @param {Object} updateFacets Whether are not the providers and types should be updated
+ * @param {Object} updateFacets Whether or not the providers and types should be updated
  */
 module.exports.fetchDocuments = function(updateFacets) {
   var tab = this;

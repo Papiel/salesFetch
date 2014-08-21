@@ -15,6 +15,10 @@ module.exports.checkAllDocumentsLoaded = function(tab, response) {
   tab.allDocumentsLoaded(frontCount >= querycount);
 };
 
+
+/**
+ * @param {Object} updateFacets Whether are not the providers and types should be updated
+ */
 module.exports.fetchDocuments = function(updateFacets) {
   var tab = this;
   updateFacets = updateFacets || false;

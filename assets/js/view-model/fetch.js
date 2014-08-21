@@ -9,7 +9,7 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  */
 
 module.exports.checkAllDocumentsLoaded = function(tab, response) {
-  var querycount = response.count;
+  var querycount = response.count || 0;
   var frontCount = Object.keys(tab.documents()).length;
 
   tab.allDocumentsLoaded(frontCount >= querycount);

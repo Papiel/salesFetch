@@ -221,7 +221,7 @@ Including tab bar, document list, filters, etc.
     Desktop only: list current providers and connect new providers.
     -->
     <!-- ko if: $root.isDesktop -->
-      <div class="providers-view row" data-bind="visible: $root.activeTab().name === 'Providers'">
+      <div class="providers-view row" data-bind="visible: $root.activeTab() === $root.providerTab">
         <div class="connected-providers provider-panel col-md-6 col-sm-7">
           <h2>Connected providers</h2>
           <div class="provider-list">

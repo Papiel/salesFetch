@@ -68,8 +68,8 @@ module.exports = function SalesfetchViewModel() {
   // ----- Tabs
   // Set visible tabs
   setTabs(client);
-  // The timelineTab tab is shown by default
-  client.goToTab(client.timelineTab);
+  // The first tab is shown by default
+  client.goToTab(client.tabs[0]);
 
   // ----- Requests to the backend
   client.fetchFullDocument = fetch.fetchFullDocument;

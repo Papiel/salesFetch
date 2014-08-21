@@ -64,7 +64,6 @@ module.exports.setTabs = function(client) {
   starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
 
 
-  var providerTab = new Tab('Providers', 'fa-link');
 
   // TODO: re-enable when feature exists
   //var searchTab = new Tab('Search', 'fa-search', true);
@@ -74,6 +73,7 @@ module.exports.setTabs = function(client) {
 
   // Desktop has an additional 'Providers' tab
   if(client.isDesktop) {
-    client.tabs.push(providerTab);
+    client.providerTab = new Tab('Providers', 'fa-link');
+    client.tabs.push(client.providerTab);
   }
 };

@@ -224,7 +224,7 @@ Including tab bar, document list, filters, etc.
     -->
     <!-- ko if: $root.isDesktop -->
       <div class="providers-view row" data-bind="visible: $root.activeTab() === $root.providerTab">
-        <div class="connected-providers provider-panel col-md-6 col-sm-7">
+        <div class="connected-providers provider-panel col-lg-6 col-md-7 col-sm-12">
           <h2>Connected providers</h2>
           <div class="provider-list">
             <table class="provider-table">
@@ -245,10 +245,10 @@ Including tab bar, document list, filters, etc.
             </table>
           </div>
         </div>
-        <div class="available-providers provider-panel col-md-6 col-sm-5">
+        <div class="available-providers provider-panel col-lg-6 col-md-5 col-sm-12">
           <h2>Available providers</h2>
           <div class="row provider-list" data-bind="foreach: $root.availableProviders">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
               <a data-bind="click: connect">
                 <div class="provider">
                   <h4>

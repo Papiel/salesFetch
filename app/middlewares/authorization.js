@@ -27,6 +27,8 @@ var authenticateUser = function(context, org, done) {
         return done(null, user);
       }
 
+      // If the user didn't exist in this company,
+      // create an AnyFetch account in his name
       anyFetchHelpers.addNewUser(userContext, org, cb);
     }
   ], done);

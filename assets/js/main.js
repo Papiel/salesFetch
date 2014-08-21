@@ -20,6 +20,7 @@ if(!$.clientData) {
 
 // ----- Knockout init
 var client = new SalesfetchViewModel();
+client.bindInfiniteScroll = misc.bindInfiniteScroll;
 ko.applyBindings(client);
 client.fetchDocuments(true);
 client.fetchAvailableProviders();
@@ -32,5 +33,5 @@ if(client.isDesktop) {
 $(document).ready(function() {
   misc.addDropdownButtons();
   misc.addTabletBehaviors();
-  misc.bindInfiniteScroll(client);
+  client.bindInfiniteScroll();
 });

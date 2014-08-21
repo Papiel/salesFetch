@@ -10,6 +10,9 @@ module.exports.goToTab = function(tab) {
 
   client.activeTab(tab);
 
+  if (client.bindInfiniteScroll) {
+    client.bindInfiniteScroll();
+  }
   if (client.isMobile) {
     client.activeDocument(null);
   }

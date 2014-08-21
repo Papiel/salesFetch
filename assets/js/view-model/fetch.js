@@ -8,72 +8,78 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
  * @file Handle communication with the server
  */
 
-module.exports.checkAllDocumentsLoaded = function(client, response) {
-  var querycount = response.documents.count;
-  var frontCount = Object.keys(client.documents()).length;
+module.exports.checkAllDocumentsLoaded = function(tab, response) {
+  var querycount = response.count;
+  var frontCount = Object.keys(tab.documents()).length;
 
-  client.allDocumentsLoaded(frontCount >= querycount);
+  tab.allDocumentsLoaded(frontCount >= querycount);
 };
 
+
+/**
+ * @param {Object} updateFacets Whether are not the providers and types should be updated
+ */
 module.exports.fetchDocuments = function(updateFacets) {
-  var client = this;
+  var tab = this;
   updateFacets = updateFacets || false;
 
   var options = {};
-  if (client.filterByProvider() || client.filterByType()) {
-    options.data = filters.paramsForFilter(client);
+  if (tab.client.filterByProvider() || tab.client.filterByType()) {
+    options.data = filters.paramsForFilter(tab.client);
   }
 
   // Show big spinner only if we reload the facets
-  client.shouldDisplayDocumentsSpinner(updateFacets);
-  call('/app/documents', options, function success(data) {
+  tab.shouldDisplayDocumentsSpinner(updateFacets);
+  call(tab.endpoint, options, function success(response) {
+    response = response.documents ? response.documents : response;
 
-    if (updateFacets) {
-      client.setConnectedProviders(data.documents.facets.providers);
-      client.setTypes(data.documents.facets.document_types);
+    if (updateFacets && !tab.starred) {
+      tab.client.setConnectedProviders(response.facets.providers);
+      tab.client.setTypes(response.facets.document_types);
     }
-    var docs = client.documentsWithJson(data.documents);
-    client.setDocuments(docs);
-    client.shouldDisplayDocumentsSpinner(false);
 
-    // update loadMore spinner
-    module.exports.checkAllDocumentsLoaded(client, data);
+    var docs = tab.documentsWithJson(response);
+    tab.setDocuments(docs);
+    tab.shouldDisplayDocumentsSpinner(false);
+
+    // Update loadMore spinner
+    module.exports.checkAllDocumentsLoaded(tab, response);
 
   }, function error(res) {
-    client.shouldDisplayDocumentsSpinner(false);
-    client.documentListError(getErrorMessage(res));
+    tab.shouldDisplayDocumentsSpinner(false);
+    tab.documentListError(getErrorMessage(res));
   });
 };
 
 module.exports.fetchMoreDocuments = function() {
-  var client = this;
+  var tab = this;
+  if(!tab.allDocumentsLoaded()) {
 
-  if(!client.allDocumentsLoaded()) {
-
-    // prepare request params
-    // start
+    // Prepare request params:
+    // Start offset
     var options = {
       data: {
-        start: Object.keys(client.documents()).length
+        start: Object.keys(tab.documents()).length
       }
     };
-    // filters
-    if (client.filterByProvider() || client.filterByType()) {
-      $.extend(options.data, options.data, filters.paramsForFilter(client));
+    // Filters
+    if (tab.client.filterByProvider() || tab.client.filterByType()) {
+      $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
     }
 
-    call('/app/documents', options, function success(data) {
+    call(tab.endpoint, options, function success(response) {
+    response = response.documents ? response.documents : response;
 
-      if(data.documents.data && data.documents.data.length > 0) {
-        var docs = client.documentsWithJson(data.documents);
-        client.addDocuments(docs);
+      if(response.data && response.data.length > 0) {
+        var docs = tab.documentsWithJson(response);
+        tab.addDocuments(docs);
       }
 
       // update loadMore spinner
-      module.exports.checkAllDocumentsLoaded(client, data);
+      module.exports.checkAllDocumentsLoaded(tab, response);
 
     }, function error(res) {
-      client.loadMoreError(getErrorMessage(res));
+      tab.loadMoreError(getErrorMessage(res));
     });
   }
 };

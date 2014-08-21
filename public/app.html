@@ -90,6 +90,7 @@ Including tab bar, document list, filters, etc.
 
     <!-- Spinners & errors -->
     <!-- TODO: merge into a single div? -->
+    <!-- ko if: $data != $root.providerTab -->
     <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
     </div>
@@ -184,6 +185,7 @@ Including tab bar, document list, filters, etc.
       </div>
     <!-- /ko -->
     <!-- END FILTERS COLUMN -->
+    <!-- /ko -->
 
     <!--
      ____                                        _      __       _ _         _

@@ -31,7 +31,7 @@ module.exports.goToDocument = function(doc) {
 
     var cssBlock = document.createElement('style');
     cssBlock.type = 'text/css';
-    cssBlock.innerHTML = 'body { font-size: 13px; font-family: \'Helvetica Neue\', \'Helvetica\', \'Arial\', \'sans-serif\';padding: 20px; background: white; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; } header { font-size: 16px; margin-bottom: 30px; color: #646464; } header h1 { font-size: 25px; color: #14A8E1; } header p { margin: 5px 0px; } header a { color: #14A8E1; text-decoration: none; } #spinner {width: 44px; height: 44px; position: absolute; margin: auto; top: 0; bottom: 0; right: 0; left: 0;}';
+    cssBlock.innerHTML = 'body { font-size: 13px; font-family: \'Helvetica Neue\', \'Helvetica\', \'Arial\', \'sans-serif\';padding: 20px; background: white; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; } header { font-size: 16px; margin-bottom: 30px; color: #646464; } header h1 { font-size: 25px; color: #14A8E1; } header p { margin: 5px 0px; } header a { color: #14A8E1; text-decoration: none; } #spinner {width: 44px; height: 44px; position: absolute; margin: auto; top: 0; bottom: 0; right: 0; left: 0;} .hlt { background-color: rgba(255,242,138,.6); }';
     var target;
     if(!client.isDesktop) {
       // TODO: check for browser compatibility

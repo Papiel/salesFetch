@@ -2,7 +2,14 @@
 
 var call = require('../helpers/call.js');
 
-module.exports = function Document(json) {
+
+/**
+ * @param json
+ * @param delegate
+ *    Will be notified when isStarred changes.
+ *    Must respond to `starredUpdate` and `starredUpdateFailed`.
+ */
+module.exports = function Document(json, delegate) {
   var self = this;
 
   self.isStarred = ko.observable(json.pinned);
@@ -34,10 +41,17 @@ module.exports = function Document(json) {
     var successState = !self.isStarred();
     self.isStarred(successState);
 
+    if (delegate && delegate.starredUpdate) {
+      delegate.starredUpdate(self);
+    }
+
     call(url, options, noop, function error(res) {
       self.isStarred(!successState);
       console.log('Could not star/unstar document ' + self.id);
       console.log(res.responseText);
+      if (delegate && delegate.starredUpdateFailed) {
+        delegate.starredUpdateFailed(self);
+      }
     });
   };
 

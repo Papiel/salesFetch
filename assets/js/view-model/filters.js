@@ -53,10 +53,37 @@ module.exports.providerAndType = function(client) {
 
 /**
  * @param {Object} document
- * @return {Array} Only the `documents` which are filtered
+ * @return {Array} Only the `documents` which are starred
  */
 module.exports.starredFilter = function() {
   return function(document) {
     return (document.isStarred() === true) && module.exports.providerAndType(document);
   };
+};
+
+/*
+ * @param {SalesfetchViewModel} client
+ * @return {Object} The AnyFetch API request parameters corresponding to the currently applied filters
+ */
+module.exports.paramsForFilter = function(client) {
+  var providerIds = [];
+
+  client.filteredProviders().forEach(function(provider) {
+    providerIds.push(provider.id);
+  });
+
+  var typeIds = [];
+  client.filteredTypes().forEach(function(type) {
+    typeIds.push(type.id);
+  });
+
+  var params = { provider: providerIds, document_type: typeIds};
+  return params;
+};
+
+/**
+ *
+ **/
+module.exports.updateFilter = function() {
+  this.fetchDocuments(false);
 };

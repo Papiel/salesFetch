@@ -12,8 +12,11 @@ module.exports = function Type(json) {
     self.queryCount = json.document_count;
   }
 
-  self.toggleActive = function() {
+  // Knock out will run every binding once on load.
+  // It is important to encapsulate toggleActive in an anonymous function in data-bindings
+  self.toggleActive = function(client) {
     this.isActive(!this.isActive());
+    client.updateFilter();
   };
 
   self.imageURL = function() {

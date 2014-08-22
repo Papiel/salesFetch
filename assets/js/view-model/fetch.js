@@ -1,29 +1,87 @@
 'use strict';
 
 var call = require('../helpers/call.js');
+var filters = require('./filters.js');
 var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
  * @file Handle communication with the server
  */
 
-module.exports.fetchDocuments = function() {
-  var client = this;
+module.exports.checkAllDocumentsLoaded = function(tab, response) {
+  var querycount = response.count || 0;
+  var frontCount = Object.keys(tab.documents()).length;
 
-  client.shouldDisplayDocumentsSpinner(true);
-  call('/app/documents', {}, function success(data) {
-    client.setConnectedProviders(data.documents.facets.providers);
-    client.setTypes(data.documents.facets.document_types);
-    client.addDocuments(data.documents);
-    client.shouldDisplayDocumentsSpinner(false);
+  tab.allDocumentsLoaded(frontCount >= querycount);
+};
 
-    if (client.isDesktop) {
-      client.fetchAvailableProviders();
+
+/**
+ * @param {Object} updateFacets Whether or not the providers and types should be updated
+ */
+module.exports.fetchDocuments = function(updateFacets) {
+  var tab = this;
+  updateFacets = updateFacets || false;
+
+  var options = {};
+  if (tab.client.filterByProvider() || tab.client.filterByType()) {
+    options.data = filters.paramsForFilter(tab.client);
+  }
+
+  // Show big spinner only if we reload the facets
+  tab.shouldDisplayDocumentsSpinner(updateFacets);
+  call(tab.endpoint, options, function success(response) {
+    response = response.documents ? response.documents : response;
+
+    if (updateFacets && !tab.starred) {
+      tab.client.setConnectedProviders(response.facets.providers);
+      tab.client.setTypes(response.facets.document_types);
     }
+
+    var docs = tab.documentsWithJson(response);
+    tab.setDocuments(docs);
+    tab.shouldDisplayDocumentsSpinner(false);
+
+    // Update loadMore spinner
+    module.exports.checkAllDocumentsLoaded(tab, response);
+
   }, function error(res) {
-    client.shouldDisplayDocumentsSpinner(false);
-    client.documentListError(getErrorMessage(res));
+    tab.shouldDisplayDocumentsSpinner(false);
+    tab.documentListError(getErrorMessage(res));
   });
+};
+
+module.exports.fetchMoreDocuments = function() {
+  var tab = this;
+  if(!tab.allDocumentsLoaded()) {
+
+    // Prepare request params:
+    // Start offset
+    var options = {
+      data: {
+        start: Object.keys(tab.documents()).length
+      }
+    };
+    // Filters
+    if (tab.client.filterByProvider() || tab.client.filterByType()) {
+      $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
+    }
+
+    call(tab.endpoint, options, function success(response) {
+    response = response.documents ? response.documents : response;
+
+      if(response.data && response.data.length > 0) {
+        var docs = tab.documentsWithJson(response);
+        tab.addDocuments(docs);
+      }
+
+      // update loadMore spinner
+      module.exports.checkAllDocumentsLoaded(tab, response);
+
+    }, function error(res) {
+      tab.loadMoreError(getErrorMessage(res));
+    });
+  }
 };
 
 module.exports.fetchFullDocument = function(document, cb) {

@@ -7,7 +7,7 @@ var Type = require('../models/Type.js');
  */
 
 module.exports.setTypes = function(types) {
-	var client = this;
+  var client = this;
   var tempTypes = [];
   types.forEach(function(type) {
     tempTypes.push(new Type(type));

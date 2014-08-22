@@ -14,7 +14,6 @@ var bootstrap = require('./config/bootstrap.js');
 var mongoose = require('mongoose');
 mongoose.connect(config.mongo_url);
 
-
 // Init server in the right mode
 // With HTTPS in development, Heroku manages HTTPS in production
 var serverOptions = {

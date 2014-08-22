@@ -30,6 +30,14 @@ module.exports.get = function(req, res, next) {
     params.start = req.query.start;
   }
 
+  if(req.query.document_type) {
+    params.document_type = req.query.document_type;
+  }
+
+  if(req.query.provider) {
+    params.provider = req.query.provider;
+  }
+
   async.waterfall([
     function retrieveDocuments(cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);

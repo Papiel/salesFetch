@@ -6,10 +6,11 @@ var AnyFetch = require('anyfetch');
 
 var mongoose =require('mongoose');
 var Pin = mongoose.model('Pin');
+var _ = require("lodash");
 
 var templates = require('./templates.js');
 
-module.exports.findPins = function(sfdcId, user, finalCb) {
+module.exports.findPins = function(sfdcId, params, user, finalCb) {
   // This is not a failure, just a particular case that we take into account
   var noPinError = new restify.NotFoundError('No pin was found for this context');
 
@@ -32,13 +33,17 @@ module.exports.findPins = function(sfdcId, user, finalCb) {
       var ids = pins.map(function(pin) {
         return pin.anyFetchId;
       });
-      var query = { id: ids, sort: '-creationDate' };
+      var query = {
+        id: ids,
+        sort: '-creationDate',
+      };
+      query = _.merge(params, query);
       anyfetch.getDocuments(query, cb);
     },
     function applyTemplates(res, cb) {
       var docs = res.body;
 
-      docs = docs.data.map(function(doc) {
+      docs.data = docs.data.map(function(doc) {
         doc.pinned = true;
         doc.rendered = {};
         doc.rendered.title = templates.render(doc, 'title');

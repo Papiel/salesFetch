@@ -79,6 +79,7 @@ module.exports = function SalesfetchViewModel() {
     client.tabs.forEach(function(tab) {
       if (tab.fetchDocuments) {
         tab.fetchDocuments(updateFacets);
+        updateFacets = false;
       }
     });
   };

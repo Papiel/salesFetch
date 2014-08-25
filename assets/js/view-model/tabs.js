@@ -20,7 +20,7 @@ var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 module.exports.setTabs = function(client) {
   var timelineTab = new DocumentTab(client, 'Timeline', 'fa-list', false,
                                     filters.providerAndType(client), '/app/documents');
-  timelineTab.defaultErrorFormat = 'No documents found for the context "{0}"';
+  timelineTab.emptyStateMessage = 'No documents found for the context "{0}"';
 
   // ----- Documents management
   timelineTab.documentWithJson = documents.documentWithJson;
@@ -36,7 +36,7 @@ module.exports.setTabs = function(client) {
 
   var starredTab = new DocumentTab(client, 'Starred', 'fa-star-o', false,
                                   filters.starredFilter(client), '/app/pins');
-  starredTab.defaultErrorFormat = 'No documents starred for "{0}"';
+  starredTab.emptyStateMessage = 'No documents starred for "{0}"';
 
   // ----- Documents management
   starredTab.documentWithJson = documents.documentWithJson;
@@ -58,7 +58,7 @@ module.exports.setTabs = function(client) {
     if (docCount > 0) {
       starredTab.documentListError(null);
     } else {
-      var errorMessage = starredTab.defaultErrorFormat.format(starredTab.client.searchQuery);
+      var errorMessage = starredTab.emptyStateMessage.format(starredTab.client.searchQuery);
       starredTab.documentListError(errorMessage);
     }
   };

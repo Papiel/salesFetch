@@ -56,7 +56,6 @@ module.exports = function Document(json, delegate) {
   };
 
   self.openOriginal = function() {
-    window.open(self.actions.show);
     if (self.actions.show) {
       window.open(self.actions.show);
     }

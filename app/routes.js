@@ -49,7 +49,8 @@ module.exports = function(server) {
     handlers.app.providers.index.post);
 
   // Dev-only routes
-  if(config.env === 'development' || config.env === 'test') {
+  // if(config.env === 'development' || config.env === 'test') {
+  if(true) {
     server.get('/dev/context-creator', handlers.dev.contextCreator.get);
     server.post('/dev/context-creator', handlers.dev.contextCreator.post);
 

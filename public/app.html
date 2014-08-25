@@ -94,7 +94,7 @@ Including tab bar, document list, filters, etc.
     <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
       <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
     </div>
-    <div class="placeholder-container" data-bind="visible: documentListError() != null">
+    <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentListError">
       <p class="error" data-bind="text: documentListError"></p>
     </div>
 

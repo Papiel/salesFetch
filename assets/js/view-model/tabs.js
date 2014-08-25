@@ -7,6 +7,9 @@ var filters = require('./filters.js');
 var documents = require('./documents.js');
 var fetch = require('./fetch.js');
 
+require('../helpers/string.js');
+var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
+
 /**
  * @file Tabs
  */
@@ -48,15 +51,19 @@ module.exports.setTabs = function(client) {
     } else {
       delete starredTab.documents()[document.id];
     }
+
+    var docCount = Object.keys(starredTab.documents()).length;
+    if (docCount > 0) {
+      starredTab.documentListError(null);
+    } else {
+      var errorMessage = getErrorMessage('no documents').format(starredTab.client.searchQuery);
+      starredTab.documentListError(errorMessage);
+    }
   };
 
   starredTab.starredUpdateFailed = function(document) {
     document.isStarred(!document.isStarred());
-    if (document.isStarred()) {
-      starredTab.documents()[document.id] = document;
-    } else {
-      delete starredTab.documents()[document.id];
-    }
+    starredTab.starredUpdate(document);
   };
 
   // ----- Requests to the backend

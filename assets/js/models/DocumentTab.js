@@ -37,6 +37,11 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
     return (!self.client.isMobile || !client.activeDocument());
   });
 
+  self.shouldDisplayDocumentListError = ko.computed(function() {
+    var docCount = Object.keys(self.documents()).length;
+    return self.documentListError() && (!self.documents() || docCount <= 0);
+  });
+
   // ----- Documents
   self.timeSlices = ko.computed(function() {
     if(!self.client.activeTab()) {

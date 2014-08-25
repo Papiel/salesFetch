@@ -1,0 +1,433 @@
+<!--
+  ____          _                        _ ____     ___      ____ ____ ____
+ / ___|   _ ___| |_ ___  _ __ ___       | / ___|   ( _ )    / ___/ ___/ ___|
+| |  | | | / __| __/ _ \| '_ ` _ \   _  | \___ \   / _ \/\ | |   \___ \___ \
+| |__| |_| \__ \ || (_) | | | | | | | |_| |___) | | (_>  < | |___ ___) |__) |
+ \____\__,_|___/\__\___/|_| |_| |_|  \___/|____/   \___/\/  \____|____/____/
+
+We need to load dynamically
+-->
+<div id="head"></div>
+
+<script type="text/javascript">
+  <!--
+  // Done this way (first insert the link, then set its `href` attribute) for IE8- compatibility
+  var head = $('#head');
+  var link = $('<link rel="stylesheet" type="text/css" href=""/>');
+  head.append(link);
+  link.attr('href', $.salesFetchUrl + '/dist/style.css');
+  var script = $('<' + 'script type="text/javascript" src="' + $.salesFetchUrl + '/dist/main.js"></script' + '>');
+  head.append(script);
+  -->
+</script>
+
+<!--
+ __  __       _               _
+|  \/  | __ _(_)_ __   __   _(_) _____      __
+| |\/| |/ _` | | '_ \  \ \ / / |/ _ \ \ /\ / /
+| |  | | (_| | | | | |  \ V /| |  __/\ V  V /
+|_|  |_|\__,_|_|_| |_|   \_/ |_|\___| \_/\_/
+
+Including tab bar, document list, filters, etc.
+-->
+<div id="mainview" class="active">
+
+  <!-- Tablet only: a button to toggle document list visibility -->
+  <!-- ko if: isTablet -->
+    <div id="toggle-panel-btn">
+      <span class="fa fa-toggle-left fa-toggle-right"></span>
+    </div>
+  <!-- /ko -->
+
+  <!--
+   _   _             _             _   _
+  | \ | | __ ___   _(_) __ _  __ _| |_(_) ___  _ __
+  |  \| |/ _` \ \ / / |/ _` |/ _` | __| |/ _ \| '_ \
+  | |\  | (_| |\ V /| | (_| | (_| | |_| | (_) | | | |
+  |_| \_|\__,_| \_/ |_|\__, |\__,_|\__|_|\___/|_| |_|
+                       |___/
+  -->
+  <nav class="navbar navbar-default navbar-tab">
+
+    <!--
+     _____     _
+    |_   _|_ _| |__  ___
+      | |/ _` | '_ \/ __|
+      | | (_| | |_) \__ \
+      |_|\__,_|_.__/|___/
+    -->
+    <div data-bind="visible: shouldDisplayTabsNavbar()">
+      <ul class="nav nav-pills" data-bind="foreach: tabs">
+        <li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
+          <a data-bind="click: $root.goToTab.bind($root)">
+            <i data-bind="css: display" class="fa fa-fw fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- END TABS -->
+
+    <!-- Mobile document full view navigation: "Go back" button -->
+    <!-- ko if: isMobile -->
+      <div data-bind="with: activeDocument">
+        <ul class="nav navbar-pills">
+          <li class="pull-left back-button">
+            <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
+              <i class="fa fa-lg fa-chevron-left"></i>
+            </a>
+          </li>
+          <li class="pull-right document-title">
+            <a data-bind="html: title" class="no-frame"></a>
+          </li>
+        </ul>
+      </div>
+    <!-- /ko -->
+  </nav>
+  <!-- END NAVIGATION -->
+
+  <!-- VIEW BODY -->
+  <div id="view-body" data-bind="with: activeTab">
+
+    <!-- Spinners & errors -->
+    <!-- TODO: merge into a single div? -->
+    <!-- ko if: $data != $root.providerTab -->
+    <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
+      <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+    </div>
+    <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentListError">
+      <p class="error" data-bind="text: documentListError"></p>
+    </div>
+
+    <!--
+     ____                                        _     _ _     _
+    |  _ \  ___   ___ _   _ _ __ ___   ___ _ __ | |_  | (_)___| |_
+    | | | |/ _ \ / __| | | | '_ ` _ \ / _ \ '_ \| __| | | / __| __|
+    | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_  | | \__ \ |_
+    |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
+    -->
+    <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
+      <!-- BEGIN SNIPPET SECTION LIST -->
+      <div class="snippet-list">
+      <!-- ko foreach: timeSlices() -->
+
+        <!-- SNIPPET SECTION -->
+        <div class="snippet-section" data-bind="visible: documents.length > 0">
+
+          <!-- SECTION HEADER -->
+          <div class="section-header">
+            <fieldset class="timestamp">
+              <legend data-bind="text: label"></legend>
+            </fieldset>
+          </div>
+          <!-- END SECTION HEADER -->
+
+          <!-- SECTION BODY -->
+          <div class="section-body" data-bind="foreach: documents">
+
+            <!-- SNIPPET -->
+            <div class="snippet" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}">
+              <div class="icon" data-bind="css: type.name"></div>
+              <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
+              <p class="content" data-bind="html: snippet"></p>
+            </div>
+            <!-- END SNIPPET -->
+
+          </div>
+          <!-- END SECTION BODY -->
+
+        </div>
+        <!-- END SNIPPET SECTION -->
+      <!-- /ko -->
+
+      <!-- Spinner for infinite scroll -->
+      <div class="load-more" data-bind="visible: !allDocumentsLoaded() && !shouldDisplayDocumentsSpinner()">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+      </div>
+
+      </div>
+      <!-- END SNIPPET SECTION LIST -->
+    </div>
+    <!-- END DOCUMENT LIST -->
+
+    <!--
+     _____ _ _ _                            _
+    |  ___(_) | |_ ___ _ __ ___    ___ ___ | |_   _ _ __ ___  _ __
+    | |_  | | | __/ _ \ '__/ __|  / __/ _ \| | | | | '_ ` _ \| '_ \
+    |  _| | | | ||  __/ |  \__ \ | (_| (_) | | |_| | | | | | | | | |
+    |_|   |_|_|\__\___|_|  |___/  \___\___/|_|\__,_|_| |_| |_|_| |_|
+    -->
+    <!-- ko if: $root.isDesktop -->
+      <div class="filter-column" data-bind="visible: shouldDisplayDocumentList">
+        <div class="filter-providers" data-bind="visible: $root.connectedProviders().length > 0">
+          <h4>Providers</h4>
+          <ul class="filter-menu fa-ul" data-bind="foreach: $root.connectedProviders">
+            <li>
+              <a data-bind="click: function () {toggleActive($root)}">
+                <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
+                <span data-bind="text: extendedName()"></span><br />
+                <span class="account-name" data-bind="text: accountName"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="filter-types" data-bind="visible: $root.types().length > 0">
+          <h4>Types</h4>
+          <ul class="filter-menu fa-ul" role="menu" data-bind="foreach: $root.types">
+            <li>
+              <a data-bind="click: function () {toggleActive($root)}">
+                <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
+                <span data-bind="text: extendedName()"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    <!-- /ko -->
+    <!-- END FILTERS COLUMN -->
+    <!-- /ko -->
+
+    <!--
+     ____                                        _      __       _ _         _
+    |  _ \  ___   ___ _   _ _ __ ___   ___ _ __ | |_   / _|_   _| | | __   _(_) _____      __
+    | | | |/ _ \ / __| | | | '_ ` _ \ / _ \ '_ \| __| | |_| | | | | | \ \ / / |/ _ \ \ /\ / /
+    | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_  |  _| |_| | | |  \ V /| |  __/\ V  V /
+    |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|  \__,_|_|_|   \_/ |_|\___| \_/\_/
+
+    Mobile only: a pane for showing the full document
+    -->
+    <!-- ko if: $root.isMobile -->
+      <!-- Spinner -->
+      <div class="placeholder-container" data-bind="visible: $root.shouldDisplayViewerSpinner">
+        <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+      </div>
+      <div class="placeholder-container" data-bind="visible: $root.documentViewerError() != null">
+        <p class="error" data-bind="text: $root.documentViewerError"></p>
+      </div>
+
+      <!-- Full-view holder -->
+      <div class="iframe-container" data-bind="visible: $root.activeDocument()">
+        <iframe name="full-iframe" id="full-iframe" class="document-view">
+        </iframe>
+      </div>
+    <!-- /ko -->
+    <!-- END MOBILE DOCUMENT VIEW -->
+
+    <!--
+     ____                 _     _                 _        _
+    |  _ \ _ __ _____   _(_) __| | ___ _ __ ___  | |_ __ _| |__
+    | |_) | '__/ _ \ \ / / |/ _` |/ _ \ '__/ __| | __/ _` | '_ \
+    |  __/| | | (_) \ V /| | (_| |  __/ |  \__ \ | || (_| | |_) |
+    |_|   |_|  \___/ \_/ |_|\__,_|\___|_|  |___/  \__\__,_|_.__/
+
+    Desktop only: list current providers and connect new providers.
+    -->
+    <!-- ko if: $root.isDesktop -->
+      <div class="providers-view row" data-bind="visible: $root.activeTab() === $root.providerTab">
+        <div class="connected-providers provider-panel col-lg-6 col-md-7 col-sm-12">
+          <h2>Connected providers</h2>
+          <div class="provider-list">
+            <table class="provider-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Account</th>
+                  <th>Document count</th>
+                </tr>
+              </thead>
+              <tbody data-bind="foreach: $root.connectedProviders">
+                <tr>
+                  <td data-bind="text: name"></td>
+                  <td data-bind="text: accountName"></td>
+                  <td data-bind="text: totalCount"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="available-providers provider-panel col-lg-6 col-md-5 col-sm-12">
+          <h2>Available providers</h2>
+          <div class="row provider-list" data-bind="foreach: $root.availableProviders">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+              <a data-bind="click: connect">
+                <div class="provider">
+                  <h4>
+                    <span data-bind="text: name"></span>
+                    <span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>
+                    <span class="fa fa-star" data-bind="css: {passive: !featured}"></span>
+                  </h4>
+                  <p class="author">By <span class="developer" data-bind="text: developer"></span></p>
+                  <p class="description" data-bind="text: description"></p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- /ko -->
+    <!-- END PROVIDERS TAB -->
+
+  </div>
+
+  <!--
+   ____        _   _                    _              _ _
+  | __ )  ___ | |_| |_ ___  _ __ ___   | |_ ___   ___ | | |__   __ _ _ __
+  |  _ \ / _ \| __| __/ _ \| '_ ` _ \  | __/ _ \ / _ \| | '_ \ / _` | '__|
+  | |_) | (_) | |_| || (_) | | | | | | | || (_) | (_) | | |_) | (_| | |
+  |____/ \___/ \__|\__\___/|_| |_| |_|  \__\___/ \___/|_|_.__/ \__,_|_|
+
+  Including filters and actions (not shown on desktop).
+  -->
+  <!-- ko if: !isDesktop -->
+    <nav class="navbar navbar-default toolbar">
+
+      <!--
+       _____ _ _ _
+      |  ___(_) | |_ ___ _ __ ___
+      | |_  | | | __/ _ \ '__/ __|
+      |  _| | | | ||  __/ |  \__ \
+      |_|   |_|_|\__\___|_|  |___/
+
+      On desktop, this is replaced by `filtersColumn`.
+      TODO: merge the two?
+      -->
+      <div id="filter-tabs" data-bind="visible: shouldDisplayFilterToolbar()">
+        <ul class="nav nav-pills">
+
+          <!-- Providers filter -->
+          <li class="dropdown dropup drop-left">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <span data-bind="text: filteredProviders().length"></span>
+               Provider<span data-bind="visible: filteredProviders().length > 1">s</span>
+               <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu filter-menu" role="menu" >
+              <ul class="fa-ul" data-bind="foreach: connectedProviders">
+                <li class="filter-li">
+                  <a data-bind="click: function () {toggleActive($root)}">
+                    <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
+                    <span data-bind="text: extendedName()"></span><br />
+                    <span class="account-name" data-bind="text: accountName"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Types filter -->
+          <li class="dropdown dropup drop-right">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <span data-bind="text: filteredTypes().length"></span>
+               Type<span data-bind="visible: filteredTypes().length > 1">s</span>
+               <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu filter-menu" role="menu" >
+              <ul class="fa-ul" data-bind="foreach: types">
+                <li class="filter-li">
+                  <a data-bind="click: function () {toggleActive($root)}">
+                    <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
+                    <span data-bind="text: extendedName()"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+      <!-- END FILTERS -->
+
+      <!--
+       ____                                        _                _   _
+      |  _ \  ___   ___ _   _ _ __ ___   ___ _ __ | |_    __ _  ___| |_(_) ___  _ __  ___
+      | | | |/ _ \ / __| | | | '_ ` _ \ / _ \ '_ \| __|  / _` |/ __| __| |/ _ \| '_ \/ __|
+      | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_  | (_| | (__| |_| | (_) | | | \__ \
+      |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__|  \__,_|\___|\__|_|\___/|_| |_|___/
+      -->
+      <!-- ko if: isMobile -->
+        <ul class="nav nav-pills" data-bind="with: activeDocument">
+          <li class="pull-left">
+            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.show">
+            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.download">
+            <span class="star-btn fa fa-cloud-download" data-bind="click: download" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.reply">
+            <span class="star-btn fa fa-mail-reply" data-bind="click: reply" />
+          </li>
+        </ul>
+      <!-- /ko -->
+      <!-- END DOCUMENT ACTIONS -->
+    </nav>
+  <!-- /ko -->
+  <!-- END BOTTOM TOOLBAR -->
+</div>
+<!-- END MAIN VIEW -->
+
+<!--
+ ____       _        _ _         _
+|  _ \  ___| |_ __ _(_) | __   _(_) _____      __
+| | | |/ _ \ __/ _` | | | \ \ / / |/ _ \ \ /\ / /
+| |_| |  __/ || (_| | | |  \ V /| |  __/\ V  V /
+|____/ \___|\__\__,_|_|_|   \_/ |_|\___| \_/\_/
+
+Tablet only: a detailed view next to the document list,
+used to show the full document, its title and related actions.
+-->
+<!-- ko if: isTablet -->
+  <div id="subview">
+
+    <!-- DOCUMENT NAVBAR -->
+    <nav class="navbar navbar-default navbar-tab">
+      <!-- When no document is selected (zero state) -->
+      <div data-bind="visible: !activeDocument()">
+        <ul class="nav navbar-pills">
+          <li class="pull-right">
+            <span class="place-holder">Select a document</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- When a document is selected -->
+      <div data-bind="with: activeDocument">
+        <ul class="nav navbar-pills">
+          <li class="pull-right" data-bind="visible: actions.show">
+            <span class="star-btn fa fa-external-link" data-bind="click: openOriginal" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.download">
+            <span class="star-btn fa fa-cloud-download" data-bind="click: download" />
+          </li>
+          <li class="pull-right" data-bind="visible: actions.reply">
+            <span class="star-btn fa fa-mail-reply" data-bind="click: reply" />
+          </li>
+          <li class="pull-right">
+            <span class="star-btn fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
+          </li>
+          <li class="pull-left document-description">
+            <div class="icon" data-bind="css: type.name"></div>
+            <div class="separator-arrow"></div>
+            <div class="html-title" data-bind="html: title"></div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- END DOCUMENT NAVBAR -->
+
+    <!-- Spinner -->
+    <div class="placeholder-container">
+      <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+      <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
+      <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() && !activeTab().documentListError()">Documents for context '<!-- ko text: searchQuery --><!-- /ko -->'
+    </div>
+
+    <!-- Document full view container -->
+    <div class="iframe-container" data-bind="visible: activeDocument()">
+      <iframe name="full-iframe" id="full-iframe" class="document-view">
+      </iframe>
+    </div>
+  </div>
+<!-- /ko -->
+<!-- END DETAIL VIEW -->

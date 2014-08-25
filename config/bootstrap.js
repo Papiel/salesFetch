@@ -1,114 +1,69 @@
 'use strict';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var swig = require('swig');
-var lessMiddleware = require('less-middleware');
-var errorsStack = require('errorhandler');
+var restify = require('restify');
 var autoLoad = require('auto-load');
+var url = require('url');
+var AnyFetch = require('anyfetch');
 
 var config = require('./configuration.js');
+var logger = require('../app/middlewares/logger.js');
+var logError = require('./services.js').logError;
+var addRoutes = require(__dirname + '/../app/routes.js');
 
-var expressConfig = function(app) {
-
-  // Simplified logger for dev and production
-  if (config.env !== 'test') {
-    app.use(require('../app/middlewares/logger.js'));
-  }
-
-  // Other middlewares
-  app.use(bodyParser());
-  app.use(require('../app/middlewares/CORS.js'));
-
-  // Less middleware
-  var lessPath = config.root + '/assets/less';
-  var publicPath = config.root + '/public';
-  var bootstrapPath = config.root + '/public/lib/bootstrap/less';
-  app.use(lessMiddleware(lessPath, {
-    dest: publicPath,
-    force: !config.less.cache || false,
-    preprocess: {
-      path: function(pathname) {
-        return pathname.replace('/stylesheets', '');
-      }
-    },
-    parser: {
-      paths: [bootstrapPath],
-    }
-  }));
-
-  // Views engine
-  swig.setDefaults({
-    cache: config.swig.cache
-  });
-  app.engine('html', swig.renderFile);
-
-  // View directory
-  app.set('view engine', 'html');
-  app.set('views', config.root + '/app/views');
-
-  // Static files
-  app.use('/img', express.static(config.root + '/public/lib/bootstrap/img'));
-  app.use(express.static(config.root + '/public'));
-};
-
-var errorsHandlers = function(app) {
-  // This middleware is used to provide a next
-  app.use(function(err, req, res, next) {
-
-    if (config.env !== 'test') {
-      console.error(err.stack);
-    }
-
-    // Error page
-    var code = err.statusCode || err.status || err.code || 500;
-    // Use specific error page template (if available)
-    var page = config.errorsPath + '/error';
-    if (code in config.errorFiles) {
-      page = config.errorsPath + '/' + config.errorFiles[code];
-    }
-    return res.status(code).render(page, {
-      error: err.stack,
-      message: err.message,
-      url: req.originalUrl // Used in 404 error
-    });
-  });
-
-  // Default error: 404 (no other middleware responded)
-  app.use(function(req, res) {
-    return res.status(404).render('errors/404', {
-      url: req.originalUrl,
-      error: 'Not found'
-    });
-  });
-
-  if (config.env === 'development') {
-    app.use(errorsStack());
-  }
-};
-
-module.exports = function() {
+module.exports = function(server) {
   // Check if fetchApi token is set before continuing!
   if (config.env !== 'test' && !config.fetchApiCreds) {
     console.log('Please provide a FetchApi token before launching the server.');
     process.exit(1);
   }
 
-  // Require models
+  // Configure anyfetch.js access URLs
+  AnyFetch.setApiUrl(config.fetchApiUrl);
+  AnyFetch.setManagerUrl(config.managerUrl);
+
+  // Models
   autoLoad(__dirname + '/../app/models');
 
-  // Configure express
-  var app = express();
-  expressConfig(app);
+  // Simplified logger for dev and production
+  if (config.env !== 'test') {
+    server.use(logger);
+  }
 
-  // Require routes
-  require(__dirname + '/../app/routes.js')(app);
+  // Common middlewares
+  server.use(restify.queryParser());
+  server.use(restify.bodyParser());
+  server.use(require('../app/middlewares/cors.js'));
 
-  // Require errors
-  autoLoad(__dirname + '/../app/errors');
+  // Routes
+  addRoutes(server);
 
-  // Apply errors if routing fails or doesn't match
-  errorsHandlers(app);
+  // Prefer 404 over 405
+  server.on('MethodNotAllowed', function(req, res) {
+    var parsed = url.parse(req.url);
+    var path = parsed.pathname.replace(/%/g, '%%');
+    return res.send(new restify.NotFoundError('Not found: ' + path + ' does not exist'));
+  });
 
-  return app;
+  // Error handling
+  server.on('uncaughtException', function(req, res, route, err) {
+    logError(err, {
+      uncaughtRestifyException: true,
+      path: true,
+      headers: req.headers.join(', '),
+      statusCode: req.statusCode,
+      query: JSON.stringify(req.query),
+      body: JSON.stringify(req.body),
+      authorization: req.authorization,
+    });
+
+    // Generic error
+    if(!res._headerSent) {
+      res.send(new restify.InternalServerError(err, err.message || 'unexpected error'));
+      return true;
+    }
+
+    return false;
+  });
+
+  return server;
 };

@@ -50,3 +50,9 @@ You can use [MavensMate](http://mavensmate.com/) and the integration into the Su
 
 ### Directly on SalesForce
 Log onto http://salesforce.com, then hover over your name and select "Setup". On the left menu, the code will be on "App Setup"
+
+## Architecture
+
+The following (magnificent) diagram explains the architecture of the SalesFetch app. It was designed with performance and maintainability in mind.
+
+![SalesFetch app architecture](images/architecture.png)

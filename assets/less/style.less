@@ -1,0 +1,167 @@
+@import "mixins.less";
+
+/*
+ ____ _______   ___     _____ ____
+/ ___|_   _\ \ / / |   | ____/ ___|
+\___ \ | |  \ V /| |   |  _| \___ \
+ ___) || |   | | | |___| |___ ___) |
+|____/ |_|   |_| |_____|_____|____/
+*/
+
+
+//   ____
+//  / ___|___  _ __ ___  _ __ ___   ___  _ __
+// | |   / _ \| '_ ` _ \| '_ ` _ \ / _ \| '_ \
+// | |__| (_) | | | | | | | | | | | (_) | | | |
+//  \____\___/|_| |_| |_|_| |_| |_|\___/|_| |_|
+
+body {
+	font-family: @defaultFontFamily;
+	font-weight: @defaultFontWeight;
+	color: @defaultColor;
+
+	.toolbar { .Toolbar }
+
+	.document-list { .DocumentList;
+
+		.snippet-list {
+			.SnippetList;
+
+			.snippet { .Snippet }
+		}
+	}
+
+	.icon { .Icon }
+
+	.snippet-section { .SnippetSection }
+
+	.placeholder-container { .PlaceholderContainer }
+
+	.load-more { .LoadMore }
+
+	.provider { .Provider }
+
+	nav .star-btn { .StarBarButton }
+
+	.iframe-container { .DocumentContainer }
+}
+
+//  ____            _    _
+// |  _ \  ___  ___| | _| |_ ___  _ __
+// | | | |/ _ \/ __| |/ / __/ _ \| '_ \
+// | |_| |  __/\__ \   <| || (_) | |_) |
+// |____/ \___||___/_|\_\\__\___/| .__/
+//                               |_|
+
+html.desktop {
+
+	.navbar-tab { .DesktopNavbar }
+
+	#view-body { .DesktopBody }
+
+	.snippet-list { .DesktopSnippetList;
+		.snippet {
+			cursor: pointer;
+		}
+	}
+	.filter-column { .DestkopFilterColumn }
+	.providers-view { .ProvidersView }
+
+}
+
+//  _____     _     _      _
+// |_   _|_ _| |__ | | ___| |_
+//   | |/ _` | '_ \| |/ _ \ __|
+//   | | (_| | |_) | |  __/ |_
+//   |_|\__,_|_.__/|_|\___|\__|
+
+html.tablet {
+
+	#mainview { .TabletLeftPanel;
+
+		#view-body { .MainViewBody }
+
+		.snippet.active { .ActiveSnippet;
+			z-index: @tabletActiveSnippetZIndex;
+		}
+
+		.navbar-tab { .NavigationBar }
+
+		#filter-tabs { .FilterToolBar }
+
+	}
+
+	.iframe-container {
+		top: @navbarHeight;
+	}
+	.document-view { .DocumentView(tablet) }
+}
+
+html.tablet.landscape {
+
+	#toggle-panel-btn {
+		display: none;
+	}
+
+	#mainview {
+
+		#view-body {
+			box-shadow: @tabletSnippetListShadow;
+		}
+
+		.snippet-list {
+			border-right: @defaultBorder;
+
+			.snippet { .Snippet(tablet-landscape) }
+			.snippet.active { .ActiveSnippet;
+				z-index: @tabletActiveSnippetZIndex;
+			}
+		}
+
+		#filter-tabs {
+
+			li.open ul {
+				box-shadow: 0px 0px;
+				-webkit-box-shadow: 0px 0px;
+			}
+
+			li:last-child a.dropdown-toggle {
+				box-shadow: @tabletSnippetListShadow;
+			}
+		}
+	}
+
+	#subview { .TabletRightPanel(landscape);
+
+		.navbar-tab { .NavigationBar }
+
+	}
+}
+
+html.tablet.portrait {
+
+	#toggle-panel-btn { .TogglePanelButton }
+
+	#subview { .TabletRightPanel(portrait);
+
+		.navbar-tab { .NavigationBar }
+
+	}
+}
+
+//  __  __       _     _ _
+// |  \/  | ___ | |__ (_) | ___
+// | |\/| |/ _ \| '_ \| | |/ _ \
+// | |  | | (_) | |_) | | |  __/
+// |_|  |_|\___/|_.__/|_|_|\___|
+
+html.mobile {
+
+	#view-body { .MainViewBody }
+
+	.navbar-tab { .NavigationBar }
+
+	#filter-tabs { .FilterToolBar }
+
+	.document-view { .DocumentView(mobile) }
+}

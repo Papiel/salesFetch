@@ -1,0 +1,714 @@
+@import "variables.less";
+
+/*
+ __  __ _____  _____ _   _ ____
+|  \/  |_ _\ \/ /_ _| \ | / ___|
+| |\/| || | \  / | ||  \| \___ \
+| |  | || | /  \ | || |\  |___) |
+|_|  |_|___/_/\_\___|_| \_|____/
+
+*/
+
+
+//   ____
+//  / ___|___  _ __ ___  _ __ ___   ___  _ __
+// | |   / _ \| '_ ` _ \| '_ ` _ \ / _ \| '_ \
+// | |__| (_) | | | | | | | | | | | (_) | | | |
+//  \____\___/|_| |_| |_|_| |_| |_|\___/|_| |_|
+
+.hlt {
+	font-weight: @highLightFontWeight;
+}
+
+.StarButton {
+	color: @starButtonColor;
+	font-size: @starButtonFontSize;
+}
+
+.StarBarButton { .StarButton;
+	padding: @navbarVerticalPadding;
+	line-height: @navbarLineHeight;
+}
+
+.Icon {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+
+	&.email {
+		background-color: #CA1400;
+		background-image: url('/img/document_types-icons/email.png');
+	}
+
+	&.image {
+		background-color: #F7931D;
+		background-image: url('/img/document_types-icons/image.png');
+	}
+
+	&.contact {
+		background-color: #8829BF;
+		background-image: url('/img/document_types-icons/contact.png');
+	}
+
+	&.salesforce {
+		background-color: #CDEEFA;
+		background-image: url('/img/document_types-icons/salesforce.png');
+	}
+
+	&.document {
+		background-color: #0084EE;
+		background-image: url('/img/document_types-icons/document.png');
+	}
+
+	&.event {
+		background-color: #BE41A4;
+		background-image: url('/img/document_types-icons/event.png');
+	}
+}
+
+.PlaceholderContainer {
+	width: 100%;
+	height: 100%;
+
+	* {
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+	}
+
+	i {
+		height: @spinnerSize;
+		width: @spinnerSize;
+	}
+
+	.error {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
+	}
+
+	.default-message {
+		height: @spinnerErrorMessageHeight;
+		width: @spinnerErrorMessageWidth;
+		max-width: @spinnerErrorMessageMaxWidth;
+		text-align: center;
+	}
+}
+
+.LoadMore {
+	width: 100%;
+	height: @loadMoreHeight;
+	text-align: center;
+}
+
+.SnippetSection {
+
+	.section-header {
+
+		padding: @snippetSectionHeaderPadding;
+
+		fieldset {
+			border-top: @defaultBorder;
+			text-align: center;
+			margin: @snippetSectionFieldsetMargin;
+
+			legend {
+				width: auto;
+				border: 0px;
+				color: @snippetSectionHeaderColor;
+				padding: @snippetSectionHeaderPadding;
+				font-size: @snippetSectionHeaderFontSize;
+			}
+		}
+	}
+}
+
+.Snippet {
+	margin: @snippetMargin;
+	border: @snippetBorderColor @snippetBorderWidth solid;
+	height: @snippetHeight;
+	padding: @snippetPadding;
+	padding-left: @snippetPadding + @snippetIconDivWidth;
+	background-color: @snippetBackgroundColor;
+	position: relative; // needed for icon to stay in
+	overflow: hidden;
+
+	font-size: @snippetFontSize;
+
+	h4 {
+		margin: @snippetTitleMargin;
+		font-size: @snippetTitleFontSize;
+		color: @snippetTitleColor;
+		font-weight: @snippetTitleFontWeight;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow-x: hidden;
+		display: block;
+	}
+
+	img {
+		max-width: @snippetImageMaxWidth;
+		max-height: @snippetImageMaxHeight;
+		margin: @snippetImageMargin;
+	}
+
+	.content {
+		height: 100%;
+		overflow: hidden;
+		white-space: normal;
+		text-overflow: ellipsis;
+		margin-bottom: 0px;
+		margin-right: @snippetContentRightMargin + @starButtonFontSize;
+	}
+
+	.icon {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: @snippetIconDivWidth;
+		background: #ccc;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+
+		&.email {
+			background-color: #CA1400;
+			background-image: url('/img/document_types-icons/email.png');
+		}
+
+		&.image {
+			background-color: #F7931D;
+			background-image: url('/img/document_types-icons/image.png');
+		}
+
+		&.contact {
+			background-color: #8829BF;
+			background-image: url('/img/document_types-icons/contact.png');
+		}
+
+		&.salesforce {
+			background-color: #CDEEFA;
+			background-image: url('/img/document_types-icons/salesforce.png');
+		}
+
+		&.document {
+			background-color: #0084EE;
+			background-image: url('/img/document_types-icons/document.png');
+		}
+
+		&.event {
+			background-color: #BE41A4;
+			background-image: url('/img/document_types-icons/event.png');
+		}
+	}
+
+	article.two-columns {
+		max-height: 100%;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		word-wrap: break-word;
+		white-space: nowrap;
+
+		* {
+			display: inline;
+		}
+	}
+
+	.star-btn { .StarButton;
+		float: right;
+		margin-top: (@snippetHeight - 2*@snippetPadding - @starButtonFontSize)/2 ;
+	}
+}
+
+.Snippet(tablet-landscape) {
+	margin: @snippetMargin @snippetMarginRight @snippetMargin @snippetMargin;
+	box-shadow: @tabletSnippetListShadow;
+}
+
+.SnippetList {
+	padding: 5px 0px;
+}
+
+.DocumentList {
+}
+
+.Navbar(@z-index: @defaultNavbarZIndex) {
+	position: absolute;
+	z-index: @z-index;
+	border: 0px;
+	margin-bottom: 0px;
+	min-height: 0px;
+	border-radius: 0px;
+	background-color: @navbarBackgroundColor;
+
+	.no-frame {
+		background-color: transparent !important;
+		box-shadow: 0px 0px;
+		max-width: @navbarNoFrameMaxWidth;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	img {
+		max-height: @navbarImageMaxHeight;
+	}
+
+	li a {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+		border-radius: @navbarItemsBorderRadius;
+		color: @navbarItemColor;
+	}
+
+	li.active a {
+		background-color: @navbarItemActiveBackgroundColor;
+		color: @navbarBackgroundColor;
+		box-shadow: 0px 0px;
+	}
+
+	.tab-left {
+		float: left;
+		margin: @navbarTabLeftMargin;
+	}
+
+	.tab-right {
+		float: right;
+		margin: @navbarTabRightMargin;
+	}
+
+	.pull-left {
+		margin: @navbarPullLeftMargin;
+	}
+
+	.pull-right {
+		margin: @navbarPullRightMargin;
+	}
+
+	.back-button,
+	.document-title {
+		margin-right: 0px;
+		margin-left: 0px;
+	}
+}
+
+.NavigationBar { .Navbar;
+	right: 0;
+	left: 0;
+	top: 0;
+	box-shadow: @navbarInnerShadow;
+
+	li a {
+		padding: @navbarVerticalPadding @navbarHorizontalPadding;
+		font-size: @navbarItemFontSize;
+		box-shadow: @navbarInnerShadow;
+		background-color: @navbarItemBackgroundColor;
+	}
+}
+
+.Toolbar { .Navbar;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: @toolbarBackground;
+	border-top: @defaultBorder;
+}
+
+.FilterToolBar {
+	li.dropup { .FilterToolbarButton }
+
+	li.drop-left {
+		.filter-menu { .FilterDropdownMenuLeft }
+	}
+	li.drop-right {
+		.filter-menu { .FilterDropdownMenuRight }
+	}
+}
+
+.FilterToolbarButton {
+	width: 50%;
+	margin: 0px;
+	text-align: center;
+
+	&.open {
+		background-color: @anyFetchGray;
+	}
+
+	a:hover {
+		background-color: transparent;
+	}
+}
+
+.FilterCell {
+	margin: @filterCellMargin;
+
+	a {
+		padding: @filterCellPadding;
+		font-size: @filterCellFontSize;
+		text-decoration: none;
+
+		.passive {
+			color: gray;
+		}
+	}
+}
+
+.FilterDropdownMenu {
+	border-radius: 0px;
+	border: 0px;
+	border-top: @defaultBorder;
+	background-color: @toolbarBackground;
+
+	ul {
+		text-align: left;
+
+		li.filter-li { .FilterCell;
+
+			.account-name {
+				font-size: @filterAccountNameFontSize;
+				margin-left: @filterAccountNameMarginLeft;
+			}
+	 	}
+	}
+}
+
+.FilterDropdownMenuLeft { .FilterDropdownMenu;
+	left: 0px;
+	right: -100%;
+}
+
+.FilterDropdownMenuRight { .FilterDropdownMenu;
+	left: -100%;
+	right: 0px;
+}
+
+.MainViewBody {
+	position: absolute;
+	top: @navbarHeight;
+	left: 0px;
+	right: 0px;
+	bottom: @toolbarHeight;
+	overflow: auto;
+	background: @bodyBackground;
+}
+
+.TogglePanelButton {
+	position: absolute;
+	right: -@tabletTogglePanelButtonWidth;
+	width: @tabletTogglePanelButtonWidth;
+	top: 0;
+	height: @navbarHeight;
+	background-color: @navbarBackgroundColor;
+	box-shadow: @navbarInnerShadow;
+	color: @navbarItemColor;
+	font-size: @tabletTogglePanelButtonFontSize;
+	padding: @tabletTogglePanelButtonPadding;
+}
+
+.DocumentContainer {
+	position: absolute;
+	top: 0; bottom: 0;
+	left: 0; right: 0;
+}
+
+.DocumentView {
+	padding: @documentViewPadding;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	margin-bottom: @iframeMarginBottomFix;
+}
+
+.DocumentView(tablet) { .DocumentView;
+}
+
+.DocumentView(mobile) { .DocumentView;
+}
+
+//  ____            _    _
+// |  _ \  ___  ___| | _| |_ ___  _ __
+// | | | |/ _ \/ __| |/ / __/ _ \| '_ \
+// | |_| |  __/\__ \   <| || (_) | |_) |
+// |____/ \___||___/_|\_\\__\___/| .__/
+//                               |_|
+
+.DesktopNavbar { .Navbar;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: @desktopNavbarWidth;
+	overflow-y: auto;
+	padding-bottom: @navbarItemSpacing;
+	box-shadow: @desktopNavbarInnerShadow;
+
+	li a {
+		padding: @desktopNavbarItemPadding;
+		font-size: @desktopNavbarFontSize;
+		box-shadow: @desktopNavbarInnerShadow;
+		background-color: @navbarItemBackgroundColor;
+	}
+
+	.tab-left {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
+
+	.tab-right {
+		float: right;
+		margin: @navbarTabDesktopMargin;
+	}
+}
+
+.DesktopBody {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	left: @desktopNavbarWidth;
+	padding: @desktopBodyPadding;
+	background: @bodyBackground;
+}
+
+.DesktopSnippetList { .SnippetList;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: @filterColumnWidth;
+	overflow-y: auto;
+}
+
+.DesktopFilterMenu { .FilterCell;
+	list-style-type: none;
+	padding: @filterColumnListPadding;
+
+	li a {
+		cursor: pointer;
+		color: @filterColumnColor;
+
+		.passive {
+			color: @filterColumnPassiveColor;
+		}
+
+		div {
+			display: inline-block;
+		}
+
+		.account-name {
+			font-size: @filterAccountNameFontSize;
+			margin-left: @filterAccountNameMarginLeft;
+		}
+	}
+}
+
+.DestkopFilterColumn {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: @filterColumnWidth;
+	padding: @filterColumnPadding;
+
+	ul { .DesktopFilterMenu }
+}
+
+.Provider {
+	border: @defaultBorder;
+	border-radius: @providerBorderRadius;
+	margin: @providerMargin;
+	padding: @providerPadding;
+	cursor: pointer;
+	background-color: @providerBackgroundColor;
+
+	&:hover {
+		background-color: white;
+		box-shadow: @providerBoxShadow;
+	}
+
+	.author {
+		font-style: italic;
+		color: @providerLegendColor;
+
+		.developer {
+			font-style: normal;
+			color: @providerDeveloperNameColor;
+		}
+	}
+
+	.description {
+		font-size: @providerDescriptionFontSize;
+	}
+
+	.passive {
+		color: @providerPassiveColor;
+	}
+}
+
+.ProvidersView {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: @providerTabPadding;
+	overflow-y: scroll;
+
+	.provider-panel {
+		// height: 100%;
+
+		.provider-list {
+			margin: 0px;
+			overflow-y: auto;
+		}
+	}
+
+
+
+	.provider-table {
+		width: 100%;
+
+		th, td {
+			padding: @providerTableCellPadding;
+
+			.passive {
+				color: @providerPassiveColor;
+			}
+		}
+
+		td:last-child {
+			text-align: right;
+		}
+
+		tbody {
+			tr:nth-child(odd) {
+				background-color: @providerTableCellBackgroundColorOdd;
+			}
+
+			tr:nth-child(even) {
+				background-color: @providerTableCellBackgroundColorEven;
+			}
+
+			tr:hover {
+				background-color: @providerTableCellBackgroundColorHover !important;
+			}
+		}
+	}
+
+	a {
+		text-decoration: none;
+	}
+}
+
+//  _____     _     _      _
+// |_   _|_ _| |__ | | ___| |_
+//   | |/ _` | '_ \| |/ _ \ __|
+//   | | (_| | |_) | |  __/ |_
+//   |_|\__,_|_.__/|_|\___|\__|
+
+.TabletPanel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+
+.TabletLeftPanel { .TabletPanel;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: @tabletLeftPanelWidth;
+	z-index: @tabletMainViewZIndex;
+
+	-webkit-transition: left 0s ease-in-out;
+	transition: left 0s ease-in-out;
+
+	@media (orientation: portrait) {
+
+		left: -@tabletLeftPanelWidth;
+		-webkit-transition: left .5s ease-in-out;
+		transition: left .5s ease-in-out;
+		border-right: @defaultBorder;
+
+		&.active {
+			left: 0px;
+		}
+	}
+}
+
+.TabletRightPanel { .TabletPanel;
+	right: 0;
+	padding-top: @navbarHeight;
+
+	nav.navbar { .RightNavbar(@tabletSubViewNavbarZIndex) }
+}
+
+.TabletRightPanel(portrait) {
+	.TabletRightPanel;
+	left: 0px;
+}
+
+.TabletRightPanel(landscape) {
+	.TabletRightPanel;
+	left: @tabletLeftPanelWidth;
+}
+
+.RightNavbar(@z-index: @defaultNavbarZIndex) { .Navbar(@z-index);
+
+	@media (orientation: portrait) {
+		ul {
+			margin-left: @tabletTogglePanelButtonWidth;
+		}
+	}
+
+	.html-title,
+	.star-btn,
+	.place-holder {
+		padding: @navbarVerticalPadding;
+		line-height: @navbarLineHeight;
+		position: relative;
+		display: inline-block;
+		color: @navbarItemColor;
+	}
+
+	.document-description {
+		* {
+			display: inline-block;
+			float: left;
+			height: @documentDescriptionHeight;
+			margin-top: @documentDescriptionMarginTop;
+		}
+
+		.separator-arrow {
+			width: @documentDescriptionSeparatorWidth;
+			background-image: url(@documentDescriptionSeparatorImage);
+			background-size: 100%;
+		}
+
+		.icon {
+			width: @documentDescriptionIconWidth;
+			margin-left: @documentDescriptionIconMargin;
+			background-color: transparent;
+		}
+	}
+
+}
+
+.ActiveSnippet { .Snippet;
+	margin-right: @snippetMarginRight;
+	border-right: 0px;
+	padding-right: @snippetPadding + @snippetBorderWidth;
+	background-color: @snippetActiveBackgroundColor;
+	box-shadow: 0px 0px;
+}
+
+//  __  __       _     _ _
+// |  \/  | ___ | |__ (_) | ___
+// | |\/| |/ _ \| '_ \| | |/ _ \
+// | |  | | (_) | |_) | | |  __/
+// |_|  |_|\___/|_.__/|_|_|\___|
+

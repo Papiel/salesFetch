@@ -25,7 +25,11 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       // We use waterfall's err mechanism rather than calling `finalCb` directly
       // in order to avoid a memory leak
       if(pins.length === 0) {
-        return cb(noPinError, pins);
+        var empty = {
+          count: 0,
+          data: []
+        }
+        return cb(noPinError, empty);
       }
 
       // Fetch all snippets in one call

@@ -28,7 +28,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
         var empty = {
           count: 0,
           data: []
-        }
+        };
         return cb(noPinError, empty);
       }
 

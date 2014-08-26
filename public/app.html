@@ -395,9 +395,9 @@ used to show the full document, its title and related actions.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="actions">
-            <span class="fa fa-external-link" data-bind="click: openOriginal" />
-            <span class="fa fa-cloud-download" data-bind="click: download" />
-            <span class="fa fa-mail-reply" data-bind="click: reply" />
+            <span class="fa fa-external-link" data-bind="click: openOriginal, visible: actions.show" />
+            <span class="fa fa-cloud-download" data-bind="click: download, visible: actions.download" />
+            <span class="fa fa-mail-reply" data-bind="click: reply, visible: actions.reply" />
             <span class="fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
           </li>
           <li class="document-description">

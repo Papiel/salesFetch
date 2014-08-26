@@ -8,7 +8,6 @@ var documents = require('./documents.js');
 var fetch = require('./fetch.js');
 
 require('../helpers/string.js');
-var getErrorMessage = require('../helpers/errors.js').getErrorMessage;
 
 /**
  * @file Tabs

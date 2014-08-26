@@ -57,8 +57,9 @@ module.exports.goToDocument = function(doc) {
     target.head.appendChild(fontAwesomeLink);
 
     var writeFullView = function(docHtml) {
+      var html;
       if (client.isDesktop) {
-        var html = fontAwesomeLink + '<nav><ul>';
+        html = fontAwesomeLink + '<nav><ul>';
 
         if (doc.actions.show) {
           html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
@@ -72,7 +73,7 @@ module.exports.goToDocument = function(doc) {
 
         html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
       } else {
-        var html = '<div id="document-container">' + docHtml + '</div>';
+        html = '<div id="document-container">' + docHtml + '</div>';
       }
       $(target.body).html(html);
       target.head.appendChild(cssBlock);

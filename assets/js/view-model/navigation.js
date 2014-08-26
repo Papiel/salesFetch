@@ -31,7 +31,11 @@ module.exports.goToDocument = function(doc) {
 
     var cssBlock = document.createElement('style');
     cssBlock.type = 'text/css';
-    cssBlock.innerHTML = 'body { margin: 0px; } #document-container { font-size: 13px; font-family: \'Helvetica Neue\', \'Helvetica\', \'Arial\', \'sans-serif\';padding: 20px; background: white; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; } #document-container.desktop { margin-top: 50px; } nav { position: fixed; top: 0px; left: 0px; right: 0px; height: 50px; box-shadow: inset 0 -20px 30px -25px #000; background: #474747; } header { font-size: 16px; margin-bottom: 30px; color: #646464; } header h1 { font-size: 25px; color: #14A8E1; } header p { margin: 5px 0px; } header a { color: #14A8E1; text-decoration: none; } #spinner {width: 44px; height: 44px; position: absolute; margin: auto; top: 0; bottom: 0; right: 0; left: 0;} .hlt { background-color: rgba(255,242,138,.6); }';
+    cssBlock.innerHTML = 'body { margin: 0px; } #document-container { font-size: 13px; font-family: \'Helvetica Neue\', \'Helvetica\', \'Arial\', \'sans-serif\';padding: 20px; background: white; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; } #document-container.desktop { margin-top: 50px; } nav { position: fixed; top: 0px; left: 0px; right: 0px; height: 60px; box-shadow: inset 0 -20px 30px -25px #000; background: #474747; } nav ul { list-style-type: none; } nav a { color: white; font-size: 20px; padding: 5px; text-decoration: none; } header { font-size: 16px; margin-bottom: 30px; color: #646464; } header h1 { font-size: 25px; color: #14A8E1; } header p { margin: 5px 0px; } header a { color: #14A8E1; text-decoration: none; } #spinner {width: 44px; height: 44px; position: absolute; margin: auto; top: 0; bottom: 0; right: 0; left: 0;} .hlt { background-color: rgba(255,242,138,.6); }';
+    var fontAwesomeLink = document.createElement('link');
+    fontAwesomeLink.rel = 'stylesheet';
+    fontAwesomeLink.type = 'text/css';
+    fontAwesomeLink.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css';
     var target;
     if(!client.isDesktop) {
       // TODO: check for browser compatibility
@@ -45,20 +49,32 @@ module.exports.goToDocument = function(doc) {
       target = w.document;
 
       // TODO: do not include FontAwesome just for this
-      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">';
       var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';
 
-      $(target.body).html(fontAwesomeLink + spinnerHTML);
+      $(target.body).html(spinnerHTML);
     }
+    target.head.appendChild(fontAwesomeLink);
+    target.head.appendChild(cssBlock);
 
-    var writeFullView = function(html) {
+    var writeFullView = function(docHtml) {
       if (client.isDesktop) {
-        html = '<nav></nav><div id="document-container" class="desktop">' + html + '</div>';
+        var html = fontAwesomeLink + '<nav><ul>';
+
+        if (doc.actions.show) {
+          html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
+        }
+        if (doc.actions.download) {
+          html += '<li><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
+        }
+        if (doc.actions.reply) {
+          html += '<li><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
+        }
+
+        html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
       } else {
-        html = '<div id="document-container">' + html + '</div>';
+        var html = '<div id="document-container">' + docHtml + '</div>';
       }
-        $(target.body).html(html);
-        target.head.appendChild(cssBlock);
+      $(target.body).html(html);
     };
 
     // Load document full document content (AJAX) if needed

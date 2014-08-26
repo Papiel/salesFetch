@@ -53,6 +53,7 @@ module.exports.goToDocument = function(doc) {
 
       $(target.body).html(spinnerHTML);
     }
+    target.head.appendChild(cssBlock);
     target.head.appendChild(fontAwesomeLink);
 
     var writeFullView = function(docHtml) {

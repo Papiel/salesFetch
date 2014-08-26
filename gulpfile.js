@@ -12,19 +12,20 @@ var paths = {
   js: {
     all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'assets/js/**', 'test/**/*.js'],
     client: ['assets/js/**'],
-    publicEntryPoint: 'assets/js/main.js'
+    entryPoints: ['assets/js/main.js']
   },
   less: {
     watch: 'assets/less/**/*.less',
-    source: 'assets/less/style.less',
+    entryPoints: ['assets/less/style.less', 'assets/less/full-view.less'],
   },
   target: 'public/dist/',
   ignores: ['/lib/**', 'public/**']
 };
 
 // LESS compiling
+// TODO: compile fontawesome to use a few glyphs only?
 gulp.task('less', function() {
-  var p = gulp.src(paths.less.source)
+  var p = gulp.src(paths.less.entryPoints)
     .pipe(less());
 
   if(isProduction) {
@@ -35,12 +36,13 @@ gulp.task('less', function() {
 });
 
 // JS compiling
-gulp.task('browserify', function() {
-  var p = gulp.src(paths.js.publicEntryPoint)
+gulp.task('browserify', ['less'], function() {
+  var p = gulp.src(paths.js.entryPoints)
     .pipe(browserify({
       debug: !isProduction,
       // No need for `__dirname`, `process`, etc in client JS
-      insertGlobals: false
+      insertGlobals: false,
+      transform: ['brfs']
     }));
 
   if(isProduction) {
@@ -55,7 +57,6 @@ if(!isProduction) {
   var nodemon = require('gulp-nodemon');
   var jshint = require('gulp-jshint');
 
-
   var nodemonOptions = {
     script: 'bin/server',
     ext: 'js',
@@ -65,9 +66,6 @@ if(!isProduction) {
     },
     ignore: paths.ignores
   };
-
-  // TODO: compile fontawesome to use a few glyphs only?
-  // TODO: compile all lib JS & CSS to a single HTML base skeleton file using an HTML template, then uglify the HTML
 
   // JS linting
   gulp.task('lint', function() {

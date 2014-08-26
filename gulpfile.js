@@ -23,6 +23,7 @@ var paths = {
 };
 
 // LESS compiling
+// TODO: compile fontawesome to use a few glyphs only?
 gulp.task('less', function() {
   var p = gulp.src(paths.less.entryPoints)
     .pipe(less());
@@ -35,7 +36,7 @@ gulp.task('less', function() {
 });
 
 // JS compiling
-gulp.task('browserify', function() {
+gulp.task('browserify', ['less'], function() {
   var p = gulp.src(paths.js.entryPoints)
     .pipe(browserify({
       debug: !isProduction,
@@ -56,7 +57,6 @@ if(!isProduction) {
   var nodemon = require('gulp-nodemon');
   var jshint = require('gulp-jshint');
 
-
   var nodemonOptions = {
     script: 'bin/server',
     ext: 'js',
@@ -66,9 +66,6 @@ if(!isProduction) {
     },
     ignore: paths.ignores
   };
-
-  // TODO: compile fontawesome to use a few glyphs only?
-  // TODO: compile all lib JS & CSS to a single HTML base skeleton file using an HTML template, then uglify the HTML
 
   // JS linting
   gulp.task('lint', function() {

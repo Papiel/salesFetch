@@ -40,7 +40,8 @@ gulp.task('browserify', function() {
     .pipe(browserify({
       debug: !isProduction,
       // No need for `__dirname`, `process`, etc in client JS
-      insertGlobals: false
+      insertGlobals: false,
+      transform: ['brfs']
     }));
 
   if(isProduction) {

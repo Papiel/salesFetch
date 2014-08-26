@@ -54,7 +54,6 @@ module.exports.goToDocument = function(doc) {
       $(target.body).html(spinnerHTML);
     }
     target.head.appendChild(fontAwesomeLink);
-    target.head.appendChild(cssBlock);
 
     var writeFullView = function(docHtml) {
       if (client.isDesktop) {
@@ -75,6 +74,7 @@ module.exports.goToDocument = function(doc) {
         var html = '<div id="document-container">' + docHtml + '</div>';
       }
       $(target.body).html(html);
+      target.head.appendChild(cssBlock);
     };
 
     // Load document full document content (AJAX) if needed

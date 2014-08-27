@@ -31,7 +31,7 @@ var getOverridedTemplates = function() {
 
   var templateDirectory = __dirname + '/../templates';
   fs.readdirSync(templateDirectory).forEach(function(file) {
-    if (file.indexOf('.json') !== -1) {
+    if(file.indexOf('.json') !== -1) {
       var templatePath = templateDirectory + '/' + file;
       var template = require(templatePath);
 

@@ -49,6 +49,8 @@ module.exports.goToDocument = function(doc) {
       var w = window.open(null, '_blank');
       target = w.document;
 
+      // Use the snippet without html tags for the new tab title
+      target.title = $(doc.snippet).text();
       var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';
 
       $(target.body).html(spinnerHTML);

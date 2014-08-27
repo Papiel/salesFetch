@@ -55,14 +55,14 @@ nav {
 
 header,
 section:first-child {
-  font-size: 16px;
+  font-size: @desktopFullViewHeaderFontsize;
   margin-bottom: 20px;
   padding-bottom: 20px;
   color: @defaultColor;
   border-bottom: 1px solid @defaultColor;
 
   h1 {
-    font-size: 25px;
+    font-size: @desktopFullViewHeaderTitleFontsize;
     color: @anyFetchBlue;
   }
 
@@ -77,13 +77,13 @@ section:first-child {
 
   small {
     display: block;
-    font-size: 14px;
+    font-size: @desktopFullViewHeaderFontsizeSmall;
   }
 }
 
 #spinner {
-  width: 44px;
-  height: 44px;
+  width: @desktopFullViewSpinnerSize;
+  height: @desktopFullViewSpinnerSize;
   position: absolute;
   margin: auto;
   top: 0;
@@ -93,5 +93,5 @@ section:first-child {
 }
 
 .hlt {
-  background-color: rgba(255,242,138,.6);
+  background-color: @defaultHighlightColor;
 }

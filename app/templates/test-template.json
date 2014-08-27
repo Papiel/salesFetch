@@ -1,0 +1,7 @@
+{
+  "id": "testDocumentTypeId",
+  "name": "test-template",
+  "templates": {
+    "test": "The overrided template has been used."
+  }
+}

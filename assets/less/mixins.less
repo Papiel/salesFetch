@@ -139,7 +139,7 @@
 
 	font-size: @snippetFontSize;
 
-	h4 {
+	h1, h2, h3, h4 {
 		margin: @snippetTitleMargin;
 		font-size: @snippetTitleFontSize;
 		color: @snippetTitleColor;
@@ -207,7 +207,7 @@
 		}
 	}
 
-	article.two-columns {
+	.two-columns {
 		max-height: 100%;
 		overflow-x: hidden;
 		text-overflow: ellipsis;
@@ -217,6 +217,13 @@
 		* {
 			display: inline;
 		}
+	}
+
+	blockquote {
+		padding: @snippetBlockquotePadding;
+		font-size: @defaultFontSize;
+		margin: 0px;
+		border: 0;
 	}
 
 	.star-btn { .StarButton;

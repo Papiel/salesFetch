@@ -7,12 +7,12 @@ var templates = require('../../app/helpers/templates.js');
 describe('<Helper functions>', function() {
 
   describe('Templating', function() {
-    var documentType = '5252ce4ce4cfcd16f55cfa3c';
+    var documentType = 'testDocumentTypeId';
     var doc = {
       id: "5320a773bc2e51d7135f0c8f",
       document_type: {
         id: documentType,
-        name: "document",
+        name: "testDocumentType",
         templates: {
           snippet: "This is the default 'snippet' template",
           full: "This is the default 'full' template",
@@ -26,9 +26,9 @@ describe('<Helper functions>', function() {
     };
 
     it('should use overrided template if available', function() {
-      var rendered = templates.render(doc, 'title', documentType);
+      var rendered = templates.render(doc, 'test', documentType);
       should(rendered).be.ok;
-      rendered.should.match(/my dummy document/i);
+      rendered.should.match(/the overrided template has been used/i);
     });
 
     it('should fallback to provided template', function() {

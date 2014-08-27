@@ -1,9 +1,0 @@
-{
-  "id": "5252ce4ce4cfcd16f55cfa40",
-  "name": "event",
-  "templates": {
-    "snippet": "<article>\n\t<h4>{{{name}}}</h4>\n\t<span>{{#formatDate}}{{startDate}}{{/formatDate}}&mdash;{{#formatDate}}{{endDate}}{{/formatDate}}</span>\n</article>\n",
-    "full": "<article>\n\t<section>\n\t\t<h1>{{name}}</h1>\n\t\t<span>{{#formatDate}}{{startDate}}{{/formatDate}}&mdash;{{#formatDate}}{{endDate}}{{/formatDate}}</span>\n\t</section>\n\n\t{{ #attendee.length }}\n\t\t<h2>Attendees:</h2>\n\t\t{{ #attendee }}\n\t\t<li>{{.}}</li>\n\t\t{{ /attendee }}\t\n\t{{ /attendee.length }}\n\n\t<p>{{description}}</p>\n</article>\n",
-    "title": "{{ name }}"
-  }
-}

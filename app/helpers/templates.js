@@ -61,10 +61,24 @@ module.exports.render = function render(doc, name, documentType) {
 
   var overrided = getOverridedTemplates();
   var template;
+  // Use the overrided template if any
   if(overrided[documentTypeId]) {
     template = overrided[documentTypeId].templates[name];
-  } else if(doc.document_type && doc.document_type.templates) {
+  }
+  // Otherwise, use the template provided by the API
+  else if(doc.document_type && doc.document_type.templates) {
     template = doc.document_type.templates[name];
+  }
+  // In last resort, use the default generic template
+  if(!template) {
+    var err = new Error('No template `' + name + '` is available for document type ' + documentTypeId);
+
+    logError(err, {
+      statusCode: 200,
+      doc: doc,
+      templateName: name
+    });
+    template = overrided.default.templates[name] || overrided.default.templates.default;
   }
 
   // Add formatting functions

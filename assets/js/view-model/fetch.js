@@ -89,7 +89,7 @@ module.exports.fetchFullDocument = function(document, cb) {
 
   client.shouldDisplayViewerSpinner(true);
 
-  call('/app' + document.url, {}, function success(data) {
+  call('/app/documents/' + document.id, {}, function success(data) {
       client.shouldDisplayViewerSpinner(false);
       document.title(data.rendered.title);
       document.full(data.rendered.full);

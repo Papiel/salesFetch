@@ -53,8 +53,7 @@ nav {
   }
 }
 
-header,
-section:first-child {
+header {
   font-size: @desktopFullViewHeaderFontsize;
   margin-bottom: 20px;
   padding-bottom: 20px;
@@ -78,6 +77,16 @@ section:first-child {
   small {
     display: block;
     font-size: @desktopFullViewHeaderFontsizeSmall;
+  }
+
+  &.two-columns {
+    min-height: 100px;
+
+    aside,
+    section {
+      float: left;
+      margin: 10px;
+    }
   }
 }
 

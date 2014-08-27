@@ -34,6 +34,7 @@ nav {
   height: @navbarHeight;
   box-shadow: @navbarInnerShadow;
   background: @navbarBackgroundColor;
+  z-index: 1000;
 
   ul {
     list-style-type: none;
@@ -52,21 +53,31 @@ nav {
   }
 }
 
-header {
+header,
+section:first-child {
   font-size: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
   color: @defaultColor;
+  border-bottom: 1px solid @defaultColor;
 
   h1 {
     font-size: 25px;
     color: @anyFetchBlue;
   }
+
   p {
     margin: 5px 0px;
   }
+
   a {
     color: @anyFetchBlue;
     text-decoration: none;
+  }
+
+  small {
+    display: block;
+    font-size: 14px;
   }
 }
 

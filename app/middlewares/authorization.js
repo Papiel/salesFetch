@@ -23,7 +23,7 @@ var authenticateUser = function(context, org, done) {
       // Find an existing user
       User.findOne({SFDCId: userContext.id}, cb);
     }, function(user, cb) {
-      if (user) {
+      if(user) {
         return done(null, user);
       }
 
@@ -59,7 +59,7 @@ module.exports.requiresLogin = function(req, res, next) {
 
   async.waterfall([
     function retrieveCompany(cb) {
-      if (!data.organization || !data.organization.id) {
+      if(!data.organization || !data.organization.id) {
         return next(new restify.InvalidCredentialsError('Bad Request: missing organization id'));
       }
 
@@ -67,12 +67,12 @@ module.exports.requiresLogin = function(req, res, next) {
     },
     function checkRequestValidity(org, cb) {
       organization = org;
-      if (!org) {
+      if(!org) {
         return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
       var check = getSecureHash(data, org.masterKey);
-      if (check !== data.hash) {
+      if(check !== data.hash) {
         return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
       cb(null, data);

@@ -25,7 +25,11 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       // We use waterfall's err mechanism rather than calling `finalCb` directly
       // in order to avoid a memory leak
       if(pins.length === 0) {
-        return cb(noPinError, pins);
+        var empty = {
+          count: 0,
+          data: []
+        };
+        return cb(noPinError, empty);
       }
 
       // Fetch all snippets in one call
@@ -54,7 +58,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
     }
   ], function(err, docs) {
     // See in `fetchDocumentsAndDocumentTypes` above
-    if (err === noPinError) {
+    if(err === noPinError) {
       err = null;
     }
     if(docs.status && docs.status !== 200){

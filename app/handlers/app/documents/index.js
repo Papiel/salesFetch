@@ -21,7 +21,7 @@ module.exports.get = function(req, res, next) {
   };
 
   var filters = {};
-  if (req.query.filters) {
+  if(req.query.filters) {
     filters = req.query.filters;
     params = _.merge(params, filters);
   }

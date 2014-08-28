@@ -681,29 +681,48 @@
 	.place-holder {
 		padding: @navbarVerticalPadding;
 		line-height: @navbarLineHeight;
-		position: relative;
-		display: inline-block;
 		color: @navbarItemColor;
 	}
 
-	.document-description {
+	.place-holder {
+		display: block;
+	}
+
+	.actions {
+		float: right;
+
 		* {
-			display: inline-block;
-			float: left;
-			height: @documentDescriptionHeight;
-			margin-top: @documentDescriptionMarginTop;
+			color: white;
+			font-size: @documentDescriptionIconSize;
+			padding: @documentDescriptionIconPadding;
+		}
+	}
+
+	.document-description {
+		overflow: hidden;
+
+		.html-title {
+			text-overflow: ellipsis;
+			word-wrap: break-word;
+			white-space: nowrap;
+			overflow: hidden;
+			margin: @navbarPullLeftMargin;
 		}
 
 		.separator-arrow {
 			width: @documentDescriptionSeparatorWidth;
 			background-image: url(@documentDescriptionSeparatorImage);
 			background-size: 100%;
+			height: @documentDescriptionImagesHeight;
+			display: inline-block;
 		}
 
 		.icon {
 			width: @documentDescriptionIconWidth;
 			margin-left: @documentDescriptionIconMargin;
 			background-color: transparent;
+			height: @documentDescriptionImagesHeight;
+			display: inline-block;
 		}
 	}
 

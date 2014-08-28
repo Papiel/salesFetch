@@ -23,7 +23,7 @@ module.exports.post = function(req, res, next) {
     }
   ], function handleMongoError(err) {
     // Error post processing
-    if (err && err.name === 'MongoError' && err.code === 11000) {
+    if(err && err.name === 'MongoError' && err.code === 11000) {
       err = new restify.InvalidArgumentError('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
     }
 

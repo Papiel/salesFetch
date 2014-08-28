@@ -12,7 +12,7 @@ var addRoutes = require(__dirname + '/../app/routes.js');
 
 module.exports = function(server) {
   // Check if fetchApi token is set before continuing!
-  if (config.env !== 'test' && !config.fetchApiCreds) {
+  if(config.env !== 'test' && !config.fetchApiCreds) {
     console.log('Please provide a FetchApi token before launching the server.');
     process.exit(1);
   }
@@ -25,7 +25,7 @@ module.exports = function(server) {
   autoLoad(__dirname + '/../app/models');
 
   // Simplified logger for dev and production
-  if (config.env !== 'test') {
+  if(config.env !== 'test') {
     server.use(logger);
   }
 

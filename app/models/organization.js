@@ -33,7 +33,7 @@ var OrgModel = new Schema ({
  * Pre-save hook
  */
 OrgModel.pre('save', function(next) {
-  if (!this.isNew) {
+  if(!this.isNew) {
     return next();
   }
 

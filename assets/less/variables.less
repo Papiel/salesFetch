@@ -7,138 +7,145 @@
 
 */
 // ------ Common
-@defaultFontFamily:             'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
-@defaultFontWeight:              300;
-@defaultFontSize:				 13px;
-@defaultColor:                   #646464;
-@bodyBackground:                 #F0F0F0;
+@defaultFontFamily:                     'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+@defaultFontSize:                       13px;
+@defaultFontWeight:                     300;
+@defaultColor:                          #646464;
+@bodyBackground:                        #F0F0F0;
+@defaultHighlightColor:                 rgba(255,242,138,.6);
 
-@anyFetchBlue:                   #14A8E1;
-@anyFetchLightColor:             #fff;
-@anyFetchDarkColor:              #ddd;
-@anyFetchOrange:                 #F98D33;
-@anyFetchBlack:                  #777;
-@anyfetchSoftOrange:             @anyFetchOrange + #111;
-@anyFetchLightGray:              #F8F8F8;
-@anyFetchGray:                   #D6D6D6;
+@anyFetchBlue:                          #14A8E1;
+@anyFetchLightColor:                    #fff;
+@anyFetchDarkColor:                     #ddd;
+@anyFetchOrange:                        #F98D33;
+@anyFetchBlack:                         #777;
+@anyfetchSoftOrange:                    @anyFetchOrange + #111;
+@anyFetchLightGray:                     #F8F8F8;
+@anyFetchGray:                          #D6D6D6;
 
-@bootstrapGray:                  #ADADAD;
-@bootstrapLightGray:             #EBEBEB;
+@bootstrapGray:                         #ADADAD;
+@bootstrapLightGray:                    #EBEBEB;
 
-@highLightFontWeight:            900;
+@highLightFontWeight:                   900;
 
-@navbarVerticalPadding:          15px;
-@navbarHorizontalPadding:        20px;
-@navbarLineHeight:               20px;
-@navbarBackgroundColor:          #474747;
-@navbarItemBackgroundColor:      #656565;
-@navbarItemColor:                #fff;
-@navbarItemActiveBackgroundColor:@bodyBackground;
-@navbarItemsBorderRadius:        0px;
-@navbarItemSpacing:              10px;
-@navbarItemFontSize:             14px;
-@navbarNoFrameMaxWidth:          265px;
-@navbarInnerShadow: inset 0 -20px 30px -25px #000;
-@navbarImageMaxHeight:           48px;
+@navbarVerticalPadding:                 15px;
+@navbarHorizontalPadding:               20px;
+@navbarLineHeight:                      20px;
+@navbarBackgroundColor:                 #474747;
+@navbarItemBackgroundColor:             #656565;
+@navbarItemColor:                       #fff;
+@navbarItemActiveBackgroundColor:       @bodyBackground;
+@navbarItemsBorderRadius:               0px;
+@navbarItemSpacing:                     10px;
+@navbarItemFontSize:                    14px;
+@navbarNoFrameMaxWidth:                 265px;
+@navbarInnerShadow:                     inset 0 -20px 30px -25px #000;
+@navbarImageMaxHeight:                  48px;
 
-@toolbarLineHeight:              20px;
-@toolbarVerticalPadding:         15px;
-@toolbarHorizontalPadding:       20px;
-@toolbarBackground:              @navbarBackgroundColor;
+@toolbarLineHeight:                     20px;
+@toolbarVerticalPadding:                15px;
+@toolbarHorizontalPadding:              20px;
+@toolbarBackground:                     @navbarBackgroundColor;
 
-@snippetBackgroundColor:         #FAFAFA;
-@snippetActiveBackgroundColor:   #fff;
-@snippetIconDivWidth:            20px;
-@snippetPadding:                 5px;
-@snippetMargin:                  5px;
-@snippetMarginRight:             -1px;
-@snippetBorderWidth:             1px;
-@snippetBorderColor:             #ddd;
-@snippetHeight:                  80px;
-@snippetFontSize:                12px;
-@snippetTitleMargin:             5px 0px;
-@snippetTitleFontSize:           15px;
-@snippetTitleColor:              #333333;
-@snippetTitleFontWeight:         400;
-@snippetImageMaxHeight:          100%;
-@snippetImageMaxWidth:           30%;
-@snippetImageMargin:             0px 10px;
-@snippetContentRightMargin:      10px;
-@snippetBlockquotePadding:		 5px 0px;
+@snippetBackgroundColor:                #FAFAFA;
+@snippetActiveBackgroundColor:          #fff;
+@snippetIconDivWidth:                   20px;
+@snippetPadding:                        5px;
+@snippetMargin:                         5px;
+@snippetMarginRight:                    -1px;
+@snippetBorderWidth:                    1px;
+@snippetBorderColor:                    #ddd;
+@snippetHeight:                         80px;
+@snippetFontSize:                       12px;
+@snippetTitleMargin:                    5px 0px;
+@snippetTitleFontSize:                  15px;
+@snippetTitleColor:                     #333333;
+@snippetTitleFontWeight:                400;
+@snippetImageMaxHeight:                 100%;
+@snippetImageMaxWidth:                  30%;
+@snippetImageMargin:                    0px 10px;
+@snippetContentRightMargin:             10px;
+@snippetBlockquotePadding:              5px 0px;
 
-@snippetSectionHeaderPadding:    0px 10px;
-@snippetSectionFieldsetMargin:   20px 0px -20px 0px;
-@snippetSectionHeaderColor:      #6D6D6D;
-@snippetSectionHeaderFontSize:   14px;
+@snippetSectionHeaderPadding:           0px 10px;
+@snippetSectionFieldsetMargin:          20px 0px -20px 0px;
+@snippetSectionHeaderColor:             #6D6D6D;
+@snippetSectionHeaderFontSize:          14px;
 
-@documentViewPadding:            0px 0px;
+@documentViewPadding:                   0px 0px;
 
-@starButtonFontSize:             20px;
-@starButtonColor:                #C4C4C4;
+@starButtonFontSize:                    20px;
+@starButtonColor:                       #C4C4C4;
 
-@filterCellFontSize:             14px;
-@filterCellPadding:              0px 5px;
-@filterCellMargin:               10px;
-@filterColumnWidth:              300px;
-@filterColumnPadding:            20px;
-@filterColumnColor:              #3E8ACC;
-@filterColumnPassiveColor:       @anyFetchGray;
-@filterColumnListPadding:        0px 0px 0px 10px;
-@filterAccountNameFontSize:      12px;
-@filterAccountNameMarginLeft:    7px;
+@filterCellFontSize:                    14px;
+@filterCellPadding:                     0px 5px;
+@filterCellMargin:                      10px;
+@filterColumnWidth:                     300px;
+@filterColumnPadding:                   20px;
+@filterColumnColor:                     #3E8ACC;
+@filterColumnPassiveColor:              @anyFetchGray;
+@filterColumnListPadding:               0px 0px 0px 10px;
+@filterAccountNameFontSize:             12px;
+@filterAccountNameMarginLeft:           7px;
 
-@providerBorderRadius:           3px;
-@providerMargin:                 10px 0px;
-@providerPadding:                15px 10px;
-@providerPassiveColor:           @anyFetchGray;
-@providerDeveloperNameColor:     #000;
-@providerLegendColor:            #555;
-@providerBoxShadow:              0px 0px 20px -10px;
-@providerMinHeight:              170px;
-@providerDescriptionFontSize:    13px;
-@providerTabPadding:              10px 20px;
-@providerTableCellPadding:       5px 10px;
+@providerBorderRadius:                  3px;
+@providerMargin:                        10px 0px;
+@providerPadding:                       15px 10px;
+@providerPassiveColor:                  @anyFetchGray;
+@providerDeveloperNameColor:            #000;
+@providerLegendColor:                   #555;
+@providerBoxShadow:                     0px 0px 20px -10px;
+@providerMinHeight:                     170px;
+@providerDescriptionFontSize:           13px;
+@providerTabPadding:                    10px 20px;
+@providerTableCellPadding:              5px 10px;
 @providerTableCellBackgroundColorEven:  @bodyBackground;
 @providerTableCellBackgroundColorOdd:   @snippetBackgroundColor;
 @providerTableCellBackgroundColorHover: #fff;
-@providerBackgroundColor:       @snippetBackgroundColor;
+@providerBackgroundColor:               @snippetBackgroundColor;
 
-@defaultBorder:                  1px solid #ddd;
+@defaultBorder:                         1px solid #ddd;
 
-@defaultNavbarZIndex:            1030;
+@defaultNavbarZIndex:                   1030;
 
-@loadMoreHeight:                 40px;
+@loadMoreHeight:                        40px;
 
-@spinnerSize:                    39px;
-@spinnerErrorMessageWidth:       500px;
-@spinnerErrorMessageMaxWidth:    80%;
-@spinnerErrorMessageHeight:      50px;
+@spinnerSize:                           39px;
+@spinnerErrorMessageWidth:              500px;
+@spinnerErrorMessageMaxWidth:           80%;
+@spinnerErrorMessageHeight:             50px;
 
 // ----- Desktop
-@desktopNavbarWidth:             100px;
-@desktopNavbarItemPadding:       25px 20px;
-@desktopNavbarFontSize:          20px;
-@desktopNavbarInnerShadow:       inset -20px 0px 30px -25px #000;
+@desktopNavbarWidth:                    100px;
+@desktopNavbarItemPadding:              25px 20px;
+@desktopNavbarFontSize:                 20px;
+@desktopNavbarInnerShadow:              inset -20px 0px 30px -25px #000;
 
-@desktopBodyPadding:             20px;
+@desktopBodyPadding:                    20px;
+
+@desktopFullViewSpinnerSize:            44px;
+@desktopFullViewHeaderFontsize:         16px;
+@desktopFullViewHeaderFontsizeSmall:    @desktopFullViewHeaderFontsize - 2px;
+@desktopFullViewHeaderTitleFontsize:    25px;
 
 // ----- Tablet
-@tabletLeftPanelWidth:           320px;
-@tabletTogglePanelButtonWidth:   50px;
-@tabletTogglePanelButtonFontSize:30px;
-@tabletTogglePanelButtonPadding: 10px;
+@tabletLeftPanelWidth:                  320px;
+@tabletTogglePanelButtonWidth:          50px;
+@tabletTogglePanelButtonFontSize:       30px;
+@tabletTogglePanelButtonPadding:        10px;
 
-@tabletMainViewZIndex:           1020;
-@tabletSubViewNavbarZIndex:      1010;
+@tabletMainViewZIndex:                  1020;
+@tabletSubViewNavbarZIndex:             1010;
 
-@tabletSnippetListShadow:        inset -10px 0px 25px -20px;
+@tabletSnippetListShadow:               inset -10px 0px 25px -20px;
 
-@documentDescriptionHeight: 48px;
-@documentDescriptionMarginTop: 2px;
-@documentDescriptionSeparatorWidth: 28px;
-@documentDescriptionSeparatorImage: '/img/arrow.png';
-@documentDescriptionIconWidth: 35px;
-@documentDescriptionIconMargin: 10px;
+@documentDescriptionImagesHeight:       45px;
+@documentDescriptionSeparatorWidth:     28px;
+@documentDescriptionSeparatorImage:     '/img/arrow.png';
+@documentDescriptionIconWidth:          35px;
+@documentDescriptionIconMargin:         10px;
+@documentDescriptionIconPadding:        20px 20px 20px 0px;
+@documentDescriptionIconSize:           20px;
 
 /*
  __  __ _      _

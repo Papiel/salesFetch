@@ -22,7 +22,7 @@ module.exports.addDropdownButtons = function() {
 
   var activeDropdown = null;
   $(document).click(function() {
-    if (activeDropdown) {
+    if(activeDropdown) {
       activeDropdown.removeClass('open');
     }
   });
@@ -31,7 +31,7 @@ module.exports.addDropdownButtons = function() {
     var isOpen = $(this).parent().hasClass('open');
     $('li.dropdown').removeClass('open');
 
-    if (!isOpen) {
+    if(!isOpen) {
       activeDropdown = $(this).parent();
       activeDropdown.addClass('open');
     }

@@ -6,6 +6,7 @@ var DocumentTab = require('../models/DocumentTab.js');
 var filters = require('./filters.js');
 var documents = require('./documents.js');
 var fetch = require('./fetch.js');
+var errors = require('../helpers/errors.js');
 
 require('../helpers/string.js');
 
@@ -19,7 +20,7 @@ require('../helpers/string.js');
 module.exports.setTabs = function(client) {
   var timelineTab = new DocumentTab(client, 'Timeline', 'fa-list', false,
                                     filters.providerAndType(client), '/app/documents');
-  timelineTab.emptyStateMessage = 'No documents found for the context "{0}"';
+  timelineTab.emptyStateMessage = errors.getErrorMessage('no documents for context');
 
   // ----- Documents management
   timelineTab.documentWithJson = documents.documentWithJson;
@@ -34,8 +35,8 @@ module.exports.setTabs = function(client) {
   timelineTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
 
   var starredTab = new DocumentTab(client, 'Starred', 'fa-star-o', false,
-                                  filters.starredFilter(client), '/app/pins');
-  starredTab.emptyStateMessage = 'No documents starred for "{0}"';
+                                   filters.starredFilter(client), '/app/pins');
+  starredTab.emptyStateMessage = errors.getErrorMessage('no documents starred');
 
   // ----- Documents management
   starredTab.documentWithJson = documents.documentWithJson;
@@ -47,14 +48,14 @@ module.exports.setTabs = function(client) {
 
   // ----- Starred management
   starredTab.starredUpdate = function(document) {
-    if (document.isStarred()) {
+    if(document.isStarred()) {
       starredTab.documents()[document.id] = document;
     } else {
       delete starredTab.documents()[document.id];
     }
 
     var docCount = Object.keys(starredTab.documents()).length;
-    if (docCount > 0) {
+    if(docCount > 0) {
       starredTab.documentListError(null);
     } else {
       var errorMessage = starredTab.emptyStateMessage.format(starredTab.client.searchQuery);
@@ -62,16 +63,9 @@ module.exports.setTabs = function(client) {
     }
   };
 
-  starredTab.starredUpdateFailed = function(document) {
-    document.isStarred(!document.isStarred());
-    starredTab.starredUpdate(document);
-  };
-
   // ----- Requests to the backend
   starredTab.fetchDocuments = fetch.fetchDocuments;
   starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
-
-
 
   // TODO: re-enable when feature exists
   //var searchTab = new Tab('Search', 'fa-search', true);

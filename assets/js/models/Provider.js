@@ -7,7 +7,7 @@ module.exports = function Provider(json) {
   var self = this;
   self.isActive = ko.observable(false);
 
-  if (json) {
+  if(json) {
     self.name = json.name ? json.name : json.client.name;
     self.id = json.id;
     self.redirect_uri = json.redirect_uri;

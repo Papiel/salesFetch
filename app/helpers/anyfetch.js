@@ -23,7 +23,7 @@ module.exports.findDocuments = function(params, user, cb) {
     function templateResults(res, cb) {
       var docs = res.body;
 
-      if (!docs.data) {
+      if(!docs.data) {
         return cb(null, docs);
       }
 
@@ -113,7 +113,7 @@ module.exports.initAccount = function(data, done) {
   async.waterfall([
     function checkIfCompanyAlreadyExists(cb) {
       Organization.findOne({'SFDCId': org.id}, function(err, existingOrg) {
-        if (existingOrg) {
+        if(existingOrg) {
           return done(null, existingOrg);
         }
 
@@ -204,7 +204,7 @@ module.exports.addNewUser = function(user, organization, cb) {
       User.findOne({organization: organization._id, isAdmin: true}, cb);
     },
     function createNewUser(adminUser, cb) {
-      if (!adminUser) {
+      if(!adminUser) {
         return cb(new restify.InvalidCredentialsError('No admin for the company has been found'));
       }
 

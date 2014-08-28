@@ -48,7 +48,10 @@ describe('/app/pins page', function() {
             .end(cb);
         },
         function testNoContent(res, cb) {
-          res.body.should.be.empty;
+          res.body.should.have.properties({
+            count: 0,
+            data: []
+          });
           cb();
         }
       ], done);

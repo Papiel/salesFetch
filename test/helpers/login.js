@@ -42,7 +42,7 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
       user.save(cb);
     }
   ], function(err, user) {
-    if (err) {
+    if(err) {
       return cb(err);
     }
 

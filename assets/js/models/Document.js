@@ -7,7 +7,7 @@ var call = require('../helpers/call.js');
  * @param json
  * @param delegate
  *    Will be notified when isStarred changes.
- *    Must respond to `starredUpdate` and `starredUpdateFailed`.
+ *    Must respond to `starredUpdate`.
  */
 module.exports = function Document(json, delegate) {
   var self = this;
@@ -38,20 +38,19 @@ module.exports = function Document(json, delegate) {
 
     // We do not wait on request to display the new status
     // But we will reverse on error (i.e. ask forgiveness)
-    var successState = !self.isStarred();
-    self.isStarred(successState);
+    var desiredStarredState = !self.isStarred();
+    self.isStarred(desiredStarredState);
 
     if(delegate && delegate.starredUpdate) {
       delegate.starredUpdate(self);
     }
 
     call(url, options, noop, function error(res) {
-      self.isStarred(!successState);
+      self.isStarred(!desiredStarredState);
+      delegate.starredUpdate(self);
+
       console.log('Could not star/unstar document ' + self.id);
       console.log(res.responseText);
-      if(delegate && delegate.starredUpdateFailed) {
-        delegate.starredUpdateFailed(self);
-      }
     });
   };
 

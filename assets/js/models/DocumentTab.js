@@ -1,6 +1,7 @@
 'use strict';
 
 var sliceInTime = require('../helpers/sliceInTime.js');
+var errors = require('../helpers/errors.js');
 
 var noopFilter = function() {
   return true;
@@ -22,7 +23,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
   self.pullRight = pullRight || false;
   self.filter = filter || noopFilter;
   self.endpoint = endpoint || '/app/documents';
-  self.emptyStateMessage = 'No documents';
+  self.emptyStateMessage = errors.getErrorMessage('no documents');
 
   self.shouldDisplayDocumentsSpinner = ko.observable(true);
   self.shouldDisplayLoadMoreSpinner = ko.observable(true);

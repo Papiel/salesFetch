@@ -41,7 +41,7 @@ module.exports = function Document(json, delegate) {
     var successState = !self.isStarred();
     self.isStarred(successState);
 
-    if (delegate && delegate.starredUpdate) {
+    if(delegate && delegate.starredUpdate) {
       delegate.starredUpdate(self);
     }
 
@@ -49,24 +49,24 @@ module.exports = function Document(json, delegate) {
       self.isStarred(!successState);
       console.log('Could not star/unstar document ' + self.id);
       console.log(res.responseText);
-      if (delegate && delegate.starredUpdateFailed) {
+      if(delegate && delegate.starredUpdateFailed) {
         delegate.starredUpdateFailed(self);
       }
     });
   };
 
   self.openOriginal = function() {
-    if (self.actions.show) {
+    if(self.actions.show) {
       window.open(self.actions.show);
     }
   };
   self.download = function() {
-    if (self.actions.download) {
+    if(self.actions.download) {
       window.open(self.actions.download);
     }
   };
   self.reply = function() {
-    if (self.actions.reply) {
+    if(self.actions.reply) {
       window.open(self.actions.reply);
     }
   };

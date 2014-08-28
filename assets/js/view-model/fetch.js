@@ -24,7 +24,7 @@ module.exports.fetchDocuments = function(updateFacets) {
   updateFacets = updateFacets || false;
 
   var options = {};
-  if (tab.client.filterByProvider() || tab.client.filterByType()) {
+  if(tab.client.filterByProvider() || tab.client.filterByType()) {
     options.data = filters.paramsForFilter(tab.client);
   }
 
@@ -33,7 +33,7 @@ module.exports.fetchDocuments = function(updateFacets) {
   call(tab.endpoint, options, function success(response) {
     response = response.documents ? response.documents : response;
 
-    if (updateFacets && !tab.starred) {
+    if(updateFacets && !tab.starred) {
       tab.client.setConnectedProviders(response.facets.providers);
       tab.client.setTypes(response.facets.document_types);
     }
@@ -63,7 +63,7 @@ module.exports.fetchMoreDocuments = function() {
       }
     };
     // Filters
-    if (tab.client.filterByProvider() || tab.client.filterByType()) {
+    if(tab.client.filterByProvider() || tab.client.filterByType()) {
       $.extend(options.data, options.data, filters.paramsForFilter(tab.client));
     }
 

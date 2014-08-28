@@ -47,14 +47,14 @@ module.exports.setTabs = function(client) {
 
   // ----- Starred management
   starredTab.starredUpdate = function(document) {
-    if (document.isStarred()) {
+    if(document.isStarred()) {
       starredTab.documents()[document.id] = document;
     } else {
       delete starredTab.documents()[document.id];
     }
 
     var docCount = Object.keys(starredTab.documents()).length;
-    if (docCount > 0) {
+    if(docCount > 0) {
       starredTab.documentListError(null);
     } else {
       var errorMessage = starredTab.emptyStateMessage.format(starredTab.client.searchQuery);

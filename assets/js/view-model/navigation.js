@@ -9,13 +9,13 @@ var scrollToTop = require('../helpers/scrollToTop.js');
 module.exports.goToTab = function(tab) {
   var client = this;
 
-  if (client.activeTab() !== tab) {
+  if(client.activeTab() !== tab) {
     client.activeTab(tab);
 
-    if (client.bindInfiniteScroll) {
+    if(client.bindInfiniteScroll) {
       client.bindInfiniteScroll();
     }
-    if (client.isMobile) {
+    if(client.isMobile) {
       client.activeDocument(null);
     }
   }
@@ -60,16 +60,16 @@ module.exports.goToDocument = function(doc) {
 
     var writeFullView = function(docHtml) {
       var html;
-      if (client.isDesktop) {
+      if(client.isDesktop) {
         html = fontAwesomeLink + '<nav><ul>';
 
-        if (doc.actions.show) {
+        if(doc.actions.show) {
           html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
         }
-        if (doc.actions.download) {
+        if(doc.actions.download) {
           html += '<li><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
         }
-        if (doc.actions.reply) {
+        if(doc.actions.reply) {
           html += '<li><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
         }
 

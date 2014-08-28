@@ -9,7 +9,7 @@ var isMongoId = require('../helpers/is-mongo-id.js');
  */
 module.exports = function idIsObjectId(req, res, next) {
   var id = req.params.id;
-  if (!id) {
+  if(!id) {
     return next(new restify.MissingParameterError('Missing `id` parameter in URL'));
   }
   if(!isMongoId(id)) {

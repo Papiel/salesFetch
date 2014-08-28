@@ -12,15 +12,15 @@ var customLogger = function(tokens, req, res) {
   var status = res.statusCode;
   var color = 32;
   var error = "";
-  if (status >= 500) {
+  if(status >= 500) {
     color = 31;
     error = res._body;
   }
-  else if (status >= 400){
+  else if(status >= 400){
     color = 33;
     error = res._body;
   }
-  else if (status >= 300) {
+  else if(status >= 300) {
     color = 36;
   }
 

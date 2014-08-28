@@ -58,7 +58,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
     }
   ], function(err, docs) {
     // See in `fetchDocumentsAndDocumentTypes` above
-    if (err === noPinError) {
+    if(err === noPinError) {
       err = null;
     }
     if(docs.status && docs.status !== 200){

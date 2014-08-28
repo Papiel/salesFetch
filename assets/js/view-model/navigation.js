@@ -32,10 +32,12 @@ module.exports.goToDocument = function(doc) {
 
     var cssBlock = document.createElement('style');
     cssBlock.type = 'text/css';
+    // This ends up being statically replaced by the file's content by Browserify
     cssBlock.innerHTML = fs.readFileSync(__dirname + '/../../../public/dist/full-view.css', 'utf8');
     var fontAwesomeLink = document.createElement('link');
     fontAwesomeLink.rel = 'stylesheet';
     fontAwesomeLink.type = 'text/css';
+    // TODO: include from the static server like all other resources (SalesForce or localhost)
     fontAwesomeLink.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css';
     var target;
     if(!client.isDesktop) {

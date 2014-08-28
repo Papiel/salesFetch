@@ -26,7 +26,7 @@ module.exports = function SalesfetchViewModel() {
 
   client.documentViewerError = ko.observable();
 
-  if (client.isTablet) {
+  if(client.isTablet) {
     client.shouldDisplayDocumentViewerDefaultMessage = ko.observable(true);
   }
 
@@ -77,7 +77,7 @@ module.exports = function SalesfetchViewModel() {
 
   client.fetchDocuments = function(updateFacets) {
     client.tabs.forEach(function(tab) {
-      if (tab.fetchDocuments) {
+      if(tab.fetchDocuments) {
         tab.fetchDocuments(updateFacets);
         updateFacets = false;
       }

@@ -14,13 +14,13 @@ module.exports.documentWithJson = function(json) {
   // This is aimed to keep every documents unique.
   var doc = null;
   tab.client.tabs.every(function(t) {
-    if (t.documents) {
+    if(t.documents) {
       doc = t.documents()[json.id];
     }
     return (doc !== null); // break if doc found
   });
   // Or create it if it does not exist yet
-  if (!doc) {
+  if(!doc) {
     doc = new Document(json, tab.client.starredTab);
   }
 

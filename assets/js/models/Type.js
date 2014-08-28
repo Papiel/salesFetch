@@ -6,7 +6,7 @@ module.exports = function Type(json) {
   var self = this;
   self.isActive = ko.observable(false);
 
-  if (json) {
+  if(json) {
     self.name = json.name;
     self.id = json.id;
     self.queryCount = json.document_count;

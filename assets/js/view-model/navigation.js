@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var scrollToTop = require('../helpers/scrollToTop.js');
 
 /**
@@ -8,13 +9,13 @@ var scrollToTop = require('../helpers/scrollToTop.js');
 module.exports.goToTab = function(tab) {
   var client = this;
 
-  if (client.activeTab() !== tab) {
+  if(client.activeTab() !== tab) {
     client.activeTab(tab);
 
-    if (client.bindInfiniteScroll) {
+    if(client.bindInfiniteScroll) {
       client.bindInfiniteScroll();
     }
-    if (client.isMobile) {
+    if(client.isMobile) {
       client.activeDocument(null);
     }
   }
@@ -31,7 +32,11 @@ module.exports.goToDocument = function(doc) {
 
     var cssBlock = document.createElement('style');
     cssBlock.type = 'text/css';
-    cssBlock.innerHTML = 'body { font-size: 13px; font-family: \'Helvetica Neue\', \'Helvetica\', \'Arial\', \'sans-serif\';padding: 20px; background: white; text-overflow: ellipsis; white-space: normal; word-wrap: break-word; } header { font-size: 16px; margin-bottom: 30px; color: #646464; } header h1 { font-size: 25px; color: #14A8E1; } header p { margin: 5px 0px; } header a { color: #14A8E1; text-decoration: none; } #spinner {width: 44px; height: 44px; position: absolute; margin: auto; top: 0; bottom: 0; right: 0; left: 0;} .hlt { background-color: rgba(255,242,138,.6); }';
+    cssBlock.innerHTML = fs.readFileSync(__dirname + '/../../../public/dist/full-view.css', 'utf8');
+    var fontAwesomeLink = document.createElement('link');
+    fontAwesomeLink.rel = 'stylesheet';
+    fontAwesomeLink.type = 'text/css';
+    fontAwesomeLink.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css';
     var target;
     if(!client.isDesktop) {
       // TODO: check for browser compatibility
@@ -44,14 +49,34 @@ module.exports.goToDocument = function(doc) {
       var w = window.open(null, '_blank');
       target = w.document;
 
-      // TODO: do not include FontAwesome just for this
-      var fontAwesomeLink = '<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">';
+      // Use the snippet without html tags for the new tab title
+      target.title = $(doc.snippet).text();
       var spinnerHTML = '<i id="spinner" class="fa fa-spin fa-fw fa-refresh fa-3x"></i>';
 
-      $(target.body).html(fontAwesomeLink + spinnerHTML);
+      $(target.body).html(spinnerHTML);
     }
+    target.head.appendChild(cssBlock);
+    target.head.appendChild(fontAwesomeLink);
 
-    var writeFullView = function(html) {
+    var writeFullView = function(docHtml) {
+      var html;
+      if(client.isDesktop) {
+        html = fontAwesomeLink + '<nav><ul>';
+
+        if(doc.actions.show) {
+          html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
+        }
+        if(doc.actions.download) {
+          html += '<li><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
+        }
+        if(doc.actions.reply) {
+          html += '<li><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
+        }
+
+        html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
+      } else {
+        html = '<div id="document-container">' + docHtml + '</div>';
+      }
       $(target.body).html(html);
       target.head.appendChild(cssBlock);
     };

@@ -42,7 +42,7 @@ module.exports = function sliceInTime(documents) {
     var creationDate = moment(doc.creationDate);
     var found = false;
     for (var i = 0; i < timeSlices.length && !found; i+=1) {
-      if (i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
+      if(i === 0 && creationDate.isAfter(timeSlices[i].maxDate)) {
         found = true;
         timeSlices[i].documents.push(doc);
       }

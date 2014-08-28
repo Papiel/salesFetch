@@ -25,7 +25,7 @@ var cachedTemplates = {};
  * @warning Templates are not cached in dev environment
  */
 var getOverridedTemplates = function() {
-  if (config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
+  if(config.env !== 'development' && !_.isEmpty(cachedTemplates)) {
     return cachedTemplates;
   }
 

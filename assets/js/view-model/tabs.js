@@ -63,11 +63,6 @@ module.exports.setTabs = function(client) {
     }
   };
 
-  starredTab.starredUpdateFailed = function(document) {
-    document.isStarred(!document.isStarred());
-    starredTab.starredUpdate(document);
-  };
-
   // ----- Requests to the backend
   starredTab.fetchDocuments = fetch.fetchDocuments;
   starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;

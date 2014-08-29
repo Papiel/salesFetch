@@ -48,6 +48,7 @@ module.exports.fetchDocuments = function(updateFacets) {
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
     tab.documentListError(getErrorMessage(res));
+    tab.allDocumentsLoaded(true);
   });
 };
 
@@ -80,6 +81,7 @@ module.exports.fetchMoreDocuments = function() {
 
     }, function error(res) {
       tab.loadMoreError(getErrorMessage(res));
+      tab.allDocumentsLoaded(true);
     });
   }
 };

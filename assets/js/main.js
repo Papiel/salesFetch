@@ -34,4 +34,6 @@ $(document).ready(function() {
   misc.addDropdownButtons();
   misc.addTabletBehaviors();
   client.bindInfiniteScroll();
+
+  console.log('parent: ', parent);
 });

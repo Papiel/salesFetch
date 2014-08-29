@@ -35,5 +35,5 @@ $(document).ready(function() {
   misc.addTabletBehaviors();
   client.bindInfiniteScroll();
 
-  console.log('parent: ', parent);
+  console.log('parent: ', parent.frames);
 });

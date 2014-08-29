@@ -9,7 +9,10 @@ var salesfetchHelpers = require('../../../helpers/salesfetch.js');
  */
 module.exports.get = function(req, res, next) {
   var sfdcId = req.data.context.recordId;
-  var params = {};
+  var query = req.data.context.templatedQuery;
+  var params = {
+    search: query
+  };
   if(req.query.start) {
     params.start = req.query.start;
   }

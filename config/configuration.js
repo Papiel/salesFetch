@@ -38,9 +38,9 @@ var baseConfig = {
     405: '405.html'
   },
 
-  fetchApiUrl: process.env.FETCHAPI_URL || "https://api.anyfetch.com",
+  fetchApiUrl: process.env.API_URL || "https://api.anyfetch.com",
   managerUrl: process.env.MANAGER_URL || "https://manager.anyfetch.com",
-  fetchApiCreds: process.env.FETCHAPI_CREDS,
+  fetchApiCreds: process.env.API_CREDENTIALS,
 
   // Minimum delay between two calls to `POST /company/update`
   // for a single company (in milliseconds)

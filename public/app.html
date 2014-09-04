@@ -29,8 +29,9 @@ We need to load dynamically
 |_|  |_|\__,_|_|_| |_|   \_/ |_|\___| \_/\_/
 
 Including tab bar, document list, filters, etc.
+Hidden by default until the app has loaded.
 -->
-<div id="mainview" class="active">
+<div id="mainview" class="active" style="display:none" data-bind="visible: hasFinishedLoading">
 
   <!-- Tablet only: a button to toggle document list visibility -->
   <!-- ko if: isTablet -->

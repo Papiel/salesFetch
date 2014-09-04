@@ -45,6 +45,7 @@ module.exports.fetchDocuments = function(updateFacets) {
     // Update loadMore spinner
     module.exports.checkAllDocumentsLoaded(tab, response);
 
+    tab.client.hasFinishedLoading(true);
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
     tab.documentListError(getErrorMessage(res));

@@ -4,7 +4,7 @@ node_modules
 apex/config
 apex/apex-scripts
 
-# Fronted
+# Frontend
 .bower-*/
 public/dist
 .sass-cache/

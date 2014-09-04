@@ -1,6 +1,9 @@
 #!/bin/env node
 // Start SalesFetch server
 
+// No idling
+require('heroku-self-ping')(process.env.SALESFETCH_URL);
+
 // Load configuration
 var config = require('../config/configuration.js');
 

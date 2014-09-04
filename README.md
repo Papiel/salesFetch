@@ -5,7 +5,7 @@
 
 AnyFetch API integration in SalesForce.
 
-* Provides components integration in SaleForce
+* Provides components integration in SalesForce
 * 2 ways : timeline views and search views
 * Dynamic request management
 
@@ -35,12 +35,12 @@ To install all backend, frontend and dev dependencies, just run:
   $ npm install
 ```
 
-You shoud then be able to launch the server with:
+You should then be able to launch the server with:
 ```
   $ gulp
 ```
 
-The server in now available on `https://localhost:3000`. SSL is used to secure the connection between SalesFetch and SalesForce. When developping on `localhost`, self-signed certificates are used: be sure to access a page of the application from your browser of choice first and accept the self-signed certificates.
+The server is now available on `https://localhost:3000`. SSL is used to secure the connection between SalesFetch and SalesForce. When developping on `localhost`, self-signed certificates are used: be sure to access a page of the application from your browser of choice first and accept the self-signed certificates.
 
 In dev mode, the `gulp` tasks will lint, compile and reload on each change. The tasks are described in the [gulpfile]() and can be run separately with `gulp <task>`.
 

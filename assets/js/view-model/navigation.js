@@ -39,6 +39,12 @@ module.exports.goToDocument = function(doc) {
     fontAwesomeLink.type = 'text/css';
     // TODO: include from the static server like all other resources (SalesForce or localhost)
     fontAwesomeLink.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css';
+    var anyfetchStyleLink = document.createElement('link');
+    anyfetchStyleLink.rel = 'stylesheet';
+    anyfetchStyleLink.type = 'text/css';
+    // TODO: include from the static server like all other resources (SalesForce or localhost)
+    anyfetchStyleLink.href = 'https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/master/dist/index.min.css';
+
     var target;
     if(!client.isDesktop) {
       // TODO: check for browser compatibility
@@ -59,11 +65,12 @@ module.exports.goToDocument = function(doc) {
     }
     target.head.appendChild(cssBlock);
     target.head.appendChild(fontAwesomeLink);
+    target.head.appendChild(anyfetchStyleLink);
 
     var writeFullView = function(docHtml) {
       var html;
       if(client.isDesktop) {
-        html = fontAwesomeLink + '<nav><ul>';
+        html = '<nav><ul>';
 
         if(doc.actions.show) {
           html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';

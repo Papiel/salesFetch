@@ -22,7 +22,7 @@ Check out the [wiki](https://github.com/Papiel/salesFetch/wiki/Installation-guid
 
 ```
 $ npm install -g bower
-$ npm install -g grunt-cli
+$ npm install -g gulp
 ```
 
 ## Quick Install
@@ -34,7 +34,7 @@ Install dependencies, all the grunt dependences will be loaded through a post-in
 
 You shoud now be able to launch the server with:
 ```
-  $ grunt
+  $ gulp
 ```
 
 The server in now available on `https://localhost:3000`. The `https` is important for securing the connection between salesFetch and Salesforce, be sure to access a random page first to avoid any problem in salesforce because of the invalid SSL certificate.

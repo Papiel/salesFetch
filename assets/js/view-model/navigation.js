@@ -34,16 +34,6 @@ module.exports.goToDocument = function(doc) {
     cssBlock.type = 'text/css';
     // This ends up being statically replaced by the file's content by Browserify
     cssBlock.innerHTML = fs.readFileSync(__dirname + '/../../../public/dist/full-view.css', 'utf8');
-    var fontAwesomeLink = document.createElement('link');
-    fontAwesomeLink.rel = 'stylesheet';
-    fontAwesomeLink.type = 'text/css';
-    // TODO: include from the static server like all other resources (SalesForce or localhost)
-    fontAwesomeLink.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css';
-    var anyfetchStyleLink = document.createElement('link');
-    anyfetchStyleLink.rel = 'stylesheet';
-    anyfetchStyleLink.type = 'text/css';
-    // TODO: include from the static server like all other resources (SalesForce or localhost)
-    anyfetchStyleLink.href = 'https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/master/dist/index.min.css';
 
     var target;
     if(!client.isDesktop) {
@@ -64,8 +54,8 @@ module.exports.goToDocument = function(doc) {
       $(target.body).html(spinnerHTML);
     }
     target.head.appendChild(cssBlock);
-    target.head.appendChild(fontAwesomeLink);
-    target.head.appendChild(anyfetchStyleLink);
+    $(target.head).append($('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/master/dist/index.min.css" type="text/css">'));
+    $(target.head).append($('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">'));
 
     var writeFullView = function(docHtml) {
       var html;

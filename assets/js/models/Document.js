@@ -17,6 +17,7 @@ module.exports = function Document(json, delegate) {
   self.snippet = json.rendered.snippet;
   self.url = json.document_url;
   self.creationDate = json.creation_date;
+  self.modificationDate = json.modification_date;
   self.actions = json.actions;
 
   // Will be bound to the corresponding model instance

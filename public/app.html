@@ -14,11 +14,17 @@ We need to load dynamically
 -->
 <div id="head"></div>
 <script type="text/javascript">
+  /* global $ */
   // Done this way (first insert the link, then set its `href` attribute) for IE8- compatibility
   var head = $('#head');
-  var link = $('<link rel="stylesheet" type="text/css" href=""/>');
-  head.append(link);
-  link.attr('href', $.salesFetchUrl + '/dist/style.css');
+  var customStyle = $('<link rel="stylesheet" type="text/css" href=""/>');
+  head.append(customStyle);
+  customStyle.attr('href', $.salesFetchUrl + '/dist/style.css');
+
+  var snippetStyle = $('<link rel="stylesheet" type="text/css" href=""/>');
+  head.append(snippetStyle);
+  snippetStyle.attr('href', 'https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/master/dist/index-compact.min.css');
+
   var script = $('<' + 'script type="text/javascript" src="' + $.salesFetchUrl + '/dist/main.js"></script' + '>');
   head.append(script);
 </script>

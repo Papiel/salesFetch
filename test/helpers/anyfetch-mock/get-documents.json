@@ -44,6 +44,7 @@
       "_type": "Document",
       "id": "5320a773bc2e51d7135f0c8f",
       "creation_date": "2014-03-12T18:29:07.150Z",
+      "modification_date": "2014-03-12T18:29:07.150Z",
       "provider": {
         "_type": "AccessToken",
         "id": "5320a682c8318cba94000040",

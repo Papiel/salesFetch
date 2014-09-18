@@ -44,7 +44,7 @@ module.exports.goToDocument = function(doc) {
     else {
       // We need to open the popup window right now (i.e. during event handling)
       // otherwise we'll get blocked
-      var w = window.open(null, '_blank');
+      var w = window.open(undefined, '_blank');
       target = w.document;
 
       // Use the snippet without html tags for the new tab title

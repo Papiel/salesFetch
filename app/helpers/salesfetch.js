@@ -39,7 +39,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       });
       var query = {
         id: ids,
-        sort: '-creationDate',
+        sort: '-modificationDate',
       };
       query = _.merge(params, query);
       anyfetch.getDocuments(query, cb);

@@ -111,4 +111,7 @@ module.exports = function SalesfetchViewModel() {
 
   // Spinners
   client.shouldDisplayViewerSpinner = ko.observable(false);
+
+  // Meta
+  client.hasFinishedLoading = ko.observable(false);
 };

@@ -22,7 +22,6 @@ module.exports.checkAllDocumentsLoaded = function(tab, response) {
 module.exports.fetchDocuments = function(updateFacets) {
   var tab = this;
   updateFacets = updateFacets || false;
-
   var options = {};
   if(tab.client.filterByProvider() || tab.client.filterByType()) {
     options.data = filters.paramsForFilter(tab.client);
@@ -45,10 +44,16 @@ module.exports.fetchDocuments = function(updateFacets) {
     // Update loadMore spinner
     module.exports.checkAllDocumentsLoaded(tab, response);
 
+    if(updateFacets) {
+      // Only load when displaying facets, else it's pin.
+      tab.client.hasFinishedLoading(true);
+    }
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
     tab.documentListError(getErrorMessage(res));
     tab.allDocumentsLoaded(true);
+    tab.client.hasFinishedLoading(true);
+
   });
 };
 

@@ -16,7 +16,7 @@ module.exports.get = function(req, res, next) {
   }
 
   var params = {
-    sort: '-creationDate',
+    sort: '-modificationDate',
     search: req.data.context.templatedQuery
   };
 

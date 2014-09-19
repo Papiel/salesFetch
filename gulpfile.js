@@ -10,7 +10,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 
 var paths = {
   js: {
-    all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'assets/js/**', 'test/**/*.js', 'public/app.html', 'public/oauth-callback.html'],
+    all: ['gruntfile.js', 'app.js', 'config/**/*.js', 'app/**/*.js', 'assets/js/**', 'test/**/*.js'],
     client: ['assets/js/**'],
     entryPoints: ['assets/js/main.js']
   },

@@ -48,6 +48,8 @@ module.exports.fetchDocuments = function(updateFacets) {
       // Only load when displaying facets, else it's pin.
       tab.client.hasFinishedLoading(true);
     }
+
+    /* global snippetStyle */
     setTimeout(snippetStyle.formatDates, 500);
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);

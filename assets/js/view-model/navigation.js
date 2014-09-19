@@ -75,7 +75,7 @@ module.exports.goToDocument = function(doc) {
       }
       $(target.body).html(html);
       target.head.appendChild(cssBlock);
-      $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/master/dist/index.min.css" type="text/css">');
+      $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/0.2.1/dist/index.min.css" type="text/css">');
       $(target.head).append($('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">'));
     };
 

@@ -48,6 +48,7 @@ module.exports.fetchDocuments = function(updateFacets) {
       // Only load when displaying facets, else it's pin.
       tab.client.hasFinishedLoading(true);
     }
+    setTimeout(snippetStyle.formatDates, 500);
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
     tab.documentListError(getErrorMessage(res));
@@ -83,7 +84,7 @@ module.exports.fetchMoreDocuments = function() {
 
       // update loadMore spinner
       module.exports.checkAllDocumentsLoaded(tab, response);
-
+      setTimeout(snippetStyle.formatDates, 500);
     }, function error(res) {
       tab.loadMoreError(getErrorMessage(res));
       tab.allDocumentsLoaded(true);

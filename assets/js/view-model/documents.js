@@ -79,7 +79,7 @@ module.exports.setDocuments = function(docs) {
 module.exports.addDocuments = function(docs) {
   var tab = this;
   var newDocList = {};
-  $.extend(newDocList, docs, tab.documents());
+  $.extend(newDocList, tab.documents(), docs);
   tab.documents(newDocList);
 };
 

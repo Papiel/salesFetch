@@ -32,36 +32,6 @@ Install dependencies, all the gulp dependencies will be loaded through a post-in
   $ npm install
 ```
 
-You shoud now be able to launch the server with:
-```
-  $ gulp
-```
-
-The server in now available on `https://localhost:3000`. The `https` is important for securing the connection between salesFetch and Salesforce, be sure to access a random page first to avoid any problem in salesforce because of the invalid SSL certificate.
-
-## Apex code management
-All the apex code is in the repo [salesFetch-Apex](https://github.com/Papiel/salesFetch-Apex).
-
-### With Eclipse (preferred)
-You can use [Force.com IDE](https://wiki.developerforce.com/page/Force.com_IDE) directcly integrated into Eclipse IDE. This allows to manage the code, sync it with the dist Salesforce server, and return test into the IDE. More informations in the [introduction](https://wiki.developerforce.com/page/An_Introduction_to_Force_IDE).
-
-### With Sublime Text 3
-You can use [MavensMate](http://mavensmate.com/) and the integration into the SublimText3 text editor to manage the Apex code. To connect an existing project to the plugin [use this link](http://mavensmate.com/Plugins/Sublime_Text/Existing_Projects).
-
-### Directly on SalesForce
-Log onto http://salesforce.com, then hover over your name and select "Setup". On the left menu, the code will be on "App Setup"
-
-## Architecture
-
-The following (magnificent) diagram explains the architecture of the SalesFetch app. It was designed with performance and maintainability in mind.
-
-![SalesFetch app architecture](images/architecture.png)
-
-## Testing locally
-You'll need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
-It will be used one time at package installation.
-
-
 You'll then need to seed your `salesfetch-dev` mongo database with an `organization`:
 
 ```js
@@ -92,3 +62,32 @@ db.users.insert({
     "__v" : 0
 })
 ```
+
+You shoud now be able to launch the server with:
+```
+  $ gulp
+```
+
+The server in now available on `https://localhost:3000`. The `https` is important for securing the connection between salesFetch and Salesforce, be sure to access a random page first to avoid any problem in salesforce because of the invalid SSL certificate.
+
+## Apex code management
+All the apex code is in the repo [salesFetch-Apex](https://github.com/Papiel/salesFetch-Apex).
+
+### With Eclipse (preferred)
+You can use [Force.com IDE](https://wiki.developerforce.com/page/Force.com_IDE) directcly integrated into Eclipse IDE. This allows to manage the code, sync it with the dist Salesforce server, and return test into the IDE. More informations in the [introduction](https://wiki.developerforce.com/page/An_Introduction_to_Force_IDE).
+
+### With Sublime Text 3
+You can use [MavensMate](http://mavensmate.com/) and the integration into the SublimText3 text editor to manage the Apex code. To connect an existing project to the plugin [use this link](http://mavensmate.com/Plugins/Sublime_Text/Existing_Projects).
+
+### Directly on SalesForce
+Log onto http://salesforce.com, then hover over your name and select "Setup". On the left menu, the code will be on "App Setup"
+
+## Architecture
+
+The following (magnificent) diagram explains the architecture of the SalesFetch app. It was designed with performance and maintainability in mind.
+
+![SalesFetch app architecture](images/architecture.png)
+
+## Testing locally
+You'll need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
+It will be used only once during the installation of the package, do not bother for its value if you are not going to create new users.

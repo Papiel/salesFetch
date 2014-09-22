@@ -54,6 +54,9 @@ var sendRes = function(res, data, org, prefix) {
   var params = {
     data: JSON.stringify(data)
   };
+  if(!config.salesFetchUrl) {
+    return res.send(new restify.InvalidArgumentError('Please define SALESFETCH_URL'));
+  }
   var url = config.salesFetchUrl + prefix + '?' + qs.stringify(params);
   res.send({
     prefix: prefix,

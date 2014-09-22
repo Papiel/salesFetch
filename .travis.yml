@@ -5,6 +5,7 @@ services:
   - mongodb
 env:
   global:
+  - SALESFETCH_URL="https://localhost:3000"
   - secure: Xq+5HACB2SJDxtsXkGuOeu/uOLlFyKnIZcapa3d5yjlK81LWFwXTOJf7FylqmOsETB4YkXxGPjIHWtkugYJNBgiPU7zX89nlFGQwJAHIFUOyB3A9GG4S1e+3i84Q7mDPZmbYvkoxHDUWjyEMuMU3WrAETa0XyyQErqtab+W8p/U=
   - secure: Ylzx0JPu3GjFCSsUrIaIjYr1iEMEmKVw5UNL6C87TN48SvAjqbzc44C2q2LjM0x3DuO8VE7F4m20kTKn/M3iEV0GUQcaffm/ebfzSw5zzRZ/Cs+JtlTW+hYs0DhRoExT0MkiAc1fVYxQk2U1uRufjHum/Ztd3zq4rOinXdp5T/o=
   - secure: HBHzi+YEf6r/dp9rvlSdNAPgHkRJYUKc988OvWbtz+ApONc5K6IcbRhbzH46HA9NOUy5TGxiqPaUynUWR6g14XZpVvb6hEn0GWjPYtEQ2C2jvr3tQ/yzKVKY5mMQo5BgV88I9MwJAKZdQ64ZouvEiFuOCO4ahJXFfbKvBOy/qSQ=

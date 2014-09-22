@@ -58,7 +58,9 @@ The following (magnificent) diagram explains the architecture of the SalesFetch 
 ![SalesFetch app architecture](images/architecture.png)
 
 ## Testing locally
-You'll need a `.env` file with your `API_CREDENTIALS` (you may need to set `API_URL` if you want to use staging or development environment).
+You'll need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
+It will be used one time at package installation.
+
 
 You'll then need to seed your `salesfetch-dev` mongo database with an `organization`:
 
@@ -70,7 +72,7 @@ db.organizations.insert({
     "anyFetchId" : "538ee0c5fe2eee0157d69793",
     "deleted" : false,
     "lastUpdated" : ISODate("2014-09-04T17:15:26.412Z"),
-    "masterKey" : "<MASTER KEY or leave empty if you don't want to test account creation>",
+    "masterKey" : "iwoazklaekcfetoiyuvhnycuahopuiqmizewlurtyeruicy",
     "name" : "AnyFetch"
 })
 ```

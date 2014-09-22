@@ -17,7 +17,8 @@ module.exports.get = function(req, res, next) {
 
   var params = {
     sort: '-modificationDate',
-    search: req.data.context.templatedQuery
+    search: req.data.context.templatedQuery,
+    snippet_size: 100,
   };
 
   var filters = {};

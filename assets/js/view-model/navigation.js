@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require('fs');
 var scrollToTop = require('../helpers/scrollToTop.js');
 
 /**
@@ -29,11 +28,6 @@ module.exports.goToDocument = function(doc) {
       client.shouldDisplayDocumentViewerDefaultMessage(false);
     }
     client.activeDocument(doc);
-
-    var cssBlock = document.createElement('style');
-    cssBlock.type = 'text/css';
-    // This ends up being statically replaced by the file's content by Browserify
-    cssBlock.innerHTML = fs.readFileSync(__dirname + '/../../../public/dist/full-view.css', 'utf8');
 
     var target;
     if(!client.isDesktop) {
@@ -74,9 +68,9 @@ module.exports.goToDocument = function(doc) {
         html = '<div id="document-container">' + docHtml + '</div>';
       }
       $(target.body).html(html);
-      target.head.appendChild(cssBlock);
       $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css" type="text/css">');
       $(target.head).append($('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">'));
+      $(target.head).append('<link rel="stylesheet" href="/dist/full-view.css" type="text/css">');
     };
 
     // Load document full document content (AJAX) if needed

@@ -25,7 +25,7 @@ $ npm install -g bower
 $ npm install -g gulp
 ```
 
-## Quick Install
+## Quick Install and local tests
 
 Install dependencies, all the gulp dependencies will be loaded through a post-install script:
 ```
@@ -63,6 +63,9 @@ db.users.insert({
 })
 ```
 
+You'll also need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
+It will be used only once during the installation of the package, do not bother for its value if you are not going to create new users.
+
 You shoud now be able to launch the server with:
 ```
   $ gulp
@@ -87,7 +90,3 @@ Log onto http://salesforce.com, then hover over your name and select "Setup". On
 The following (magnificent) diagram explains the architecture of the SalesFetch app. It was designed with performance and maintainability in mind.
 
 ![SalesFetch app architecture](images/architecture.png)
-
-## Testing locally
-You'll need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
-It will be used only once during the installation of the package, do not bother for its value if you are not going to create new users.

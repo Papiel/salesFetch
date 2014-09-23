@@ -25,12 +25,46 @@ $ npm install -g bower
 $ npm install -g gulp
 ```
 
-## Quick Install
+## Quick Install and local tests
 
 Install dependencies, all the gulp dependencies will be loaded through a post-install script:
 ```
   $ npm install
 ```
+
+You'll then need to seed your `salesfetch-dev` mongo database with an `organization`:
+
+```js
+db.organizations.insert({
+    "SFDCId" : "00D20000000lnBGEAY",
+    "__v" : 0,
+    "_id" : ObjectId("538ee0d095662e0200582c94"),
+    "anyFetchId" : "538ee0c5fe2eee0157d69793",
+    "deleted" : false,
+    "lastUpdated" : ISODate("2014-09-04T17:15:26.412Z"),
+    "masterKey" : "iwoazklaekcfetoiyuvhnycuahopuiqmizewlurtyeruicy",
+    "name" : "AnyFetch"
+})
+```
+
+and an `user`:
+
+```js
+db.users.insert({
+    "_id" : ObjectId("53900d1848ffb00200f52698"),
+    "name" : "mehdi@demo.salesfetch.com",
+    "email" : "mehdi@anyfetch.com",
+    "SFDCId" : "00520000003AYhkAAG",
+    "anyFetchId" : "53900d0c05da58883063888e",
+    "anyFetchToken" : "<YOUR ANYFETCH TOKEN>",
+    "organization" : ObjectId("538ee0d095662e0200582c94"),
+    "isAdmin" : false,
+    "__v" : 0
+})
+```
+
+You'll also need a `.env` file with your `API_CREDENTIALS`, aka `master token` (you may need to set `API_URL` if you want to use staging or development environment).
+It will be used only once during the installation of the package, do not bother for its value if you are not going to create new users.
 
 You shoud now be able to launch the server with:
 ```
@@ -56,37 +90,3 @@ Log onto http://salesforce.com, then hover over your name and select "Setup". On
 The following (magnificent) diagram explains the architecture of the SalesFetch app. It was designed with performance and maintainability in mind.
 
 ![SalesFetch app architecture](images/architecture.png)
-
-## Testing locally
-You'll need a `.env` file with your `API_CREDENTIALS` (you may need to set `API_URL` if you want to use staging or development environment).
-
-You'll then need to seed your `salesfetch-dev` mongo database with an `organization`:
-
-```js
-db.organizations.insert({
-    "SFDCId" : "00D20000000lnBGEAY",
-    "__v" : 0,
-    "_id" : ObjectId("538ee0d095662e0200582c94"),
-    "anyFetchId" : "538ee0c5fe2eee0157d69793",
-    "deleted" : false,
-    "lastUpdated" : ISODate("2014-09-04T17:15:26.412Z"),
-    "masterKey" : "<MASTER KEY or leave empty if you don't want to test account creation>",
-    "name" : "AnyFetch"
-})
-```
-
-and an `user`:
-
-```js
-db.users.insert({
-    "_id" : ObjectId("53900d1848ffb00200f52698"),
-    "name" : "mehdi@demo.salesfetch.com",
-    "email" : "mehdi@anyfetch.com",
-    "SFDCId" : "00520000003AYhkAAG",
-    "anyFetchId" : "53900d0c05da58883063888e",
-    "anyFetchToken" : "<YOUR ANYFETCH TOKEN>",
-    "organization" : ObjectId("538ee0d095662e0200582c94"),
-    "isAdmin" : false,
-    "__v" : 0
-})
-```

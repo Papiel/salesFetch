@@ -1,0 +1,33 @@
+{
+  "name": "salesFetch",
+  "version": "1.1.0",
+  "authors": [
+    "Pierre-Marie Dartus <dartus.pierremarie@gmail.com>",
+    "Merlin Nimier-David <merlin@anyfetch.com>",
+    "Tanguy Hélesbeux <tanguy@anyfetch.com>",
+    "Antoine Bolvy <antoine.bolvy@gmail.com>"
+  ],
+  "homepage": "https://github.com/AnyFetch/salesFetch",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnyFetch/salesFetch"
+  },
+  "keywords": [
+    "salesforce",
+    "AnyFetch",
+    "FetchAPI",
+    "integration"
+  ],
+  "license": "Copyright AnyFetch",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "anyfetch-snippet-style": "~0.2.5"
+  }
+}

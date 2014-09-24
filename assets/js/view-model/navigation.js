@@ -66,7 +66,7 @@ module.exports.goToDocument = function(doc) {
 
         html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
       } else {
-        html = '<div id="document-container">' + docHtml + '</div>';
+        html = '<div id="document-container" class="anyfetch-mobile-scroll">' + docHtml + '</div>';
       }
       $(target.body).html(html);
       $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css" type="text/css">');

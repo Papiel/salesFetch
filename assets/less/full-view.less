@@ -9,20 +9,23 @@
 // This stylesheet is injected in the document's full view
 
 body {
+  font-family: @defaultFontFamily;
+  font-size: @defaultFontSize;
   margin: 0px;
 }
 
 #document-container {
   font-size: @defaultFontSize;
   font-family: @defaultFontFamily;
-  padding: 20px;
   background: white;
   text-overflow: ellipsis;
   white-space: normal;
   word-wrap: break-word;
+  padding: 2px;
 
   &.desktop {
-    margin-top: 50px;
+    padding: 20px;
+    margin-top: @navbarHeight;
   }
 }
 
@@ -37,56 +40,20 @@ nav {
   z-index: 1000;
 
   ul {
+    margin: 20px;
+    padding: 0;
     list-style-type: none;
   }
 
   li {
     display: inline-block;
-    margin-left: 20px;
   }
 
   a {
     color: white;
-    font-size: 20px;
+    font-size: 1.3em;
     padding: 5px;
     text-decoration: none;
-  }
-}
-
-header {
-  font-size: @desktopFullViewHeaderFontsize;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  color: @defaultColor;
-  border-bottom: 1px solid @defaultColor;
-
-  h1 {
-    font-size: @desktopFullViewHeaderTitleFontsize;
-    color: @anyFetchBlue;
-  }
-
-  p {
-    margin: 5px 0px;
-  }
-
-  a {
-    color: @anyFetchBlue;
-    text-decoration: none;
-  }
-
-  small {
-    display: block;
-    font-size: @desktopFullViewHeaderFontsizeSmall;
-  }
-
-  &.two-columns {
-    min-height: 100px;
-
-    aside,
-    section {
-      float: left;
-      margin: 10px;
-    }
   }
 }
 

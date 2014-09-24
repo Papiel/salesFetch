@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require('fs');
 var scrollToTop = require('../helpers/scrollToTop.js');
 
 /**
@@ -30,11 +29,6 @@ module.exports.goToDocument = function(doc) {
     }
     client.activeDocument(doc);
 
-    var cssBlock = document.createElement('style');
-    cssBlock.type = 'text/css';
-    // This ends up being statically replaced by the file's content by Browserify
-    cssBlock.innerHTML = fs.readFileSync(__dirname + '/../../../public/dist/full-view.css', 'utf8');
-
     var target;
     if(!client.isDesktop) {
       // TODO: check for browser compatibility
@@ -58,25 +52,34 @@ module.exports.goToDocument = function(doc) {
       var html;
       if(client.isDesktop) {
         html = '<nav><ul>';
+        html += '<li><a>' + doc.title() + '</a></li>';
 
         if(doc.actions.show) {
-          html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
         }
         if(doc.actions.download) {
-          html += '<li><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
         }
         if(doc.actions.reply) {
-          html += '<li><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
         }
 
         html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
       } else {
-        html = '<div id="document-container">' + docHtml + '</div>';
+        html = '<div id="document-container" class="anyfetch-mobile-scroll">' + docHtml + '</div>';
       }
       $(target.body).html(html);
-      target.head.appendChild(cssBlock);
-      $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css" type="text/css">');
-      $(target.head).append($('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">'));
+
+      // needed by the about:blank window created on desktop
+      // this allows links without host to work
+      $(target.head).append('<base href="https://' + document.location.host + '" />');
+
+      $(target.head).append('<meta charset="utf-8">');
+
+      $(target.head).append('<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" type="text/css">');
+      $(target.head).append('<link rel="stylesheet" href="/dist/full-view.css" type="text/css">');
+      $(target.head).append('<link rel="stylesheet" href="/dist/index.min.css" type="text/css">');
+      window.snippetStyle.formatDates({document: target});
     };
 
     // Load document full document content (AJAX) if needed

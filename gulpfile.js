@@ -18,6 +18,12 @@ var paths = {
     watch: 'assets/less/**/*.less',
     entryPoints: ['assets/less/style.less', 'assets/less/full-view.less'],
   },
+  libs: {
+    entryPoints: [
+      'bower_components/anyfetch-snippet-style/dist/index.min.css',
+      'bower_components/anyfetch-snippet-style/dist/index-moment.min.js'
+    ],
+  },
   target: 'public/dist/',
   ignores: ['/lib/**', 'public/**']
 };
@@ -49,6 +55,12 @@ gulp.task('browserify', ['less'], function() {
     p = p.pipe(minifyJs());
   }
 
+  return p.pipe(gulp.dest(paths.target));
+});
+
+// Libs
+gulp.task('libs', function() {
+  var p = gulp.src(paths.libs.entryPoints);
   return p.pipe(gulp.dest(paths.target));
 });
 
@@ -86,7 +98,10 @@ if(!isProduction) {
     gulp.watch(paths.less.watch, ['less']);
   });
 
+  gulp.task('build', ['lint', 'less', 'browserify', 'libs'], function() {
+  });
+
   // Run main tasks on launch
-  gulp.task('default', ['lint', 'less', 'browserify', 'watch', 'nodemon'], function() {
+  gulp.task('default', ['build', 'watch', 'nodemon'], function() {
   });
 }

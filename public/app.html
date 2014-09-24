@@ -23,12 +23,12 @@ We need to load dynamically
 
   var snippetStyle = $('<link rel="stylesheet" type="text/css" href=""/>');
   head.append(snippetStyle);
-  snippetStyle.attr('href', 'https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css');
+  snippetStyle.attr('href', $.salesFetchUrl + '/dist/index.min.css');
 
   var script = $('<' + 'script type="text/javascript" src="' + $.salesFetchUrl + '/dist/main.js"></script' + '>');
   head.append(script);
 </script>
-<script type="text/javascript" src="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index-moment.min.js"></script>
+<script type="text/javascript" src="/dist/index-moment.min.js"></script>
 
 <!--
  __  __       _               _

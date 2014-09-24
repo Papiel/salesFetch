@@ -1,5 +1,6 @@
 # Backend
 node_modules
+bower_components
 .env
 apex/config
 apex/apex-scripts

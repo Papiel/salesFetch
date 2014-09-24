@@ -64,6 +64,9 @@ gulp.task('libs', function() {
   return p.pipe(gulp.dest(paths.target));
 });
 
+gulp.task('build', ['lint', 'less', 'browserify', 'libs'], function() {
+});
+
 // ----- Development only
 if(!isProduction) {
   var nodemon = require('gulp-nodemon');
@@ -98,8 +101,6 @@ if(!isProduction) {
     gulp.watch(paths.less.watch, ['less']);
   });
 
-  gulp.task('build', ['lint', 'less', 'browserify', 'libs'], function() {
-  });
 
   // Run main tasks on launch
   gulp.task('default', ['build', 'watch', 'nodemon'], function() {

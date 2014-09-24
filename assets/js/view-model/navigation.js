@@ -55,13 +55,13 @@ module.exports.goToDocument = function(doc) {
         html += '<li><a>' + doc.title() + '</a></li>';
 
         if(doc.actions.show) {
-          html += '<li><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';
         }
         if(doc.actions.download) {
-          html += '<li><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-cloud-download" href="' + doc.actions.download + '" target="_blank"></a></li>';
         }
         if(doc.actions.reply) {
-          html += '<li><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
+          html += '<li class="pull-right"><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
         }
 
         html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';

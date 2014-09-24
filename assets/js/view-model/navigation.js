@@ -69,9 +69,16 @@ module.exports.goToDocument = function(doc) {
         html = '<div id="document-container" class="anyfetch-mobile-scroll">' + docHtml + '</div>';
       }
       $(target.body).html(html);
-      $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css" type="text/css">');
-      $(target.head).append($('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">'));
+
+      // needed by the about:blank window created on desktop
+      // this allows links without host to work
+      $(target.head).append('<base href="https://' + document.location.host + '" />');
+
+      // $(target.head).append('<link rel="stylesheet" href="https://cdn.rawgit.com/AnyFetch/anyfetch-snippet-style/v0.2.9/dist/index.min.css" type="text/css">');
+      $(target.head).append('<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">');
       $(target.head).append('<link rel="stylesheet" href="/dist/full-view.css" type="text/css">');
+      $(target.head).append('<link rel="stylesheet" href="/dist/index.min.css" type="text/css">');
+      window.snippetStyle.formatDates({document: target});
     };
 
     // Load document full document content (AJAX) if needed

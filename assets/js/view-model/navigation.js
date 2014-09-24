@@ -72,7 +72,7 @@ module.exports.goToDocument = function(doc) {
 
       // needed by the about:blank window created on desktop
       // this allows links without host to work
-      $(target.head).append('<base href="https://' + document.location.host + '" />');
+      $(target.head).append('<base href="' + $.salesFetchUrl + '" />');
 
       $(target.head).append('<meta charset="utf-8">');
 

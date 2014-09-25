@@ -14,7 +14,7 @@ module.exports = function SalesfetchViewModel() {
   // ----- Client device detection
   client.isDesktop = device.desktop();
   client.isTablet = !client.isDesktop && device.tablet();
-  client.isMobile = !client.isMobile && device.mobile();
+  client.isMobile = !client.isTablet && device.mobile();
 
   // ----- Editable data
   client.connectedProviders = ko.observableArray([]);

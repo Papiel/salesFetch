@@ -14,6 +14,7 @@ body {
   margin: 0px;
   width: 100%;
   height: 100%;
+  -webkit-overflow-scrolling: touch;
   background-color: white;
 }
 
@@ -22,15 +23,13 @@ body {
   font-family: @defaultFontFamily;
   padding: 2px;
 
-  -webkit-overflow-scrolling: touch;
-  overflow: scroll;
-
   // This fixes iOS Safari shitty iframe handling
   // Thanks Apple. Again. I fucking lost 6 hours on this bug.
   width: 10px;
   min-width: 100%;
   height: 10px;
   min-height: 100%;
+  overflow: scroll;
 
   &.desktop {
     padding: 20px;

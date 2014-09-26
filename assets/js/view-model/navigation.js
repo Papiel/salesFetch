@@ -33,7 +33,6 @@ module.exports.goToDocument = function(doc) {
     if(!client.isDesktop) {
       // TODO: check for browser compatibility
       var iframe = $('#full-iframe')[0];
-      iframe.attr('srolling', 'no');
       target = iframe.contentDocument;
     }
     else {

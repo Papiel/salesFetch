@@ -218,7 +218,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       user.anyFetchId = res.body.id;
-      var anyfetchUser = new AnyFetch(user.email, user.password);
+      var anyfetchUser = new AnyFetch(user.name, user.password);
       anyfetchUser.getToken(cb);
     },
     function saveLocalUser(res, cb) {

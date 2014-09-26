@@ -217,12 +217,6 @@ module.exports.addNewUser = function(user, organization, cb) {
       anyfetchAdmin.postUser(newUser, cb);
     },
     function retrieveUserToken(res, cb) {
-      if(res.status !== 200){
-        var e = new Error(res.text);
-        e.statusCode = res.status;
-        return cb(e);
-      }
-
       user.anyFetchId = res.body.id;
       var anyfetchUser = new AnyFetch(user.email, user.password);
       anyfetchUser.getToken(cb);

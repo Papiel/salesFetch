@@ -260,7 +260,7 @@ Hidden by default until the app has loaded.
           <div class="row provider-list" data-bind="foreach: $root.availableProviders">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
               <a data-bind="click: connect">
-                <div class="provider">
+                <div class="provider" data-bind="style:{'background-image': 'url(' + $.salesFetchUrl + '/dist/providers/' + id + '.svg)'}">
                   <h4>
                     <span data-bind="text: name"></span>
                     <span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>

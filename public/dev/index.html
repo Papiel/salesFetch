@@ -56,7 +56,7 @@
       $.salesFetchUrl = window.location.origin;
       var appUrl = '../app.html';
       // Forward get parameters
-      appUrl += '?' + window.location.search;
+      appUrl += window.location.search;
 
       var container = $('#app-container');
       $.ajax({

@@ -7,7 +7,7 @@ module.exports = function sliceInTime(documents) {
     documents: []
   }, {
     label: 'Yesterday',
-    maxDate: moment().startOf('day').subtract('day', 1),
+    maxDate: moment().startOf('day').subtract(1, 'day'),
     documents: []
   }, {
     label: 'Earlier this Week',
@@ -15,7 +15,7 @@ module.exports = function sliceInTime(documents) {
     documents: []
   }, {
     label: 'Last Week',
-    maxDate: moment().startOf('week').subtract('week', 1),
+    maxDate: moment().startOf('week').subtract(1, 'week'),
     documents: []
   }, {
     label: 'Earlier this Month',
@@ -23,7 +23,7 @@ module.exports = function sliceInTime(documents) {
     documents: []
   }, {
     label: 'Last Month',
-    maxDate: moment().startOf('month').subtract('month', 1),
+    maxDate: moment().startOf('month').subtract(1, 'month'),
     documents: []
   }, {
     label: 'Earlier this Year',
@@ -31,7 +31,7 @@ module.exports = function sliceInTime(documents) {
     documents: []
   }, {
     label: 'Last Year',
-    maxDate: moment().startOf('year').subtract('year', 1),
+    maxDate: moment().startOf('year').subtract(1, 'year'),
     documents: []
   }, {
     label: 'Older',

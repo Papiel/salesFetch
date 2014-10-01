@@ -134,9 +134,8 @@ Hidden by default until the app has loaded.
 
           <!-- SECTION BODY -->
           <div class="section-body" data-bind="foreach: documents">
-
             <!-- SNIPPET -->
-            <div class="snippet" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}">
+            <div class="snippet" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}, style: {'background-image': 'url(/dist/providers/' + provider.client_id + '_grayscale.svg)'}">
               <div class="icon" data-bind="css: type.name"></div>
               <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
               <p class="content" data-bind="html: snippet"></p>

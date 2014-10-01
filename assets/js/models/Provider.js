@@ -10,6 +10,7 @@ module.exports = function Provider(json) {
   if(json) {
     self.name = json.name ? json.name : json.client.name;
     self.id = json.id;
+    self.client_id = json.client ? json.client.id : null;
     self.redirect_uri = json.redirect_uri;
     self.trusted = json.trusted;
     self.featured = json.featured;

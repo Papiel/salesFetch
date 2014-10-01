@@ -134,11 +134,8 @@
 	padding: @snippetPadding;
 	padding-left: @snippetPadding + @snippetIconDivWidth;
 	background-color: @snippetBackgroundColor;
-	background-size: 20px;
 	position: relative; // needed for icon to stay in
 	overflow: hidden;
-	background-repeat: no-repeat;
-	background-position: bottom right;
 
 	font-size: @snippetFontSize;
 
@@ -149,6 +146,16 @@
 		text-overflow: ellipsis;
 		margin-bottom: 0px;
 		margin-right: @snippetContentRightMargin + @starButtonFontSize;
+	}
+
+	.provider-icon {
+		float: right;
+		height: @starButtonFontSize;
+		width: @starButtonFontSize;
+		clear: both;
+		margin-top: @snippetHeight - (2 * @starButtonFontSize) - @starButtonMarginTop - (2 * @snippetPadding);
+		background-size: @starButtonFontSize;
+		background-repeat: no-repeat;
 	}
 
 	.icon {
@@ -214,7 +221,7 @@
 
 	.star-btn { .StarButton;
 		float: right;
-		margin-top: (@snippetHeight - 2*@snippetPadding - @starButtonFontSize)/2 ;
+		margin-top: @starButtonMarginTop;
 	}
 }
 

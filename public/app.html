@@ -134,11 +134,11 @@ Hidden by default until the app has loaded.
 
           <!-- SECTION BODY -->
           <div class="section-body" data-bind="foreach: documents">
-
             <!-- SNIPPET -->
             <div class="snippet" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}">
               <div class="icon" data-bind="css: type.name"></div>
               <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
+              <span class="provider-icon" data-bind="style: {'background-image': 'url(' + $.salesFetchUrl + '/dist/providers/' + provider.client_id + '_grayscale.svg)'}"></span>
               <p class="content" data-bind="html: snippet"></p>
             </div>
             <!-- END SNIPPET -->
@@ -261,7 +261,7 @@ Hidden by default until the app has loaded.
           <div class="row provider-list" data-bind="foreach: $root.availableProviders">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
               <a data-bind="click: connect">
-                <div class="provider">
+                <div class="provider" data-bind="style:{'background-image': 'url(' + $.salesFetchUrl + '/dist/providers/' + id + '.svg)'}">
                   <h4>
                     <span data-bind="text: name"></span>
                     <span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>

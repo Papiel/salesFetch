@@ -148,6 +148,16 @@
 		margin-right: @snippetContentRightMargin + @starButtonFontSize;
 	}
 
+	.provider-icon {
+		float: right;
+		height: @starButtonFontSize;
+		width: @starButtonFontSize;
+		clear: both;
+		margin-top: @snippetHeight - (2 * @starButtonFontSize) - @starButtonMarginTop - (2 * @snippetPadding);
+		background-size: @starButtonFontSize;
+		background-repeat: no-repeat;
+	}
+
 	.icon {
 		position: absolute;
 		top: 0;
@@ -211,7 +221,7 @@
 
 	.star-btn { .StarButton;
 		float: right;
-		margin-top: (@snippetHeight - 2*@snippetPadding - @starButtonFontSize)/2 ;
+		margin-top: @starButtonMarginTop;
 	}
 }
 
@@ -519,6 +529,10 @@
 	padding: @providerPadding;
 	cursor: pointer;
 	background-color: @providerBackgroundColor;
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	background-size: 20px;
+	padding-left: 26px;
 
 	&:hover {
 		background-color: white;

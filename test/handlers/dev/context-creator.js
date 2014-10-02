@@ -5,17 +5,16 @@ var request = require('supertest');
 var async = require('async');
 
 var app = require('../../../app.js');
+var config = require('../../../config/configuration');
 var cleaner = require('../../hooks/cleaner');
 var requestBuilder = require('../../helpers/login').requestBuilder;
 var _ = require('lodash');
 
 describe('/dev/context-creator (dev only)', function() {
   describe('GET /dev/context-creator', function() {
-    var endpoint = '/dev/context-creator';
+    var endpoint = '/dev/context-creator?token=anyFetchToken&code=' + config.code;
 
     before(cleaner);
-    after(cleaner);
-
     it('should return a valid context', function(done) {
       async.waterfall([
         function prepare(cb) {
@@ -37,10 +36,12 @@ describe('/dev/context-creator (dev only)', function() {
         }
       ], done);
     });
+
+    after(cleaner);
   });
 
   describe('POST /dev/context-creator', function() {
-    var endpoint = '/dev/context-creator';
+    var endpoint = '/dev/context-creator?token=anyFetchToken&code=' + config.code;
     var dummyContext;
     var prefix = '/';
 
@@ -62,7 +63,6 @@ describe('/dev/context-creator (dev only)', function() {
         }
       ], done);
     });
-    after(cleaner);
 
     it('should err on missing `data` key', function(done) {
       request(app)
@@ -135,5 +135,7 @@ describe('/dev/context-creator (dev only)', function() {
         })
         .end(done);
     });
+
+    after(cleaner);
   });
 });

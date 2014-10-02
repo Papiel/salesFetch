@@ -5,7 +5,7 @@ services:
   - mongodb
 env:
   global:
-  - CODE=
+  - CODE=travis
   - SALESFETCH_URL="https://localhost:3000"
   - secure: Xq+5HACB2SJDxtsXkGuOeu/uOLlFyKnIZcapa3d5yjlK81LWFwXTOJf7FylqmOsETB4YkXxGPjIHWtkugYJNBgiPU7zX89nlFGQwJAHIFUOyB3A9GG4S1e+3i84Q7mDPZmbYvkoxHDUWjyEMuMU3WrAETa0XyyQErqtab+W8p/U=
   - secure: Ylzx0JPu3GjFCSsUrIaIjYr1iEMEmKVw5UNL6C87TN48SvAjqbzc44C2q2LjM0x3DuO8VE7F4m20kTKn/M3iEV0GUQcaffm/ebfzSw5zzRZ/Cs+JtlTW+hYs0DhRoExT0MkiAc1fVYxQk2U1uRufjHum/Ztd3zq4rOinXdp5T/o=

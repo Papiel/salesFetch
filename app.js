@@ -19,10 +19,13 @@ mongoose.connect(config.mongo_url);
 var serverOptions = {
   name: "SalesFetch"
 };
+
+
 if(config.env === 'development') {
   serverOptions.certificate = config.certificates.cert;
   serverOptions.key = config.certificates.key;
 }
+
 
 var server = restify.createServer(serverOptions);
 // Bootstrap Models, Dependencies, Routes, Middlewares

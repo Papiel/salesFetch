@@ -42,6 +42,7 @@ var defaultDummyContext = {
 };
 var defaultPrefix = '/dev/index.html';
 
+
 var sendRes = function(res, data, org, prefix) {
   data.organization = {
     id: org.SFDCId,
@@ -65,15 +66,23 @@ var sendRes = function(res, data, org, prefix) {
   });
 };
 
+
 /**
  * Obtain an initial dummy context
  */
 module.exports.get = function getDummyContext(req, res, next) {
+  if(!req.params.token) {
+    res.send(new restify.MissingParameterError("Missing token parameter: please specify your anyfetch token."));
+      return next();
+  }
+
   var data = _.merge({}, defaultDummyContext);
 
   async.waterfall([
     function findUser(cb) {
-      User.findOne({}, cb);
+      User.findOne({
+        anyFetchToken: req.params.token,
+      }, cb);
     },
     function findOrg(user, cb) {
       if(!user) {
@@ -97,6 +106,7 @@ module.exports.get = function getDummyContext(req, res, next) {
     next();
   });
 };
+
 
 /**
  * Sign a dummy context by client request

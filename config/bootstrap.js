@@ -10,10 +10,16 @@ var logger = require('../app/middlewares/logger.js');
 var logError = require('./services.js').logError;
 var addRoutes = require(__dirname + '/../app/routes.js');
 
+
 module.exports = function(server) {
   // Check if fetchApi token is set before continuing!
   if(config.env !== 'test' && !config.fetchApiCreds) {
     console.log('Please provide a FetchApi token before launching the server.');
+    process.exit(1);
+  }
+
+  if(config.code === undefined) {
+    console.log("For security reasons, you need to explicitly provide a `CODE` environment var. You may leave it empty for development.");
     process.exit(1);
   }
 

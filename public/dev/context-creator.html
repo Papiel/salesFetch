@@ -43,9 +43,10 @@
       });
     </script>
     <script type="text/javascript">
-      var contextCreatorUrl = '/dev/context-creator';
+      var contextCreatorUrl = '/dev/context-creator' + location.search;
 
       function show(res) {
+        "use strict";
         $('#error').empty();
 
         var url = res.url;
@@ -57,6 +58,7 @@
       }
 
       function loadFakeContext() {
+        "use strict";
         $.ajax({
           url: contextCreatorUrl,
           success: show,
@@ -68,6 +70,7 @@
       }
 
       function update(form) {
+        "use strict";
         $.post(contextCreatorUrl, form.serialize())
           .done(show)
           .fail(function error(res) {
@@ -77,6 +80,7 @@
       }
 
       $(document).ready(function() {
+        "use strict";
         $('#link').hide();
         loadFakeContext();
 

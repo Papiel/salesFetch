@@ -128,17 +128,11 @@ module.exports.initAccount = function(data, done) {
       });
     },
     function createAccountAndSubcompany(cb) {
-      // Avoid collision with production
-      if(config.env === 'development') {
-        user.name = 'dev-' + user.name;
-      }
-
       var subcompany = {
-        user: user.anyFetchId,
-        name: org.name
+        name: org.id
       };
       var fetchUser = {
-        email: user.name,
+        email: new Date().getTime() + '@salesfetch.com',
         name: user.name,
         password: user.password
       };
@@ -146,7 +140,7 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(company, admin, cb) {
       user.anyFetchId = admin.id;
-      var anyfetchUser = new AnyFetch(user.name, user.password);
+      var anyfetchUser = new AnyFetch(admin.email, user.password);
       anyfetchUser.getToken(rarity.carry(company, cb));
     },
     function saveLocalCompany(company, res, cb) {
@@ -210,7 +204,7 @@ module.exports.addNewUser = function(user, organization, cb) {
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);
       var newUser = {
-        email: user.name,
+        email: new Date().getTime() + '@salesfetch.com',
         name: user.name,
         password: user.password
       };
@@ -218,7 +212,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       user.anyFetchId = res.body.id;
-      var anyfetchUser = new AnyFetch(user.name, user.password);
+      var anyfetchUser = new AnyFetch(res.body.email, user.password);
       anyfetchUser.getToken(cb);
     },
     function saveLocalUser(res, cb) {

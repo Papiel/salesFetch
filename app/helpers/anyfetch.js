@@ -128,17 +128,11 @@ module.exports.initAccount = function(data, done) {
       });
     },
     function createAccountAndSubcompany(cb) {
-      // Avoid collision with production
-      if(config.env === 'development') {
-        user.name = 'dev-' + user.name;
-      }
-
       var subcompany = {
-        user: user.anyFetchId,
-        name: org.name
+        name: org.id
       };
       var fetchUser = {
-        email: user.name,
+        email: new Date().getTime() + '@salesfetch.com',
         name: user.name,
         password: user.password
       };
@@ -210,7 +204,7 @@ module.exports.addNewUser = function(user, organization, cb) {
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);
       var newUser = {
-        email: user.name,
+        email: new Date().getTime() + '@salesfetch.com',
         name: user.name,
         password: user.password
       };

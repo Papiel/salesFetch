@@ -10,6 +10,9 @@ module.exports = function(server) {
   var middlewares = lib.middlewares;
   var handlers = lib.handlers;
 
+  // Redirect `/` to the main website
+  server.get('/', handlers.index.get);
+
   server.post('/admin/init', handlers.admin.index.post);
 
   server.get('/app/documents',
@@ -48,24 +51,10 @@ module.exports = function(server) {
     middlewares.authorization.requiresLogin,
     handlers.app.providers.index.post);
 
-  // Dev-only routes
-  // if(config.env === 'development' || config.env === 'test') {
-  if(true) {
-    server.get('/dev/context-creator', handlers.dev.contextCreator.get);
-    server.post('/dev/context-creator', handlers.dev.contextCreator.post);
+  // Dev endpoints, for testing out of SF1
+  server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
+  server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
 
-    // Redirect `/` to the context creator
-    server.get('/', function(req, res, next) {
-      res.set('Location', '/dev/context-creator.html');
-      res.send(302);
-      return next();
-    });
-  }
-  else {
-    server.get(/\/dev\/.*/i, function(req, res, next) {
-      return next(new restify.NotFoundError('Not found'));
-    });
-  }
 
   /**
    * Allow cross-origin OPTION requests

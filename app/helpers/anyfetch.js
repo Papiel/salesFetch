@@ -140,7 +140,7 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(company, admin, cb) {
       user.anyFetchId = admin.id;
-      var anyfetchUser = new AnyFetch(user.name, user.password);
+      var anyfetchUser = new AnyFetch(admin.email, user.password);
       anyfetchUser.getToken(rarity.carry(company, cb));
     },
     function saveLocalCompany(company, res, cb) {

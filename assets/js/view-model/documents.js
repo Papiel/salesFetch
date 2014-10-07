@@ -26,7 +26,7 @@ module.exports.documentWithJson = function(json) {
 
   // Instantiate a new Provider model only when needed
   var provider;
-  tab.client.connectedProviders().forEach(function(p) {
+  tab.client.facetsProviders().forEach(function(p) {
     if(p.id === json.provider.id) {
       provider = p;
     }
@@ -34,7 +34,7 @@ module.exports.documentWithJson = function(json) {
   if(!provider) {
     console.log('Provider not found:', json.provider);
     provider = new Provider(json.provider);
-    tab.client.connectedProviders.push(provider);
+    tab.client.facetsProviders.push(provider);
   }
   doc.provider = provider;
 

@@ -20,9 +20,9 @@ var paths = {
   },
   libs: {
     entryPoints: [
-      'bower_components/anyfetch-snippet-style/dist/index.min.css',
-      'bower_components/anyfetch-snippet-style/dist/index-moment.min.js',
-      'bower_components/anyfetch-snippet-style/dist/images/*/*'
+      'bower_components/anyfetch-assets/dist/index.min.css',
+      'bower_components/anyfetch-assets/dist/index-moment.min.js',
+      'bower_components/anyfetch-assets/dist/images/*/*'
     ],
   },
   target: 'public/dist/',

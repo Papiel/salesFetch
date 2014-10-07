@@ -79,7 +79,7 @@ module.exports.goToDocument = function(doc) {
       $(target.head).append('<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" type="text/css">');
       $(target.head).append('<link rel="stylesheet" href="/dist/full-view.css" type="text/css">');
       $(target.head).append('<link rel="stylesheet" href="/dist/index.min.css" type="text/css">');
-      window.snippetStyle.formatDates({document: target});
+      window.anyfetchAssets.formatDates({document: target});
     };
 
     // Load document full document content (AJAX) if needed

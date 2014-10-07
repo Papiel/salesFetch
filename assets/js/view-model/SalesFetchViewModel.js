@@ -18,6 +18,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Editable data
   client.connectedProviders = ko.observableArray([]);
+  client.facetsProviders = ko.observableArray([]);
   client.types = ko.observableArray([]);
   client.availableProviders = ko.observableArray([]);
 
@@ -42,10 +43,9 @@ module.exports = function SalesfetchViewModel() {
   client.setTypes = types.setTypes;
 
   // ----- Providers
-  client.getConnectedProviderById = providers.getConnectedProviderById;
   client.setAvailableProviders = providers.setAvailableProviders;
   client.setConnectedProviders = providers.setConnectedProviders;
-  client.updateConnectedProviders = providers.updateConnectedProviders;
+  client.setFacetsProviders = providers.setFacetsProviders;
 
   // Each time the content of the curerent document's full view changes
   // reset the content of the viewer

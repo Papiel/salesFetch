@@ -33,8 +33,8 @@ module.exports.fetchDocuments = function(updateFacets) {
     response = response.documents ? response.documents : response;
 
     if(updateFacets && !tab.starred) {
-      tab.client.setConnectedProviders(response.facets.providers);
       tab.client.setTypes(response.facets.document_types);
+      tab.client.setFacetsProviders(response.facets.providers);
     }
 
     var docs = tab.documentsWithJson(response);
@@ -116,6 +116,6 @@ module.exports.fetchAvailableProviders = function() {
 
   call('/app/providers', function success(data) {
     client.setAvailableProviders(data.providers);
-    client.updateConnectedProviders(data.connectedProviders);
+    client.setConnectedProviders(data.connectedProviders);
   });
 };

@@ -21,32 +21,22 @@ module.exports.setConnectedProviders = function(providers) {
   var connectedProviders = [];
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
-    if(provider._type !== "AccessToken" || provider.client) {
+    if(!provider.is_basic_token) {
       connectedProviders.push(new Provider(provider));
     }
   });
   client.connectedProviders(connectedProviders);
 };
 
-module.exports.updateConnectedProviders = function(providers) {
+module.exports.setFacetsProviders = function(providers) {
   var client = this;
-  providers.forEach(function(p) {
+
+  var facetsProviders = [];
+  providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
-    if(p._type !== "AccessToken" || p.client) {
-      var provider = client.getConnectedProviderById(p.id);
-      if(provider) {
-        provider.totalCount(p.document_count);
-      }
+    if(!provider.is_basic_token) {
+      facetsProviders.push(new Provider(provider));
     }
   });
-};
-
-module.exports.getConnectedProviderById = function(providerId) {
-  var client = this;
-  for(var i = 0; i < client.connectedProviders().length; i += 1) {
-    var p = client.connectedProviders()[i];
-    if(p.id === providerId) {
-      return p;
-    }
-  }
+  client.facetsProviders(facetsProviders);
 };

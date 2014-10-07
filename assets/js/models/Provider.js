@@ -17,8 +17,7 @@ module.exports = function Provider(json) {
     self.description = json.description;
     self.developer = json.developer ? json.developer.name : 'unknown';
     self.accountName = json.account_name ? json.account_name : 'unknown';
-    self.queryCount = json.document_count;
-    self.totalCount = ko.observable('unknown');
+    self.documentCount = json.document_count;
   }
 
   // Knock out will run every binding once on load.
@@ -42,6 +41,6 @@ module.exports = function Provider(json) {
   };
 
   self.extendedName = function() {
-    return this.name.capitalize() + ' (' + this.queryCount + ')';
+    return this.name.capitalize() + ' (' + this.documentCount + ')';
   };
 };

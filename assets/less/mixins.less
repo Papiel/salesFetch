@@ -526,13 +526,13 @@
 	border: @defaultBorder;
 	border-radius: @providerBorderRadius;
 	margin: @providerMargin;
-	padding: @providerPadding;
+	padding: 0;
 	cursor: pointer;
 	background-color: @providerBackgroundColor;
 	background-repeat: no-repeat;
-	background-position: 3px center;
-	background-size: 20px;
-	padding-left: 26px;
+	background-position: @providerIconPadding center;
+	background-size: @providerIconSize;
+	padding-left: @providerIconSize + 2 * @providerIconPadding;
 
 	&:hover {
 		background-color: white;

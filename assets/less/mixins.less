@@ -526,17 +526,25 @@
 	border: @defaultBorder;
 	border-radius: @providerBorderRadius;
 	margin: @providerMargin;
-	padding: @providerPadding;
+	padding: 0;
 	cursor: pointer;
 	background-color: @providerBackgroundColor;
 	background-repeat: no-repeat;
-	background-position: 3px center;
-	background-size: 20px;
-	padding-left: 26px;
+	background-position: @providerIconPadding center;
+	background-size: @providerIconSize;
+	padding-left: @providerIconSize + 2 * @providerIconPadding;
 
 	&:hover {
 		background-color: white;
 		box-shadow: @providerBoxShadow;
+	}
+
+	h4 {
+		margin: 6px 0;
+	}
+
+	p {
+		margin: 0 0 6px;
 	}
 
 	.author {
@@ -589,7 +597,7 @@
 			}
 		}
 
-		td:last-child {
+		td:last-child, th:last-child {
 			text-align: right;
 		}
 
@@ -600,10 +608,6 @@
 
 			tr:nth-child(even) {
 				background-color: @providerTableCellBackgroundColorEven;
-			}
-
-			tr:hover {
-				background-color: @providerTableCellBackgroundColorHover !important;
 			}
 		}
 	}

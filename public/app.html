@@ -21,9 +21,9 @@ We need to load dynamically
   head.append(customStyle);
   customStyle.attr('href', $.salesFetchUrl + '/dist/style.css');
 
-  var snippetStyle = $('<link rel="stylesheet" type="text/css" href=""/>');
-  head.append(snippetStyle);
-  snippetStyle.attr('href', $.salesFetchUrl + '/dist/index.min.css');
+  var anyfetchAssets = $('<link rel="stylesheet" type="text/css" href=""/>');
+  head.append(anyfetchAssets);
+  anyfetchAssets.attr('href', $.salesFetchUrl + '/dist/index.min.css');
 
   var script = $('<' + 'script type="text/javascript" src="' + $.salesFetchUrl + '/dist/main.js"></script' + '>');
   head.append(script);

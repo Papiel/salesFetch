@@ -21,7 +21,7 @@ module.exports.setConnectedProviders = function(providers) {
   var connectedProviders = [];
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
-    if(provider._type !== "AccessToken" || provider.client) {
+    if(!provider.is_basic_token) {
       connectedProviders.push(new Provider(provider));
     }
   });
@@ -34,7 +34,7 @@ module.exports.setFacetsProviders = function(providers) {
   var facetsProviders = [];
   providers.forEach(function(provider) {
     // Prevents fetching the anonymous token
-    if(provider._type !== "AccessToken" || provider.client) {
+    if(!provider.is_basic_token) {
       facetsProviders.push(new Provider(provider));
     }
   });

@@ -16,12 +16,12 @@ var isActive = function(o) {
 */
 module.exports.activeProviders = function(client) {
   return function() {
-    var activeProviders = client.connectedProviders().filter(isActive);
+    var activeProviders = client.facetsProviders().filter(isActive);
 
     // Update client.filterByProvider
     client.filterByProvider(activeProviders.length !== 0);
 
-    return client.filterByProvider() ? activeProviders : client.connectedProviders();
+    return client.filterByProvider() ? activeProviders : client.facetsProviders();
   };
 };
 

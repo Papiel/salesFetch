@@ -52,7 +52,7 @@ module.exports.goToDocument = function(doc) {
       var html;
       if(client.isDesktop) {
         html = '<nav><ul>';
-        html += '<li><a>' + doc.title() + '</a></li>';
+        html += '<li class="title"><a>' + doc.title() + '</a></li>';
 
         if(doc.actions.show) {
           html += '<li class="pull-right"><a class="fa fa-external-link" href="' + doc.actions.show + '" target="_blank"></a></li>';

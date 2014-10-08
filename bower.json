@@ -28,6 +28,6 @@
     "tests"
   ],
   "dependencies": {
-    "anyfetch-assets": "1.2.0"
+    "anyfetch-assets": "1.2.1"
   }
 }

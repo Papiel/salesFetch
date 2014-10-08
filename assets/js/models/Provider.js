@@ -39,7 +39,6 @@ module.exports = function Provider(json) {
 
     var interval = setInterval(function() {
       if(w.closed) {
-        client.providerCallbackStatus('success');
         client.fetchAvailableProviders();
         clearInterval(interval);
       }

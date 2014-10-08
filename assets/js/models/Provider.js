@@ -27,13 +27,23 @@ module.exports = function Provider(json) {
     client.updateFilter();
   };
 
-  self.connect = function () {
+  // Knock out will run every binding once on load.
+  // It is important to encapsulate connect in an anonymous function in data-bindings
+  self.connect = function(client) {
     var url = '/app/providers/' + self.id ;
     var options = {
       type: 'post'
     };
 
     var w = window.open(null, '_blank');
+
+    var interval = setInterval(function() {
+      if(w.closed) {
+        client.providerCallbackStatus('success');
+        client.fetchAvailableProviders();
+        clearInterval(interval);
+      }
+    }, 250);
 
     call(url, options, function success(data) {
       w.location = data.url;

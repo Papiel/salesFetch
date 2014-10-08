@@ -24,11 +24,6 @@ client.bindInfiniteScroll = misc.bindInfiniteScroll;
 ko.applyBindings(client);
 client.fetchDocuments(true);
 client.fetchAvailableProviders();
-if(client.isDesktop) {
-  window.refreshProviders = function() {
-    client.fetchAvailableProviders();
-  };
-}
 
 $(document).ready(function() {
   misc.addDropdownButtons();

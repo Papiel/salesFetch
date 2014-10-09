@@ -48,6 +48,9 @@ module.exports.goToDocument = function(doc) {
       $(target.body).html(spinnerHTML);
     }
 
+    // Copy class from current <html></html>
+    $(target.documentElement).addClass($("html").attr("class"));
+
     var writeFullView = function(docHtml) {
       var html;
       if(client.isDesktop) {
@@ -64,7 +67,7 @@ module.exports.goToDocument = function(doc) {
           html += '<li class="pull-right"><a class="fa fa-mail-reply" href="' + doc.actions.reply + '" target="_blank"></a></li>';
         }
 
-        html += '</ul></nav><div id="document-container" class="desktop">' + docHtml + '</div>';
+        html += '</ul></nav><div id="document-container">' + docHtml + '</div>';
       } else {
         html = '<div id="document-container" class="anyfetch-mobile-scroll">' + docHtml + '</div>';
       }

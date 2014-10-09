@@ -11,10 +11,13 @@
 body {
   font-family: @defaultFontFamily;
   font-size: @defaultFontSize;
-  margin: @navbarHeight 0 0 0;
   width: 100%;
   -webkit-overflow-scrolling: touch;
   background-color: white;
+}
+
+.desktop body {
+  margin: @navbarHeight 0 0 0;
 }
 
 #document-container {
@@ -29,13 +32,10 @@ body {
   height: 10px;
   min-height: 100%;
   box-sizing: border-box;
+}
 
-  &.tablet, &.mobile {
-    overflow: scroll;
-  }
-  &.desktop {
-    padding: 20px;
-  }
+.desktop #document-container {
+  padding: 20px;
 }
 
 nav {

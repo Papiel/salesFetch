@@ -1,4 +1,5 @@
 'use strict';
+/* global anyfetchAssets */
 
 var call = require('../helpers/call.js');
 var filters = require('./filters.js');
@@ -15,6 +16,13 @@ module.exports.checkAllDocumentsLoaded = function(tab, response) {
   tab.allDocumentsLoaded(frontCount >= querycount);
 };
 
+var setDates = function(delay, i, max) {
+  delay *= 2;
+  anyfetchAssets.formatDates();
+  if(i < max) {
+    setTimeout(setDates, delay, [delay, i + 1, max]);
+  }
+};
 
 /**
  * @param {Object} updateFacets Whether or not the providers and types should be updated
@@ -49,8 +57,7 @@ module.exports.fetchDocuments = function(updateFacets) {
       tab.client.hasFinishedLoading(true);
     }
 
-    /* global anyfetchAssets */
-    setTimeout(anyfetchAssets.formatDates, 500);
+    setDates(125, 0, 4);
   }, function error(res) {
     tab.shouldDisplayDocumentsSpinner(false);
     tab.documentListError(getErrorMessage(res));
@@ -86,7 +93,7 @@ module.exports.fetchMoreDocuments = function() {
 
       // update loadMore spinner
       module.exports.checkAllDocumentsLoaded(tab, response);
-      setTimeout(anyfetchAssets.formatDates, 500);
+      setDates(125, 0, 4);
     }, function error(res) {
       tab.loadMoreError(getErrorMessage(res));
       tab.allDocumentsLoaded(true);

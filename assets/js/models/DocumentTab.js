@@ -40,7 +40,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
       window.anyfetchAssets.formatDates();
     }
     else if(i < max) {
-      setTimeout(tryFormat, 500, [max, i + 1, max]);
+      setTimeout(tryFormat, 500, [max, i + 1]);
     }
   }
   self.afterRenderFunc = function(elements, element) {
@@ -71,7 +71,6 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
     }
 
     var docs = self.filter ? docList.filter(self.filter) : docList;
-    docs = sliceInTime(docs);
-    return docs;
+    return sliceInTime(docs);
   });
 };

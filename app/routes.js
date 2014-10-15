@@ -52,6 +52,7 @@ module.exports = function(server) {
     handlers.app.providers.index.post);
 
   server.post('/app/init',
+    middlewares.cors,
     middlewares.authorization.requiresLogin,
     handlers.app.init.index.post);
 

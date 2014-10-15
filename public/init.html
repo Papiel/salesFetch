@@ -27,9 +27,10 @@
 <!-- jQuery -->
 <script type="text/javascript">
   /* global $ */
+  /* global window */
   $('#init').on('click', function(){
     // Post on /app/init to create the user
-    var url = ($.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com');
+    var url = $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
     url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
     $.post(url, {}, function success(){
       window.location.reload(true);

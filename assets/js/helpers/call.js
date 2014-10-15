@@ -2,7 +2,7 @@
 
 var loadFirstUsePage = function() {
   var url = $.salesFetchUrl + '/init.html' + document.location.search;
-  var container = $('#app-container');
+  var container = $('html');
   $.ajax({
     url: url,
     contentType: 'html',

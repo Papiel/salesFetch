@@ -1,7 +1,7 @@
 'use strict';
 
 var loadFirstUsePage = function() {
-  var url = $.salesFetchUrl + '/init.html' + document.location.search;
+  var url = $.salesFetchUrl + '/init.html' + '?data=' + encodeURIComponent(JSON.stringify($.clientData));
   var container = $('html');
   $.ajax({
     url: url,

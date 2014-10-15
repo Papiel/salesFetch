@@ -33,7 +33,22 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
 
 
   self.documents = ko.observable({});
-  self.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" } });
+  function tryFormat(max, i) {
+    max = max || 3;
+    i = i || 0;
+    if(window.anyfetchAssets.formatDates) {
+      window.anyfetchAssets.formatDates();
+    }
+    else if(i < max) {
+      setTimeout(tryFormat, 500, [max, i + 1, max]);
+    }
+  }
+  self.afterRenderFunc = function(elements, element) {
+    if(element.label === 'Older') {
+      tryFormat();
+    }
+  };
+  self.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" }, notify: 'always' });
 
   self.shouldDisplayDocumentList = ko.computed(function() {
     return (!self.client.isMobile || !client.activeDocument());
@@ -56,6 +71,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
     }
 
     var docs = self.filter ? docList.filter(self.filter) : docList;
-    return sliceInTime(docs);
+    docs = sliceInTime(docs);
+    return docs;
   });
 };

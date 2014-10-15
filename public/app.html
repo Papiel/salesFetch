@@ -119,7 +119,7 @@ Hidden by default until the app has loaded.
     <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
       <!-- BEGIN SNIPPET SECTION LIST -->
       <div class="snippet-list">
-      <!-- ko foreach: timeSlices() -->
+      <!-- ko foreach: {data: timeSlices(), afterRender: afterRenderFunc} -->
 
         <!-- SNIPPET SECTION -->
         <div class="snippet-section" data-bind="visible: documents.length > 0">

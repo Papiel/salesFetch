@@ -117,7 +117,7 @@ describe('<Authentication middleware>', function() {
     ], done);
   });
 
-  it('should create a new user if not in DB', function(done) {
+  it('should create a new user if not in DB and endpoint is /app/init', function(done) {
     var createdOrg;
 
     async.waterfall([
@@ -160,8 +160,8 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var query = { data: JSON.stringify(data) };
-        authMiddleware({ query: query }, null, cb);
+        var query = { data: JSON.stringify(data)};
+        authMiddleware({ query: query, url: 'https://salesfetch/app/init' }, null, cb);
       },
       function checkUserValidity(cb) {
         User.findOne({name: 'Walter White'}, function(err, user) {
@@ -201,7 +201,7 @@ describe('<Authentication middleware>', function() {
         data.hash = hash;
 
         var query = { data: JSON.stringify(data) };
-        authMiddleware({ query: query }, null, cb);
+        authMiddleware({ query: query, url: 'https://salesfetch/app/init' }, null, cb);
       }
     ], function expectError(err) {
       should(err).be.ok;

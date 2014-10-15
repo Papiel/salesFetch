@@ -26,23 +26,13 @@
 
 <!-- jQuery -->
 <script type="text/javascript">
-  function getParam(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-    var results = regex.exec(window.location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
-  $(document).ready(function() {
-    var config = JSON.parse(getParam('data') || '{}');
-    $('#init').on('click', function(){
-      // Post on /app/init to create the user
-      $.post(
-        (config.salesFetchURL || 'https://salesfetch.herokuapp.com') + '/app/init' + window.location.search,
-        {},
-        function success(){
-          window.location.reload(true);
-        }
-      );
-    })
+  /* global $ */
+  $('#init').on('click', function(){
+    // Post on /app/init to create the user
+    var url = ($.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com');
+    url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
+    $.post(url, {}, function success(){
+      window.location.reload(true);
+    });
   });
 </script>

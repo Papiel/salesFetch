@@ -1,68 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+  First run page
+  Users are redirected to this page when they don't have an account yet
+-->
+<style type="text/css">
+  .logo h1 {
+    font-weight: 100;
+    margin: 0;
+    font-size: 5em;
+    color: #16A9E2;
+  }
+</style>
+<div>
+  <div class="logo">
+    <h1>Sales<strong>Fetch</strong></h1>
+  </div>
+  <h1>Welcome</h1>
+  <h4>It looks like it's your first time here</h4>
 
-  <!--
-    First run page
-    Users are redirected to this page when they don't have an account yet
-  -->
+  <button id="init">Initialize my account and continue</button>
+</div>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SalesFetch</title>
-
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <style type="text/css">
-      .logo h1 {
-        font-weight: 100;
-        margin: 0;
-        font-size: 5em;
-        color: #16A9E2;
-      }
-    </style>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-  </head>
-  <body>
-
-    <div id="app-container">
-      <div class="logo">
-        <h1>Sales<strong>Fetch</strong></h1>
-      </div>
-      <h1>Welcome</h1>
-      <h4>It looks like it's your first time here</h4>
-
-      <button id="init">Initialize my account and continue</button>
-    </div>
-
-    <!-- jQuery -->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      function getParam(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        var results = regex.exec(window.location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-      }
-      $(document).ready(function() {
-        var config = JSON.parse(getParam('data') || '{}');
-        $('#init').on('click', function(){
-          // Post on /app/init to create the user
-          $.post(
-            (config.salesFetchURL || 'https://salesfetch.herokuapp.com') + '/app/init' + window.location.search,
-            {},
-            function success(){
-              window.location.reload(true);
-            }
-          );
-        })
-      });
-    </script>
-  </body>
-</html>
+<!-- jQuery -->
+<script type="text/javascript">
+  function getParam(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    var results = regex.exec(window.location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  $(document).ready(function() {
+    var config = JSON.parse(getParam('data') || '{}');
+    $('#init').on('click', function(){
+      // Post on /app/init to create the user
+      $.post(
+        (config.salesFetchURL || 'https://salesfetch.herokuapp.com') + '/app/init' + window.location.search,
+        {},
+        function success(){
+          window.location.reload(true);
+        }
+      );
+    })
+  });
+</script>

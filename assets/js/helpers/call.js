@@ -1,6 +1,6 @@
 'use strict';
 
-var loadFirstUsePage = function() {
+var loadFirstUsePage = function loadFirstUsePage() {
   if(!this.executed) {
     this.executed = true;
     var url = $.salesFetchUrl + '/init.html';

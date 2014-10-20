@@ -12,46 +12,20 @@ var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
-var authMiddleware  = require('../../app/middlewares/authorization').requiresLogin;
+var authMiddleware  = require('../../app/middlewares/authorization');
 
 describe('<Authentication middleware>', function() {
   beforeEach(cleaner);
   after(mock.restore);
 
-  it('should reject empty calls', function(done) {
-    var req = { query: [] };
-    authMiddleware(req, null, function(err) {
-      should(err).be.ok;
-      err.statusCode.should.equal(401);
-      err.message.should.match(/missing `data` query parameter/i);
-      done();
-    });
-  });
-
-  it('should err on missing organization id', function(done) {
-    var params = {
-      organization: {
-        id: null
-      }
-    };
-
-    var req = { query: { data: JSON.stringify(params) } };
-    authMiddleware(req, null, function(err) {
-      should(err).be.ok;
-      err.statusCode.should.equal(401);
-      err.message.should.match(/missing organization id/i);
-      done();
-    });
-  });
-
   it('should err if no company has been found', function(done) {
-    var params = {
+    var data = {
       organization: {
         id: '00Db0000000dVoIEAU'
       }
     };
 
-    var req = { query: { data: JSON.stringify(params) } };
+    var req = { data: data };
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -73,7 +47,7 @@ describe('<Authentication middleware>', function() {
         var invalidHash = getSecureHash(data, '');
         data.hash = invalidHash;
 
-        var req = { query: { data: JSON.stringify(data) } };
+        var req = { data: data };
         authMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
@@ -106,7 +80,7 @@ describe('<Authentication middleware>', function() {
         // Tamper with the request
         data.context.templatedQuery = 'Unicorns';
 
-        var req = { query: { data: JSON.stringify(data) } };
+        var req = { data: data };
         authMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
@@ -160,8 +134,8 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var query = { data: JSON.stringify(data)};
-        authMiddleware({ query: query, url: 'https://salesfetch/app/init' }, null, cb);
+
+        authMiddleware({ data: data , url: 'https://salesfetch/app/init' }, null, cb);
       },
       function checkUserValidity(cb) {
         User.findOne({name: 'Walter White'}, function(err, user) {
@@ -200,8 +174,7 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, org.masterKey);
         data.hash = hash;
 
-        var query = { data: JSON.stringify(data) };
-        authMiddleware({ query: query, url: 'https://salesfetch/app/init' }, null, cb);
+        authMiddleware({ data: data, url: 'https://salesfetch/app/init' }, null, cb);
       }
     ], function expectError(err) {
       should(err).be.ok;
@@ -233,7 +206,7 @@ describe('<Authentication middleware>', function() {
         });
 
         user.save(cb);
-      },function makeCall(user, _, cb) {
+      }, function makeCall(user, _, cb) {
         var data = {
           organization: {id: createdOrg.SFDCId },
           user: { id: user.SFDCId }
@@ -241,7 +214,7 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var req = { query: { data: JSON.stringify(data) } };
+        var req = { data: data };
         authMiddleware(req, null, function() {
           should(req).have.properties('user', 'data');
           req.user.should.have.property('SFDCId', user.SFDCId);

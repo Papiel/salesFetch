@@ -5,7 +5,7 @@ var async = require('async');
 var rarity = require('rarity');
 var url = require('url');
 
-var mongoose =require('mongoose');
+var mongoose = require('mongoose');
 var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
@@ -51,26 +51,12 @@ var authenticateUser = function(context, org, req, done) {
  *   various providers) on the AnyFetch API if
  *   it wasn't updated for a while.
  */
-module.exports.requiresLogin = function(req, res, next) {
+module.exports = function(req, res, next) {
   var organization;
-
-  // Weird, but it seems to be a string with value 'undefined'
-  if(!req.query.data || req.query.data === 'undefined') {
-    return next(new restify.InvalidCredentialsError('Bad Request: missing `data` query parameter'));
-  }
-  var data;
-  try {
-    data = JSON.parse(req.query.data);
-  } catch(e) {
-    return next(new restify.UnprocessableEntityError('Bad Request: malformed JSON in `data` query parameter'));
-  }
+  var data = req.data;
 
   async.waterfall([
     function retrieveCompany(cb) {
-      if(!data.organization || !data.organization.id) {
-        return next(new restify.InvalidCredentialsError('Bad Request: missing organization id'));
-      }
-
       Organization.findOne({SFDCId: data.organization.id}, cb);
     },
     function checkRequestValidity(org, cb) {
@@ -103,7 +89,6 @@ module.exports.requiresLogin = function(req, res, next) {
     function writeRes(user, cb) {
       req.user = user;
       req.organization = organization;
-      req.data = data;
       cb();
     }
   ], next);

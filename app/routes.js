@@ -58,7 +58,7 @@ module.exports = function(server) {
     handlers.app.providers.index.post);
 
   server.post('/app/init',
-    middlewares.authorization,
+    middlewares.checkParams,
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1

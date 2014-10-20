@@ -185,7 +185,6 @@ module.exports.initAccount = function(data, done) {
  * and store it on the local DB
  */
 module.exports.addNewUser = function(user, organization, cb) {
-
   async.waterfall([
     function createRandomPassword(cb) {
       crypto.randomBytes(20, function(ex, buf) {

@@ -2,7 +2,6 @@
 
 var should = require('should');
 var async = require('async');
-var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
@@ -91,99 +90,6 @@ describe('<Authentication middleware>', function() {
     ], done);
   });
 
-  it('should create a new user if not in DB and endpoint is /app/init', function(done) {
-    var createdOrg;
-
-    async.waterfall([
-      function mount(cb) {
-        AnyFetch.server.override('/token', mock.dir + '/get-token.json');
-        AnyFetch.server.override('post', '/users', mock.dir + '/post-users.json');
-        cb();
-      },
-      function createCompany(cb) {
-        var org = new Organization({
-          name: "anyFetch",
-          SFDCId: '1234'
-        });
-
-        org.save(cb);
-      },
-      function createAdminUser(org, count, cb) {
-        createdOrg = org;
-
-        var user = new User({
-          SFDCId: '5678',
-          organization: org.id,
-          anyFetchToken: 'anyfetchToken',
-          isAdmin: true
-        });
-
-        user.save(cb);
-      },
-      function makeCall(user, count, cb) {
-        var theUser = {
-          id: 'newUser',
-          name: 'Walter White',
-          email: 'walter.white@breaking-bad.com'
-        };
-
-        var data = {
-          organization: {id: createdOrg.SFDCId},
-          user: theUser
-        };
-        var hash = getSecureHash(data, createdOrg.masterKey);
-        data.hash = hash;
-
-
-        authMiddleware({ data: data , url: 'https://salesfetch/app/init' }, null, cb);
-      },
-      function checkUserValidity(cb) {
-        User.findOne({name: 'Walter White'}, function(err, user) {
-          user.should.have.property('email', 'walter.white@breaking-bad.com');
-          user.should.have.property('SFDCId', 'newUser');
-          user.should.have.property('anyFetchToken', 'mockedToken');
-          cb();
-        });
-      }
-    ], done);
-  });
-
-  it("should err if there's no admin in the company", function(done) {
-    async.waterfall([
-      function createCompany(cb) {
-        var org = new Organization({
-          name: "anyFetch",
-          SFDCId: '1234'
-        });
-
-        org.save(cb);
-      },
-      // Do not create an admin for this org on purpose
-      // (we want to provoke an error)
-      function makeCall(org, count, cb) {
-        var user = {
-          id: 'newUser',
-          name: 'Walter White',
-          email: 'walter.white@breaking-bad.com'
-        };
-
-        var data = {
-          organization: {id: org.SFDCId },
-          user: user
-        };
-        var hash = getSecureHash(data, org.masterKey);
-        data.hash = hash;
-
-        authMiddleware({ data: data, url: 'https://salesfetch/app/init' }, null, cb);
-      }
-    ], function expectError(err) {
-      should(err).be.ok;
-      err.statusCode.should.eql(401);
-      err.message.should.match(/no admin for the company/i);
-      done();
-    });
-  });
-
   it('should pass variables in `req` object', function(done) {
     var createdOrg;
 
@@ -195,7 +101,8 @@ describe('<Authentication middleware>', function() {
         });
 
         org.save(cb);
-      }, function createUser(org, _, cb) {
+      },
+      function createUser(org, count, cb) {
         createdOrg = org;
 
         var user = new User({
@@ -206,7 +113,8 @@ describe('<Authentication middleware>', function() {
         });
 
         user.save(cb);
-      }, function makeCall(user, _, cb) {
+      },
+      function makeCall(user, count, cb) {
         var data = {
           organization: {id: createdOrg.SFDCId },
           user: { id: user.SFDCId }

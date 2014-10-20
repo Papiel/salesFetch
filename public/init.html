@@ -1,0 +1,39 @@
+<!--
+  First run page
+  Users are redirected to this page when they don't have an account yet
+-->
+<style type="text/css">
+  h1, h2, h3, h4, h5, h6 {
+    display: block;
+  }
+
+  .logo h1 {
+    font-weight: 100;
+    margin: 0;
+    font-size: 5em;
+    color: #16A9E2;
+  }
+</style>
+<div>
+  <div class="logo">
+    <h1>Sales<strong>Fetch</strong></h1>
+  </div>
+  <h1>Welcome</h1>
+  <h4>It looks like it's your first time here</h4>
+
+  <button id="init">Initialize my account and continue</button>
+</div>
+
+<!-- jQuery -->
+<script type="text/javascript">
+  /* global $ */
+  /* global window */
+  $('#init').on('click', function(){
+    // Post on /app/init to create the user
+    var url = $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
+    url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
+    $.post(url, {}, function success(){
+      window.location.reload(true);
+    });
+  });
+</script>

@@ -2,7 +2,6 @@
 
 var restify = require('restify');
 var autoLoad = require('auto-load');
-// var config = require('../config/configuration.js');
 
 module.exports = function(server) {
   var lib = autoLoad(__dirname);
@@ -16,40 +15,51 @@ module.exports = function(server) {
   server.post('/admin/init', handlers.admin.index.post);
 
   server.get('/app/documents',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     middlewares.requiresContext,
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
 
   server.get('/app/pins',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     middlewares.requiresContext,
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
 
   server.del('/app/pins/:id',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
 
   server.get('/app/providers',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
-    middlewares.authorization.requiresLogin,
+    middlewares.checkParams,
+    middlewares.authorization,
     handlers.app.providers.index.post);
+
+  server.post('/app/init',
+    middlewares.checkParams,
+    handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1
   server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);

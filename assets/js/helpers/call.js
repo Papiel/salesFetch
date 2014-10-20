@@ -1,5 +1,25 @@
 'use strict';
 
+var loadFirstUsePage = function loadFirstUsePage() {
+  if(!this.executed) {
+    this.executed = true;
+    var url = $.salesFetchUrl + '/init.html';
+    var container = $('#mainview');
+    $.ajax({
+      url: url,
+      contentType: 'html',
+      success: function(html) {
+        container.html(html);
+      },
+      error: function(res, status, err) {
+        container.html(err);
+      }
+    });
+  }
+};
+
+loadFirstUsePage.executed = false;
+
 /**
  * @param {String} url
  * @param {String} [options] Additional options to pass to jQuery's AJAX function
@@ -17,8 +37,15 @@ module.exports = function call(url, options, success, error) {
     }
   };
 
-  // `options` and `errorMessage` can be omitted
-  error = error || defaultError;
+  // `options` and `error` can be omitted
+  var errorHandler = function(res) {
+    if(res.status === 401) {
+      if(((res.responseJSON && res.responseJSON.message) || res.responseText || '') === 'User not created') {
+        loadFirstUsePage();
+      }
+    }
+    (error || defaultError).apply(this, arguments);
+  };
   if(!success) {
     success = options;
     options = {};
@@ -30,7 +57,7 @@ module.exports = function call(url, options, success, error) {
     type: 'get',
     url: url,
     success: success,
-    error: error
+    error: errorHandler
   };
   params = $.extend(params, options);
 

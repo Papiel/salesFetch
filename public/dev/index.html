@@ -38,7 +38,7 @@
   </head>
   <body>
 
-    <div id="app-container">
+    <div id="salesfetch-container">
       <i class="spinner fa fa-spin fa-fw fa-refresh fa-3x"></i>
     </div>
 
@@ -57,7 +57,7 @@
       // Forward get parameters
       appUrl += window.location.search;
 
-      var container = $('#app-container');
+      var container = $('#salesfetch-container');
       $.ajax({
         url: appUrl,
         contentType: 'html',

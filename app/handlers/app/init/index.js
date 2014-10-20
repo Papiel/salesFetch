@@ -10,30 +10,29 @@ var Organization = mongoose.model('Organization');
 
 var anyFetchHelpers = require('../../../helpers/anyfetch.js');
 
-// create an account inthe name of the user if he doesn't exist
-module.exports.post = function(req, res, next) {
+// create an account in the name of the user if he doesn't exist
+module.exports.post = function createAccount(req, res, next) {
   async.waterfall([
-    function(cb) {
+    function getUser(cb) {
       // Find an existing user
       User.findOne({SFDCId: req.data.user.id}, cb);
     },
-    function(user, cb) {
+    function getOrg(user, cb) {
       // Find an existing company
       Organization.findOne({SFDCId: req.data.organization.id}, rarity.carry([user], cb));
     },
-    function(user, org, cb) {
+    function addNewUser(user, org, cb) {
       if(!org) {
         return cb(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
       if(user) {
         return cb(null, user);
       }
-      anyFetchHelpers.addNewUser(req.data.user, org, cb);
+      anyFetchHelpers.addNewUser(req.data.user, org, rarity.slice(2, cb));
+    },
+    function sendData(user, cb) {
+      res.send(user);
+      cb();
     }
-  ], function(err, user) {
-    if(err) {
-      return next(err);
-    }
-    res.send(user);
-  });
+  ], next);
 };

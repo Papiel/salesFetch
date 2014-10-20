@@ -1,29 +1,24 @@
 'use strict';
 
 var loadFirstUsePage = function() {
-  var url = $.salesFetchUrl + '/init.html';
-  var container = $('#mainview');
-  $.ajax({
-    url: url,
-    contentType: 'html',
-    success: function(html) {
-      container.html(html);
-    },
-    error: function(res, status, err) {
-      container.html(err);
-    }
-  });
+  if(!this.executed) {
+    this.executed = true;
+    var url = $.salesFetchUrl + '/init.html';
+    var container = $('#mainview');
+    $.ajax({
+      url: url,
+      contentType: 'html',
+      success: function(html) {
+        container.html(html);
+      },
+      error: function(res, status, err) {
+        container.html(err);
+      }
+    });
+  }
 };
 
-var loadFirstUsePageOnce = (function() {
-  var executed = false;
-  return function () {
-    if (!executed) {
-      executed = true;
-      loadFirstUsePage();
-    }
-  };
-})();
+loadFirstUsePage.executed = false;
 
 /**
  * @param {String} url
@@ -46,7 +41,7 @@ module.exports = function call(url, options, success, error) {
   var errorHandler = function(res) {
     if(res.status === 401) {
       if(((res.responseJSON && res.responseJSON.message) || res.responseText || '') === 'User not created') {
-        loadFirstUsePageOnce();
+        loadFirstUsePage();
       }
     }
     (error || defaultError).apply(this, arguments);

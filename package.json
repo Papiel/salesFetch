@@ -58,14 +58,15 @@
     "heroku-self-ping": "~1.1.1"
   },
   "devDependencies": {
+    "gulp-jshint": "^1.7.1",
+    "gulp-livereload": "^2.1.1",
+    "gulp-nodemon": "^1.0.4",
+    "jshint": "2.5.x",
+    "jshint-stylish": "^0.4.0",
     "mocha": "1.18.x",
     "mocha-mongoose": "1.0.x",
     "should": "4.0.x",
-    "jshint": "2.5.x",
-    "supertest": "0.13.x",
-    "gulp-jshint": "^1.7.1",
-    "gulp-nodemon": "^1.0.4",
-    "jshint-stylish": "^0.4.0"
+    "supertest": "0.13.x"
   },
   "licence": "Copyright AnyFetch",
   "engines": {

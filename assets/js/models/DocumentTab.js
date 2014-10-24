@@ -26,10 +26,10 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
   self.emptyStateMessage = errors.getErrorMessage('no documents');
 
   self.shouldDisplayDocumentsSpinner = ko.observable(true);
-  self.shouldDisplayLoadMoreSpinner = ko.observable(true);
+  self.shouldDisplayLoadMoreSpinner = ko.observable(false);
   self.documentListError = ko.observable();
   self.loadMoreError = ko.observable();
-  self.allDocumentsLoaded = ko.observable(false);
+  self.allDocumentsLoaded = ko.observable(true);
 
 
   self.documents = ko.observable({});

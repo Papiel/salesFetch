@@ -1,5 +1,5 @@
  <div data-bind="visible: !hasFinishedLoading()">
-  <i class="spinner fa fa-spin fa-fw fa-refresh fa-3x"></i>
+  <i class="spinner centered large"></i>
 </div>
 
  <div style="display:none" data-bind="visible: hasFinishedLoading">
@@ -71,7 +71,7 @@ Hidden by default until the app has loaded.
       <ul class="nav nav-pills" data-bind="foreach: tabs">
         <li data-bind="css: {'tab-right': pullRight, 'tab-left': !pullRight, active: $data == $root.activeTab()}">
           <a data-bind="click: $root.goToTab.bind($root)">
-            <i data-bind="css: display" class="fa fa-fw fa-lg"></i>
+            <i data-bind="css: display"></i>
           </a>
         </li>
       </ul>
@@ -80,11 +80,11 @@ Hidden by default until the app has loaded.
 
     <!-- Mobile document full view navigation: "Go back" button -->
     <!-- ko if: isMobile -->
-      <div data-bind="with: activeDocument">
+      <div data-bind="with: activeDocument, visible: !shouldDisplayTabsNavbar()">
         <ul class="nav navbar-pills">
           <li class="pull-left back-button">
             <a data-bind="click: $root.goBack.bind($root)" class="no-frame">
-              <i class="fa fa-lg fa-chevron-left"></i>
+              <i class="icon-utility-back"></i>
             </a>
           </li>
           <li class="pull-right document-title">
@@ -103,7 +103,7 @@ Hidden by default until the app has loaded.
     <!-- TODO: merge into a single div? -->
     <!-- ko if: $data != $root.providerTab -->
     <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
-      <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+      <i class="spinner centered large"></i>
     </div>
     <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentListError">
       <p class="error" data-bind="text: documentListError"></p>
@@ -116,49 +116,39 @@ Hidden by default until the app has loaded.
     | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_  | | \__ \ |_
     |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
     -->
-    <div class="document-list" data-bind="visible: shouldDisplayDocumentList">
-      <!-- BEGIN SNIPPET SECTION LIST -->
-      <div class="snippet-list">
-      <!-- ko foreach: {data: timeSlices(), afterRender: afterRenderFunc} -->
-
-        <!-- SNIPPET SECTION -->
-        <div class="snippet-section" data-bind="visible: documents.length > 0">
-
-          <!-- SECTION HEADER -->
-          <div class="section-header">
-            <fieldset class="timestamp">
-              <legend data-bind="text: label"></legend>
-            </fieldset>
-          </div>
-          <!-- END SECTION HEADER -->
+    <!-- BEGIN SNIPPET SECTION LIST -->
+    <div class="snippet-list" data-bind="visible: shouldDisplayDocumentList">
+      <div class="timestamp-list">
+        <!-- ko foreach: {data: timeSlices(), afterRender: afterRenderFunc} -->
+          <fieldset class="timestamp" data-bind="visible: documents.length > 0">
+            <legend data-bind="text: label"></legend>
+          </fieldset>
 
           <!-- SECTION BODY -->
           <div class="section-body" data-bind="foreach: documents">
             <!-- SNIPPET -->
-            <div class="snippet" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}">
-              <div class="icon" data-bind="css: type.name"></div>
-              <span class="star-btn fa fa-star" data-bind="click: toggleStarred, clickBubble: false, css: {'fa-star-o': !isStarred()}"></span>
-              <span class="provider-icon" data-bind="style: {'background-image': 'url(' + $.salesFetchUrl + '/dist/providers/' + provider.client_id + '_grayscale.svg)'}"></span>
-              <p class="content" data-bind="html: snippet"></p>
+            <div class="snippet sf1-card" data-bind="click: $root.goToDocument.bind($root), css: {active: $data == $root.activeDocument()}">
+              <div class="icon" data-bind="css: 'icon-doctype-' + type.id"></div>
+              <span class="icon-container">
+                <span class="star-button icon-right icon-utility-favorite" data-bind="click: toggleStarred, clickBubble: false, css: {'starred': isStarred()}, attr: {title: isStarred() ? 'Remove from favorites' : 'Add to favorites'}"></span>
+                <span class="icon-right icon-provider" data-bind="css: 'icon-provider-' + provider.client_id + '-grayscale', attr: {title: 'Provided from ' + provider.accountName}"></span>
+              </span>
+              <div class="content" data-bind="html: snippet"></div>
             </div>
             <!-- END SNIPPET -->
 
           </div>
           <!-- END SECTION BODY -->
-
-        </div>
-        <!-- END SNIPPET SECTION -->
-      <!-- /ko -->
+        <!-- /ko -->
+      </div>
 
       <!-- Spinner for infinite scroll -->
-      <div class="load-more" data-bind="visible: !allDocumentsLoaded() &amp;&amp; !shouldDisplayDocumentsSpinner()">
-        <i class="fa fa-spin fa-refresh fa-2x"></i>
+      <div class="load-more" data-bind="visible: !allDocumentsLoaded() &amp;&amp; !shouldDisplayDocumentsSpinner() &amp;&amp; shouldDisplayLoadMoreSpinner()">
+        <i class="spinner large"></i>
       </div>
 
-      </div>
-      <!-- END SNIPPET SECTION LIST -->
     </div>
-    <!-- END DOCUMENT LIST -->
+    <!-- END SNIPPET SECTION LIST -->
 
     <!--
      _____ _ _ _                            _
@@ -172,12 +162,12 @@ Hidden by default until the app has loaded.
         <div class="filter-providers" data-bind="visible: $root.facetsProviders().length > 0">
           <h4>Providers</h4>
           <ul class="filter-menu fa-ul" data-bind="foreach: $root.facetsProviders">
-            <li>
-              <a data-bind="click: function () {toggleActive($root)}">
-                <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByProvider()||isActive()), passive: !$root.filterByProvider()}"></i>
-                <span data-bind="text: extendedName()"></span><br />
+            <li data-bind="click: function () {toggleActive($root)}">
+              <span class="sf1-checkbox" data-bind="css: { checked: (!$root.filterByProvider()||isActive())}"></span>
+              <span class="info" >
+                <span data-bind="text: extendedName()"></span>
                 <span class="account-name" data-bind="text: accountName"></span>
-              </a>
+              </span>
             </li>
           </ul>
         </div>
@@ -187,8 +177,8 @@ Hidden by default until the app has loaded.
           <ul class="filter-menu fa-ul" role="menu" data-bind="foreach: $root.types">
             <li>
               <a data-bind="click: function () {toggleActive($root)}">
-                <i class="fa fa-li" data-bind="css: {'fa-check': (!$root.filterByType()||isActive()), passive: !$root.filterByType()}"></i>
-                <span data-bind="text: extendedName()"></span>
+                <i class="sf1-checkbox" data-bind="css: { checked: (!$root.filterByType()||isActive())}"></i>
+                <span class="info" data-bind="text: extendedName()"></span>
               </a>
             </li>
           </ul>
@@ -210,7 +200,7 @@ Hidden by default until the app has loaded.
     <!-- ko if: $root.isMobile -->
       <!-- Spinner -->
       <div class="placeholder-container" data-bind="visible: $root.shouldDisplayViewerSpinner">
-        <i class="fa fa-spin fa-fw fa-refresh fa-3x"></i>
+        <i class="spinner centered large"></i>
       </div>
       <div class="placeholder-container" data-bind="visible: $root.documentViewerError() != null">
         <p class="error" data-bind="text: $root.documentViewerError"></p>
@@ -261,11 +251,11 @@ Hidden by default until the app has loaded.
           <div class="row provider-list" data-bind="foreach: $root.availableProviders">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
               <a data-bind="click: function(){ connect($root); }">
-                <div class="provider" data-bind="style:{'background-image': 'url(' + $.salesFetchUrl + '/dist/providers/' + id + '.svg)'}">
+                <div class="provider sf1-card" data-bind="css: 'icon-provider-' + id">
                   <h4>
                     <span data-bind="text: name"></span>
-                    <span class="fa fa-check" data-bind="css: {passive: !trusted}"></span>
-                    <span class="fa fa-star" data-bind="css: {passive: !featured}"></span>
+                    <span class="icon-utility-check" data-bind="css: {passive: !trusted}"></span>
+                    <span class="icon-utility-favorite" data-bind="css: {passive: !featured}"></span>
                   </h4>
                   <p class="author">By <span class="developer" data-bind="text: developer"></span></p>
                   <p class="description" data-bind="text: description"></p>
@@ -310,10 +300,10 @@ used to show the full document, its title and related actions.
       <div data-bind="with: activeDocument">
         <ul class="nav navbar-pills">
           <li class="actions">
-            <span class="fa fa-external-link" data-bind="click: openOriginal, visible: actions.show" />
-            <span class="fa fa-cloud-download" data-bind="click: download, visible: actions.download" />
-            <span class="fa fa-mail-reply" data-bind="click: reply, visible: actions.reply" />
-            <span class="fa fa-star" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
+            <span class="icon-utility-share" data-bind="click: openOriginal, visible: actions.show" />
+            <span class="icon-utility-download" data-bind="click: download, visible: actions.download" />
+            <span class="icon-utility-reply" data-bind="click: reply, visible: actions.reply" />
+            <span class="icon-utility-favorite" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}" />
           </li>
           <li class="document-description">
             <div class="pull-left">
@@ -329,7 +319,7 @@ used to show the full document, its title and related actions.
 
     <!-- Spinner -->
     <div class="placeholder-container">
-      <i class="fa fa-spin fa-fw fa-refresh fa-3x" data-bind="visible: shouldDisplayViewerSpinner"></i>
+      <i class="spinner centered large" data-bind="visible: shouldDisplayViewerSpinner"></i>
       <p class="error" data-bind="visible: documentViewerError(), text: documentViewerError"></p>
       <p class="default-message" data-bind="visible: shouldDisplayDocumentViewerDefaultMessage() &amp;&amp; !activeTab().documentListError()">Documents for context '<!-- ko text: searchQuery --><!-- /ko -->'</p>
     </div>

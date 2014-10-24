@@ -42,7 +42,7 @@ module.exports.bindInfiniteScroll = function() {
   var client = this;
   var selector = client.isDesktop ? ".snippet-list" : "#view-body";
   $(selector).scroll(function() {
-    if($(this).scrollTop() === this.scrollHeight - $(this).innerHeight()) {
+    if($(this).scrollTop() >= this.scrollHeight - $(this).innerHeight()) {
       client.activeTab().fetchMoreDocuments();
     }
   });

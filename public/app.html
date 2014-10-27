@@ -1,5 +1,6 @@
- <div data-bind="visible: !hasFinishedLoading()">
-  <i class="spinner centered large"></i>
+<!-- Use the loader spinner here to limit differences between states -->
+<div data-bind="visible: !hasFinishedLoading()">
+  <i class="initial-spinner"></i>
 </div>
 
  <div style="display:none" data-bind="visible: hasFinishedLoading">

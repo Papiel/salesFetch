@@ -61,6 +61,9 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
     if(err === noPinError) {
       err = null;
     }
+    if(err) {
+      return finalCb(err);
+    }
     if(docs.status && docs.status !== 200){
       var e = new Error(docs.text);
       e.statusCode = docs.status;

@@ -18,7 +18,7 @@ require('../helpers/string.js');
  * @return {Array} The visible tabs. First tab of the list should be the default tab.
  */
 module.exports.setTabs = function(client) {
-  var timelineTab = new DocumentTab(client, 'Timeline', 'icon-utility-attach', false,
+  var timelineTab = new DocumentTab(client, 'Timeline', 'icon-utility-list', false,
                                     filters.providerAndType(client), '/app/documents');
   timelineTab.emptyStateMessage = errors.getErrorMessage('no documents for context');
 
@@ -75,7 +75,7 @@ module.exports.setTabs = function(client) {
 
   // Desktop has an additional 'Providers' tab
   if(client.isDesktop) {
-    client.providerTab = new Tab('Providers', 'icon-utility-info');
+    client.providerTab = new Tab('Providers', 'icon-utility-plus');
     client.tabs.push(client.providerTab);
   }
 };

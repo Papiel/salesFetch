@@ -40,7 +40,7 @@ module.exports.addDropdownButtons = function() {
 
 module.exports.bindInfiniteScroll = function() {
   var client = this;
-  var selector = client.isDesktop ? ".snippet-list" : "#view-body";
+  var selector = ".snippet-list";
   $(selector).scroll(function() {
     if($(this).scrollTop() >= this.scrollHeight - $(this).innerHeight()) {
       client.activeTab().fetchMoreDocuments();
@@ -54,7 +54,6 @@ module.exports.bindInfiniteScroll = function() {
   | |/ _` | '_ \| |/ _ \ __|
   | | (_| | |_) | |  __/ |_
   |_|\__,_|_.__/|_|\___|\__|
-
 */
 module.exports.addTabletBehaviors = function() {
   /**

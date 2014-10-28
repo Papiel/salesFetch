@@ -81,22 +81,22 @@ Hidden by default until the app has loaded.
           <i class="icon-utility-back"></i>
         </a>
       </li>
-      <li class="nav-pill pull-right" data-bind="click: openOriginal, visible: actions.show">
+      <li class="nav-pill pull-right" data-bind="click: openOriginal, visible: actions.show &amp;&amp; !$root.isSF1">
         <a>
           <i class="icon-utility-share"></i>
         </a>
       </li>
-      <li class="nav-pill pull-right" data-bind="click: download, visible: actions.download">
+      <li class="nav-pill pull-right" data-bind="click: download, visible: actions.download &amp;&amp; !$root.isSF1">
         <a>
           <i class="icon-utility-download"></i>
         </a>
       </li>
-      <li class="nav-pill pull-right" data-bind="click: reply, visible: actions.reply">
+      <li class="nav-pill pull-right" data-bind="click: reply, visible: actions.reply &amp;&amp; !$root.isSF1">
         <a>
           <i class="icon-utility-reply"></i>
         </a>
       </li>
-      <li class="nav-pill pull-right" data-bind="click: toggleStarred, css: {'fa-star-o': !isStarred()}">
+      <li class="nav-pill pull-right" data-bind="click: toggleStarred, css: {'starred': isStarred()}">
         <a>
           <i class="icon-utility-favorite"></i>
         </a>

@@ -75,7 +75,7 @@ module.exports.setTabs = function(client) {
 
   // Desktop has an additional 'Providers' tab
   if(client.isDesktop) {
-    client.providerTab = new Tab('Providers', 'icon-utility-plus');
+    client.providerTab = new Tab('Providers', 'icon-utility-add');
     client.tabs.push(client.providerTab);
   }
 };

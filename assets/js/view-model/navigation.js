@@ -52,7 +52,7 @@ module.exports.goToDocument = function(doc) {
     var writeFullView = function(docHtml) {
       var html;
       if(client.isDesktop) {
-        html = '<nav><ul>';
+        html = '<nav class="navbar"><ul>';
         html += '<li class="title"><a>' + doc.title() + '</a></li>';
 
         if(doc.actions.show) {
@@ -66,7 +66,8 @@ module.exports.goToDocument = function(doc) {
         }
 
         html += '</ul></nav><div id="document-container">' + docHtml + '</div>';
-      } else {
+      }
+      else {
         html = '<div id="document-container" class="anyfetch-mobile-scroll">' + docHtml + '</div>';
       }
       $(target.body).html(html);

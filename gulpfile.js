@@ -22,7 +22,8 @@ var paths = {
     entryPoints: [
       'bower_components/anyfetch-assets/dist/index.min.css',
       'bower_components/anyfetch-assets/dist/index-moment.min.js',
-      'bower_components/anyfetch-assets/dist/images/*/*'
+      'bower_components/anyfetch-assets/dist/images/*/*',
+      'images/gulp/*/*'
     ],
   },
   target: 'public/dist/',

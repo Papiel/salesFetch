@@ -50,14 +50,16 @@ module.exports.setTabs = function(client) {
   starredTab.starredUpdate = function(document) {
     if(document.isStarred()) {
       starredTab.documents()[document.id] = document;
-    } else {
+    }
+    else {
       delete starredTab.documents()[document.id];
     }
 
     var docCount = Object.keys(starredTab.documents()).length;
     if(docCount > 0) {
       starredTab.documentListError(null);
-    } else {
+    }
+    else {
       var errorMessage = starredTab.emptyStateMessage.format(starredTab.client.searchQuery);
       starredTab.documentListError(errorMessage);
     }
@@ -68,7 +70,7 @@ module.exports.setTabs = function(client) {
   starredTab.fetchMoreDocuments = fetch.fetchMoreDocuments;
 
   // TODO: re-enable when feature exists
-  //var searchTab = new Tab('Search', 'fa-search', true);
+  // var searchTab = new Tab('Search', 'fa-search', true);
 
   client.tabs = [timelineTab, starredTab]; // and `searchTab`
   client.starredTab = starredTab;

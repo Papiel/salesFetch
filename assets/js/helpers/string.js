@@ -5,18 +5,18 @@
  * @return {String} string formatted with `object`
  */
 String.prototype.format = function() {
-  var s = this;
-  for (var i = 0; i < arguments.length; i+=1) {
+  var self = this;
+  for(var i = 0; i < arguments.length; i += 1) {
     var reg = new RegExp("\\{" + i + "\\}", "gm");
-    s = s.replace(reg, arguments[i]);
+    self = self.replace(reg, arguments[i]);
   }
 
-  return s;
+  return self;
 };
 
 /*
  * @return {String} string with the first letter in upper case
  */
 String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+  return this.charAt(0).toUpperCase() + this.slice(1);
 };

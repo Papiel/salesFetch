@@ -33,6 +33,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
 
 
   self.documents = ko.observable({});
+
   function tryFormat(max, i) {
     max = max || 3;
     i = i || 0;
@@ -43,12 +44,20 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
       setTimeout(tryFormat, 500, [max, i + 1]);
     }
   }
+
   self.afterRenderFunc = function(elements, element) {
     if(element.label === 'Older') {
       tryFormat();
     }
   };
-  self.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" }, notify: 'always' });
+
+  self.documents.extend({
+    rateLimit: {
+      timeout: 100,
+      method: "notifyWhenChangesStop"
+    },
+    notify: 'always'
+  });
 
   var shouldDisplayDocumentListError = function() {
     var docCount = Object.keys(self.documents()).length;
@@ -68,7 +77,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
     }
 
     var docList = [];
-    for (var id in self.documents()) {
+    for(var id in self.documents()) {
       docList.push(self.documents()[id]);
     }
 

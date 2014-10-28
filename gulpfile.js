@@ -65,13 +65,13 @@ gulp.task('libs', function() {
   return p.pipe(gulp.dest(paths.target));
 });
 
-gulp.task('build', ['less', 'browserify', 'libs'], function() {
-});
+gulp.task('build', ['less', 'browserify', 'libs']);
 
 // ----- Development only
 if(!isProduction) {
   var nodemon = require('gulp-nodemon');
   var jshint = require('gulp-jshint');
+  var livereload = require('gulp-livereload');
 
   var nodemonOptions = {
     script: 'bin/server',
@@ -99,11 +99,15 @@ if(!isProduction) {
   gulp.task('watch', function() {
     gulp.watch(paths.js.all, ['lint']);
     gulp.watch(paths.js.client, ['lint', 'browserify']);
-    gulp.watch(paths.less.watch, ['less']);
+    gulp.watch(paths.less.watch, ['less', livereload.changed]);
   });
 
+  gulp.task('livereload', function() {
+    livereload.listen();
+    gulp.watch(paths.less.watch, []);
+  });
 
   // Run main tasks on launch
-  gulp.task('default', ['lint', 'build', 'watch', 'nodemon'], function() {
+  gulp.task('default', ['lint', 'build', 'nodemon', 'watch', 'livereload'], function() {
   });
 }

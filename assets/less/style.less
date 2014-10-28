@@ -1,172 +1,453 @@
-@import "mixins.less";
+@import (inline) "../../bower_components/normalize.css/normalize.css";
+@import (reference) "variables.less";
+@import "icons.less";
+@import "spinner.less";
+@import "forms.less";
+@import "animations.less";
+@import "custom-bootstrap.less";
 
-/*
- ____ _______   ___     _____ ____
-/ ___|_   _\ \ / / |   | ____/ ___|
-\___ \ | |  \ V /| |   |  _| \___ \
- ___) || |   | | | |___| |___ ___) |
-|____/ |_|   |_| |_____|_____|____/
-*/
-
-
-//   ____
-//  / ___|___  _ __ ___  _ __ ___   ___  _ __
-// | |   / _ \| '_ ` _ \| '_ ` _ \ / _ \| '_ \
-// | |__| (_) | | | | | | | | | | | (_) | | | |
-//  \____\___/|_| |_| |_|_| |_| |_|\___/|_| |_|
-
-body {
-	font-family: @defaultFontFamily;
-	font-weight: @defaultFontWeight;
-	color: @defaultColor;
-
-	.toolbar { .Toolbar }
-
-	.document-list { .DocumentList;
-
-		.snippet-list {
-			.SnippetList;
-
-			.snippet { .Snippet }
-		}
-	}
-
-	.icon { .Icon }
-
-	.snippet-section { .SnippetSection }
-
-	.placeholder-container { .PlaceholderContainer }
-
-	.load-more { .LoadMore }
-
-	.provider { .Provider }
-
-	nav .star-btn { .StarBarButton }
-
-	.iframe-container { .DocumentContainer }
-
-	ul li, ol li {
-		margin: 0;
-		padding: 0;
-	}
+* {
+  box-sizing: border-box;
+  position: relative;
 }
 
-//  ____            _    _
-// |  _ \  ___  ___| | _| |_ ___  _ __
-// | | | |/ _ \/ __| |/ / __/ _ \| '_ \
-// | |_| |  __/\__ \   <| || (_) | |_) |
-// |____/ \___||___/_|\_\\__\___/| .__/
-//                               |_|
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+#mainview,
+#salesfetch-container > div {
+  height: 100%;
+}
+
+#salesfetch-container {
+  height: 100%;
+  width: 100%;
+  font-family: @defaultFontFamily;
+  font-weight: @defaultFontWeight;
+  color: @defaultColor;
+  background-color: @defaultBackgroundColor;
+}
+
+#view-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+p.error {
+  text-align: center;
+  width: 100%;
+}
+
+nav.navbar {
+  background-color: @navbarBackgroundColor;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    color: @white;
+
+    li {
+      display: block;
+      font-size: 20px;
+      &.nav-pill {
+        border-radius: 3px;
+        a {
+          padding: 15px 20px;
+          display: block;
+        }
+      }
+    }
+
+    li.nav-pill.active {
+      background-color: lighten(@navbarBackgroundColor, 20%);
+    }
+
+    li.nav-pill:hover:not(.active) {
+      background-color: lighten(@navbarBackgroundColor, 5%);
+      cursor: pointer;
+    }
+  }
+}
+
+
+.iframe-container,
+.centered {
+  overflow: hidden;
+  height: 100%;
+}
+
+.centered {
+  position: relative;
+  .centered-container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+}
+
+#full-iframe {
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+
+.snippet-list {
+  -webkit-overflow-scrolling: touch !important;
+  overflow-y: auto;
+  height: 100%;
+
+  .timestamp-list {
+    fieldset.timestamp {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 20px @snippetMargin 0;
+      padding: 0;
+
+      legend {
+        width: auto;
+        border: 0;
+        color: #6d6d6d;
+        padding: 0 10px;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+
+  .snippet {
+    cursor: pointer;
+    height: @snippetHeight;
+    overflow: hidden;
+    font-size: 12px;
+    margin: @snippetMargin;
+    margin-bottom: 0;
+    padding: @snippetPadding;
+
+    .icon {
+      float: left;
+      width: 2 * @snippetDoctypeIconMargin + @snippetDoctypeIconSize - 8;
+      height: @snippetHeight - 2 * @snippetBorderSize;
+      background-size: @snippetDoctypeIconSize;
+      background-position: @snippetDoctypeIconMargin - @snippetPadding;
+    }
+
+    .content {
+      height: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-bottom: 0;
+    }
+
+    .icon-container {
+      display: block;
+      height: @snippetHeight - 2 * @snippetBorderSize;
+      width: @snippetRightIconSize + 2 * @snippetRightIconMargin + 2;
+      cursor: pointer;
+      float: right;
+
+      .icon-right {
+        display: block;
+        float: right;
+        height: @snippetRightIconSize;
+        width: @snippetRightIconSize;
+        clear: both;
+        margin-right: @snippetRightIconMargin - @snippetPadding;
+
+        &.icon-provider {
+          margin-top: @snippetHeight - (2 * @snippetRightIconSize) - (2 * (@snippetRightIconMargin - @snippetPadding));
+          background-size: @snippetRightIconSize;
+        }
+
+        &.star-button {
+          margin-top: @snippetRightIconMargin - @snippetPadding;
+          font-size: @snippetRightIconSize;
+          color: #EBEBEB;
+
+          &.starred {
+            color: #686868;
+            &:hover {
+              color: darken(#686868, 10%)
+            }
+          }
+
+          &:hover {
+            color: darken(#EBEBEB, 10%)
+          }
+        }
+      }
+    }
+  }
+
+
+  .load-more {
+    width: 100%;
+    text-align: center;
+    color: @spinnerColor;
+    height: @snippetHeight;
+    display: table;
+      .load-more-container {
+        height: @spinnerSize;
+        display: table-cell;
+        vertical-align: middle;
+      }
+  }
+}
+
+.filter-column {
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    li {
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: block;
+      span {
+        display: block;
+      }
+      .sf1-checkbox {
+        transform: scale(.8);
+        float: left;
+      }
+      .info {
+        padding-left: 30px;
+        .account-name {
+          font-size: .9em;
+        }
+      }
+    }
+  }
+}
+
+
+.sf1-card {
+  border: 1px solid @SF1CardBorderColor;
+  background-color: @SF1CardBackgroundColor;
+  border-radius: @SF1CardBorderRadius;
+  display: block;
+}
+
 
 html.desktop {
+  nav.navbar {
+    position: absolute;
+    width: @navbarWidthDesktop;
+    height: 100%;
+    overflow-y: auto;
 
-	.navbar-tab { .DesktopNavbar }
+    ul {
+      width: 100%;
+      li {
+        margin: @navbarPillMargin;
+      }
+    }
+  }
 
-	#view-body { .DesktopBody }
+  #view-body {
+    left: @navbarWidthDesktop;
 
-	.snippet-list { .DesktopSnippetList;
-		.snippet {
-			cursor: pointer;
-		}
-	}
-	.filter-column { .DestkopFilterColumn }
-	.providers-view { .ProvidersView }
+    .snippet-list {
+      position: absolute;
+      left: 0;
+      right: @documentListWidth;
+    }
 
+    .filter-column {
+      position: absolute;
+      right: 0;
+      width: @documentListWidth;
+      padding: 20px;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .providers-view {
+      position: absolute;
+      margin: 0;
+      overflow-y: auto;
+      height: 100%;
+
+      .provider-table {
+        width: 100%;
+        td, th {
+          padding: 5px 10px;
+          text-align: left;
+        }
+        td:last-child,
+        th:last-child {
+          text-align: right;
+        }
+        tbody tr:nth-child(odd) {
+          background-color: @white;
+        }
+      }
+
+      .provider-list {
+        .provider {
+          color: @colorPrimary;
+          font-size: 14px;
+          cursor: pointer;
+          margin-top: @snippetMargin;
+          padding: @snippetPadding;
+          padding-left: 48px;
+          background-repeat: no-repeat;
+          background-position: 8px center;
+          background-size: 32px;
+
+          h4 {
+            margin: 6px 0;
+            font-size: 18px;
+          }
+
+          p {
+            margin: 0 0 6px;
+          }
+
+          .author {
+            color: @textColor2;
+          }
+
+          .developer {
+            color: @darkGray;
+          }
+        }
+      }
+    }
+  }
 }
 
-//  _____     _     _      _
-// |_   _|_ _| |__ | | ___| |_
-//   | |/ _` | '_ \| |/ _ \ __|
-//   | | (_| | |_) | |  __/ |_
-//   |_|\__,_|_.__/|_|\___|\__|
 
-html.tablet {
+html.mobile,
+html.tablet.portrait {
+  nav.navbar {
+    position: absolute;
+    z-index: 1030;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow-y: auto;
+    height: @navbarHeightMobile;
 
-	#mainview { .TabletLeftPanel;
+    div {
+      height: 100%;
+    }
 
-		#view-body { .MainViewBody }
+    ul {
+      height: 100%;
+      padding: @navbarPillMargin;
+      li {
+        margin-right: @navbarPillMargin;
+        float: left;
+        height: 100%;
+        a {
+          height: 100%;
+          padding: ((@navbarHeightMobile - 2 * @navbarPillMargin - @navbarIconSizeMobile) / 2) 20px;
+          font-size: @navbarIconSizeMobile;
+          line-height: @navbarIconSizeMobile;
+          display: block;
+        }
+      }
+    }
+  }
 
-		.snippet.active { .ActiveSnippet;
-			z-index: @tabletActiveSnippetZIndex;
-		}
-
-		.navbar-tab { .NavigationBar }
-
-		#filter-tabs { .FilterToolBar }
-
-	}
-
-	.iframe-container {
-		top: @navbarHeight;
-	}
-	.document-view { .DocumentView(tablet) }
+  #view-body {
+    top: @navbarHeightMobile;
+    .snippet {
+      .icon {
+        float: left;
+        width: 2 * @snippetDoctypeIconMarginMobile + @snippetDoctypeIconSizeMobile - 8;
+        height: @snippetHeight - 2 * @snippetBorderSize;
+        background-size: @snippetDoctypeIconSizeMobile;
+        background-position: @snippetDoctypeIconMarginMobile - @snippetPadding;
+      }
+    }
+  }
 }
+
+
+
 
 html.tablet.landscape {
+  nav.navbar {
+    position: absolute;
+    z-index: 1030;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow-y: auto;
+    height: @navbarHeightMobile;
 
-	#toggle-panel-btn {
-		display: none;
-	}
+    div {
+      height: 100%;
+    }
 
-	#mainview {
+    ul#main-nav {
+      width: @documentListWidth;
+      float: left;
+    }
 
-		#view-body {
-			box-shadow: @tabletSnippetListShadow;
-		}
+    ul#fullview-nav {
+      padding-right: 0;
+    }
 
-		.snippet-list {
-			border-right: @defaultBorder;
+    @media only screen and (orientation: landscape) {
+      ul#fullview-nav {
+        margin-left: @documentListWidth;
+      }
+    }
 
-			.snippet { .Snippet(tablet-landscape) }
-			.snippet.active { .ActiveSnippet;
-				z-index: @tabletActiveSnippetZIndex;
-			}
-		}
+    ul {
+      height: 100%;
+      padding: @navbarPillMargin;
+      li {
+        margin-right: @navbarPillMargin;
+        float: left;
+        height: 100%;
+        a {
+          height: 100%;
+          padding: ((@navbarHeightMobile - 2 * @navbarPillMargin - @navbarIconSizeMobile) / 2) 20px;
+          font-size: @navbarIconSizeMobile;
+          line-height: @navbarIconSizeMobile;
+          display: block;
+        }
+      }
+    }
+  }
 
-		#filter-tabs {
+  #view-body {
+    top: @navbarHeightMobile;
 
-			li.open ul {
-				box-shadow: 0px 0px;
-				-webkit-box-shadow: 0px 0px;
-			}
+    .snippet-list {
+      width: @documentListWidth;
+      float: left;
+      height: 100%;
+    }
 
-			li:last-child a.dropdown-toggle {
-				box-shadow: @tabletSnippetListShadow;
-			}
-		}
-	}
-
-	#subview { .TabletRightPanel(landscape);
-
-		.navbar-tab { .NavigationBar }
-
-	}
-}
-
-html.tablet.portrait {
-
-	#toggle-panel-btn { .TogglePanelButton }
-
-	#subview { .TabletRightPanel(portrait);
-
-		.navbar-tab { .NavigationBar }
-
-	}
-}
-
-//  __  __       _     _ _
-// |  \/  | ___ | |__ (_) | ___
-// | |\/| |/ _ \| '_ \| | |/ _ \
-// | |  | | (_) | |_) | | |  __/
-// |_|  |_|\___/|_.__/|_|_|\___|
-
-html.mobile {
-
-	#view-body { .MainViewBody }
-
-	.navbar-tab { .NavigationBar }
-
-	#filter-tabs { .FilterToolBar }
-
-	.document-view { .DocumentView(mobile) }
+    .snippet {
+      .icon {
+        float: left;
+        width: 2 * @snippetDoctypeIconMarginMobile + @snippetDoctypeIconSizeMobile - 8;
+        height: @snippetHeight - 2 * @snippetBorderSize;
+        background-size: @snippetDoctypeIconSizeMobile;
+        background-position: @snippetDoctypeIconMarginMobile - @snippetPadding;
+      }
+    }
+  }
 }

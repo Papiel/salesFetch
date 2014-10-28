@@ -12,9 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SalesFetch</title>
-
+<!--
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"> -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,22 +24,66 @@
     <![endif]-->
 
     <style>
-      .spinner {
-        width: 44px;
-        height: 44px;
-        position: absolute;
-        margin: auto;
-        top: 0;
-        bottom: 0;
-        right: 0;
+      #salesfetch-container {
+        font-family: "ProximaNovaSoft-Regular", Calibri, "Gill Sans", "Gill Sans MT", Candara, Segoe, "Segoe UI", Arial, sans-serif;
+        font-weight: 100;
+        color: #3c3d3e;
+        background-color: #f0f1f2;
+      }
+
+      .initial-spinner {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDMwIDMwIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImdyYWQyIiBjeD0iMCIgY3k9IjEwMCUiIHI9IjEwMCUiIGZ4PSIxMDAlIiBmeT0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0I3QjdCNztzdG9wLW9wYWNpdHk6MSI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I0I3QjdCNztzdG9wLW9wYWNpdHk6MCI+PC9zdG9wPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxwYXRoIGZpbGw9InVybCgjZ3JhZDIpIiBkPSJNMTUgMGMtOC4yODQgMC0xNSA2LjcxNi0xNSAxNSAwIDguMjgzIDYuNzE2IDE1IDE1IDE1IDguMjg1IDAgMTUtNi43MTcgMTUtMTUgMC04LjI4NC02LjcxNS0xNS0xNS0xNXptMCAyNy41Yy02LjkwNCAwLTEyLjUtNS41OTgtMTIuNS0xMi41IDAtNi45MDQgNS41OTYtMTIuNSAxMi41LTEyLjVzMTIuNSA1LjU5NiAxMi41IDEyLjVjMCA2LjkwMi01LjU5NiAxMi41LTEyLjUgMTIuNXoiPjwvcGF0aD48L3N2Zz4=);
+        -webkit-animation: rotate .3s infinite linear;
+        animation: rotate .3s infinite linear;
+        position: relative;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 24px;
+        height: 24px;
+        display: block;
+        text-align: center;
+        top: 50%;
         left: 0;
+        right: 0;
+        margin: auto;
+        position: fixed;
+        z-index: 1000;
+        width: 30px;
+        height: 30px
+      }
+
+      @-webkit-keyframes rotate {
+          from {
+              -webkit-transform: rotate(0);
+              transform: rotate(0)
+          }
+
+          to {
+              -webkit-transform: rotate(-1turn);
+              transform: rotate(-1turn)
+          }
+      }
+
+      @keyframes rotate {
+          from {
+              -webkit-transform: rotate(0);
+              -ms-transform: rotate(0);
+              transform: rotate(0)
+          }
+
+          to {
+              -webkit-transform: rotate(-1turn);
+              -ms-transform: rotate(-1turn);
+              transform: rotate(-1turn)
+          }
       }
     </style>
   </head>
   <body>
 
     <div id="salesfetch-container">
-      <i class="spinner fa fa-spin fa-fw fa-refresh fa-3x"></i>
+      <i class="initial-spinner"></i>
     </div>
 
     <!-- jQuery -->
@@ -47,26 +91,35 @@
     <!-- Latest compiled and minified JavaScript -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/device.js/0.1.61/device.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
 
     <!-- Load app -->
     <script type="text/javascript">
-      /* global $,window */
-      $.salesFetchUrl = window.location.origin;
-      var appUrl = '../app.html';
-      // Forward get parameters
-      appUrl += window.location.search;
-
-      var container = $('#salesfetch-container');
-      $.ajax({
-        url: appUrl,
-        contentType: 'html',
-        success: function(html) {
-          container.html(html);
-        },
-        error: function(res, status, err) {
-          container.html(err);
+      /* global $,window, document */
+      document.addEventListener("DOMContentLoaded", function() {
+        'use strict';
+        if(!window.jQuery || !window.ko || !window.device || !window.moment) {
+          var html = '<p>A network error occured</p>';
+          document.getElementById('salesfetch-container').innerHTML = html;
+          return;
         }
+
+        $.salesFetchUrl = window.location.origin;
+        var appUrl = '../app.html';
+        // Forward get parameters
+        appUrl += window.location.search;
+
+        var container = $('#salesfetch-container');
+        $.ajax({
+          url: appUrl,
+          contentType: 'html',
+          success: function(html) {
+            container.html(html);
+          },
+          error: function(res, status, err) {
+            container.html(err);
+          }
+        });
       });
     </script>
 

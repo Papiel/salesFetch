@@ -36,7 +36,7 @@ module.exports.fetchDocuments = function(updateFacets) {
   }
 
   // Show big spinner only if we reload the facets
-  tab.shouldDisplayDocumentsSpinner(updateFacets);
+  tab.shouldDisplayDocumentsSpinner(true);
   call(tab.endpoint, options, function success(response) {
     response = response.documents ? response.documents : response;
 
@@ -68,6 +68,9 @@ module.exports.fetchDocuments = function(updateFacets) {
 module.exports.fetchMoreDocuments = function() {
   var tab = this;
   if(!tab.allDocumentsLoaded()) {
+    // Show loadmore spinner
+    tab.shouldDisplayLoadMoreSpinner(true);
+
 
     // Prepare request params:
     // Start offset
@@ -90,10 +93,12 @@ module.exports.fetchMoreDocuments = function() {
       }
 
       // update loadMore spinner
+      tab.shouldDisplayLoadMoreSpinner(false);
       module.exports.checkAllDocumentsLoaded(tab, response);
     }, function error(res) {
       tab.loadMoreError(getErrorMessage(res));
       tab.allDocumentsLoaded(true);
+      tab.shouldDisplayLoadMoreSpinner(false);
     });
   }
 };

@@ -41,7 +41,7 @@ module.exports = function sliceInTime(documents) {
   documents.forEach(function(doc) {
     var modificationDate = moment(doc.modificationDate);
     var found = false;
-    for (var i = 0; i < timeSlices.length && !found; i+=1) {
+    for(var i = 0; i < timeSlices.length && !found; i += 1) {
       if(i === 0 && modificationDate.isAfter(timeSlices[i].maxDate)) {
         found = true;
         timeSlices[i].documents.push(doc);

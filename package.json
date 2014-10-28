@@ -21,7 +21,8 @@
     "make": "node node_modules/gulp/bin/gulp.js build",
     "test": "NODE_ENV=test mocha --recursive -R spec test/ -t 5000",
     "coverage": "NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha -- --recursive -R spec test/ -t 5000",
-    "postinstall": "node node_modules/bower/bin/bower install; npm run-script make"
+    "postinstall": "node node_modules/bower/bin/bower install; npm run-script make",
+    "lint": "jshint assets/js/ app/ app.js && jscs assets/js/ app/ app.js"
   },
   "repository": {
     "type": "git",
@@ -61,6 +62,7 @@
     "gulp-jshint": "^1.7.1",
     "gulp-livereload": "^2.1.1",
     "gulp-nodemon": "^1.0.4",
+    "jscs": "^1.7.3",
     "jshint": "2.5.x",
     "jshint-stylish": "^0.4.0",
     "mocha": "1.18.x",

@@ -73,7 +73,7 @@ var sendRes = function(res, data, org, prefix) {
 module.exports.get = function getDummyContext(req, res, next) {
   if(!req.params.token) {
     res.send(new restify.MissingParameterError("Missing token parameter: please specify your anyfetch token."));
-      return next();
+    return next();
   }
 
   var data = _.merge({}, defaultDummyContext);
@@ -94,7 +94,7 @@ module.exports.get = function getDummyContext(req, res, next) {
         name: user.name,
         email: user.email
       };
-      Organization.findOne({ _id: user.organization }, cb);
+      Organization.findOne({_id: user.organization}, cb);
     }
   ], function writeResults(err, org) {
     if(err) {
@@ -136,7 +136,7 @@ module.exports.post = function computeHash(req, res, next) {
 
   async.waterfall([
     function findOrg(cb) {
-      Organization.findOne({ SFDCId: organization.id }, cb);
+      Organization.findOne({SFDCId: organization.id}, cb);
     },
   ], function writeResponse(err, org) {
     if(err || !org) {

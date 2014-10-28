@@ -49,6 +49,6 @@ module.exports.post = function(req, res, next) {
 
   var id = req.params.id;
   var connectUrl = config.managerUrl + '/connect/' + id + '?' + qs.stringify(query);
-  res.send({ url: connectUrl });
+  res.send({url: connectUrl});
   next();
 };

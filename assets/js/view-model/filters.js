@@ -77,7 +77,7 @@ module.exports.paramsForFilter = function(client) {
     typeIds.push(type.id);
   });
 
-  var params = { provider: providerIds, document_type: typeIds};
+  var params = {provider: providerIds, document_type: typeIds};
   return params;
 };
 

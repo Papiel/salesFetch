@@ -71,7 +71,8 @@ module.exports.setDocuments = function(docs) {
     var errorMessage = tab.emptyStateMessage.format(tab.client.searchQuery);
     tab.documentListError(errorMessage);
     tab.allDocumentsLoaded(true);
-  } else {
+  }
+  else {
     tab.documentListError(null);
   }
 };

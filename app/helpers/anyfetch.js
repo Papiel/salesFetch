@@ -67,7 +67,7 @@ module.exports.findDocument = function(id, user, context, finalCb) {
   async.waterfall([
     function sendBatchRequest(cb) {
       var anyfetch = new AnyFetch(user.anyFetchToken);
-      var query = { search: context.templatedQuery };
+      var query = {search: context.templatedQuery};
 
       anyfetch.getDocumentById(id, query, cb);
     },
@@ -170,7 +170,7 @@ module.exports.initAccount = function(data, done) {
       localUser.save(cb);
     }
   ], function(err, res) {
-    if(res && res.status && res.status !== 200){
+    if(res && res.status && res.status !== 200) {
       var e = new Error(res.text);
       e.statusCode = res.status;
       return done(e);
@@ -215,7 +215,7 @@ module.exports.addNewUser = function(user, organization, cb) {
       anyfetchUser.getToken(cb);
     },
     function saveLocalUser(res, cb) {
-      if(res.status !== 200){
+      if(res.status !== 200) {
         var e = new Error(res.text);
         e.statusCode = res.status;
         return cb(e);
@@ -242,7 +242,7 @@ module.exports.addNewUser = function(user, organization, cb) {
 module.exports.getProviders = function(cb) {
   async.waterfall([
     function retrieveProviders(cb) {
-      AnyFetch.getAvailableProviders({ trusted: true }, cb);
+      AnyFetch.getAvailableProviders({trusted: true}, cb);
     },
     function setId(res, cb) {
       var providers = res.body;

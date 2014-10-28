@@ -85,7 +85,7 @@ module.exports.fetchMoreDocuments = function() {
     }
 
     call(tab.endpoint, options, function success(response) {
-    response = response.documents ? response.documents : response;
+      response = response.documents ? response.documents : response;
 
       if(response.data && response.data.length > 0) {
         var docs = tab.documentsWithJson(response);

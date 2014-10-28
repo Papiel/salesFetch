@@ -4,7 +4,7 @@ var restify = require('restify');
 var async = require('async');
 var AnyFetch = require('anyfetch');
 
-var mongoose =require('mongoose');
+var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
 var _ = require("lodash");
 
@@ -17,7 +17,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
   // Retrieve documents pinned to that context
   async.waterfall([
     function searchMongo(cb) {
-      Pin.find({ SFDCId: sfdcId }, cb);
+      Pin.find({SFDCId: sfdcId}, cb);
     },
     // Fetch all snippets
     function fetchDocuments(pins, cb) {
@@ -64,7 +64,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
     if(err) {
       return finalCb(err);
     }
-    if(docs.status && docs.status !== 200){
+    if(docs.status && docs.status !== 200) {
       var e = new Error(docs.text);
       e.statusCode = docs.status;
       return finalCb(e);
@@ -95,7 +95,7 @@ module.exports.getPin = function(sfdcId, anyFetchId, cb) {
 module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
   async.waterfall([
     function getPinsForThisContext(cb) {
-      Pin.find({ SFDCId: sfdcId }, cb);
+      Pin.find({SFDCId: sfdcId}, cb);
     },
     function traversePins(pins, cb) {
       if(pins) {

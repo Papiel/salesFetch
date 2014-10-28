@@ -140,14 +140,13 @@ nav.navbar {
     font-size: 12px;
     margin: @snippetMargin;
     margin-bottom: 0;
-    padding: @snippetPadding;
 
     .icon {
       float: left;
-      width: 2 * @snippetDoctypeIconMargin + @snippetDoctypeIconSize - 8;
+      width: 2 * @snippetPadding + @snippetDoctypeIconSize - 8;
       height: @snippetHeight - 2 * @snippetBorderSize;
       background-size: @snippetDoctypeIconSize;
-      background-position: @snippetDoctypeIconMargin - @snippetPadding;
+      background-position: @snippetPadding;
     }
 
     .content {
@@ -161,7 +160,7 @@ nav.navbar {
     .icon-container {
       display: block;
       height: @snippetHeight - 2 * @snippetBorderSize;
-      width: @snippetRightIconSize + 2 * @snippetRightIconMargin + 2;
+      width: @snippetRightIconSize + 2 * @snippetPadding;
       cursor: pointer;
       float: right;
 
@@ -171,15 +170,16 @@ nav.navbar {
         height: @snippetRightIconSize;
         width: @snippetRightIconSize;
         clear: both;
-        margin-right: @snippetRightIconMargin - @snippetPadding;
+        margin-right: @snippetPadding;
+        margin-top: @snippetPadding;
 
         &.icon-provider {
-          margin-top: @snippetHeight - (2 * @snippetRightIconSize) - (2 * (@snippetRightIconMargin - @snippetPadding));
+          margin-top: @snippetHeight - (2 * @snippetRightIconSize) - (2 * (@snippetPadding));
           background-size: @snippetRightIconSize;
         }
 
         &.star-button {
-          margin-top: @snippetRightIconMargin - @snippetPadding;
+          margin-top: @snippetPadding;
           font-size: @snippetRightIconSize;
           color: #EBEBEB;
 
@@ -373,20 +373,19 @@ html.tablet.portrait {
 
   #view-body {
     top: @navbarHeightMobile;
+  }
+}
+
+html.mobile, html.tablet.landscape {
+  .snippet-list {
     .snippet {
       .icon {
-        float: left;
-        width: 2 * @snippetDoctypeIconMarginMobile + @snippetDoctypeIconSizeMobile - 8;
-        height: @snippetHeight - 2 * @snippetBorderSize;
+        width: 2 * @snippetPadding + @snippetDoctypeIconSizeMobile - 8;
         background-size: @snippetDoctypeIconSizeMobile;
-        background-position: @snippetDoctypeIconMarginMobile - @snippetPadding;
       }
     }
   }
 }
-
-
-
 
 html.tablet.landscape {
   nav.navbar {
@@ -443,16 +442,6 @@ html.tablet.landscape {
       width: @documentListWidth;
       float: left;
       height: 100%;
-    }
-
-    .snippet {
-      .icon {
-        float: left;
-        width: 2 * @snippetDoctypeIconMarginMobile + @snippetDoctypeIconSizeMobile - 8;
-        height: @snippetHeight - 2 * @snippetBorderSize;
-        background-size: @snippetDoctypeIconSizeMobile;
-        background-position: @snippetDoctypeIconMarginMobile - @snippetPadding;
-      }
     }
   }
 }

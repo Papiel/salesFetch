@@ -264,13 +264,13 @@ html.desktop {
     .snippet-list {
       position: absolute;
       left: 0;
-      right: 300px;
+      right: @documentListWidth;
     }
 
     .filter-column {
       position: absolute;
       right: 0;
-      width: 300px;
+      width: @documentListWidth;
       padding: 20px;
       overflow-y: auto;
       height: 100%;
@@ -399,7 +399,7 @@ html.tablet.landscape {
     }
 
     ul#main-nav {
-      width: 300px;
+      width: @documentListWidth;
       float: left;
     }
 
@@ -409,7 +409,7 @@ html.tablet.landscape {
 
     @media only screen and (orientation: landscape) {
       ul#fullview-nav {
-        margin-left: 300px;
+        margin-left: @documentListWidth;
       }
     }
 
@@ -435,7 +435,7 @@ html.tablet.landscape {
     top: @navbarHeightMobile;
 
     .snippet-list {
-      width: 300px;
+      width: @documentListWidth;
       float: left;
       height: 100%;
     }

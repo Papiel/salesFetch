@@ -48,8 +48,6 @@ module.exports.goToDocument = function(doc) {
       $(target.body).html(spinnerHTML);
     }
 
-    // Copy class from current <html></html>
-    $(target.documentElement).addClass($("html").attr("class"));
 
     var writeFullView = function(docHtml) {
       var html;
@@ -83,6 +81,9 @@ module.exports.goToDocument = function(doc) {
       $(target.head).append('<link rel="stylesheet" href="/dist/index.min.css" type="text/css">');
       $(target.head).append('<link rel="stylesheet" href="/dist/full-view.css" type="text/css">');
       window.anyfetchAssets.formatDates({document: target});
+
+      // Copy class from current <html></html>
+      $(target.documentElement).addClass($("html").attr("class"));
     };
 
     // Load document full document content (AJAX) if needed

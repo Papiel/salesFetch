@@ -103,11 +103,10 @@ Hidden by default until the app has loaded.
     <!-- Spinners & errors -->
     <!-- TODO: merge into a single div? -->
     <!-- ko if: $data != $root.providerTab -->
-    <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentsSpinner">
-      <i class="spinner centered large"></i>
-    </div>
-    <div class="placeholder-container" data-bind="visible: shouldDisplayDocumentListError">
-      <p class="error" data-bind="text: documentListError"></p>
+    <div class="centered" data-bind="visible: shouldDisplayDocumentListError">
+      <div class="centered-container">
+        <p class="error" data-bind="text: documentListError"></p>
+      </div>
     </div>
 
     <!--

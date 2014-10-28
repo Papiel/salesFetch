@@ -55,22 +55,22 @@ nav.navbar {
     color: @white;
 
     li {
-      // position: relative;
       display: block;
       font-size: 20px;
-      border-radius: 3px;
-
-      a {
-        padding: 15px 20px;
-        display: block;
+      &.nav-pill {
+        border-radius: 3px;
+        a {
+          padding: 15px 20px;
+          display: block;
+        }
       }
     }
 
-    li.active {
+    li.nav-pill.active {
       background-color: lighten(@navbarBackgroundColor, 20%);
     }
 
-    li:hover:not(.active) {
+    li.nav-pill:hover:not(.active) {
       background-color: lighten(@navbarBackgroundColor, 5%);
       cursor: pointer;
     }

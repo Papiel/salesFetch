@@ -197,9 +197,14 @@ nav.navbar {
   .load-more {
     width: 100%;
     text-align: center;
-    height: @spinnerSize;
-    margin-bottom: 20px;
     color: @spinnerColor;
+    height: @snippetHeight;
+    display: table;
+      .load-more-container {
+        height: @spinnerSize;
+        display: table-cell;
+        vertical-align: middle;
+      }
   }
 }
 

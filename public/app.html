@@ -144,8 +144,10 @@ Hidden by default until the app has loaded.
       </div>
 
       <!-- Spinner for infinite scroll -->
-      <div class="load-more" data-bind="visible: !allDocumentsLoaded() &amp;&amp; !shouldDisplayDocumentsSpinner() &amp;&amp; shouldDisplayLoadMoreSpinner()">
-        <i class="spinner large"></i>
+      <div class="load-more">
+        <div class="load-more-container">
+          <i class="spinner large" data-bind="visible: !allDocumentsLoaded() &amp;&amp; !shouldDisplayDocumentsSpinner() &amp;&amp; shouldDisplayLoadMoreSpinner()"></i>
+        </div>
       </div>
     </div>
 

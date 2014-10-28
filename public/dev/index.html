@@ -95,8 +95,9 @@
 
     <!-- Load app -->
     <script type="text/javascript">
+      /* global $,window, document */
       document.addEventListener("DOMContentLoaded", function() {
-        /* global $,window */
+        'use strict';
         if(!window.jQuery || !window.ko || !window.device || !window.moment) {
           var html = '<p>A network error occured</p>';
           document.getElementById('salesfetch-container').innerHTML = html;

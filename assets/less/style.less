@@ -332,7 +332,8 @@ html.desktop {
 }
 
 
-html.mobile {
+html.mobile,
+html.tablet.portrait {
   nav.navbar {
     position: absolute;
     z-index: 1030;
@@ -367,6 +368,77 @@ html.mobile {
 
   #view-body {
     top: @navbarHeightMobile;
+    .snippet {
+      .icon {
+        float: left;
+        width: 2 * @snippetDoctypeIconMarginMobile + @snippetDoctypeIconSizeMobile - 8;
+        height: @snippetHeight - 2 * @snippetBorderSize;
+        background-size: @snippetDoctypeIconSizeMobile;
+        background-position: @snippetDoctypeIconMarginMobile - @snippetPadding;
+      }
+    }
+  }
+}
+
+
+
+
+html.tablet.landscape {
+  nav.navbar {
+    position: absolute;
+    z-index: 1030;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow-y: auto;
+    height: @navbarHeightMobile;
+
+    div {
+      height: 100%;
+    }
+
+    ul#main-nav {
+      width: 300px;
+      float: left;
+    }
+
+    ul#fullview-nav {
+      padding-right: 0;
+    }
+
+    @media only screen and (orientation: landscape) {
+      ul#fullview-nav {
+        margin-left: 300px;
+      }
+    }
+
+    ul {
+      height: 100%;
+      padding: @navbarPillMargin;
+      li {
+        margin-right: @navbarPillMargin;
+        float: left;
+        height: 100%;
+        a {
+          height: 100%;
+          padding: ((@navbarHeightMobile - 2 * @navbarPillMargin - @navbarIconSizeMobile) / 2) 20px;
+          font-size: @navbarIconSizeMobile;
+          line-height: @navbarIconSizeMobile;
+          display: block;
+        }
+      }
+    }
+  }
+
+  #view-body {
+    top: @navbarHeightMobile;
+
+    .snippet-list {
+      width: 300px;
+      float: left;
+      height: 100%;
+    }
 
     .snippet {
       .icon {

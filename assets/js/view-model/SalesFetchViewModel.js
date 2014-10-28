@@ -50,6 +50,14 @@ module.exports = function SalesfetchViewModel() {
     defineLayout(client, device.landscape());
   }, false);
 
+  /* global sforce */
+  if((typeof sforce !== 'undefined') && (sforce !== null)) {
+    client.isSF1 = true;
+  }
+  else {
+    client.isSF1 = false;
+  }
+
   // ----- Editable data
   client.connectedProviders = ko.observableArray([]);
   client.facetsProviders = ko.observableArray([]);

@@ -8,6 +8,29 @@ var documents = require('./documents.js');
 var providers = require('./providers.js');
 var types = require('./types.js');
 
+var defineLayout = function defineLayout(client, landscape) {
+  client.isLandscape(landscape);
+  client.isLandscape(!landscape);
+
+  if(device.desktop()) {
+    client.desktopLayout(true);
+    client.mobileLayout(false);
+    client.tabletLayout(false);
+  }
+  else if(device.tablet() && landscape) {
+    // A tablet is only a tablet if landscape
+    client.tabletLayout(true);
+    client.desktopLayout(false);
+    client.mobileLayout(false);
+  }
+  else {
+    // A tablet in portrait is regarded as a mobile
+    client.tabletLayout(false);
+    client.desktopLayout(false);
+    client.mobileLayout(true);
+  }
+};
+
 module.exports = function SalesfetchViewModel() {
   var client = this;
 
@@ -15,6 +38,17 @@ module.exports = function SalesfetchViewModel() {
   client.isDesktop = device.desktop();
   client.isTablet = !client.isDesktop && device.tablet();
   client.isMobile = !client.isTablet && device.mobile();
+
+  client.isLandscape = ko.observable();
+  client.isPortrait = ko.observable();
+  client.desktopLayout = ko.observable();
+  client.tabletLayout = ko.observable();
+  client.mobileLayout = ko.observable();
+
+  defineLayout(client, device.landscape());
+  window.addEventListener("resize", function() {
+    defineLayout(client, device.landscape());
+  }, false);
 
   // ----- Editable data
   client.connectedProviders = ko.observableArray([]);
@@ -87,17 +121,13 @@ module.exports = function SalesfetchViewModel() {
   // ----- UI (conditional views)
   // Avoid using ko.computed when not needed (for better performance)
 
-  client.shouldDisplayFilterToolbar = ko.computed(function() {
-    return (!client.activeDocument()) || client.isTablet;
+  client.shouldDisplayTabsNavbar = ko.computed(function() {
+    return !client.activeDocument() || client.desktopLayout() || client.tabletLayout();
   });
 
-  client.shouldDisplayTabsNavbar = function() {
-    return (client.activeDocument() === null) || client.isDesktop || client.isTablet;
-  };
-
-  client.shouldDisplayDocumentNavbar = function() {
-    return client.activeDocument && !client.isDesktop;
-  };
+  client.shouldDisplayFullViewNavbar = ko.computed(function() {
+    return client.activeDocument() && !client.isDesktop;
+  });
 
   // ----- Zero state
   // Extract the search (context) from client data

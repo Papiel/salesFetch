@@ -50,14 +50,16 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
   };
   self.documents.extend({ rateLimit: { timeout: 100, method: "notifyWhenChangesStop" }, notify: 'always' });
 
-  self.shouldDisplayDocumentList = ko.computed(function() {
-    return (!self.client.isMobile || !client.activeDocument());
-  });
-
-  self.shouldDisplayDocumentListError = ko.computed(function() {
+  var shouldDisplayDocumentListError = function() {
     var docCount = Object.keys(self.documents()).length;
     return self.documentListError() && (!self.documents() || docCount <= 0);
+  };
+  self.shouldDisplayDocumentListError = ko.computed(shouldDisplayDocumentListError);
+
+  self.shouldDisplayDocumentList = ko.computed(function() {
+    return !(client.activeDocument() && client.mobileLayout()) && !shouldDisplayDocumentListError();
   });
+
 
   // ----- Documents
   self.timeSlices = ko.computed(function() {

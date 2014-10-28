@@ -18,9 +18,13 @@ body {
   background-color: white;
 }
 
-#document-container {
-  padding: 2px;
+html.tablet {
+  body {
+    font-size: @defaultFontSize - 2px;
+  }
+}
 
+#document-container {
   // This fixes iOS Safari shitty iframe handling
   // Thanks Apple. Again. I fucking lost 6 hours on this bug.
   width: 10px;
@@ -28,6 +32,8 @@ body {
   height: 10px;
   min-height: 100%;
   box-sizing: border-box;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 .desktop #document-container {

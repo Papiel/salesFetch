@@ -25,7 +25,10 @@ var OrgModel = new Schema ({
     type: String,
     unique: true
   },
-  name: String,
+  SFDCData: {
+    type: Object,
+  },
+
   masterKey: String
 });
 

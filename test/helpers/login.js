@@ -22,7 +22,9 @@ var userInfo = {
 };
 
 var orgInfo = {
-  name: 'Breaking Bad',
+  SFDCData: {
+    name: 'Breaking Bad',
+  },
   anyFetchId: 'anyFetchId',
   SFDCId: 'SFDCId',
 };
@@ -47,8 +49,12 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
     }
 
     var data = {
-      organization: {id: createdOrg.SFDCId},
-      user: {id: user.SFDCId},
+      organization: {
+        id: createdOrg.SFDCId
+      },
+      user: {
+        id: user.SFDCId
+      },
       context: context,
       anyFetchURL: 'http://api.anyfetch.com',
       instanceURL: 'https://eu2.salesforce.com'

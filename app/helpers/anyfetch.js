@@ -147,9 +147,9 @@ module.exports.initAccount = function(data, done) {
       user.token = res.body.token;
 
       var localOrg = new Organization({
-        name: org.name,
         SFDCId: org.id,
-        anyFetchId: company.id
+        anyFetchId: company.id,
+        SFDCData: org,
       });
 
       localOrg.save(cb);

@@ -103,7 +103,7 @@ describe('/admin/init endpoint', function() {
           orgs.length.should.eql(1);
 
           var o = orgs[0];
-          o.should.have.property('name', 'Breaking Bad');
+          o.should.have.property('SFDCData').and.have.property('name', 'Breaking Bad');
           o.should.have.property('SFDCId', '1234');
           o.should.have.property('anyFetchId', '533d9161162215a5375d34d2');
           generatedMasterKey = o.masterKey;

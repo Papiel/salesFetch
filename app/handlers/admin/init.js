@@ -6,6 +6,7 @@
 var restify = require('restify');
 var async = require('async');
 var anyFetchHelper = require('../../helpers/anyfetch');
+var config = require('../../../config/configuration');
 
 /**
  * Create a subcompany and add an admin user
@@ -13,6 +14,13 @@ var anyFetchHelper = require('../../helpers/anyfetch');
  */
 module.exports.post = function(req, res, next) {
   async.waterfall([
+    function checkKey(cb) {
+      if(req.params.secret_key !== config.secretKey) {
+        return cb(new restify.UnauthorizedError('Unknown secret key.'));
+      }
+
+      cb();
+    },
     function checkParams(cb) {
       var data = req.body;
       if(!data.user || !data.organization) {

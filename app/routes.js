@@ -12,7 +12,7 @@ module.exports = function(server) {
   // Redirect `/` to the main website
   server.get('/', handlers.index.get);
 
-  server.post('/admin/init', handlers.admin.index.post);
+  server.post('/admin/init', handlers.admin.init.post);
 
   server.get('/app/documents',
     middlewares.checkParams,

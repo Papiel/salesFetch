@@ -61,7 +61,7 @@ module.exports = function DocumentTab(client, name, display, pullRight, filter, 
 
   var shouldDisplayDocumentListError = function() {
     var docCount = Object.keys(self.documents()).length;
-    return self.documentListError() && (!self.documents() || docCount <= 0);
+    return !client.activeDocument() && self.documentListError() && (!self.documents() || docCount <= 0);
   };
   self.shouldDisplayDocumentListError = ko.computed(shouldDisplayDocumentListError);
 

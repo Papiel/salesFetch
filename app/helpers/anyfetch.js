@@ -140,6 +140,7 @@ module.exports.initAccount = function(data, done) {
     },
     function retrieveUserToken(company, admin, cb) {
       user.anyFetchId = admin.id;
+      user.anyFetchEmail = admin.email;
       var anyfetchUser = new AnyFetch(admin.email, user.password);
       anyfetchUser.getToken(rarity.carry(company, cb));
     },
@@ -158,9 +159,12 @@ module.exports.initAccount = function(data, done) {
       org = localOrganization;
 
       var localUser = new User({
-        name: user.name,
-        email: user.email,
         SFDCId: user.id,
+        SFDCData: {
+          name: user.name,
+          email: user.email,
+        },
+        anyFetchEmail: user.anyFetchEmail,
         anyFetchId: user.anyFetchId,
         anyFetchToken: user.token,
         organization: localOrganization,
@@ -211,6 +215,7 @@ module.exports.addNewUser = function(user, organization, cb) {
     },
     function retrieveUserToken(res, cb) {
       user.anyFetchId = res.body.id;
+      user.anyFetchEmail = res.body.email;
       var anyfetchUser = new AnyFetch(res.body.email, user.password);
       anyfetchUser.getToken(cb);
     },
@@ -220,12 +225,15 @@ module.exports.addNewUser = function(user, organization, cb) {
         e.statusCode = res.status;
         return cb(e);
       }
-      var userToken = res.body.token;
 
+      var userToken = res.body.token;
       var localUser = new User({
-        name: user.name,
-        email: user.email,
         SFDCId: user.id,
+        SFDCData: {
+          name: user.name,
+          email: user.email,
+        },
+        anyFetchEmail: user.anyFetchEmail,
         anyFetchId: user.anyFetchId,
         anyFetchToken: userToken,
         organization: organization

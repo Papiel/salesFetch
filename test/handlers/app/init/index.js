@@ -34,7 +34,7 @@ describe('/app/init', function() {
         function createCompany(cb) {
           var org = new Organization({
             name: "anyFetch",
-            SFDCId: '1234'
+            SFDCId: '1234',
           });
 
           org.save(cb);
@@ -54,7 +54,7 @@ describe('/app/init', function() {
         function makeCall(user, count, cb) {
           var theUser = {
             id: 'newUser',
-            name: 'Walter White',
+            name: 'walter.white@breaking-bad.com',
             email: 'walter.white@breaking-bad.com'
           };
 
@@ -74,8 +74,14 @@ describe('/app/init', function() {
             .end(rarity.slice(1, cb));
         },
         function checkUserValidity(cb) {
-          User.findOne({name: 'Walter White'}, function(err, user) {
-            user.should.have.property('email', 'walter.white@breaking-bad.com');
+          User.findOne({SFDCId: 'newUser'}, function(err, user) {
+            user.should.have.property('SFDCData');
+            user.SFDCData.should.have.property('name', 'walter.white@breaking-bad.com');
+            user.SFDCData.should.have.property('email', 'walter.white@breaking-bad.com');
+            user.should.have.property('SFDCId', 'newUser');
+            user.should.have.property('anyFetchToken', 'mockedToken');
+            user.should.have.property('anyFetchEmail', '1414584211623@salesfetch.com');
+            user.should.have.property('isAdmin', false);
             user.should.have.property('SFDCId', 'newUser');
             user.should.have.property('anyFetchToken', 'mockedToken');
             cb();
@@ -89,7 +95,7 @@ describe('/app/init', function() {
         function createCompany(cb) {
           var org = new Organization({
             name: "anyFetch",
-            SFDCId: '1234'
+            SFDCId: '1234',
           });
 
           org.save(cb);

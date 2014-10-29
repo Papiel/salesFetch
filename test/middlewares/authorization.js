@@ -99,7 +99,6 @@ describe('<Authentication middleware>', function() {
           name: "anyFetch",
           SFDCId: '1234'
         });
-
         org.save(cb);
       },
       function createUser(org, count, cb) {
@@ -123,7 +122,8 @@ describe('<Authentication middleware>', function() {
         data.hash = hash;
 
         var req = {data: data};
-        authMiddleware(req, null, function() {
+        authMiddleware(req, null, function(err) {
+          should(err).not.be.ok;
           should(req).have.properties('user', 'data');
           req.user.should.have.property('SFDCId', user.SFDCId);
           req.data.should.have.keys('hash', 'user', 'organization');

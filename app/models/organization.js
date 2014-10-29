@@ -27,6 +27,8 @@ var OrgModel = new Schema ({
   },
   SFDCData: {
     type: Object,
+    required: true,
+    default: {},
   },
 
   masterKey: String

@@ -15,7 +15,7 @@ describe('Logger', function() {
   };
 
   it('should not return anything for OPTIONS calls', function() {
-    var log = customLogger('', { method: 'OPTIONS' });
+    var log = customLogger('', {method: 'OPTIONS'});
     should(log).not.be.ok;
   });
 

@@ -11,7 +11,7 @@ describe('<Params check middleware>', function() {
   after(mock.restore);
 
   it('should reject empty calls', function(done) {
-    var req = { query: [] };
+    var req = {query: []};
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -22,12 +22,12 @@ describe('<Params check middleware>', function() {
 
   it('should err on missing organization id', function(done) {
     var params = {
-      organization: {id: null },
-      user: { id: '1234' },
+      organization: {id: null},
+      user: {id: '1234'},
       hash: '1234'
     };
 
-    var req = { query: { data: JSON.stringify(params) } };
+    var req = {query: {data: JSON.stringify(params)}};
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -38,12 +38,12 @@ describe('<Params check middleware>', function() {
 
   it('should err on missing user id', function(done) {
     var params = {
-      organization: {id: '1234' },
-      user: { id: null },
+      organization: {id: '1234'},
+      user: {id: null},
       hash: '1234'
     };
 
-    var req = { query: { data: JSON.stringify(params) } };
+    var req = {query: {data: JSON.stringify(params)}};
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -54,12 +54,12 @@ describe('<Params check middleware>', function() {
 
   it('should err on missing hash', function(done) {
     var params = {
-      organization: {id: '1234' },
-      user: { id: '1234' },
+      organization: {id: '1234'},
+      user: {id: '1234'},
       hash: null
     };
 
-    var req = { query: { data: JSON.stringify(params) } };
+    var req = {query: {data: JSON.stringify(params)}};
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -70,12 +70,12 @@ describe('<Params check middleware>', function() {
 
   it('should pass data in `req` object', function(done) {
     var data = {
-      organization: {id: '1234' },
-      user: { id: '1234' },
+      organization: {id: '1234'},
+      user: {id: '1234'},
       hash: '1234'
     };
 
-    var req = { query: { data: JSON.stringify(data) } };
+    var req = {query: {data: JSON.stringify(data)}};
     authMiddleware(req, null, function(err) {
       should(err).not.be.ok;
       should(req).have.properties('data');

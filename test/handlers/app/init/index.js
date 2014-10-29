@@ -104,7 +104,7 @@ describe('/app/init', function() {
           };
 
           var data = {
-            organization: {id: org.SFDCId },
+            organization: {id: org.SFDCId},
             user: user
           };
           var hash = getSecureHash(data, org.masterKey);

@@ -64,7 +64,7 @@ describe('/app/documents/:id page', function() {
           cb();
         },
         function addPin(cb) {
-          var user = { id: sampleUserId };
+          var user = {id: sampleUserId};
           cb = rarity.slice(1, cb);
           salesfetchHelpers.addPin(sampleContext.recordId, sampleDocumentId, user, cb);
         },
@@ -80,7 +80,7 @@ describe('/app/documents/:id page', function() {
               should(res.body).be.okay;
 
               var doc = res.body;
-              doc.should.have.properties({ pinned: true });
+              doc.should.have.properties({pinned: true});
             })
             .end(cb);
         }

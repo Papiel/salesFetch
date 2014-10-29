@@ -24,7 +24,7 @@ describe('<Errors>', function() {
 
   it('should err (but not crash) on badly formatted `data` argument', function(done) {
     request(app).get('/app/documents')
-      .query({ data: 'this is not JSON' })
+      .query({data: 'this is not JSON'})
       .expect(422)
       .expect(/malformed JSON/i)
       .end(done);

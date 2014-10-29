@@ -24,7 +24,7 @@ describe('<Authentication middleware>', function() {
       }
     };
 
-    var req = { data: data };
+    var req = {data: data};
     authMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
@@ -46,7 +46,7 @@ describe('<Authentication middleware>', function() {
         var invalidHash = getSecureHash(data, '');
         data.hash = invalidHash;
 
-        var req = { data: data };
+        var req = {data: data};
         authMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
@@ -79,7 +79,7 @@ describe('<Authentication middleware>', function() {
         // Tamper with the request
         data.context.templatedQuery = 'Unicorns';
 
-        var req = { data: data };
+        var req = {data: data};
         authMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
@@ -116,13 +116,13 @@ describe('<Authentication middleware>', function() {
       },
       function makeCall(user, count, cb) {
         var data = {
-          organization: {id: createdOrg.SFDCId },
-          user: { id: user.SFDCId }
+          organization: {id: createdOrg.SFDCId},
+          user: {id: user.SFDCId}
         };
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var req = { data: data };
+        var req = {data: data};
         authMiddleware(req, null, function() {
           should(req).have.properties('user', 'data');
           req.user.should.have.property('SFDCId', user.SFDCId);

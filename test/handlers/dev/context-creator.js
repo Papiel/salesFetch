@@ -67,7 +67,7 @@ describe('/dev/context-creator (dev only)', function() {
     it('should err on missing `data` key', function(done) {
       request(app)
         .post(endpoint)
-        .send({ prefix: prefix })
+        .send({prefix: prefix})
         .expect(409)
         .end(function(err, res) {
           should(res.body.message).be.ok.and.match(/missing `data` key/i);
@@ -81,7 +81,7 @@ describe('/dev/context-creator (dev only)', function() {
 
       request(app)
         .post(endpoint)
-        .send({ prefix: prefix, data: context })
+        .send({prefix: prefix, data: context})
         .expect(409)
         .end(function(err, res) {
           should(res.body.message).be.ok.and.match(/missing `data.organization` key/i);
@@ -98,7 +98,7 @@ describe('/dev/context-creator (dev only)', function() {
 
       request(app)
         .post(endpoint)
-        .send({ prefix: prefix, data: string })
+        .send({prefix: prefix, data: string})
         .expect(422)
         .end(function(err, res) {
           should(res.body.message).be.ok.and.match(/invalid json/i);
@@ -112,7 +112,7 @@ describe('/dev/context-creator (dev only)', function() {
 
       request(app)
         .post(endpoint)
-        .send({ prefix: prefix, data: context })
+        .send({prefix: prefix, data: context})
         .expect(404)
         .end(function(err, res) {
           should(res.body.message).be.ok.and.match(/no org with sfdcid/i);
@@ -127,7 +127,7 @@ describe('/dev/context-creator (dev only)', function() {
 
       request(app)
         .post(endpoint)
-        .send({ prefix: prefix, data: context })
+        .send({prefix: prefix, data: context})
         .expect(200)
         .expect(function(res) {
           should(res.body).be.ok;

@@ -63,7 +63,7 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
 };
 
 module.exports.getUser = function(cb) {
-  User.findOne({ email: userInfo.email }, cb);
+  User.findOne({email: userInfo.email}, cb);
 };
 
 module.exports.getOrganization = function(cb) {

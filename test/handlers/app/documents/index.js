@@ -118,7 +118,7 @@ describe('/app/documents page', function() {
             }
           });
           should(pinnedDoc).be.ok;
-          pinnedDoc.should.have.properties({ pinned: true });
+          pinnedDoc.should.have.properties({pinned: true});
           cb();
         }
       ], done);
@@ -136,7 +136,7 @@ describe('/app/documents page', function() {
         function sendRequest(url, cb) {
           request(app)
             .get(url)
-            .query({ filters: filters })
+            .query({filters: filters})
             .expect(200)
             .end(cb);
         },

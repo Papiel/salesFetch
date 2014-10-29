@@ -35,7 +35,9 @@ describe('<Validation middleware>', function() {
 
     async.waterfall([
       function buildRequest(cb) {
-        requestBuilder(endpoint, { recordId: '0032000001DoV22AAF' }, cb);
+        requestBuilder(endpoint, {
+          recordId: '0032000001DoV22AAF'
+        }, cb);
       },
       function sendRequest(url, cb) {
         request(app)

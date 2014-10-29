@@ -12,7 +12,7 @@ describe('/ endpoint', function() {
   it('should redirect to http://salesfetch.anyfetch.com', function(done) {
     request(app)
       .get(endpoint)
-      .expect(function(res){
+      .expect(function(res) {
         res.header.location.should.equal('http://salesfetch.anyfetch.com');
       })
       .end(done);

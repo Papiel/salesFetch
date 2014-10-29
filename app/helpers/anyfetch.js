@@ -114,7 +114,7 @@ module.exports.initAccount = function(data, done) {
     function checkIfCompanyAlreadyExists(cb) {
       Organization.findOne({'SFDCId': org.id}, function(err, existingOrg) {
         if(existingOrg) {
-          return done(null, existingOrg);
+          return cb(new restify.ForbiddenError("This company already exists."));
         }
 
         cb(null);

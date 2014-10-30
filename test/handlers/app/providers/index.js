@@ -74,7 +74,7 @@ describe('/app/providers page', function() {
             .post(url)
             .expect(200)
             .expect(/url/i)
-            .expect(/bearer=anyFetchToken/i)
+            .expect(/bearer=anyfetchToken/i)
             .expect(/return_to/i)
             .end(cb);
         }

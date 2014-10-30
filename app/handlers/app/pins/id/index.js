@@ -11,11 +11,11 @@ var salesfetchHelpers = require('../../../../helpers/salesfetch.js');
  */
 module.exports.post = function(req, res, next) {
   var sfdcId = req.data.context.recordId;
-  var anyFetchId = req.params.id;
+  var anyfetchId = req.params.id;
 
   async.waterfall([
     function addPin(cb) {
-      salesfetchHelpers.addPin(sfdcId, anyFetchId, req.user, rarity.slice(1, cb));
+      salesfetchHelpers.addPin(sfdcId, anyfetchId, req.user, rarity.slice(1, cb));
     },
     function sendResponse(cb) {
       res.send(204);
@@ -24,7 +24,7 @@ module.exports.post = function(req, res, next) {
   ], function handleMongoError(err) {
     // Error post processing
     if(err && err.name === 'MongoError' && err.code === 11000) {
-      err = new restify.InvalidArgumentError('The AnyFetch object ' + anyFetchId + ' is already pinned to the context ' + sfdcId);
+      err = new restify.InvalidArgumentError('The AnyFetch object ' + anyfetchId + ' is already pinned to the context ' + sfdcId);
     }
 
     return next(err);
@@ -36,11 +36,11 @@ module.exports.post = function(req, res, next) {
  */
 module.exports.del = function(req, res, next) {
   var sfdcId = req.data.context.recordId;
-  var anyFetchId = req.params.id;
+  var anyfetchId = req.params.id;
 
   async.waterfall([
     function removePin(cb) {
-      salesfetchHelpers.removePin(sfdcId, anyFetchId, req.user, rarity.slice(1, cb));
+      salesfetchHelpers.removePin(sfdcId, anyfetchId, req.user, rarity.slice(1, cb));
     },
     function sendResponse(cb) {
       res.send(202);

@@ -93,7 +93,7 @@ describe('/app/documents page', function() {
           var pin = new Pin({
             createdBy: user.id,
             SFDCId: context.recordId,
-            anyFetchId: pinnedId
+            anyfetchId: pinnedId
           });
 
           pin.save(rarity.slice(1, cb));

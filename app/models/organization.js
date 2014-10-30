@@ -17,7 +17,7 @@ var OrgModel = new Schema ({
     // This will trigger the initial update
     default: 0
   },
-  anyFetchId: {
+  anyfetchId: {
     type: String,
     unique: true
   },

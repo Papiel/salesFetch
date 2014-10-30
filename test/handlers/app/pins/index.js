@@ -62,7 +62,7 @@ describe('/app/pins page', function() {
         function addPin(cb) {
           var pin = new Pin();
           pin.SFDCId = sampleContext.recordId;
-          pin.anyFetchId = sampleDocumentId;
+          pin.anyfetchId = sampleDocumentId;
 
           pin.save(cb);
         },

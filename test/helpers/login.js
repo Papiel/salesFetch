@@ -18,9 +18,9 @@ var userInfo = {
     name: 'walter.white@breaking-bad.com',
     email: 'walter.white@breaking-bad.com',
   },
-  anyFetchId: 'anyFetchId',
-  anyFetchToken: 'anyFetchToken',
-  anyFetchEmail: '1413306427601@salesfetch.com',
+  anyfetchId: 'anyfetchId',
+  anyfetchToken: 'anyfetchToken',
+  anyfetchEmail: '1413306427601@salesfetch.com',
   isAdmin: true
 };
 
@@ -28,7 +28,7 @@ var orgInfo = {
   SFDCData: {
     name: 'Breaking Bad',
   },
-  anyFetchId: 'anyFetchId',
+  anyfetchId: 'anyfetchId',
   SFDCId: 'SFDCId',
 };
 
@@ -59,7 +59,7 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
         id: user.SFDCId
       },
       context: context,
-      anyFetchURL: 'http://api.anyfetch.com',
+      anyfetchURL: 'http://api.anyfetch.com',
       instanceURL: 'https://eu2.salesforce.com'
     };
     var hash = getSecureHash(data, createdOrg.masterKey);

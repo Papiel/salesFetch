@@ -96,7 +96,7 @@ describe('<Authentication middleware>', function() {
     async.waterfall([
       function createCompany(cb) {
         var org = new Organization({
-          name: "anyFetch",
+          name: "anyfetch",
           SFDCId: '1234'
         });
         org.save(cb);

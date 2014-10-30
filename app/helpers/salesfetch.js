@@ -33,9 +33,9 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       }
 
       // Fetch all snippets in one call
-      var anyfetch = new AnyFetch(user.anyFetchToken);
+      var anyfetch = new AnyFetch(user.anyfetchToken);
       var ids = pins.map(function(pin) {
-        return pin.anyFetchId;
+        return pin.anyfetchId;
       });
       var query = {
         id: ids,
@@ -76,13 +76,13 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
 
 /**
  * @param {Object} sfdcId The context's ID
- * @param {Object} anyFetchId The document's ID
+ * @param {Object} anyfetchId The document's ID
  * @param cb(err, pin) The callback will be called with the pin associated to this object in this context, or null if none exists
  */
-module.exports.getPin = function(sfdcId, anyFetchId, cb) {
+module.exports.getPin = function(sfdcId, anyfetchId, cb) {
   Pin.findOne({
     SFDCId: sfdcId,
-    anyFetchId: anyFetchId
+    anyfetchId: anyfetchId
   }, cb);
 };
 
@@ -101,7 +101,7 @@ module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
       if(pins) {
         var hash = {};
         pins.forEach(function(pin) {
-          hash[pin.anyFetchId] = true;
+          hash[pin.anyfetchId] = true;
         });
 
         documents.data.forEach(function(doc) {
@@ -120,11 +120,11 @@ module.exports.markIfPinned = function(sfdcId, documents, finalCb) {
 /**
  * Add a new pin
  */
-module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
+module.exports.addPin = function(sfdcId, anyfetchId, user, cb) {
   var pin = new Pin({
     createdBy: user.id,
     SFDCId: sfdcId,
-    anyFetchId: anyFetchId
+    anyfetchId: anyfetchId
   });
 
   pin.save(cb);
@@ -133,10 +133,10 @@ module.exports.addPin = function(sfdcId, anyFetchId, user, cb) {
 /**
  * Remove an existing pin
  */
-module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
+module.exports.removePin = function(sfdcId, anyfetchId, user, finalCb) {
   var hash = {
     SFDCId: sfdcId,
-    anyFetchId: anyFetchId
+    anyfetchId: anyfetchId
   };
 
   async.waterfall([
@@ -147,7 +147,7 @@ module.exports.removePin = function(sfdcId, anyFetchId, user, finalCb) {
     },
     function checkPin(pin, cb) {
       if(!pin) {
-        return cb(new restify.NotFoundError('The object ' + anyFetchId + ' was not pinned in the context ' + sfdcId));
+        return cb(new restify.NotFoundError('The object ' + anyfetchId + ' was not pinned in the context ' + sfdcId));
       }
       if(!pin.createdBy || !pin.createdBy.organization.equals(user.organization)) {
         return cb(new restify.ForbiddenError('You cannot delete a pin from another organization'));

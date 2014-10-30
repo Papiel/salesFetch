@@ -5,7 +5,7 @@
 
 var restify = require('restify');
 var async = require('async');
-var anyFetchHelper = require('../../helpers/anyfetch');
+var anyfetchHelper = require('../../helpers/anyfetch');
 var config = require('../../../config/configuration');
 
 /**
@@ -30,7 +30,7 @@ module.exports.post = function(req, res, next) {
       cb(null, data);
     },
     function initAccount(data, cb) {
-      anyFetchHelper.initAccount(data, cb);
+      anyfetchHelper.initAccount(data, cb);
     },
     function sendResponse(createdOrg, cb) {
       res.send(200, createdOrg.masterKey);

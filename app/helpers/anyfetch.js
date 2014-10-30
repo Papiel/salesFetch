@@ -17,7 +17,7 @@ var config = require('../../config/configuration.js');
 module.exports.findDocuments = function(params, user, cb) {
   async.waterfall([
     function executeBatchRequest(cb) {
-      var anyfetch = new AnyFetch(user.anyFetchToken);
+      var anyfetch = new AnyFetch(user.anyfetchToken);
       anyfetch.getDocuments(params, cb);
     },
     function templateResults(res, cb) {
@@ -66,7 +66,7 @@ module.exports.findDocuments = function(params, user, cb) {
 module.exports.findDocument = function(id, user, context, finalCb) {
   async.waterfall([
     function sendBatchRequest(cb) {
-      var anyfetch = new AnyFetch(user.anyFetchToken);
+      var anyfetch = new AnyFetch(user.anyfetchToken);
       var query = {search: context.templatedQuery};
 
       anyfetch.getDocumentById(id, query, cb);
@@ -139,8 +139,8 @@ module.exports.initAccount = function(data, done) {
       anyfetch.createSubcompanyWithAdmin(subcompany, fetchUser, cb);
     },
     function retrieveUserToken(company, admin, cb) {
-      user.anyFetchId = admin.id;
-      user.anyFetchEmail = admin.email;
+      user.anyfetchId = admin.id;
+      user.anyfetchEmail = admin.email;
       var anyfetchUser = new AnyFetch(admin.email, user.password);
       anyfetchUser.getToken(rarity.carry(company, cb));
     },
@@ -149,7 +149,7 @@ module.exports.initAccount = function(data, done) {
 
       var localOrg = new Organization({
         SFDCId: org.id,
-        anyFetchId: company.id,
+        anyfetchId: company.id,
         SFDCData: org,
       });
 
@@ -164,9 +164,9 @@ module.exports.initAccount = function(data, done) {
           name: user.name,
           email: user.email,
         },
-        anyFetchEmail: user.anyFetchEmail,
-        anyFetchId: user.anyFetchId,
-        anyFetchToken: user.token,
+        anyfetchEmail: user.anyfetchEmail,
+        anyfetchId: user.anyfetchId,
+        anyfetchToken: user.token,
         organization: localOrganization,
         isAdmin: true
       });
@@ -205,7 +205,7 @@ module.exports.addNewUser = function(user, organization, cb) {
         return cb(new restify.InvalidCredentialsError('No admin for the company has been found'));
       }
 
-      var anyfetchAdmin = new AnyFetch(adminUser.anyFetchToken);
+      var anyfetchAdmin = new AnyFetch(adminUser.anyfetchToken);
       var newUser = {
         email: new Date().getTime() + '@salesfetch.com',
         name: user.name,
@@ -214,8 +214,8 @@ module.exports.addNewUser = function(user, organization, cb) {
       anyfetchAdmin.postUser(newUser, cb);
     },
     function retrieveUserToken(res, cb) {
-      user.anyFetchId = res.body.id;
-      user.anyFetchEmail = res.body.email;
+      user.anyfetchId = res.body.id;
+      user.anyfetchEmail = res.body.email;
       var anyfetchUser = new AnyFetch(res.body.email, user.password);
       anyfetchUser.getToken(cb);
     },
@@ -233,9 +233,9 @@ module.exports.addNewUser = function(user, organization, cb) {
           name: user.name,
           email: user.email,
         },
-        anyFetchEmail: user.anyFetchEmail,
-        anyFetchId: user.anyFetchId,
-        anyFetchToken: userToken,
+        anyfetchEmail: user.anyfetchEmail,
+        anyfetchId: user.anyfetchId,
+        anyfetchToken: userToken,
         organization: organization
       });
 
@@ -263,7 +263,7 @@ module.exports.getProviders = function(cb) {
  * Retrieve all connect provider for an account
  */
 module.exports.getConnectedProviders = function(user, cb) {
-  var anyfetch = new AnyFetch(user.anyFetchToken);
+  var anyfetch = new AnyFetch(user.anyfetchToken);
   anyfetch.getProviders(cb);
 };
 
@@ -271,6 +271,6 @@ module.exports.getConnectedProviders = function(user, cb) {
  * Update the company documents
  */
 module.exports.updateAccount = function(user, cb) {
-  var anyfetch = new AnyFetch(user.anyFetchToken);
+  var anyfetch = new AnyFetch(user.anyfetchToken);
   anyfetch.postCompanyUpdate(cb);
 };

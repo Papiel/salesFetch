@@ -81,7 +81,7 @@ module.exports.get = function getDummyContext(req, res, next) {
   async.waterfall([
     function findUser(cb) {
       User.findOne({
-        anyFetchToken: req.params.token,
+        anyfetchToken: req.params.token,
       }, cb);
     },
     function findOrg(user, cb) {

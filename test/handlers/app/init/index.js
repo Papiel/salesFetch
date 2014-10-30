@@ -33,7 +33,7 @@ describe('/app/init', function() {
         },
         function createCompany(cb) {
           var org = new Organization({
-            name: "anyFetch",
+            name: "anyfetch",
             SFDCId: '1234',
           });
 
@@ -45,7 +45,7 @@ describe('/app/init', function() {
           var user = new User({
             SFDCId: '5678',
             organization: org.id,
-            anyFetchToken: 'anyfetchToken',
+            anyfetchToken: 'anyfetchToken',
             isAdmin: true
           });
 
@@ -79,11 +79,11 @@ describe('/app/init', function() {
             user.SFDCData.should.have.property('name', 'walter.white@breaking-bad.com');
             user.SFDCData.should.have.property('email', 'walter.white@breaking-bad.com');
             user.should.have.property('SFDCId', 'newUser');
-            user.should.have.property('anyFetchToken', 'mockedToken');
-            user.should.have.property('anyFetchEmail', '1414584211623@salesfetch.com');
+            user.should.have.property('anyfetchToken', 'mockedToken');
+            user.should.have.property('anyfetchEmail', '1414584211623@salesfetch.com');
             user.should.have.property('isAdmin', false);
             user.should.have.property('SFDCId', 'newUser');
-            user.should.have.property('anyFetchToken', 'mockedToken');
+            user.should.have.property('anyfetchToken', 'mockedToken');
             cb();
           });
         }
@@ -94,7 +94,7 @@ describe('/app/init', function() {
       async.waterfall([
         function createCompany(cb) {
           var org = new Organization({
-            name: "anyFetch",
+            name: "anyfetch",
             SFDCId: '1234',
           });
 

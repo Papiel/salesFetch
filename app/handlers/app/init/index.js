@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
-var anyFetchHelpers = require('../../../helpers/anyfetch.js');
+var anyfetchHelpers = require('../../../helpers/anyfetch.js');
 
 // create an account in the name of the user if he doesn't exist
 module.exports.post = function createAccount(req, res, next) {
@@ -28,7 +28,7 @@ module.exports.post = function createAccount(req, res, next) {
       if(user) {
         return cb(null, user);
       }
-      anyFetchHelpers.addNewUser(req.data.user, org, rarity.slice(2, cb));
+      anyfetchHelpers.addNewUser(req.data.user, org, rarity.slice(2, cb));
     },
     function sendData(user, cb) {
       res.send(user);

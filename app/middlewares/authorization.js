@@ -9,7 +9,7 @@ var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var config = require('../../config/configuration.js');
-var anyFetchHelpers = require('../helpers/anyfetch.js');
+var anyfetchHelpers = require('../helpers/anyfetch.js');
 var getSecureHash = require('../helpers/get-secure-hash.js');
 
 /**
@@ -69,7 +69,7 @@ module.exports = function(req, res, next) {
         return cb(null, user);
       }
 
-      anyFetchHelpers.updateAccount(user, function() {
+      anyfetchHelpers.updateAccount(user, function() {
         organization.lastUpdated = Date.now();
         organization.save(rarity.carryAndSlice([user], 2, cb));
       });

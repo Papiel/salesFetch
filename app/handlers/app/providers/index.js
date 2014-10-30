@@ -43,7 +43,7 @@ module.exports.post = function(req, res, next) {
 
   var returnTo = config.salesFetchUrl + '/oauth-callback.html';
   var query = {
-    bearer: req.user.anyFetchToken,
+    bearer: req.user.anyfetchToken,
     return_to: returnTo
   };
 

@@ -11,11 +11,11 @@ var UserModel = new Schema ({
     type: Date,
     default: Date.now
   },
-  anyFetchId: {
+  anyfetchId: {
     type: String,
     unique: true
   },
-  anyFetchEmail: {
+  anyfetchEmail: {
     type: String,
     unique: true
   },
@@ -32,7 +32,7 @@ var UserModel = new Schema ({
     type: Schema.ObjectId,
     ref: 'Organization'
   },
-  anyFetchToken: String,
+  anyfetchToken: String,
   isAdmin: {
     type: Boolean,
     default: false

@@ -105,7 +105,7 @@ describe('/admin/init endpoint', function() {
           var o = orgs[0];
           o.should.have.property('SFDCData').and.have.property('name', 'Breaking Bad');
           o.should.have.property('SFDCId', '1234');
-          o.should.have.property('anyFetchId', '533d9161162215a5375d34d2');
+          o.should.have.property('anyfetchId', '533d9161162215a5375d34d2');
           generatedMasterKey = o.masterKey;
 
           cb(null, o);
@@ -123,9 +123,9 @@ describe('/admin/init endpoint', function() {
           u.SFDCData.should.have.property('name', 'jessy.pinkman@breaking-bad.com');
           u.SFDCData.should.have.property('email', 'jessy.pinkman@breaking-bad.com');
           u.should.have.property('SFDCId', '5678');
-          u.should.have.property('anyFetchId', '533d6b2a6355285e5563d005');
-          u.should.have.property('anyFetchToken', 'mockedToken');
-          u.should.have.property('anyFetchEmail', '1414584211623@salesfetch.com');
+          u.should.have.property('anyfetchId', '533d6b2a6355285e5563d005');
+          u.should.have.property('anyfetchToken', 'mockedToken');
+          u.should.have.property('anyfetchEmail', '1414584211623@salesfetch.com');
           u.should.have.property('organization', org._id);
           u.should.have.property('isAdmin', true);
 

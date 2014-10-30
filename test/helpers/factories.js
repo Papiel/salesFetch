@@ -12,7 +12,7 @@ module.exports.initAccount = function(cb) {
   async.waterfall([
     function createCompany(cb) {
       var org = new Organization({
-        name: "anyFetch",
+        name: "anyfetch",
         SFDCId: '1234',
       });
 

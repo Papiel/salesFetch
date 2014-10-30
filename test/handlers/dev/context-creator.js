@@ -12,7 +12,7 @@ var _ = require('lodash');
 
 describe('/dev/context-creator (dev only)', function() {
   describe('GET /dev/context-creator', function() {
-    var endpoint = '/dev/context-creator?token=anyFetchToken&code=' + config.code;
+    var endpoint = '/dev/context-creator?token=anyfetchToken&code=' + config.code;
 
     before(cleaner);
     it('should return a valid context', function(done) {
@@ -41,7 +41,7 @@ describe('/dev/context-creator (dev only)', function() {
   });
 
   describe('POST /dev/context-creator', function() {
-    var endpoint = '/dev/context-creator?token=anyFetchToken&code=' + config.code;
+    var endpoint = '/dev/context-creator?token=anyfetchToken&code=' + config.code;
     var dummyContext;
     var prefix = '/';
 

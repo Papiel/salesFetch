@@ -69,7 +69,7 @@ describe('/app/pins/:id page', function() {
         function searchMongo(res, cb) {
           var hash = {
             SFDCId: sampleContext.recordId,
-            anyFetchId: sampleDocumentId
+            anyfetchId: sampleDocumentId
           };
           Pin.findOne(hash, cb);
         },
@@ -130,7 +130,7 @@ describe('/app/pins/:id page', function() {
         function addPinByHand(url, user, cb) {
           var hash = {
             SFDCId: sampleContext.recordId,
-            anyFetchId: sampleDocumentId,
+            anyfetchId: sampleDocumentId,
             createdBy: user._id
           };
           var pin = new Pin(hash);
@@ -175,7 +175,7 @@ describe('/app/pins/:id page', function() {
           // Fake pin added by someone else
           var hash = {
             SFDCId: sampleContext.recordId,
-            anyFetchId: sampleDocumentId,
+            anyfetchId: sampleDocumentId,
             createdBy: sampleUserId
           };
           var pin = new Pin(hash);

@@ -30,7 +30,7 @@ describe('/admin/init endpoint', function() {
   describe('POST /admin/init', function() {
     var SFDCinfos = {
       user: {
-        name: 'Jessy Pinkman',
+        name: 'jessy.pinkman@breaking-bad.com',
         id: '5678',
         email: 'jessy.pinkman@breaking-bad.com'
       },
@@ -110,7 +110,7 @@ describe('/admin/init endpoint', function() {
 
           cb(null, o);
         },
-        function findUser(org, cb) {
+        function findUsers(org, cb) {
           User.find({}, function(err, users) {
             cb(err, org, users);
           });
@@ -119,11 +119,13 @@ describe('/admin/init endpoint', function() {
           users.length.should.eql(1);
 
           var u = users[0];
-          u.should.have.property('name', 'Jessy Pinkman');
+          u.should.have.property('SFDCData');
+          u.SFDCData.should.have.property('name', 'jessy.pinkman@breaking-bad.com');
+          u.SFDCData.should.have.property('email', 'jessy.pinkman@breaking-bad.com');
           u.should.have.property('SFDCId', '5678');
           u.should.have.property('anyFetchId', '533d6b2a6355285e5563d005');
-          u.should.have.property('email', 'jessy.pinkman@breaking-bad.com');
           u.should.have.property('anyFetchToken', 'mockedToken');
+          u.should.have.property('anyFetchEmail', '1414584211623@salesfetch.com');
           u.should.have.property('organization', org._id);
           u.should.have.property('isAdmin', true);
 

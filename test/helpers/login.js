@@ -13,11 +13,14 @@ var Organization = mongoose.model('Organization');
 var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 
 var userInfo = {
-  anyFetchId: 'anyFetchId',
   SFDCId: 'SFDCId',
-  name: 'Walter White',
-  email: 'walter.white@breaking-bad.com',
+  SFDCData: {
+    name: 'walter.white@breaking-bad.com',
+    email: 'walter.white@breaking-bad.com',
+  },
+  anyFetchId: 'anyFetchId',
   anyFetchToken: 'anyFetchToken',
+  anyFetchEmail: '1413306427601@salesfetch.com',
   isAdmin: true
 };
 
@@ -69,7 +72,7 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
 };
 
 module.exports.getUser = function(cb) {
-  User.findOne({email: userInfo.email}, cb);
+  User.findOne({anyfetchId: userInfo.anyfetchId}, cb);
 };
 
 module.exports.getOrganization = function(cb) {

@@ -15,6 +15,15 @@ var UserModel = new Schema ({
     type: String,
     unique: true
   },
+  anyFetchEmail: {
+    type: String,
+    unique: true
+  },
+  SFDCData: {
+    type: Object,
+    required: true,
+    default: {},
+  },
   SFDCId: {
     type: String,
     unique: true
@@ -23,8 +32,6 @@ var UserModel = new Schema ({
     type: Schema.ObjectId,
     ref: 'Organization'
   },
-  name: String,
-  email: String,
   anyFetchToken: String,
   isAdmin: {
     type: Boolean,

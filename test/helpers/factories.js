@@ -13,7 +13,7 @@ module.exports.initAccount = function(cb) {
     function createCompany(cb) {
       var org = new Organization({
         name: "anyFetch",
-        SFDCId: '1234'
+        SFDCId: '1234',
       });
 
       org.save(cb);
@@ -23,7 +23,7 @@ module.exports.initAccount = function(cb) {
 
       var user = new User({
         SFDCId: '5678',
-        organization: org
+        organization: org,
       });
 
       user.save(cb);

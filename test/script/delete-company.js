@@ -3,19 +3,20 @@
 var async = require('async');
 
 var mongoose = require('mongoose');
-var User = mongoose.model('User');
-var Organization = mongoose.model('Organization');
 var AnyFetch = require('anyfetch');
 
+var Organization = mongoose.model('Organization');
+var User = mongoose.model('User');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
 var deleteCompany = require('../../script/delete-company.js');
+
 
 describe('Company delete script', function() {
   beforeEach(cleaner);
   after(mock.restore);
 
-  it.only('should delete company on anyfetch', function(done) {
+  it('should delete company on anyfetch and on salesfetch db', function(done) {
     var createdOrg;
     var isDeleted = false;
 
@@ -44,7 +45,7 @@ describe('Company delete script', function() {
 
         var user = new User({
           SFDCId: '5678',
-          organization: org.id,
+          organization: createdOrg.id,
           anyfetchToken: 'anyfetchToken',
           isAdmin: true
         });
@@ -54,9 +55,16 @@ describe('Company delete script', function() {
       function execDeleteCompany(user, count, cb) {
         deleteCompany(createdOrg, cb);
       },
-      function shouldBeDeletedAndGetLocalOrg(cb) {
+      function shouldBeCalled(cb) {
         isDeleted.should.be.true;
-        Organization.find({anyfetchId: '533d9161162215a5375d34d2'}, cb);
+        cb();
+      },
+      function getUsers(cb) {
+        User.find({organization: createdOrg.id}, cb);
+      },
+      function shouldBeDeletedAndGetLocalOrg(users, cb) {
+        users.should.have.lengthOf(0);
+        Organization.find({_id: createdOrg.id}, cb);
       },
       function shouldBeDeleted(orgs, cb) {
         orgs.should.have.lengthOf(0);

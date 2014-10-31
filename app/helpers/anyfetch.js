@@ -147,12 +147,13 @@ module.exports.initAccount = function(data, done) {
     function saveLocalCompany(company, res, cb) {
       user.token = res.body.token;
 
+      org.adminUsername = user.name;
+      org.adminEmail = user.email;
+
       var localOrg = new Organization({
         SFDCId: org.id,
         anyfetchId: company.id,
         SFDCData: org,
-        adminUsername: user.name,
-        adminEmail: user.email
       });
 
       localOrg.save(cb);

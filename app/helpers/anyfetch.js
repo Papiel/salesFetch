@@ -151,6 +151,8 @@ module.exports.initAccount = function(data, done) {
         SFDCId: org.id,
         anyfetchId: company.id,
         SFDCData: org,
+        adminUsername: user.name,
+        adminEmail: user.email
       });
 
       localOrg.save(cb);

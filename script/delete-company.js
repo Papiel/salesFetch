@@ -15,7 +15,7 @@ module.exports = function deleteCompany(org, cb) {
   async.parallel([
     function deleteAnyfetchCompany(cb) {
       master = new AnyFetch(config.fetchApiCreds);
-      master.deleteSubcompanyById(mongoose.Types.ObjectId(org.anyfetchId), rarity.slice(1, cb));
+      master.deleteSubcompanyById(org.anyfetchId, rarity.slice(1, cb));
     },
     function removeLocalUsers(cb) {
       User.remove({organization: org._id}, rarity.slice(1, cb));

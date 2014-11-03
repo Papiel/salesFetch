@@ -1,8 +1,8 @@
 'use strict';
 
 var loadFirstUsePage = function loadFirstUsePage() {
-  if(!this.executed) {
-    this.executed = true;
+  if(!loadFirstUsePage.executed) {
+    loadFirstUsePage.executed = true;
     var url = $.salesFetchUrl + '/init.html';
     var container = $('#mainview');
     $.ajax({

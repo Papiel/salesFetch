@@ -37,6 +37,7 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       var ids = pins.map(function(pin) {
         return pin.anyfetchId;
       });
+
       var query = {
         id: ids,
         sort: '-modificationDate',

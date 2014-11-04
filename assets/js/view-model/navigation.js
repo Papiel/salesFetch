@@ -1,23 +1,48 @@
 'use strict';
 
 var scrollToTop = require('../helpers/scrollToTop.js');
+var historyHelper = require('../helpers/history.js');
 
 /**
  * @file Navigation
+ */
+
+/**
+ * Navigate to tab, creating a history entry, and closing the document full view if mobile mode.
  */
 module.exports.goToTab = function(tab) {
   var client = this;
 
   if(client.activeTab() !== tab) {
+    if(client.isMobile || client.isTablet) {
+      client.activeDocument(null);
+    }
+
     client.activeTab(tab);
+    historyHelper.registerTabEvent(tab);
 
     if(client.bindInfiniteScroll) {
       client.bindInfiniteScroll();
     }
-    if(client.isMobile) {
-      client.activeDocument(null);
-    }
   }
+};
+
+/**
+ * Get tab from name, returns null if not found
+ * @param tabName The name of the tab to find
+ * @returns Tab if found, or null
+ */
+module.exports.getTabFromName = function(tabName) {
+  var client = this;
+
+  if(!client.tabs) {
+    return null;
+  }
+
+  var tab = client.tabs.filter(function(tab) {
+    return tab.name.toLowerCase() === tabName.toLowerCase();
+  })[0];
+  return tab || null;
 };
 
 module.exports.goToDocument = function(doc) {
@@ -34,6 +59,10 @@ module.exports.goToDocument = function(doc) {
       // TODO: check for browser compatibility
       var iframe = $('#full-iframe')[0];
       target = iframe.contentDocument;
+      historyHelper.registerEvent({
+        name: 'document',
+        url: '#' + doc.id
+      });
     }
     else {
       // We need to open the popup window right now (i.e. during event handling)
@@ -101,6 +130,7 @@ module.exports.goToDocument = function(doc) {
 module.exports.goBack = function() {
   var client = this;
 
+  history.back();
   scrollToTop();
   client.activeDocument(null);
 };

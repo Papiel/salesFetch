@@ -2,6 +2,15 @@
 
 var call = require('../helpers/call.js');
 
+var openExternalUrl = function openExternalUrl(url) {
+  /* global sforce */
+  if((typeof sforce !== 'undefined') && (sforce !== null)) {
+    sforce.one.navigateToURL(url);
+  }
+  else {
+    window.open(url);
+  }
+};
 
 /**
  * @param json
@@ -57,17 +66,17 @@ module.exports = function Document(json, delegate) {
 
   self.openOriginal = function() {
     if(self.actions.show) {
-      window.open(self.actions.show);
+      openExternalUrl(self.actions.show);
     }
   };
   self.download = function() {
     if(self.actions.download) {
-      window.open(self.actions.download);
+      openExternalUrl(self.actions.download);
     }
   };
   self.reply = function() {
     if(self.actions.reply) {
-      window.open(self.actions.reply);
+      openExternalUrl(self.actions.reply);
     }
   };
 };

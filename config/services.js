@@ -55,8 +55,8 @@ module.exports.logError = function logError(err, req, extra) {
       if(req.user) {
         meta.user = {
           is_authenticated: true,
-          id: req.user.anyfetchId,
-          username: req.user.anyfetchToken,
+          id: req.user._id.toString(),
+          username: req.data.user.name,
           email: req.user.anyfetchEmail,
         };
       }

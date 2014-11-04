@@ -6,5 +6,7 @@
 
 var config = require('../config/configuration.js');
 
-var opbeat = require('opbeat');
-module.exports.opbeat = opbeat.createClient(config.services.opbeat);
+if(process.env.NODE_ENV !== "test") {
+  var opbeat = require('opbeat');
+  module.exports.opbeat = opbeat(config.services.opbeat);
+}

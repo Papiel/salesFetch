@@ -17,10 +17,9 @@ var errorsPath = rootPath + '/app/views/errors';
 // Third party services
 var services = {};
 services.opbeat = {
-  organization_id: process.env.OPBEAT_ORG_ID,
-  app_id: process.env.OPBEAT_APP_ID,
-  secret_token: process.env.OPBEAT_TOKEN,
-  silent: true,
+  organizationId: process.env.OPBEAT_ORG_ID,
+  appId: process.env.OPBEAT_APP_ID,
+  secretToken: process.env.OPBEAT_TOKEN,
 };
 
 var baseConfig = {

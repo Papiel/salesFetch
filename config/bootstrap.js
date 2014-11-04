@@ -52,7 +52,7 @@ module.exports = function(server) {
 
   // Error handling
   server.on('uncaughtException', function(req, res, route, err) {
-    logError(err, {
+    logError(err, req, {
       uncaughtRestifyException: true,
       path: true,
       headers: req.headers.join(', '),

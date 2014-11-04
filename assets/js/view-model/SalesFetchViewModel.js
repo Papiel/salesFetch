@@ -104,6 +104,7 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Navigation
   client.goToTab = navigation.goToTab;
+  client.getTabFromName = navigation.getTabFromName;
   client.goToDocument = navigation.goToDocument;
   client.goBack = navigation.goBack;
 

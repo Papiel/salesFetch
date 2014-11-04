@@ -2,6 +2,7 @@
 
 var SalesfetchViewModel = require('./view-model/SalesFetchViewModel.js');
 var misc = require('./misc.js');
+var historyHelper = require('./helpers/history.js');
 
 var getUrlParameter = require('./helpers/getUrlParameter.js');
 
@@ -24,6 +25,8 @@ client.bindInfiniteScroll = misc.bindInfiniteScroll;
 ko.applyBindings(client);
 client.fetchDocuments(true);
 client.fetchAvailableProviders();
+
+window.onpopstate = historyHelper.handleHistoryEvent.bind(client);
 
 $(document).ready(function() {
   misc.addDropdownButtons();

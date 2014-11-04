@@ -23,7 +23,6 @@ module.exports.registerTabEvent = function registerTabEvent(tab) {
     name: tab.name,
     url: tab.url
   };
-  console.log(state);
   module.exports.registerEvent(state, true);
 };
 

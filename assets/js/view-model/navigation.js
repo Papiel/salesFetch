@@ -67,7 +67,7 @@ module.exports.goToDocument = function(doc) {
     else {
       // We need to open the popup window right now (i.e. during event handling)
       // otherwise we'll get blocked
-      var w = window.open(undefined, '_blank');
+      var w = window.open('', '_blank');
       target = w.document;
 
       // Use the snippet without html tags for the new tab title
@@ -80,6 +80,7 @@ module.exports.goToDocument = function(doc) {
 
     var writeFullView = function(docHtml) {
       var html;
+
       if(client.isDesktop) {
         html = '<nav class="navbar"><ul>';
         html += '<li class="title"><a>' + doc.title() + '</a></li>';

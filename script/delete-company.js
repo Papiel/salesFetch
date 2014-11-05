@@ -12,6 +12,10 @@ var config = require('../config/configuration.js');
 module.exports = function deleteCompany(org, cb) {
   var master;
 
+  if(!org) {
+    return cb(new Error('The company cannot be ' + org));
+  }
+
   async.parallel([
     function deleteAnyfetchCompany(cb) {
       master = new AnyFetch(config.fetchApiCreds);

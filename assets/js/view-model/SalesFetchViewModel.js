@@ -31,6 +31,7 @@ var defineLayout = function defineLayout(client, landscape) {
   }
 };
 
+/*jshint maxstatements:100 */
 module.exports = function SalesfetchViewModel() {
   var client = this;
 
@@ -104,8 +105,13 @@ module.exports = function SalesfetchViewModel() {
 
   // ----- Navigation
   client.goToTab = navigation.goToTab;
+  client.showTab = navigation.showTab;
   client.getTabFromName = navigation.getTabFromName;
+
   client.goToDocument = navigation.goToDocument;
+  client.showDocument = navigation.showDocument;
+  client.getDocumentFromId = navigation.getDocumentFromId;
+
   client.goBack = navigation.goBack;
 
   // ----- Tabs

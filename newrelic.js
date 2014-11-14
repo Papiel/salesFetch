@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: [process.env.SALESFETCH_URL || "Salesfetch (no URL)"],
+  app_name: [(process.env.SALESFETCH_URL || "Salesfetch (no URL)").replace(/https?\:\/\//, '')],
   /**
    * Your New Relic license key.
    */

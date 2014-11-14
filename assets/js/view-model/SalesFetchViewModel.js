@@ -31,6 +31,7 @@ var defineLayout = function defineLayout(client, landscape) {
   }
 };
 
+/*jshint maxstatements:100 */
 module.exports = function SalesfetchViewModel() {
   var client = this;
 

@@ -1,4 +1,6 @@
 #!/bin/env node
+"use strict";
+
 // Start SalesFetch server
 require('newrelic');
 

@@ -6,7 +6,6 @@
  * @param skipHistory If true, the current history entry will be replaced, therefore not creating a new entry
  */
 module.exports.registerEvent = function registerEvent(state, skipHistory) {
-  console.log('register', state);
   if(!skipHistory) {
     history.pushState(state, state.name, state.url);
   }
@@ -45,7 +44,6 @@ module.exports.registerDocumentEvent = function registerDocumentEvent(doc) {
 module.exports.handleHistoryEvent = function handleHistoryEvent(event) {
   var client = this;
 
-  console.log('pop', event.state);
   var tab = client.getTabFromName(event.state && event.state.name);
   var doc;
   if(tab) {

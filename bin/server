@@ -1,5 +1,8 @@
 #!/bin/env node
+"use strict";
+
 // Start SalesFetch server
+require('newrelic');
 
 // No idling
 require('heroku-self-ping')(process.env.SALESFETCH_URL);

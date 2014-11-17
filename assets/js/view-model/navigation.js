@@ -1,6 +1,5 @@
 'use strict';
 
-var scrollToTop = require('../helpers/scrollToTop.js');
 var historyHelper = require('../helpers/history.js');
 
 /**

@@ -42,10 +42,12 @@ module.exports.showTab = function(tab) {
     client.activeDocument(null);
   }
 
-  client.activeTab(tab);
+  if(client.activeTab() !== tab) {
+    client.activeTab(tab);
 
-  if(client.bindInfiniteScroll) {
-    client.bindInfiniteScroll();
+    if(client.bindInfiniteScroll) {
+      client.bindInfiniteScroll();
+    }
   }
 };
 
@@ -160,6 +162,5 @@ module.exports.goBack = function() {
   if(!(device.ios() && client.isSF1)) {
     history.back();
   }
-  scrollToTop();
   client.activeDocument(null);
 };

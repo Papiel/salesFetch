@@ -137,14 +137,16 @@ nav.navbar {
     cursor: pointer;
     height: @snippetHeight;
     overflow: hidden;
-    font-size: 12px;
+    font-size: 0.8em;
     margin: @snippetMargin;
     margin-bottom: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
 
     .icon {
       float: left;
-      width: 2 * @snippetPadding + @snippetDoctypeIconSize - 8;
-      height: @snippetHeight - 2 * @snippetBorderSize;
+      width: @snippetPadding + @snippetDoctypeIconSize;
+      height: @snippetHeight;
       background-size: @snippetDoctypeIconSize;
       background-position: @snippetPadding;
     }
@@ -152,34 +154,36 @@ nav.navbar {
     .content {
       height: 100%;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      margin-bottom: 0;
+      mask-image: linear-gradient(to bottom, rgba(2,255,255,1) 90%, rgba(255,255,255,0) 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(2,255,255,1) 90%, rgba(255,255,255,0) 100%);
     }
 
     .icon-container {
       display: block;
-      height: @snippetHeight - 2 * @snippetBorderSize;
-      width: @snippetRightIconSize + 2 * @snippetPadding;
+      position: relative;
+      height: @snippetHeight;
+      width: @snippetRightIconSize + @snippetPadding;
       cursor: pointer;
       float: right;
 
       .icon-right {
-        display: block;
-        float: right;
-        height: @snippetRightIconSize;
-        width: @snippetRightIconSize;
-        clear: both;
-        margin-right: @snippetPadding;
-        margin-top: @snippetPadding;
+        // display: block;
+        // float: right;
+        // clear: both;
+        // margin-right: @snippetPadding;
+        // margin-top: @snippetPadding;
+        position: absolute;
 
         &.icon-provider {
-          margin-top: @snippetHeight - (2 * @snippetRightIconSize) - (2 * (@snippetPadding));
+          height: @snippetRightIconSize;
+          width: @snippetRightIconSize;
+          bottom: @snippetPadding;
           background-size: @snippetRightIconSize;
         }
 
         &.star-button {
-          margin-top: @snippetPadding;
+          cursor: pointer;
+          top: @snippetPadding;
           font-size: @snippetRightIconSize;
           color: #EBEBEB;
 
@@ -380,7 +384,7 @@ html.mobile, html.tablet.landscape {
   .snippet-list {
     .snippet {
       .icon {
-        width: 2 * @snippetPadding + @snippetDoctypeIconSizeMobile - 8;
+        width: @snippetPadding + @snippetDoctypeIconSizeMobile;
         background-size: @snippetDoctypeIconSizeMobile;
       }
     }

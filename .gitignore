@@ -16,3 +16,4 @@ public/dist
 coverage
 *.sublime-*
 .DS_Store
+newrelic_agent.log

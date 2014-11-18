@@ -25,5 +25,5 @@ module.exports = function getSecureHash(data, masterKey) {
 
   var encoded = strictUriEncode(JSON.stringify(usefulData));
   var hash = encoded + masterKey + config.secretKey;
-  return crypto.createHash('sha1').update(hash).digest("base64");
+  return crypto.createHash('sha512').update(hash).digest("base64");
 };

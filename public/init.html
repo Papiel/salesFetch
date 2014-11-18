@@ -2,37 +2,116 @@
   First run page
   Users are redirected to this page when they don't have an account yet
 -->
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
 <style type="text/css">
+  @-webkit-keyframes rotate {
+    from {
+      -webkit-transform: rotate(0);
+      transform: rotate(0)
+    }
+
+    to {
+      -webkit-transform: rotate(-1turn);
+      transform: rotate(-1turn)
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      -webkit-transform: rotate(0);
+      -ms-transform: rotate(0);
+      transform: rotate(0)
+    }
+
+    to {
+      -webkit-transform: rotate(-1turn);
+      -ms-transform: rotate(-1turn);
+      transform: rotate(-1turn)
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     display: block;
   }
 
-  .logo h1 {
+  body {
+    font-size: 12px;
+    color: #293f54;
+    background: #ecf0f3;
+  }
+
+  h1.welcome {
+    font-weight: 100;
+    font-size: 3em;
+  }
+
+  h1.logo {
     font-weight: 100;
     margin: 0;
     font-size: 5em;
     color: #16A9E2;
   }
-</style>
-<div>
-  <div class="logo">
-    <h1>Sales<strong>Fetch</strong></h1>
-  </div>
-  <h1>Welcome</h1>
-  <h4>It looks like it's your first time here</h4>
+  h1.logo strong {
+    font-weight: 900;
+  }
 
-  <button id="init">Initialize my account and continue</button>
+  p.paragraph {
+    font-size: 1.3em;
+  }
+
+  .salesfetch-content {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #init {
+    cursor: pointer;
+    padding: 1em 2em;
+    border: none;
+    border-radius: .4em;
+    background-color: #16A9E2;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    outline: none;
+    min-height: 3.5em;
+    min-width: 7em;
+  }
+  #init:active {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    text-shadow: 0 3px 3px rgba(0,0,0,.125);
+    background-color: #1AA3D8;
+  }
+  #init > .loading {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M.906 10.72C.326 12.375 0 14.143 0 16c0 8.837 7.163 16 16 16s16-7.163 16-16c0-1.856-.325-3.624-.906-5.28L27.47 12c.436 1.254.686 2.596.686 4 0 6.716-5.44 12.156-12.156 12.156S3.844 22.716 3.844 16c0-1.404.25-2.746.687-4L.908 10.72z" fill="#fff"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-animation: rotate 1s infinite linear;
+    animation: rotate 1s infinite linear;
+    height: 1.5em;
+    background-size: 1.5em;
+    width: 100%;
+  }
+</style>
+<div class="salesfetch-content">
+  <h1 class="welcome">Welcome to</h1>
+  <h1 class="logo">Sales<strong>Fetch</strong></h1>
+
+
+  <p class="paragraph">Your account is one click away!</p>
+  <button id="init">Activate my account</button>
 </div>
 
 <!-- jQuery -->
 <script type="text/javascript">
   /* global $ */
   /* global window */
-  $('#init').on('click', function(){
+  $('#init').on('click', function(event) {
+    event.target.innerHTML = '<div class="loading"></div>';
     // Post on /app/init to create the user
     var url = $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
     url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
-    $.post(url, {}, function success(){
+    $.post(url, {}, function success() {
       window.location.reload(true);
     });
   });

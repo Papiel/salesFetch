@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 /**
- * Pin Schema
+ * Log Schema
  */
 var LogModel = new Schema ({
   created: {
@@ -18,7 +18,7 @@ var LogModel = new Schema ({
   },
   user: {
     type: Schema.ObjectId,
-    ref: 'Organization',
+    ref: 'User',
     required: true,
   },
   recordType: {

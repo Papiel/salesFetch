@@ -2,6 +2,7 @@
 
 var restify = require("restify");
 var async = require("async");
+var mongoose = require('mongoose');
 var _ = require("lodash");
 
 var anyfetchHelpers = require('../../../helpers/anyfetch.js');
@@ -61,6 +62,16 @@ module.exports.get = function(req, res, next) {
 
       res.send(response);
       cb();
+    },
+    function registerLog(cb) {
+      var Log = mongoose.model('Log');
+      var log = new Log();
+      log.organization = req.organization;
+      log.user = req.user;
+      log.recordType = req.data.context.recordType;
+      log.recordId = req.data.context.recordId;
+
+      log.save(cb);
     }
   ], next);
 };

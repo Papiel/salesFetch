@@ -8,6 +8,7 @@ var AnyFetch = require('anyfetch');
 
 var mongoose = require('mongoose');
 var Pin = mongoose.model('Pin');
+var Log = mongoose.model('Log');
 
 var app = require('../../../../app.js');
 var cleaner = require('../../../hooks/cleaner');
@@ -51,6 +52,37 @@ describe('/app/documents page', function() {
               res.body.documents.should.have.properties('data');
             })
             .end(cb);
+        }
+      ], done);
+    });
+
+    it('should log the query', function(done) {
+      var count;
+      async.waterfall([
+        function countLogs(cb) {
+          Log.count({}, cb);
+        },
+        function buildRequest(_count, cb) {
+          count = _count;
+          requestBuilder(endpoint, context, cb);
+        },
+        function sendRequest(url, cb) {
+          request(app)
+            .get(url)
+            .expect(200)
+            .expect(function(res) {
+              should(res.body).be.ok;
+              res.body.should.have.keys('documents', 'filters');
+              res.body.documents.should.have.properties('data');
+            })
+            .end(cb);
+        },
+        function recountLogs(res, cb) {
+          Log.count({}, cb);
+        },
+        function checkHasLog(newCount, cb) {
+          (count + 1).should.eql(newCount);
+          cb();
         }
       ], done);
     });

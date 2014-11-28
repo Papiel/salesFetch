@@ -137,7 +137,7 @@ nav.navbar {
     cursor: pointer;
     height: @snippetHeight;
     overflow: hidden;
-    font-size: 0.8em;
+    font-size: 1em;
     margin: @snippetMargin;
     margin-bottom: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -146,7 +146,7 @@ nav.navbar {
     .icon {
       float: left;
       width: @snippetPadding + @snippetDoctypeIconSize;
-      height: @snippetHeight;
+      height: 100%;
       background-size: @snippetDoctypeIconSize;
       background-position: @snippetPadding;
     }
@@ -161,17 +161,12 @@ nav.navbar {
     .icon-container {
       display: block;
       position: relative;
-      height: @snippetHeight;
+      height: 100%;
       width: @snippetRightIconSize + @snippetPadding;
       cursor: pointer;
       float: right;
 
       .icon-right {
-        // display: block;
-        // float: right;
-        // clear: both;
-        // margin-right: @snippetPadding;
-        // margin-top: @snippetPadding;
         position: absolute;
 
         &.icon-provider {

@@ -2,7 +2,7 @@
 
 module.exports = function sliceInTime(documents) {
   var timeSlices = [{
-    label: 'Earlier',
+    label: 'In a future far far away...',
     maxDate: moment().endOf('year').add(1, 'year'),
     documents: []
   }, {
@@ -10,23 +10,23 @@ module.exports = function sliceInTime(documents) {
     maxDate: moment().endOf('year'),
     documents: []
   }, {
-    label: 'Earlier this Year',
+    label: 'Later this Year',
     maxDate: moment().endOf('month').add(1, 'month'),
     documents: []
   }, {
-    label: 'Last Month',
+    label: 'Next Month',
     maxDate: moment().endOf('month'),
     documents: []
   }, {
-    label: 'Earlier this Month',
+    label: 'Later this Month',
     maxDate: moment().endOf('week').add(1, 'week'),
     documents: []
   }, {
-    label: 'Last Week',
+    label: 'Next Week',
     maxDate: moment().endOf('week'),
     documents: []
   }, {
-    label: 'Earlier this Week',
+    label: 'Later this Week',
     maxDate: moment().endOf('day').add(1, 'day'),
     documents: []
   }, {

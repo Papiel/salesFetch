@@ -137,11 +137,12 @@ nav.navbar {
     cursor: pointer;
     height: @snippetHeight;
     overflow: hidden;
-    font-size: .9em;
+    font-size: .95em;
     margin: @snippetMargin;
     margin-bottom: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
+    box-sizing: content-box;
 
     .icon {
       float: left;
@@ -153,9 +154,25 @@ nav.navbar {
 
     .content {
       height: 100%;
+      padding: @snippetPadding;
       overflow: hidden;
       mask-image: linear-gradient(to bottom, rgba(2,255,255,1) 90%, rgba(255,255,255,0) 100%);
       -webkit-mask-image: linear-gradient(to bottom, rgba(2,255,255,1) 90%, rgba(255,255,255,0) 100%);
+
+      article.anyfetch-document-snippet {
+        padding: 0;
+        figure.anyfetch-aside-image {
+          max-height: @snippetHeight - 2 * @snippetPadding;
+          height: auto;
+          margin-right: @snippetPadding;
+          img {
+            height: auto;
+            width: auto;
+            max-height: @snippetHeight - 2 * @snippetPadding;
+            max-width: 10em;
+          }
+        }
+      }
     }
 
     .icon-container {

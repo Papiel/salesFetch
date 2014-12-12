@@ -31,7 +31,7 @@ module.exports.post = function createAccount(req, res, next) {
       anyfetchHelpers.addNewUser(req.data.user, org, rarity.slice(2, cb));
     },
     function sendData(user, cb) {
-      res.send(user);
+      res.send(204);
       cb();
     }
   ], next);

@@ -23,9 +23,9 @@ module.exports = function(server) {
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.authorization,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
 
@@ -36,16 +36,16 @@ module.exports = function(server) {
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.authorization,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
 
   server.del('/app/pins/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.authorization,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
 
@@ -55,6 +55,7 @@ module.exports = function(server) {
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.authorization,
     handlers.app.providers.index.post);

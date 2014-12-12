@@ -3,6 +3,8 @@
 var restify = require('restify');
 var autoLoad = require('auto-load');
 
+var config = require('../config/configuration.js');
+
 module.exports = function(server) {
   var lib = autoLoad(__dirname);
 
@@ -62,8 +64,10 @@ module.exports = function(server) {
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1
-  server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
-  server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
+  if(config.env === 'development' || config.env === 'test') {
+    server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
+    server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
+  }
 
 
   /**

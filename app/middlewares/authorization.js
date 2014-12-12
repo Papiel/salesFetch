@@ -5,12 +5,10 @@ var async = require('async');
 var rarity = require('rarity');
 
 var mongoose = require('mongoose');
-var Organization = mongoose.model('Organization');
 var User = mongoose.model('User');
 
 var config = require('../../config/configuration.js');
 var anyfetchHelpers = require('../helpers/anyfetch.js');
-var getSecureHash = require('../helpers/get-secure-hash.js');
 
 /**
  * Authenticate the user based on the request's user
@@ -36,7 +34,6 @@ var authenticateUser = function(data, done) {
  * Generic require login routing middleware.
  * - Checks that the received `data` object contains every necessary key
  * - Retrieve the user and its company
- * - Authenticate the request using the secure hash
  * - Trigger a company update (i.e. fetch new documents on the
  *   various providers) on the AnyFetch API if
  *   it wasn't updated for a while.
@@ -46,19 +43,12 @@ module.exports = function(req, res, next) {
   var data = req.data;
 
   async.waterfall([
-    function retrieveCompany(cb) {
-      Organization.findOne({SFDCId: data.organization.id}, cb);
-    },
-    function checkRequestValidity(org, cb) {
-      organization = org;
-      if(!org) {
+    function checkOrganization(cb) {
+      organization = req.organization;
+      if(!req.organization) {
         return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
-      var check = getSecureHash(data, org.masterKey);
-      if(check !== data.hash) {
-        return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
-      }
       cb(null, data);
     },
     authenticateUser,

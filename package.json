@@ -4,16 +4,44 @@
   "author": "Pierre-Marie Dartus <dartus.pierremarie@gmail.com>",
   "contributors": [
     {
-      "name": "Tanguy Hélesbeux",
-      "email": "tanguy@anyfetch.com"
+      "name": "Matthieu Bacconnier",
+      "email": "neamar@neamar.fr",
+      "url": "https://github.com/Neamar"
     },
     {
-      "name": "Merlin Nimier-David",
-      "email": "merlin@anyfetch.com"
+      "name": "Quentin Buathier",
+      "email": "quentin.buathier@epitech.eu",
+      "url": "https://github.com/Quentin01"
+    },
+    {
+      "name": "Mehdi Bouheddi",
+      "email": "",
+      "url": "https://github.com/Boudedi"
+    },
+    {
+      "name": "Robin Ricard",
+      "email": "",
+      "url": "https://github.com/rricard"
     },
     {
       "name": "Antoine Bolvy",
-      "email": "antoine.bolvy@gmail.com"
+      "email": "antoine.bolvy@gmail.com",
+      "url": "https://github.com/saveman71"
+    },
+    {
+      "name": "Pierre-Marie Dartus",
+      "email": "dartus.pierremarie@gmail.com",
+      "url": "https://github.com/pmdartus"
+    },
+    {
+      "name": "Merlin Nimier-David",
+      "email": "",
+      "url": "https://github.com/merlinND"
+    },
+    {
+      "name": "Tanguy Hélesbeux",
+      "email": null,
+      "url": "https://github.com/Tgy31"
     }
   ],
   "scripts": {
@@ -61,13 +89,16 @@
     "restify": "^2.8.1"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
     "gulp-jshint": "^1.7.1",
     "gulp-livereload": "^2.1.1",
     "gulp-nodemon": "^1.0.4",
+    "istanbul": "^0.3.5",
     "jscs": "^1.7.3",
     "jshint": "2.5.x",
     "jshint-stylish": "^0.4.0",
     "mocha": "1.18.x",
+    "mocha-lcov-reporter": "0.0.1",
     "mocha-mongoose": "1.0.x",
     "should": "4.0.x",
     "supertest": "0.13.x"

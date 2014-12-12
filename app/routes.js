@@ -64,7 +64,7 @@ module.exports = function(server) {
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1
-  if(config.env === 'development') {
+  if(config.env === 'development' || config.env === 'test') {
     server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
     server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
   }

@@ -22,6 +22,7 @@ module.exports = function(server) {
 
   server.get('/app/documents/:id',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
@@ -29,12 +30,14 @@ module.exports = function(server) {
 
   server.get('/app/pins',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     middlewares.requiresContext,
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
@@ -42,6 +45,7 @@ module.exports = function(server) {
 
   server.del('/app/pins/:id',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
@@ -49,16 +53,19 @@ module.exports = function(server) {
 
   server.get('/app/providers',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     handlers.app.providers.index.post);
 
   server.post('/app/init',
     middlewares.checkParams,
+    middlewares.hash,
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1

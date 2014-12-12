@@ -3,6 +3,8 @@
 var restify = require('restify');
 var autoLoad = require('auto-load');
 
+var config = require('../config/configuration.js');
+
 module.exports = function(server) {
   var lib = autoLoad(__dirname);
 

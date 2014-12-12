@@ -1,6 +1,6 @@
 # salesFetch
-[![Build Status](https://travis-ci.org/AnyFetch/salesFetch.svg)](https://travis-ci.org/AnyFetch/salesFetch)
-[![Coverage Status](https://coveralls.io/repos/AnyFetch/salesFetch/badge.png)](https://coveralls.io/r/AnyFetch/salesFetch)
+[![Circle CI](https://circleci.com/gh/AnyFetch/salesfetch.svg?style=svg)](https://circleci.com/gh/AnyFetch/salesfetch)
+[![Coverage Status](https://img.shields.io/coveralls/AnyFetch/salesFetch.svg)](https://coveralls.io/r/AnyFetch/salesFetch?branch=master)
 [![Dependency Status](https://david-dm.org/AnyFetch/salesFetch.svg?theme=shields.io)](https://david-dm.org/AnyFetch/salesFetch)
 
 Fetch API integration in Salesforce.

@@ -57,7 +57,7 @@ describe('/app/providers page', function() {
           request(app)
             .post(url)
             .expect(409)
-            .expect(/provider id/i)
+            .expect(/is not a valid Mongo/i)
             .end(cb);
         }
       ], done);

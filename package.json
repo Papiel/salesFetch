@@ -89,13 +89,16 @@
     "restify": "^2.8.1"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
     "gulp-jshint": "^1.7.1",
     "gulp-livereload": "^2.1.1",
     "gulp-nodemon": "^1.0.4",
+    "istanbul": "^0.3.5",
     "jscs": "^1.7.3",
     "jshint": "2.5.x",
     "jshint-stylish": "^0.4.0",
     "mocha": "1.18.x",
+    "mocha-lcov-reporter": "0.0.1",
     "mocha-mongoose": "1.0.x",
     "should": "4.0.x",
     "supertest": "0.13.x"

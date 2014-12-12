@@ -50,6 +50,7 @@ describe('/app/pins/:id page', function() {
           request(app)
             .post(url)
             .expect(409)
+            .expect(/is not a valid Mongo/i)
             .end(cb);
         }
       ], done);

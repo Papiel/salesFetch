@@ -3,6 +3,8 @@
 var restify = require('restify');
 var autoLoad = require('auto-load');
 
+var config = require('../config/configuration.js');
+
 module.exports = function(server) {
   var lib = autoLoad(__dirname);
 
@@ -22,10 +24,10 @@ module.exports = function(server) {
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.ensureValidHash,
     middlewares.ensureValidUser,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
 
@@ -37,18 +39,18 @@ module.exports = function(server) {
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.ensureValidHash,
     middlewares.ensureValidUser,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
 
   server.del('/app/pins/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.ensureValidHash,
     middlewares.ensureValidUser,
-    middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
 
@@ -59,6 +61,7 @@ module.exports = function(server) {
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
+    middlewares.idIsObjectId,
     middlewares.checkParams,
     middlewares.ensureValidHash,
     middlewares.ensureValidUser,
@@ -70,8 +73,10 @@ module.exports = function(server) {
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1
-  server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
-  server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
+  if(config.env === 'development' || config.env === 'test') {
+    server.get('/dev/context-creator', middlewares.requireAuthCode, handlers.dev.contextCreator.get);
+    server.post('/dev/context-creator', middlewares.requireAuthCode,  handlers.dev.contextCreator.post);
+  }
 
 
   /**

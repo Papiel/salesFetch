@@ -19,6 +19,7 @@ module.exports = function ensureValidHashMiddleware(req, res, next) {
     function checkRequestValidity(org, cb) {
       req.organization = org;
       if(!org) {
+        // No organization: return generic message (we don't want to disclose if someone is part of Salesfetch)
         return cb(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
 

@@ -17,14 +17,14 @@ module.exports = function(server) {
   server.get('/app/documents',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
@@ -32,14 +32,14 @@ module.exports = function(server) {
   server.get('/app/pins',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
@@ -47,7 +47,7 @@ module.exports = function(server) {
   server.del('/app/pins/:id',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     middlewares.idIsObjectId,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
@@ -55,13 +55,13 @@ module.exports = function(server) {
   server.get('/app/providers',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
     middlewares.checkParams,
     middlewares.ensureValidHash,
-    middlewares.authorization,
+    middlewares.ensureValidUser,
     handlers.app.providers.index.post);
 
   server.post('/app/init',

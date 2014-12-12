@@ -11,27 +11,11 @@ var Organization = mongoose.model('Organization');
 var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
-var authMiddleware  = require('../../app/middlewares/authorization');
+var authMiddleware  = require('../../app/middlewares/ensure-valid-user.js');
 
 describe('<Authentication middleware>', function() {
   beforeEach(cleaner);
   after(mock.restore);
-
-  it('should err if no company has been found', function(done) {
-    var data = {
-      organization: {
-        id: '00Db0000000dVoIEAU'
-      }
-    };
-
-    var req = {data: data};
-    authMiddleware(req, null, function(err) {
-      should(err).be.ok;
-      err.statusCode.should.equal(401);
-      err.message.should.match(/no company matching this id/i);
-      done();
-    });
-  });
 
   it('should pass variables in `req` object', function(done) {
     var createdOrg;

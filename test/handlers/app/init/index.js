@@ -139,7 +139,8 @@ describe('/app/init', function() {
         function sendRequest(url, cb) {
           request(app)
             .post(url)
-            .expect(204)
+            .expect(403)
+            .expect(/already init/i)
             .end(cb);
         }
       ], done);

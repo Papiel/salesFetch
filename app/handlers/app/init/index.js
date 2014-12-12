@@ -30,7 +30,7 @@ module.exports.post = function createAccount(req, res, next) {
   ], function(err) {
     if(err && err.toString().match(/duplicate key error/i)) {
       err = null;
-      res.send(204);
+      res.send(new restify.ForbiddenError("This user was already init"));
     }
 
     return next(err);

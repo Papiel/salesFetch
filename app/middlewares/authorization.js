@@ -38,13 +38,13 @@ var authenticateUser = function(data, done) {
  *   various providers) on the AnyFetch API if
  *   it wasn't updated for a while.
  */
-module.exports = function(req, res, next) {
+module.exports = function authorizationMiddleware(req, res, next) {
   var data = req.data;
 
   async.waterfall([
     function checkOrganization(cb) {
       if(!req.organization) {
-        return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
+        return cb(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
 
       cb(null, data);

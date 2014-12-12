@@ -11,7 +11,7 @@ var getSecureHash = require('../helpers/get-secure-hash.js');
 /**
  * Check the secured hash
  */
-module.exports = function(req, res, next) {
+module.exports = function ensureValidHashMiddleware(req, res, next) {
   async.waterfall([
     function retrieveCompany(cb) {
       Organization.findOne({SFDCId: req.data.organization.id}, cb);
@@ -19,12 +19,12 @@ module.exports = function(req, res, next) {
     function checkRequestValidity(org, cb) {
       req.organization = org;
       if(!org) {
-        return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
+        return cb(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
 
-      var check = getSecureHash(req.data, org.masterKey);
-      if(check !== req.data.hash) {
-        return next(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
+      var secureHash = getSecureHash(req.data, org.masterKey);
+      if(secureHash !== req.data.hash) {
+        return cb(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
 
       cb(null);

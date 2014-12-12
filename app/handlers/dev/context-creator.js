@@ -21,7 +21,6 @@ var isString = require('../../helpers/is-string.js');
 
 // Basic dummy data
 var defaultDummyContext = {
-  sessionId: 'fake_session_id',
   salesFetchURL: config.salesFetchUrl,
   instanceURL: 'https://eu0.salesforce.com',
   context: {

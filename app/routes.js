@@ -16,6 +16,7 @@ module.exports = function(server) {
 
   server.get('/app/documents',
     middlewares.checkParams,
+    middlewares.hash,
     middlewares.authorization,
     middlewares.requiresContext,
     handlers.app.documents.index.get);

@@ -67,10 +67,7 @@ describe('/app/init', function() {
 
           request(app)
             .post('/app/init?data=' + encodeURIComponent(JSON.stringify(data)))
-            .expect(200)
-            .expect(function(res) {
-              should(res.body).be.ok;
-            })
+            .expect(204)
             .end(rarity.slice(1, cb));
         },
         function checkUserValidity(cb) {
@@ -128,7 +125,7 @@ describe('/app/init', function() {
       ], done);
     });
 
-    it('should let existing user through', function(done) {
+    it('should forbid let existing user', function(done) {
       var context = {
         recordType: 'Contact',
         recordId: '003b000000LHOj3',
@@ -142,10 +139,8 @@ describe('/app/init', function() {
         function sendRequest(url, cb) {
           request(app)
             .post(url)
-            .expect(200)
-            .expect(function(res) {
-              should(res.body).be.ok;
-            })
+            .expect(403)
+            .expect(/already init/i)
             .end(cb);
         }
       ], done);

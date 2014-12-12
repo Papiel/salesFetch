@@ -18,50 +18,58 @@ module.exports = function(server) {
 
   server.get('/app/documents',
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.documents.index.get);
 
   server.get('/app/documents/:id',
     middlewares.idIsObjectId,
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.documents.id.index.get);
 
   server.get('/app/pins',
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.pins.index.get);
 
   server.post('/app/pins/:id',
     middlewares.idIsObjectId,
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.pins.id.index.post);
 
   server.del('/app/pins/:id',
     middlewares.idIsObjectId,
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     middlewares.requiresContext,
     handlers.app.pins.id.index.del);
 
   server.get('/app/providers',
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     handlers.app.providers.index.get);
 
   server.post('/app/providers/:id',
     middlewares.idIsObjectId,
     middlewares.checkParams,
-    middlewares.authorization,
+    middlewares.ensureValidHash,
+    middlewares.ensureValidUser,
     handlers.app.providers.index.post);
 
   server.post('/app/init',
     middlewares.checkParams,
+    middlewares.ensureValidHash,
     handlers.app.init.index.post);
 
   // Dev endpoints, for testing out of SF1

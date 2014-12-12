@@ -11,9 +11,9 @@ var getSecureHash = require('../../app/helpers/get-secure-hash.js');
 var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
-var authMiddleware  = require('../../app/middlewares/authorization');
+var ensureValidHashMiddleware  = require('../../app/middlewares/ensure-valid-hash');
 
-describe('<Authentication middleware>', function() {
+describe('<EnsureValidHash middleware>', function() {
   beforeEach(cleaner);
   after(mock.restore);
 
@@ -25,10 +25,10 @@ describe('<Authentication middleware>', function() {
     };
 
     var req = {data: data};
-    authMiddleware(req, null, function(err) {
+    ensureValidHashMiddleware(req, null, function(err) {
       should(err).be.ok;
       err.statusCode.should.equal(401);
-      err.message.should.match(/no company matching this id/i);
+      err.message.should.match(/Master Key/i);
       done();
     });
   });
@@ -47,7 +47,7 @@ describe('<Authentication middleware>', function() {
         data.hash = invalidHash;
 
         var req = {data: data};
-        authMiddleware(req, null, function(err) {
+        ensureValidHashMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
           err.message.should.match(/Master Key/i);
@@ -80,7 +80,7 @@ describe('<Authentication middleware>', function() {
         data.context.templatedQuery = 'Unicorns';
 
         var req = {data: data};
-        authMiddleware(req, null, function(err) {
+        ensureValidHashMiddleware(req, null, function(err) {
           should(err).be.ok;
           err.statusCode.should.equal(401);
           err.message.should.match(/Master Key/i);
@@ -122,10 +122,9 @@ describe('<Authentication middleware>', function() {
         data.hash = hash;
 
         var req = {data: data};
-        authMiddleware(req, null, function(err) {
+        ensureValidHashMiddleware(req, null, function(err) {
           should(err).not.be.ok;
-          should(req).have.properties('user', 'data');
-          req.user.should.have.property('SFDCId', user.SFDCId);
+          should(req).have.properties('organization', 'data');
           req.data.should.have.keys('hash', 'user', 'organization');
           cb();
         });

@@ -39,12 +39,10 @@ var authenticateUser = function(data, done) {
  *   it wasn't updated for a while.
  */
 module.exports = function(req, res, next) {
-  var organization;
   var data = req.data;
 
   async.waterfall([
     function checkOrganization(cb) {
-      organization = req.organization;
       if(!req.organization) {
         return next(new restify.InvalidCredentialsError('No company matching this id has been found'));
       }
@@ -55,18 +53,17 @@ module.exports = function(req, res, next) {
     function updateCompanyIfNecessary(user, cb) {
       // If no one in the company had logged-in for a while
       // triger an update of the providers
-      if((Date.now() - organization.lastUpdated) < config.companyUpdateDelay) {
+      if((Date.now() - req.organization.lastUpdated) < config.companyUpdateDelay) {
         return cb(null, user);
       }
 
       anyfetchHelpers.updateAccount(user, function() {
-        organization.lastUpdated = Date.now();
-        organization.save(rarity.carryAndSlice([user], 2, cb));
+        req.organization.lastUpdated = Date.now();
+        req.organization.save(rarity.carryAndSlice([user], 2, cb));
       });
     },
     function writeRes(user, cb) {
       req.user = user;
-      req.organization = organization;
       cb();
     }
   ], next);

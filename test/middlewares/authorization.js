@@ -2,13 +2,13 @@
 
 var should = require('should');
 var async = require('async');
+var rarity = require('rarity');
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Organization = mongoose.model('Organization');
 
 var getSecureHash = require('../../app/helpers/get-secure-hash.js');
-var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
 var authMiddleware  = require('../../app/middlewares/authorization');
@@ -33,63 +33,6 @@ describe('<Authentication middleware>', function() {
     });
   });
 
-  it("should reject call if the hash is missing the organization's master key", function(done) {
-    async.waterfall([
-      function createCompany(cb) {
-        factories.initAccount(cb);
-      },
-      function makeCall(user, org, cb) {
-        var data = {
-          organization: {id: org.SFDCId},
-          user: {id: user.SFDCId}
-        };
-        var invalidHash = getSecureHash(data, '');
-        data.hash = invalidHash;
-
-        var req = {data: data};
-        authMiddleware(req, null, function(err) {
-          should(err).be.ok;
-          err.statusCode.should.equal(401);
-          err.message.should.match(/Master Key/i);
-          cb();
-        });
-      }
-    ], done);
-  });
-
-  it('should reject call if the request is tampered with', function(done) {
-    async.waterfall([
-      function createCompany(cb) {
-        factories.initAccount(cb);
-      },
-      function makeCall(user, org, cb) {
-        var data = {
-          context: {
-            templatedDisplay: 'Matthieu Bacconnier',
-            templatedQuery: 'Matthieu Bacconnier',
-            recordId: '0032000001DoV22AAF',
-            recordType: 'Contact'
-          },
-          organization: {id: org.SFDCId},
-          user: {id: user.SFDCId}
-        };
-        var initialHash = getSecureHash(data, org.masterKey);
-        data.hash = initialHash;
-
-        // Tamper with the request
-        data.context.templatedQuery = 'Unicorns';
-
-        var req = {data: data};
-        authMiddleware(req, null, function(err) {
-          should(err).be.ok;
-          err.statusCode.should.equal(401);
-          err.message.should.match(/Master Key/i);
-          cb();
-        });
-      }
-    ], done);
-  });
-
   it('should pass variables in `req` object', function(done) {
     var createdOrg;
 
@@ -111,9 +54,9 @@ describe('<Authentication middleware>', function() {
           organization: org.id
         });
 
-        user.save(cb);
+        user.save(rarity.carry([org], cb));
       },
-      function makeCall(user, count, cb) {
+      function makeCall(org, user, count, cb) {
         var data = {
           organization: {id: createdOrg.SFDCId},
           user: {id: user.SFDCId}
@@ -121,10 +64,10 @@ describe('<Authentication middleware>', function() {
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
 
-        var req = {data: data};
+        var req = {data: data, organization: org};
         authMiddleware(req, null, function(err) {
           should(err).not.be.ok;
-          should(req).have.properties('user', 'data');
+          should(req).have.properties('user');
           req.user.should.have.property('SFDCId', user.SFDCId);
           req.data.should.have.keys('hash', 'user', 'organization');
           cb();

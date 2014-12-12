@@ -125,7 +125,7 @@ describe('/app/init', function() {
       ], done);
     });
 
-    it('should let existing user through', function(done) {
+    it('should forbid let existing user', function(done) {
       var context = {
         recordType: 'Contact',
         recordId: '003b000000LHOj3',

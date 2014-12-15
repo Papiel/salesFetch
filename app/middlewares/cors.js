@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function(req, res, next) {
+  console.log(req.headers);
   var allowHeaders = ['Accept', 'Accept-Version', 'Authorization', 'Content-Type', 'Api-Version', 'X-Requested-With'];
 
   res.header('Access-Control-Allow-Headers', allowHeaders.join(', '));

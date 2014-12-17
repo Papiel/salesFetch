@@ -4,7 +4,7 @@ var loadFirstUsePage = function loadFirstUsePage() {
   if(!loadFirstUsePage.executed) {
     loadFirstUsePage.executed = true;
     var url = $.salesFetchUrl + '/init.html';
-    var container = $('#mainview');
+    var container = $('#salesfetch-container');
     $.ajax({
       url: url,
       contentType: 'html',
@@ -39,10 +39,9 @@ module.exports = function call(url, options, success, error) {
 
   // `error` can be omitted
   var errorHandler = function(res) {
-    if(res.status === 401) {
-      if(((res.responseJSON && res.responseJSON.message) || res.responseText || '') === 'User not created') {
-        loadFirstUsePage();
-      }
+    if(res.status === 401 &&
+       ((res.responseJSON && res.responseJSON.message) || '') === 'User not created') {
+      return loadFirstUsePage();
     }
     (error || defaultError).apply(this, arguments);
   };

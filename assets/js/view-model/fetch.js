@@ -61,7 +61,6 @@ module.exports.fetchDocuments = function(updateFacets) {
     tab.documentListError(getErrorMessage(res));
     tab.allDocumentsLoaded(true);
     tab.client.hasFinishedLoading(true);
-
   });
 };
 

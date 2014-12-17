@@ -62,6 +62,8 @@
   .salesfetch-content {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
+    opacity: 1 !important;
+    transition: opacity .2s ease;
   }
 
   #init {
@@ -76,6 +78,8 @@
     outline: none;
     min-height: 3.5em;
     min-width: 7em;
+    transition: background-color .2s ease;
+    -webkit-transition: background-color .2s ease;
   }
   #init:active {
     box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
@@ -83,7 +87,7 @@
     background-color: #1AA3D8;
   }
   #init > .loading {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M.906 10.72C.326 12.375 0 14.143 0 16c0 8.837 7.163 16 16 16s16-7.163 16-16c0-1.856-.325-3.624-.906-5.28L27.47 12c.436 1.254.686 2.596.686 4 0 6.716-5.44 12.156-12.156 12.156S3.844 22.716 3.844 16c0-1.404.25-2.746.687-4L.908 10.72z" fill="#fff"/></svg>');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTS45MDYgMTAuNzJDLjMyNiAxMi4zNzUgMCAxNC4xNDMgMCAxNmMwIDguODM3IDcuMTYzIDE2IDE2IDE2czE2LTcuMTYzIDE2LTE2YzAtMS44NTYtLjMyNS0zLjYyNC0uOTA2LTUuMjhMMjcuNDcgMTJjLjQzNiAxLjI1NC42ODYgMi41OTYuNjg2IDQgMCA2LjcxNi01LjQ0IDEyLjE1Ni0xMi4xNTYgMTIuMTU2UzMuODQ0IDIyLjcxNiAzLjg0NCAxNmMwLTEuNDA0LjI1LTIuNzQ2LjY4Ny00TC45MDggMTAuNzJ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
     background-repeat: no-repeat;
     background-position: center;
     -webkit-animation: rotate 1s infinite linear;
@@ -92,27 +96,72 @@
     background-size: 1.5em;
     width: 100%;
   }
+
+  #init > .ok {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHBhdGggZD0iTTUuMDYgMjVsMTMuMjkzIDEzLjI5NEwzMS42NDcgMjUgNDQuOTQgMTEuNzA2IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iOS40IiBmaWxsPSJub25lIi8+PC9zdmc+');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 1.5em;
+    background-size: 1.5em;
+    width: 100%;
+  }
+
+  #init.success {
+    background-color: #4AB471;
+  }
+
+  #init.error {
+    background-color: #CF5C60;
+  }
+
+  .hidden {
+    display: none !important;
+  }
 </style>
-<div class="salesfetch-content">
+<div class="salesfetch-content" style="opacity: 0">
   <h1 class="welcome">Welcome to</h1>
   <h1 class="logo">Sales<strong>Fetch</strong></h1>
 
 
-  <p class="paragraph">Your account is one click away!</p>
-  <button id="init">Activate my account</button>
+  <p class="paragraph" id="label">Your account is one click away!</p>
+  <button id="init" class="">Activate my account</button>
 </div>
 
 <!-- jQuery -->
 <script type="text/javascript">
   /* global $ */
-  /* global window */
-  $('#init').on('click', function(event) {
-    event.target.innerHTML = '<div class="loading"></div>';
+  var nbTry = 0;
+  var button = $('#init');
+  button.on('click', function() {
+    button.html('<div class="loading"></div>');
     // Post on /app/init to create the user
     var url = $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
     url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
-    $.post(url, {}, function success() {
-      window.location.reload(true);
+    $.ajax({
+      url: url,
+      data: {},
+      type: 'POST',
+      success: function success() {
+        window.setTimeout(function() {
+          button.off();
+          button.addClass('success');
+          button.html('<div class="ok"></div>');
+          $('#label').html('SalesFetch will appear on your next visit! Refresh the page to get started.');
+        }, 300); // Set timeout to make up a longer operation
+
+      },
+      error: function error(res) {
+        console.error(res.responseText);
+        window.setTimeout(function() {
+          if(nbTry) {
+            button.off();
+          }
+          nbTry += 1;
+          button.addClass('error');
+          button.html('An error occured');
+          $('#label').html('Please try to reload the page, or contact AnyFetch\'s support');
+        }, 300); // Set timeout to make up a longer operation
+      }
     });
   });
 </script>

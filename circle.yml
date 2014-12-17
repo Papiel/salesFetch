@@ -7,12 +7,12 @@ test:
   override:
     - npm run-script coverage
 deployment:
-  staging:
-    branch: master
-    commands:
-      - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - git push git@heroku.com:salesfetch-staging.git $CIRCLE_SHA1:refs/heads/master
-  coverage:
-    branch: /.+/
-    commands:
-      - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  staging:
+    branch: master
+    commands:
+    - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - git push git@heroku.com:salesfetch-staging.git $CIRCLE_SHA1:refs/heads/master
+  coverage:
+    branch: /.+/
+    commands:
+      - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

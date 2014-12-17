@@ -7,7 +7,11 @@ test:
   override:
     - npm run-script coverage
 deployment:
-  automerge:
+  staging:
+    branch: master
+    heroku:
+      appname: salesfetch-staging
+  coverage:
     branch: /.+/
     commands:
       - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

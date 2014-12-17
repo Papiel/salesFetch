@@ -37,7 +37,7 @@ module.exports = function call(url, options, success, error) {
     }
   };
 
-  // `options` and `error` can be omitted
+  // `error` can be omitted
   var errorHandler = function(res) {
     if(res.status === 401) {
       if(((res.responseJSON && res.responseJSON.message) || res.responseText || '') === 'User not created') {
@@ -46,6 +46,8 @@ module.exports = function call(url, options, success, error) {
     }
     (error || defaultError).apply(this, arguments);
   };
+
+  // `options` can be omitted
   if(!success) {
     success = options;
     options = {};

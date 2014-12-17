@@ -30,6 +30,5 @@ window.onpopstate = historyHelper.handleHistoryEvent.bind(client);
 
 $(document).ready(function() {
   misc.addDropdownButtons();
-  misc.addTabletBehaviors();
   client.bindInfiniteScroll();
 });

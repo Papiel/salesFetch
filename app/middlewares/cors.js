@@ -17,6 +17,8 @@ module.exports = function(req, res, next) {
     // Never happens on US servers, but often fail on eu server with the following
     // XMLHttpRequest cannot load https://salesfetch.herokuapp.com/app.html. The 'Access-Control-Allow-Origin' header has a value 'https://c.eu0.visual.force.com' that is not equal to the supplied origin. Origin 'https://c.eu5.visual.force.com' is therefore not allowed access.
     // Therefore we need to reply with "*" (but we do so only when coming from a valid SF host).
+    // (note this is a hacky hack -- and also the reason why browsers implemented preflight-cache invalidation, to avoid cache poisoning attack)
+    // @see http://monsur.hossa.in/2012/09/07/thoughts-on-the-cors-preflight-cache.html
     res.header('Access-Control-Allow-Origin', '*');
   }
 

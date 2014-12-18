@@ -11,7 +11,12 @@ module.exports = function(req, res, next) {
 
   // Send CORS headers only for valid Salesforce host
   if(forceRegexp.test(req.headers.origin)) {
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    // For optimum results, we would like to reply with Access-Control-Allow-Origin: req.headers.origin
+    // However Salesforce mix servers in the same request and this results in a fail in pre-flight request.
+    // Never happens on US servers, but often fail on eu server with the following
+    // XMLHttpRequest cannot load https://salesfetch.herokuapp.com/app.html. The 'Access-Control-Allow-Origin' header has a value 'https://c.eu0.visual.force.com' that is not equal to the supplied origin. Origin 'https://c.eu5.visual.force.com' is therefore not allowed access.
+    // Therefore we need to reply with "*" (only when coming from a valid SF host)
+    res.header('Access-Control-Allow-Origin', '*');
   }
 
   return next();

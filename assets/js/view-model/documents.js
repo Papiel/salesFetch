@@ -31,6 +31,7 @@ module.exports.documentWithJson = function(json) {
       provider = p;
     }
   });
+
   if(!provider) {
     console.log('Provider not found:', json.provider);
     provider = new Provider(json.provider);

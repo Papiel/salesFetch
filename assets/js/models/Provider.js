@@ -8,7 +8,7 @@ module.exports = function Provider(json) {
   self.isActive = ko.observable(false);
 
   if(json) {
-    self.name = json.name ? json.name : json.client.name;
+    self.name = json.name ? json.name : (json.client ? json.client.name : 'Anonymous');
     self.id = json.id;
     self.client_id = json.client ? json.client.id : null;
     self.redirect_uri = json.redirect_uri;

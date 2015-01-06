@@ -116,7 +116,8 @@ describe('<EnsureValidHash middleware>', function() {
       function makeCall(user, count, cb) {
         var data = {
           organization: {id: createdOrg.SFDCId},
-          user: {id: user.SFDCId}
+          user: {id: user.SFDCId},
+          timestamp: Date.now(),
         };
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
@@ -125,7 +126,7 @@ describe('<EnsureValidHash middleware>', function() {
         ensureValidHashMiddleware(req, null, function(err) {
           should(err).not.be.ok;
           should(req).have.properties('organization', 'data');
-          req.data.should.have.keys('hash', 'user', 'organization');
+          req.data.should.have.keys('hash', 'user', 'organization', 'timestamp');
           cb();
         });
       }

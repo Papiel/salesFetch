@@ -30,6 +30,11 @@ module.exports = function ensureValidHashMiddleware(req, res, next) {
         return cb(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
 
+      // Request are valid for 15 minutes, no more
+      if(!req.data.timestamp || req.data.timestamp + 1000 * 60 * 15 < Date.now()) {
+        return cb(new restify.InvalidCredentialsError("This request is not available anymore. Please reload your Salesforce."));
+      }
+
       // Data is properly signed, keep going.
       cb(null);
     }

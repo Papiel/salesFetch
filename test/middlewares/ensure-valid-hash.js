@@ -116,7 +116,8 @@ describe('<EnsureValidHash middleware>', function() {
       function makeCall(user, count, cb) {
         var data = {
           organization: {id: createdOrg.SFDCId},
-          user: {id: user.SFDCId}
+          user: {id: user.SFDCId},
+          timestamp: Date.now(),
         };
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;
@@ -125,7 +126,49 @@ describe('<EnsureValidHash middleware>', function() {
         ensureValidHashMiddleware(req, null, function(err) {
           should(err).not.be.ok;
           should(req).have.properties('organization', 'data');
-          req.data.should.have.keys('hash', 'user', 'organization');
+          req.data.should.have.keys('hash', 'user', 'organization', 'timestamp');
+          cb();
+        });
+      }
+    ], done);
+  });
+
+  it('should forbid call with old timestamp', function(done) {
+    var createdOrg;
+
+    async.waterfall([
+      function createCompany(cb) {
+        var org = new Organization({
+          name: "anyfetch",
+          SFDCId: '1234'
+        });
+        org.save(cb);
+      },
+      function createUser(org, count, cb) {
+        createdOrg = org;
+
+        var user = new User({
+          SFDCId: '5678',
+          name: 'Walter White',
+          email: 'walter.white@breaking-bad.com',
+          organization: org.id
+        });
+
+        user.save(cb);
+      },
+      function makeCall(user, count, cb) {
+        var data = {
+          organization: {id: createdOrg.SFDCId},
+          user: {id: user.SFDCId},
+          timestamp: Date.now() - 1000 * 60 * 60,
+        };
+        var hash = getSecureHash(data, createdOrg.masterKey);
+        data.hash = hash;
+
+        var req = {data: data};
+        ensureValidHashMiddleware(req, null, function(err) {
+          should(err).be.ok;
+          err.toString().should.containDeep('is not available');
           cb();
         });
       }

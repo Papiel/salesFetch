@@ -60,7 +60,8 @@ describe('/app/init', function() {
 
           var data = {
             organization: {id: createdOrg.SFDCId},
-            user: theUser
+            user: theUser,
+            timestamp: Date.now()
           };
           var hash = getSecureHash(data, createdOrg.masterKey);
           data.hash = hash;
@@ -108,7 +109,8 @@ describe('/app/init', function() {
 
           var data = {
             organization: {id: org.SFDCId},
-            user: user
+            user: user,
+            timestamp: Date.now()
           };
           var hash = getSecureHash(data, org.masterKey);
           data.hash = hash;

@@ -60,7 +60,8 @@ module.exports.requestBuilder = function(endpoint, context, cb) {
       },
       context: context,
       anyfetchURL: 'http://api.anyfetch.com',
-      instanceURL: 'https://eu2.salesforce.com'
+      instanceURL: 'https://eu2.salesforce.com',
+      timestamp: Date.now()
     };
     var hash = getSecureHash(data, createdOrg.masterKey);
     data.hash = hash;

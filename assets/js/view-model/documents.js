@@ -1,6 +1,5 @@
 'use strict';
 
-var Document = require('../models/Document.js');
 var Type = require('../models/Type.js');
 var Provider = require('../models/Provider.js');
 
@@ -21,7 +20,7 @@ module.exports.documentWithJson = function(json) {
   });
   // Or create it if it does not exist yet
   if(!doc) {
-    doc = new Document(json, tab.client.starredTab);
+    doc = new require('../models/Document.js')(json, tab.client.starredTab);
   }
 
   // Instantiate a new Provider model only when needed

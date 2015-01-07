@@ -31,13 +31,4 @@ window.onpopstate = historyHelper.handleHistoryEvent.bind(client);
 $(document).ready(function() {
   misc.addDropdownButtons();
   client.bindInfiniteScroll();
-
-  var isiPad = navigator.userAgent.match(/iPad/i) !== null;
-  if(isiPad) {
-    // Ugly hack to fix scroll issue on shitty iPad.
-    $('#document-container').css('height', '10px');
-    $('#document-container').css('min-height', '100%');
-    $('#document-container').css('width', '10px');
-    $('#document-container').css('min-width', '100%');
-  }
 });

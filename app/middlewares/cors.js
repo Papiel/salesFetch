@@ -11,7 +11,6 @@ module.exports = function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
 
   // Send CORS headers only for valid Salesforce host
-  console.log(req.url, req.headers.origin, forceRegexp.test(req.headers.origin));
   if(forceRegexp.test(req.headers.origin)) {
     res.header('Access-Control-Allow-Origin', req.headers.origin);
 

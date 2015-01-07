@@ -6,6 +6,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 var Organization = mongoose.model('Organization');
 
+var config = require('../../config/configuration.js');
 var getSecureHash = require('../helpers/get-secure-hash.js');
 
 /**
@@ -30,8 +31,8 @@ module.exports = function ensureValidHashMiddleware(req, res, next) {
         return cb(new restify.InvalidCredentialsError('Please check your salesFetch Master Key!'));
       }
 
-      // Request are valid for 15 minutes, no more
-      if(!req.data.timestamp || req.data.timestamp + 1000 * 60 * 15 < Date.now()) {
+      // Request are valid for 8 hours, no more
+      if(!req.data.timestamp || req.data.timestamp + config.requestExpirationTime < Date.now()) {
         return cb(new restify.InvalidCredentialsError("This request is not available anymore. Please reload your Salesforce."));
       }
 

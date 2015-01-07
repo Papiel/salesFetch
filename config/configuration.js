@@ -48,7 +48,12 @@ var baseConfig = {
 
   secretKey: process.env.SALESFETCH_SECRET_KEY || "SalesFetch4TheWin",
 
-  services: services
+  services: services,
+
+  // Delay before refusing a query;
+  // Query too old won't be served
+  // 8h (in milliseconds)
+  requestExpirationTime: 8 * 60 * 60 * 1000
 };
 
 // Extend the base configuration in all.js with environment

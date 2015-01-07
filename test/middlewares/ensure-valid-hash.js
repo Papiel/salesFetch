@@ -12,6 +12,8 @@ var factories = require('../helpers/factories');
 var cleaner = require('../hooks/cleaner');
 var mock = require('../helpers/mock.js');
 var ensureValidHashMiddleware  = require('../../app/middlewares/ensure-valid-hash');
+var config  = require('../../config/configuration');
+
 
 describe('<EnsureValidHash middleware>', function() {
   beforeEach(cleaner);
@@ -160,7 +162,7 @@ describe('<EnsureValidHash middleware>', function() {
         var data = {
           organization: {id: createdOrg.SFDCId},
           user: {id: user.SFDCId},
-          timestamp: Date.now() - 1000 * 60 * 60,
+          timestamp: Date.now() - config.requestExpirationTime - 1,
         };
         var hash = getSecureHash(data, createdOrg.masterKey);
         data.hash = hash;

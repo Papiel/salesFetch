@@ -114,6 +114,10 @@ module.exports.fetchFullDocument = function(document, cb) {
       cb(data.rendered.full);
     }, function error(res) {
       client.shouldDisplayViewerSpinner(false);
+      if(res.status === 401) {
+        cb("You have been disconnected. Please reload Salesforce.");
+      }
+
       client.documentViewerError(getErrorMessage(res));
     }
   );

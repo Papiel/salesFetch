@@ -16,11 +16,7 @@ module.exports.get = function(req, res, next) {
     return next(new restify.MissingParameterError('Check your VisualForce page configuration, a template parameter is missing (`templatedQuery` or `templatedDisplay`).'));
   }
 
-  var params = {
-    sort: '-modificationDate',
-    search: req.data.context.templatedQuery,
-    snippet_size: 100,
-  };
+  var params = {};
 
   var filters = {};
   if(req.query.filters) {
@@ -40,6 +36,11 @@ module.exports.get = function(req, res, next) {
     params.provider = req.query.provider;
   }
 
+  params.sort = '-modificationDate';
+  params.search = req.data.context.templatedQuery;
+  params.snippet_size = 100;
+
+  console.log(params);
   async.waterfall([
     function retrieveDocuments(cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);

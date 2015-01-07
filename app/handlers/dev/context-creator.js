@@ -76,6 +76,7 @@ module.exports.get = function getDummyContext(req, res, next) {
   }
 
   var data = _.merge({}, defaultDummyContext);
+  data.timestamp = Date.now();
 
   async.waterfall([
     function findUser(cb) {

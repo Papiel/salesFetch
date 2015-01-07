@@ -35,7 +35,9 @@ $(document).ready(function() {
   var isiPad = navigator.userAgent.match(/iPad/i) !== null;
   if(isiPad) {
     // Ugly hack to fix scroll issue on shitty iPad.
-    $('#document-container').style('height', '10px');
-    $('#document-container').style('width', '10px');
+    $('#document-container').css('height', '10px');
+    $('#document-container').css('min-height', '100%');
+    $('#document-container').css('width', '10px');
+    $('#document-container').css('min-width', '100%');
   }
 });

@@ -15,9 +15,12 @@ var templates = require('./templates.js');
 var config = require('../../config/configuration.js');
 
 var makeUser = function(user) {
-  var pseudo = (user.name + "@").split("@")[0].substr(0, 50);
+  // To create the anyfetchEmail, we fitler the username, add some unique ID (ensuring uniqueness) and use a @anyfetch.com domain to avoid welcome emails.
+  // According to Salesforce, username is "in the form of a mail".
+  var pseudo = user.name.replace(/[^a-z0-9\._-]/gi, '-').substr(0, 50);
+  var anyfetchEmail = pseudo + '-salesfetch-' + (new Date().getTime()) + '@anyfetch.com';
   return {
-    email: pseudo + (new Date().getTime()) + '@anyfetch.com',
+    email: anyfetchEmail,
     name: user.name,
     password: user.password
   };

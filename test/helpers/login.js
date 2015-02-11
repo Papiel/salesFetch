@@ -20,7 +20,7 @@ var userInfo = {
   },
   anyfetchId: 'anyfetchId',
   anyfetchToken: 'anyfetchToken',
-  anyfetchEmail: '1413306427601@salesfetch.com',
+  anyfetchEmail: '1413306427601@anyfetch.com',
   isAdmin: true
 };
 

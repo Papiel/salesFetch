@@ -14,6 +14,18 @@ var salesfetchHelpers = require('./salesfetch.js');
 var templates = require('./templates.js');
 var config = require('../../config/configuration.js');
 
+var makeUser = function(user) {
+  // To create the anyfetchEmail, we fitler the username, add some unique ID (ensuring uniqueness) and use a @anyfetch.com domain to avoid welcome emails.
+  // According to Salesforce, username is "in the form of a mail".
+  var pseudo = user.name.replace(/[^a-z0-9\._-]/gi, '-').substr(0, 50);
+  var anyfetchEmail = pseudo + '-salesfetch-' + (new Date().getTime()) + '@anyfetch.com';
+  return {
+    email: anyfetchEmail,
+    name: user.name,
+    password: user.password
+  };
+};
+
 module.exports.findDocuments = function(params, user, cb) {
   async.waterfall([
     function executeBatchRequest(cb) {
@@ -131,11 +143,7 @@ module.exports.initAccount = function(data, done) {
       var subcompany = {
         name: org.id
       };
-      var fetchUser = {
-        email: new Date().getTime() + '@salesfetch.com',
-        name: user.name,
-        password: user.password
-      };
+      var fetchUser = makeUser(user);
       anyfetch.createSubcompanyWithAdmin(subcompany, fetchUser, cb);
     },
     function retrieveUserToken(company, admin, cb) {
@@ -209,11 +217,7 @@ module.exports.addNewUser = function(user, organization, cb) {
       }
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyfetchToken);
-      var newUser = {
-        email: new Date().getTime() + '@salesfetch.com',
-        name: user.name,
-        password: user.password
-      };
+      var newUser = makeUser(user);
       anyfetchAdmin.postUser(newUser, cb);
     },
     function retrieveUserToken(res, cb) {

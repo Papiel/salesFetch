@@ -125,7 +125,7 @@ describe('/admin/init endpoint', function() {
           u.should.have.property('SFDCId', '5678');
           u.should.have.property('anyfetchId', '533d6b2a6355285e5563d005');
           u.should.have.property('anyfetchToken', 'mockedToken');
-          u.should.have.property('anyfetchEmail', '1414584211623@salesfetch.com');
+          u.should.have.property('anyfetchEmail', '1414584211623@anyfetch.com');
           u.should.have.property('organization', org._id);
           u.should.have.property('isAdmin', true);
 

@@ -40,7 +40,6 @@ module.exports.get = function(req, res, next) {
   params.search = req.data.context.templatedQuery;
   params.snippet_size = 100;
 
-  console.log(params);
   async.waterfall([
     function retrieveDocuments(cb) {
       anyfetchHelpers.findDocuments(params, req.user, cb);

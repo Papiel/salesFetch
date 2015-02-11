@@ -78,7 +78,7 @@ describe('/app/init', function() {
             user.SFDCData.should.have.property('email', 'walter.white@breaking-bad.com');
             user.should.have.property('SFDCId', 'newUser');
             user.should.have.property('anyfetchToken', 'mockedToken');
-            user.should.have.property('anyfetchEmail', '1414584211623@salesfetch.com');
+            user.should.have.property('anyfetchEmail', '1414584211623@anyfetch.com');
             user.should.have.property('isAdmin', false);
             user.should.have.property('SFDCId', 'newUser');
             user.should.have.property('anyfetchToken', 'mockedToken');

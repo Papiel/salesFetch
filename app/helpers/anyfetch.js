@@ -132,7 +132,7 @@ module.exports.initAccount = function(data, done) {
         name: org.id
       };
       var fetchUser = {
-        email: new Date().getTime() + '@salesfetch.com',
+        email: new Date().getTime() + '@anyfetch.com',
         name: user.name,
         password: user.password
       };
@@ -210,7 +210,7 @@ module.exports.addNewUser = function(user, organization, cb) {
 
       var anyfetchAdmin = new AnyFetch(adminUser.anyfetchToken);
       var newUser = {
-        email: new Date().getTime() + '@salesfetch.com',
+        email: new Date().getTime() + '@anyfetch.com',
         name: user.name,
         password: user.password
       };

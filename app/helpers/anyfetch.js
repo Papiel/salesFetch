@@ -15,9 +15,9 @@ var templates = require('./templates.js');
 var config = require('../../config/configuration.js');
 
 var makeUser = function(user) {
-  var pseudo = (user.name + "@").split("@")[0];
+  var pseudo = (user.name + "@").split("@")[0].substr(0, 50);
   return {
-    email: new Date().getTime() + '@anyfetch.com',
+    email: pseudo + (new Date().getTime()) + '@anyfetch.com',
     name: user.name,
     password: user.password
   };

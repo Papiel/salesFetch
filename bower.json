@@ -28,7 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "anyfetch-assets": "~2.1.5",
+    "anyfetch-assets": "~4.0.1",
     "normalize.css": "~3.0.2",
     "bootstrap": "~3.2.0"
   }

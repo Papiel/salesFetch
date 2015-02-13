@@ -71,7 +71,7 @@ You shoud now be able to launch the server with:
   $ gulp
 ```
 
-The server in now available on `https://localhost:3000`. The `https` is important for securing the connection between salesFetch and Salesforce, be sure to access a random page first to avoid any problem in salesforce because of the invalid SSL certificate.
+The server in now available on `https://localhost:3000/dev/context-creator?token=<YOUR ANYFETCH TOKEN>`. The `https` is important for securing the connection between salesFetch and Salesforce, be sure to access a random page first to avoid any problem in salesforce because of the invalid SSL certificate.
 
 ## Apex code management
 All the apex code is in the repo [salesFetch-Apex](https://github.com/Papiel/salesFetch-Apex).

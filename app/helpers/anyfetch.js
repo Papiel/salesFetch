@@ -133,6 +133,7 @@ module.exports.initAccount = function(data, done) {
       });
     },
     function createRandomPassword(cb) {
+      // Generate a random password for the user -- it will be discarded afterward, as we'll only use token authentication.
       crypto.randomBytes(20, function(ex, buf) {
         var password = buf.toString('base64');
         user.password = password;
@@ -140,8 +141,9 @@ module.exports.initAccount = function(data, done) {
       });
     },
     function createAccountAndSubcompany(cb) {
+      // Subcompany name on Anyfetch must be unique
       var subcompany = {
-        name: org.id
+        name: org.id + " - " + user.name.substr(0, 200)
       };
       var fetchUser = makeUser(user);
       anyfetch.createSubcompanyWithAdmin(subcompany, fetchUser, cb);

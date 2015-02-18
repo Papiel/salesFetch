@@ -63,7 +63,7 @@
     "integration"
   ],
   "dependencies": {
-    "anyfetch": "^2.0.0",
+    "anyfetch": "^2.1.9",
     "async": "0.9.x",
     "auto-load": "^1.1.0",
     "body-parser": "~1.2.0",

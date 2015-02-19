@@ -42,10 +42,6 @@ var baseConfig = {
   managerUrl: process.env.MANAGER_URL || "https://manager.anyfetch.com",
   fetchApiCreds: process.env.API_CREDENTIALS,
 
-  // Minimum delay between two calls to `POST /company/update`
-  // for a single company (in milliseconds)
-  companyUpdateDelay: 30 * 60 * 1000,
-
   secretKey: process.env.SALESFETCH_SECRET_KEY || "SalesFetch4TheWin",
 
   services: services,

@@ -41,7 +41,6 @@ db.organizations.insert({
     "_id" : ObjectId("538ee0d095662e0200582c94"),
     "anyfetchId" : "538ee0c5fe2eee0157d69793",
     "deleted" : false,
-    "lastUpdated" : ISODate("2014-09-04T17:15:26.412Z"),
     "masterKey" : "iwoazklaekcfetoiyuvhnycuahopuiqmizewlurtyeruicy",
     "name" : "AnyFetch"
 })

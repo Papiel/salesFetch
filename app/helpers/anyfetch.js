@@ -275,11 +275,3 @@ module.exports.getConnectedProviders = function(user, cb) {
   var anyfetch = new AnyFetch(user.anyfetchToken);
   anyfetch.getProviders(cb);
 };
-
-/**
- * Update the company documents
- */
-module.exports.updateAccount = function(user, cb) {
-  var anyfetch = new AnyFetch(user.anyfetchToken);
-  anyfetch.postCompanyUpdate(cb);
-};

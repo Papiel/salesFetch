@@ -103,8 +103,8 @@ Hidden by default until the app has loaded.
       <div class="centered" data-bind="visible: shouldDisplayDocumentListError">
         <div class="centered-container">
           <p class="error" data-bind="text: documentListError">
-              <p data-bind="visible: documents.length == 0">
-                <a data-bind="click: $root.goToTab.bind($root)">Connect more data sources to enjoy richer timelines</a>
+              <p data-bind="visible: documents.length == 0 || $root.facetsProviders().length < 3">
+                <a data-bind="click: $root.goToTab.bind($root.providerTab)">Connect more data sources to enjoy richer timelines</a>
               </p>
           </p>
         </div>

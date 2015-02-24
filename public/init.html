@@ -135,7 +135,7 @@
   button.on('click', function() {
     button.html('<div class="loading"></div>');
     // Post on /app/init to create the user
-    var url = $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
+    var url = $.clientData && $.clientData.salesFetchURL || 'https://salesfetch.herokuapp.com';
     url += '/app/init?data=' + encodeURIComponent(JSON.stringify($.clientData));
     $.ajax({
       url: url,

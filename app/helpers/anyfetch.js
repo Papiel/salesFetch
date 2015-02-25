@@ -259,7 +259,6 @@ module.exports.addNewUser = function(user, organization, cb) {
 module.exports.getProviders = function(cb) {
   async.waterfall([
     function retrieveProviders(cb) {
-      console.log('HERE');
       AnyFetch.getAvailableProviders({trusted: true, oAuthApp: false}, cb);
     },
     function setId(res, cb) {

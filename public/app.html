@@ -14,6 +14,14 @@
 We need to load dynamically
 -->
 <div id="head"></div>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+  .intro-salesfetch {
+    /*margin-left: 30px;*/
+    margin-top: 70px;
+    text-align: center;
+  }
+</style>
 <script type="text/javascript">
   /* global $ */
   // Done this way (first insert the link, then set its `href` attribute) for IE8- compatibility
@@ -100,13 +108,25 @@ Hidden by default until the app has loaded.
 
     <!-- Errors -->
     <!-- ko if: $data != $root.providerTab -->
-      <div class="centered" data-bind="visible: shouldDisplayDocumentListError">
+      <div class="centered" data-bind="visible: shouldDisplayDocumentListError() || $root.facetsProviders().length < 3">
         <div class="centered-container">
-          <p class="error" data-bind="text: documentListError">
-              <p data-bind="visible: documents.length == 0 || $root.facetsProviders().length < 3">
-                <a data-bind="click: $root.goToTab.bind($root.providerTab)">Connect more data sources to enjoy richer timelines</a>
-              </p>
+          <p class="error" data-bind="text: documentListError"></p>
+          <p class="error" data-bind="visible: $root.facetsProviders().length > 0">
+            Connect more data sources to enjoy richer timelines
           </p>
+          <div class="container" data-bind="visible: $root.facetsProviders().length == 0">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="intro-salesfetch">
+                  <h4>SalesFetch brings the right information <br/>directly to Salesforce1, for your business context.</h4>
+                  <h4>To get started, connect data sources<br/></h4>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <img src="images/salesfetch-responsive.png" style="width:350px; text-align: center" alt="On any platform">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -117,7 +137,7 @@ Hidden by default until the app has loaded.
       | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_  | | \__ \ |_
       |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__| |_|_|___/\__|
       -->
-      <div class="snippet-list" data-bind="visible: shouldDisplayDocumentList">
+        <div class="snippet-list" data-bind="visible: shouldDisplayDocumentList">
         <div class="timestamp-list">
           <!-- ko foreach: {data: timeSlices(), afterRender: afterRenderFunc} -->
             <fieldset class="timestamp" data-bind="visible: documents.length > 0">
@@ -145,6 +165,26 @@ Hidden by default until the app has loaded.
           </div>
         </div>
       </div>
+
+        <!--
+
+        -->
+          <div class="container-center" data-bind="visible: $root.facetsProviders().length == 0">
+            <section class="row">
+              <div class="col-lg-8 col-sm-8">
+                <div class="intro-message">
+                  <h1 class="hidden-mobile">Sales<strong>Fetch</strong></h1>
+                  <h4>
+                    SalesFetch brings the right information <br/>
+                    directly to Salesforce1, for your business context.
+                  </h4>
+                  <h4>
+                    Made for Sales Professionals, to stay one step ahead.<br/>
+                  </h4>
+                </div>
+              </div>
+            </section>
+          </div>
 
       <!--
        _____ _ _ _                            _

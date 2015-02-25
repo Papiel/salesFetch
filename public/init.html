@@ -3,6 +3,9 @@
   Users are redirected to this page when they don't have an account yet
 -->
 <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <style type="text/css">
   @-webkit-keyframes rotate {
     from {
@@ -117,13 +120,44 @@
   .hidden {
     display: none !important;
   }
+
+  .intro-salesfetch {
+    padding-bottom: 10px;
+    padding-top: 100px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  h4 {
+  font-family: "Helvetica Neue", 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: #677277;
+  font-size: 1.6em;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1.7em;
+  margin-top: 0px;
+}
+
 </style>
 <div class="salesfetch-content" style="opacity: 0">
   <h1 class="welcome">Welcome to</h1>
   <h1 class="logo">Sales<strong>Fetch</strong></h1>
 
-
   <p class="paragraph" id="label">Your account is one click away!</p>
+  <div class="container" id="onboarding" style="display: none; padding-top:30px">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="intro-salesfetch">
+          <h4>SalesFetch brings the right information <br/>directly to Salesforce1, for your business context.</h4>
+          <h4>Salesfetch is available on all devices with the Salesforce1 Platform.<br/></h4>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <img src="images/salesfetch-responsive.png" style="width:500px" alt="On any platform">
+      </div>
+    </div>
+  <h4><strong>Congratulations, your account is activated!</br>To get started, refresh the page (F5 on Windows, Cmd+R on MacOS)</strong></h4>
+  </div>
   <button id="init" class="">Activate my account</button>
 </div>
 
@@ -146,9 +180,11 @@
           button.off();
           button.addClass('success');
           button.html('<div class="ok"></div>');
-          $('#label').html('SalesFetch will appear on your next visit! Refresh the page (F5 on Windows, Cmd+R on MacOS) to get started.');
-        }, 300); // Set timeout to make up a longer operation
-
+          window.setTimeout(function() {
+            $('#label').hide();
+            $('#onboarding').show('slow');
+          }, 400); // Set timeout to make up a longer operation
+        }, 300);
       },
       error: function error(res) {
         console.error(res.responseText);

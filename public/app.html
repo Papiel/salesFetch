@@ -104,7 +104,7 @@ Hidden by default until the app has loaded.
     <!-- ko if: $data != $root.providerTab -->
     <div class="centered-container" data-bind="visible: shouldDisplayDocumentListError() || $root.connectedProviders().length < 3">
       <p class="error" data-bind="text: documentListError, visible: $root.connectedProviders().length > 0"></p>
-      <a data-bind="click: function() {$root.goToTab.bind($root)($root.providerTab)}" style="background-color: #3d576f; cursor: pointer;">
+      <a data-bind="click: function() {$root.goToTab.bind($root)($root.providerTab)}" style="cursor: pointer;">
         <p class="error" data-bind="visible: $root.connectedProviders().length > 0">
           Tip: Click here to connect more data sources to enjoy richer timelines
         </p>

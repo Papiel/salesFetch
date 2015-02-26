@@ -13,6 +13,9 @@
 
 We need to load dynamically
 -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
 <div id="head"></div>
 <script type="text/javascript">
   /* global $ */
@@ -103,9 +106,11 @@ Hidden by default until the app has loaded.
     <!-- ko if: $data != $root.providerTab -->
     <div class="centered-container" data-bind="visible: shouldDisplayDocumentListError() || $root.connectedProviders().length < 3">
       <p class="error" data-bind="text: documentListError, visible: $root.connectedProviders().length > 0"></p>
-      <p class="error" data-bind="visible: $root.connectedProviders().length > 0">
-        Connect more data sources to enjoy richer timelines
-      </p>
+      <a data-bind="click: $root.goToTab.bind($root)($root.providerTab)">
+        <p class="error" data-bind="visible: $root.connectedProviders().length > 0">
+          Tip: Connect more data sources to enjoy richer timelines
+        </p>
+      </a>
       <div class="container" data-bind="visible: $root.connectedProviders().length == 0">
         <div class="row">
           <div class="col-md-6">

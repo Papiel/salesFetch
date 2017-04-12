@@ -58,6 +58,8 @@ module.exports.findPins = function(sfdcId, params, user, finalCb) {
       cb(null, docs);
     }
   ], function(err, docs) {
+    // TODO: do not crash when one of the documents is absent
+
     // See in `fetchDocumentsAndDocumentTypes` above
     if(err === noPinError) {
       err = null;
